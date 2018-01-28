@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@material/checkbox": "^0.29.0",
+    "material-components-web": "^0.28.0"
+  },
+  "devDependencies": {}
+}
