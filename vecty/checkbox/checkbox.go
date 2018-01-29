@@ -3,6 +3,7 @@ package checkbox
 import (
 	"time"
 
+	"agamigo.io/material-components-go/mdc"
 	mdccheckbox "agamigo.io/material-components-go/mdc/checkbox"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -58,13 +59,13 @@ func (c *C) Render() vecty.ComponentOrHTML {
 
 func (c *C) Mount() {
 	println("Mount checkbox called")
-	c.C.Start()
+	mdc.Start(c)
 	go c.testCB()
 }
 
 func (c *C) Unmount() {
 	println("Unmount checkbox called")
-	c.C.Stop()
+	mdc.Stop(c)
 }
 
 func (c *C) testCB() {
