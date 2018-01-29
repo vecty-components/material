@@ -1,5 +1,7 @@
 package checkbox
 
+import "agamigo.io/material-components-go/mdc"
+
 type StateType int
 
 const (
@@ -14,6 +16,14 @@ const (
 	INDETERMINATE
 	INDETERMINATE_DISABLED
 )
+
+type C struct {
+	mdc.Component
+}
+
+func New() *C {
+	return mdc.New(mdc.MDCNameCheckbox)
+}
 
 func (c *C) State() StateType {
 	s := UNKNOWN

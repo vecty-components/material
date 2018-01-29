@@ -4,13 +4,13 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
-type MDCName string
+type MDCName int
 
 const (
-	MDCNameCustom    MDCName = "custom"
-	MDCNameBase              = "base"
-	MDCNameCheckbox          = "checkbox"
-	MDCNameFormField         = "form-field"
+	MDCNameCustom MDCName = iota
+	MDCNameBase
+	MDCNameCheckbox
+	MDCNameFormField
 )
 
 type MDCStatus int
@@ -27,7 +27,7 @@ var (
 )
 
 type Adaptable interface {
-	MDCName() MDCName
+	Name() MDCName
 	SetObject(o *js.Object)
 	GetObject() *js.Object
 }
@@ -41,8 +41,25 @@ type Componenter interface {
 }
 
 type Component struct {
+	*js.Object
+	name   MDCName
 	id     int
 	status MDCStatus
+}
+
+func New(n MDCName) *Component {
+	c := &Component{}
+	c.name = n
+	o := makeMDComponent(c)
+	if o == nil || o == js.Undefined {
+		panic("Creating " + c.Name().classString() +
+			" failed, object nil or undefined")
+	}
+	c.SetObject(o)
+	c.setStatus(MDCStatusStopped)
+	c.setID(nextID)
+	nextID = nextID + 1
+	return c
 }
 
 func (c *Component) ID() int {
@@ -61,30 +78,54 @@ func (c *Component) setStatus(s MDCStatus) {
 	c.status = s
 }
 
-func New(c Componenter) {
-	o := makeMDComponent(c)
-	if o == nil || o == js.Undefined {
-		panic("Creating " + c.MDCName() +
-			" failed, object nil or undefined")
+func (c *Component) Name() MDCName {
+	return c.name
+}
+
+func (c *Component) GetObject() *js.Object {
+	return c.Object
+}
+
+func (c *Component) SetObject(o *js.Object) {
+	c.Object = o
+}
+
+func (n MDCName) componentString() string {
+	switch n {
+	case MDCNameCheckbox:
+		return "MDCCheckbox"
+	case MDCNameFormField:
+		return "MDCFormField"
 	}
-	c.SetObject(o)
-	c.setStatus(MDCStatusStopped)
-	c.setID(nextID)
-	nextID = nextID + 1
+
+	panic("Failed to convert MDCName to component string.")
+	return ""
+}
+
+func (n MDCName) classString() string {
+	switch n {
+	case MDCNameCheckbox:
+		return "checkbox"
+	case MDCNameFormField:
+		return "form-field"
+	}
+
+	panic("Failed to convert MDCName to class string.")
+	return ""
 }
 
 func makeMDComponent(c Adaptable) *js.Object {
-	switch c.MDCName() {
+	switch c.Name() {
 	case MDCNameCheckbox:
-		return mdc.Get("checkbox").Get("MDCCheckbox")
+		return mdc.Get("checkbox").Get(c.Name().componentString())
 	}
 	return nil
 }
 
 func Start(c Componenter) {
-	switch c.MDCName() {
+	switch c.Name() {
 	case MDCNameCheckbox:
-		StartWith(c, "div.mdc-"+string(c.MDCName()))
+		StartWith(c, "div.mdc-"+string(c.Name().classString()))
 	}
 }
 
@@ -99,18 +140,17 @@ func StartWith(c Componenter, querySelector string) {
 	e := js.Global.Get("document").Call("querySelector", querySelector)
 	c.SetObject(c.GetObject().New(e))
 	c.setStatus(MDCStatusRunning)
-
-	// activeCs[c.MDCName()] = append [c.MDCName()]c.ID()
 }
 
 func Stop(c Componenter) {
 	if c.Status() == MDCStatusStopped {
+		println(c.Name().classString())
 		print("Attempted to stop already stopped component: ")
-		println(c.MDCName()) //+ " #" + c.ID())
 		return
 	}
 
 	if c.Status() != MDCStatusRunning {
+		println(c.Name().classString())
 		panic("Attempted to run Stop() an uninitialized component. Use mdc.New()")
 	}
 
