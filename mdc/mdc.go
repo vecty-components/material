@@ -7,9 +7,10 @@ import (
 type MDCName string
 
 const (
-	MDCNameCustom   MDCName = "custom"
-	MDCNameBase             = "base"
-	MDCNameCheckbox         = "checkbox"
+	MDCNameCustom    MDCName = "custom"
+	MDCNameBase              = "base"
+	MDCNameCheckbox          = "checkbox"
+	MDCNameFormField         = "form-field"
 )
 
 type MDCStatus int
@@ -22,8 +23,7 @@ const (
 
 var (
 	nextID = 1
-	// activeCs map[MDCName][]int
-	mdc = js.Global.Get("mdc")
+	mdc    = js.Global.Get("mdc")
 )
 
 type Adaptable interface {
