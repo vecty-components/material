@@ -3,20 +3,20 @@ package checkbox
 import (
 	"time"
 
-	mdccheckbox "agamigo.io/material-components-go/mdc/checkbox"
+	"agamigo.io/material/component/checkbox"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
 )
 
 type C struct {
-	*mdccheckbox.C
+	*checkbox.C
 	vecty.Core
 }
 
 func New() *C {
 	c := &C{}
-	c.C = mdccheckbox.New()
+	c.C = checkbox.New()
 	return c
 }
 
@@ -71,10 +71,10 @@ func (c *C) testCB() {
 	for _ = range time.Tick(1 * time.Second) {
 		s := c.State()
 		print(s)
-		if s == mdccheckbox.INDETERMINATE_DISABLED {
-			c.SetState(mdccheckbox.UNCHECKED)
+		if s == checkbox.INDETERMINATE_DISABLED {
+			c.SetState(checkbox.UNCHECKED)
 			continue
 		}
-		c.SetState(s + mdccheckbox.DISABLED)
+		c.SetState(s + checkbox.DISABLED)
 	}
 }

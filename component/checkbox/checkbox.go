@@ -1,6 +1,6 @@
 package checkbox
 
-import "agamigo.io/material-components-go/mdc"
+import "agamigo.io/material/mdc"
 
 type StateType int
 

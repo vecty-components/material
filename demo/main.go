@@ -1,7 +1,7 @@
 package main
 
 import (
-	"agamigo.io/material-components-go/vecty/checkbox"
+	"agamigo.io/material/vecty/checkbox"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
