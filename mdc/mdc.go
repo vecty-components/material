@@ -8,8 +8,29 @@ type ComponentName int
 
 const (
 	Custom ComponentName = iota
+	Animation
 	Checkbox
+	Dialog
 	FormField
+	PermanentDrawer
+	PersistentDrawer
+	SlidableDrawer
+	TemporaryDrawer
+	GridList
+	IconToggle
+	LinearProgress
+	Menu
+	Radio
+	Ripple
+	Select
+	// SelectionControl
+	Slider
+	Snackbar
+	Tab
+	TabBar
+	TabBarScroller
+	// Textfield
+	Toolbar
 )
 
 type ComponentStatus int
@@ -24,16 +45,6 @@ var (
 	nextID = 1
 	mdc    = js.Global.Get("mdc")
 )
-
-// type Componenter interface {
-// 	Name() ComponentName
-// 	SetObject(o *js.Object)
-// 	GetObject() *js.Object
-// 	ID() int
-// 	setID(id int)
-// 	Status() ComponentStatus
-// 	setStatus(s ComponentStatus)
-// }
 
 type Component struct {
 	*js.Object
@@ -87,10 +98,52 @@ func (c *Component) SetObject(o *js.Object) {
 
 func (n ComponentName) componentString() string {
 	switch n {
+	case Animation:
+		return "MDCAnimation"
 	case Checkbox:
 		return "MDCCheckbox"
+	case Dialog:
+		return "MDCDialog"
+	case PermanentDrawer:
+		return "MDCDrawer"
+	case PersistentDrawer:
+		return "MDCDrawer"
+	case SlidableDrawer:
+		return "MDCDrawer"
+	case TemporaryDrawer:
+		return "MDCDrawer"
 	case FormField:
 		return "MDCFormField"
+	case GridList:
+		return "MDCGridList"
+	case IconToggle:
+		return "MDCIconToggle"
+	case LinearProgress:
+		return "MDCLinearProgress"
+	case Menu:
+		return "MDCMenu"
+	case Radio:
+		return "MDCRadio"
+	case Ripple:
+		return "MDCRipple"
+	case Select:
+		return "MDCSelect"
+	// case SelectionControl:
+	// 	return ""
+	case Slider:
+		return "MDCSlider"
+	case Snackbar:
+		return "MDCSnackbar"
+	case Tab:
+		return "MDCTab"
+	case TabBar:
+		return "MDCTabBar"
+	case TabBarScroller:
+		return "MDCTabBarScroller"
+	// case Textfield:
+	// 	return ""
+	case Toolbar:
+		return "MDCToolbar"
 	}
 
 	panic("Failed to convert MDCName to component string.")
@@ -99,10 +152,52 @@ func (n ComponentName) componentString() string {
 
 func (n ComponentName) classString() string {
 	switch n {
+	case Animation:
+		return "animation"
 	case Checkbox:
 		return "checkbox"
+	case Dialog:
+		return "dialog"
+	case PermanentDrawer:
+		return "drawer--permanent"
+	case PersistentDrawer:
+		return "drawer--persistent"
+	case SlidableDrawer:
+		return "drawer--slidable"
+	case TemporaryDrawer:
+		return "drawer--temporary"
 	case FormField:
 		return "form-field"
+	case GridList:
+		return "grid-list"
+	case IconToggle:
+		return "icon-toggle"
+	case LinearProgress:
+		return "linear-progress"
+	case Menu:
+		return "menu"
+	case Radio:
+		return "radio"
+	case Ripple:
+		return "ripple"
+	case Select:
+		return "select"
+	// case SelectionControl:
+	// 	return ""
+	case Slider:
+		return "slider"
+	case Snackbar:
+		return "snackbar"
+	case Tab:
+		return "tab"
+	case TabBar:
+		return "tab-bar"
+	case TabBarScroller:
+		return "tab-bar-scroller"
+	// case Textfield:
+	// 	return ""
+	case Toolbar:
+		return "toolbar"
 	}
 
 	panic("Failed to convert MDCName to class string.")
@@ -111,8 +206,52 @@ func (n ComponentName) classString() string {
 
 func makeMDComponent(c *Component) *js.Object {
 	switch c.Name() {
+	case Animation:
+		return mdc.Get("animation").Get(c.Name().componentString())
 	case Checkbox:
 		return mdc.Get("checkbox").Get(c.Name().componentString())
+	case Dialog:
+		return mdc.Get("dialog").Get(c.Name().componentString())
+	case PermanentDrawer:
+		return mdc.Get("drawer").Get(c.Name().componentString())
+	case PersistentDrawer:
+		return mdc.Get("drawer").Get(c.Name().componentString())
+	case SlidableDrawer:
+		return mdc.Get("drawer").Get(c.Name().componentString())
+	case TemporaryDrawer:
+		return mdc.Get("drawer").Get(c.Name().componentString())
+	case FormField:
+		return mdc.Get("formField").Get(c.Name().componentString())
+	case GridList:
+		return mdc.Get("gridList").Get(c.Name().componentString())
+	case IconToggle:
+		return mdc.Get("iconToggle").Get(c.Name().componentString())
+	case LinearProgress:
+		return mdc.Get("linearProgress").Get(c.Name().componentString())
+	case Menu:
+		return mdc.Get("menu").Get(c.Name().componentString())
+	case Radio:
+		return mdc.Get("radio").Get(c.Name().componentString())
+	case Ripple:
+		return mdc.Get("ripple").Get(c.Name().componentString())
+	case Select:
+		return mdc.Get("select").Get(c.Name().componentString())
+	// case SelectionControl:
+	// 	return ""
+	case Slider:
+		return mdc.Get("slider").Get(c.Name().componentString())
+	case Snackbar:
+		return mdc.Get("snackbar").Get(c.Name().componentString())
+	case Tab:
+		return mdc.Get("tab").Get(c.Name().componentString())
+	case TabBar:
+		return mdc.Get("tab").Get(c.Name().componentString())
+	case TabBarScroller:
+		return mdc.Get("tab").Get(c.Name().componentString())
+	// case Textfield:
+	// 	return ""
+	case Toolbar:
+		return mdc.Get("toolbar").Get(c.Name().componentString())
 	}
 	return nil
 }
