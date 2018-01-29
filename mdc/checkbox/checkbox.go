@@ -18,11 +18,11 @@ const (
 )
 
 type C struct {
-	mdc.Component
+	*mdc.Component
 }
 
 func New() *C {
-	return mdc.New(mdc.MDCNameCheckbox)
+	return &C{Component: mdc.New(mdc.MDCNameCheckbox)}
 }
 
 func (c *C) State() StateType {
