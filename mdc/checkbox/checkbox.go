@@ -22,7 +22,7 @@ type C struct {
 }
 
 func New() *C {
-	return &C{Component: mdc.New(mdc.MDCNameCheckbox)}
+	return &C{Component: mdc.New(mdc.Checkbox)}
 }
 
 func (c *C) State() StateType {

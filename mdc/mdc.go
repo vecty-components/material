@@ -4,21 +4,20 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
-type MDCName int
+type ComponentName int
 
 const (
-	MDCNameCustom MDCName = iota
-	MDCNameBase
-	MDCNameCheckbox
-	MDCNameFormField
+	Custom ComponentName = iota
+	Checkbox
+	FormField
 )
 
-type MDCStatus int
+type ComponentStatus int
 
 const (
-	MDCStatusUninitialized MDCStatus = iota
-	MDCStatusStopped
-	MDCStatusRunning
+	Uninitialized ComponentStatus = iota
+	Stopped
+	Running
 )
 
 var (
@@ -26,28 +25,24 @@ var (
 	mdc    = js.Global.Get("mdc")
 )
 
-type Adaptable interface {
-	Name() MDCName
-	SetObject(o *js.Object)
-	GetObject() *js.Object
-}
-
-type Componenter interface {
-	Adaptable
-	ID() int
-	setID(id int)
-	Status() MDCStatus
-	setStatus(s MDCStatus)
-}
+// type Componenter interface {
+// 	Name() ComponentName
+// 	SetObject(o *js.Object)
+// 	GetObject() *js.Object
+// 	ID() int
+// 	setID(id int)
+// 	Status() ComponentStatus
+// 	setStatus(s ComponentStatus)
+// }
 
 type Component struct {
 	*js.Object
-	name   MDCName
+	name   ComponentName
 	id     int
-	status MDCStatus
+	status ComponentStatus
 }
 
-func New(n MDCName) *Component {
+func New(n ComponentName) *Component {
 	c := &Component{}
 	c.name = n
 	o := makeMDComponent(c)
@@ -56,7 +51,7 @@ func New(n MDCName) *Component {
 			" failed, object nil or undefined")
 	}
 	c.SetObject(o)
-	c.setStatus(MDCStatusStopped)
+	c.setStatus(Stopped)
 	c.setID(nextID)
 	nextID = nextID + 1
 	return c
@@ -70,15 +65,15 @@ func (c *Component) setID(id int) {
 	c.id = id
 }
 
-func (c *Component) Status() MDCStatus {
+func (c *Component) Status() ComponentStatus {
 	return c.status
 }
 
-func (c *Component) setStatus(s MDCStatus) {
+func (c *Component) setStatus(s ComponentStatus) {
 	c.status = s
 }
 
-func (c *Component) Name() MDCName {
+func (c *Component) Name() ComponentName {
 	return c.name
 }
 
@@ -90,11 +85,11 @@ func (c *Component) SetObject(o *js.Object) {
 	c.Object = o
 }
 
-func (n MDCName) componentString() string {
+func (n ComponentName) componentString() string {
 	switch n {
-	case MDCNameCheckbox:
+	case Checkbox:
 		return "MDCCheckbox"
-	case MDCNameFormField:
+	case FormField:
 		return "MDCFormField"
 	}
 
@@ -102,11 +97,11 @@ func (n MDCName) componentString() string {
 	return ""
 }
 
-func (n MDCName) classString() string {
+func (n ComponentName) classString() string {
 	switch n {
-	case MDCNameCheckbox:
+	case Checkbox:
 		return "checkbox"
-	case MDCNameFormField:
+	case FormField:
 		return "form-field"
 	}
 
@@ -114,42 +109,42 @@ func (n MDCName) classString() string {
 	return ""
 }
 
-func makeMDComponent(c Adaptable) *js.Object {
+func makeMDComponent(c *Component) *js.Object {
 	switch c.Name() {
-	case MDCNameCheckbox:
+	case Checkbox:
 		return mdc.Get("checkbox").Get(c.Name().componentString())
 	}
 	return nil
 }
 
-func Start(c Componenter) {
+func (c *Component) Start() {
 	switch c.Name() {
-	case MDCNameCheckbox:
-		StartWith(c, "div.mdc-"+string(c.Name().classString()))
+	case Checkbox:
+		c.StartWith("div.mdc-" + string(c.Name().classString()))
 	}
 }
 
-func StartWith(c Componenter, querySelector string) {
-	if c.Status() == MDCStatusRunning {
+func (c *Component) StartWith(querySelector string) {
+	if c.Status() == Running {
 		return
 	}
-	if c.Status() != MDCStatusStopped {
+	if c.Status() != Stopped {
 		panic("Attempted to run Start() an uninitialized component. Use mdc.New()")
 	}
 
 	e := js.Global.Get("document").Call("querySelector", querySelector)
 	c.SetObject(c.GetObject().New(e))
-	c.setStatus(MDCStatusRunning)
+	c.setStatus(Running)
 }
 
-func Stop(c Componenter) {
-	if c.Status() == MDCStatusStopped {
+func (c *Component) Stop() {
+	if c.Status() == Stopped {
 		println(c.Name().classString())
 		print("Attempted to stop already stopped component: ")
 		return
 	}
 
-	if c.Status() != MDCStatusRunning {
+	if c.Status() != Running {
 		println(c.Name().classString())
 		panic("Attempted to run Stop() an uninitialized component. Use mdc.New()")
 	}
