@@ -9,18 +9,18 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
-type C struct {
+type Checkbox struct {
 	vecty.Core
 	checkbox.C
 }
 
-func New() *C {
-	c := &C{}
+func New() *Checkbox {
+	c := &Checkbox{}
 	c.C = checkbox.New()
 	return c
 }
 
-func (c *C) Render() vecty.ComponentOrHTML {
+func (c *Checkbox) Render() vecty.ComponentOrHTML {
 	println("Render checkbox called")
 	e := elem.Div(
 		vecty.Markup(
@@ -56,18 +56,18 @@ func (c *C) Render() vecty.ComponentOrHTML {
 	return e
 }
 
-func (c *C) Mount() {
+func (c *Checkbox) Mount() {
 	println("Mount checkbox called")
 	c.Start()
 	go c.testCB()
 }
 
-func (c *C) Unmount() {
+func (c *Checkbox) Unmount() {
 	println("Unmount checkbox called")
 	c.Stop()
 }
 
-func (c *C) testCB() {
+func (c *Checkbox) testCB() {
 	for _ = range time.Tick(1 * time.Second) {
 		s := c.State()
 		print(s)

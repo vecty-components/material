@@ -25,17 +25,17 @@ type C interface {
 	SetValue(v string)
 }
 
-type c struct {
+type checkbox struct {
 	component.C
 }
 
 func New() C {
-	return &c{
+	return &checkbox{
 		component.New(component.Checkbox),
 	}
 }
 
-func (c *c) State() StateType {
+func (c *checkbox) State() StateType {
 	s := UNKNOWN
 	checked := c.GetObject().Get("checked").Bool()
 	switch {
@@ -58,7 +58,7 @@ func (c *c) State() StateType {
 	return s
 }
 
-func (c *c) SetState(s StateType) {
+func (c *checkbox) SetState(s StateType) {
 	print("SetState called with:")
 	print(s)
 	switch s {
@@ -82,10 +82,10 @@ func (c *c) SetState(s StateType) {
 	c.GetObject().Set("disabled", false)
 }
 
-func (c *c) Value() string {
+func (c *checkbox) Value() string {
 	return c.GetObject().Get("value").String()
 }
 
-func (c *c) SetValue(v string) {
+func (c *checkbox) SetValue(v string) {
 	c.GetObject().Set("value", v)
 }
