@@ -1,35 +1,37 @@
 package checkbox
 
 import (
-	"time"
-
-	"agamigo.io/material/component/checkbox"
+	mdccheckbox "agamigo.io/material/component/checkbox"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
 )
 
-type Checkbox struct {
+type C interface {
+	vecty.Component
+	mdccheckbox.C
+}
+
+type checkbox struct {
 	vecty.Core
-	checkbox.C
+	mdccheckbox.C
 }
 
-func New() *Checkbox {
-	c := &Checkbox{}
-	c.C = checkbox.New()
-	return c
+func New() C {
+	return &checkbox{
+		C: mdccheckbox.New(),
+	}
 }
 
-func (c *Checkbox) Render() vecty.ComponentOrHTML {
-	println("Render checkbox called")
+func (c *checkbox) Render() vecty.ComponentOrHTML {
 	e := elem.Div(
 		vecty.Markup(
 			vecty.Class("mdc-checkbox"),
 		),
 		elem.Input(
 			vecty.Markup(
-				prop.Type(prop.TypeCheckbox),
 				vecty.Class("mdc-checkbox__native-control"),
+				prop.Type(prop.TypeCheckbox),
 				prop.ID("native-js-checkbox"),
 			),
 		),
@@ -56,25 +58,10 @@ func (c *Checkbox) Render() vecty.ComponentOrHTML {
 	return e
 }
 
-func (c *Checkbox) Mount() {
-	println("Mount checkbox called")
+func (c *checkbox) Mount() {
 	c.Start()
-	go c.testCB()
 }
 
-func (c *Checkbox) Unmount() {
-	println("Unmount checkbox called")
+func (c *checkbox) Unmount() {
 	c.Stop()
-}
-
-func (c *Checkbox) testCB() {
-	for _ = range time.Tick(1 * time.Second) {
-		s := c.State()
-		print(s)
-		if s == checkbox.INDETERMINATE_DISABLED {
-			c.SetState(checkbox.UNCHECKED)
-			continue
-		}
-		c.SetState(s + checkbox.DISABLED)
-	}
 }

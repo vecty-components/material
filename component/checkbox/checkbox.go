@@ -59,8 +59,6 @@ func (c *checkbox) State() StateType {
 }
 
 func (c *checkbox) SetState(s StateType) {
-	print("SetState called with:")
-	print(s)
 	switch s {
 	case UNKNOWN:
 		panic("SetState failed, invalid state given.")

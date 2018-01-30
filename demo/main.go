@@ -1,13 +1,21 @@
 package main
 
 import (
+	"time"
+
+	mdccheckbox "agamigo.io/material/component/checkbox"
 	"agamigo.io/material/vecty/checkbox"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
 )
 
+type checkboxes []checkbox.C
+
+var cbs checkboxes
+
 func main() {
+	cbs = append(cbs, checkbox.New())
 	vecty.SetTitle("Material Components Go")
 	vecty.RenderBody(&PageView{})
 }
@@ -20,13 +28,12 @@ type PageView struct {
 // Render implements the vecty.Component interface.
 func (p *PageView) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("node_modules/material-components-web/dist/material-components-web.css")
-	cb := checkbox.New()
 	return elem.Body(
 		elem.Div(
 			vecty.Markup(
 				vecty.Class("mdc-form-field"),
 			),
-			cb,
+			cbs[0],
 			elem.Label(
 				vecty.Markup(
 					prop.For("native-js-checkbox"),
@@ -35,4 +42,22 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 			),
 		),
 	)
+}
+
+func (p *PageView) Mount() {
+	go cbs.testCB()
+}
+
+func (cbs checkboxes) testCB() {
+	for _ = range time.Tick(1 * time.Second) {
+		for _, c := range cbs {
+			s := c.State()
+			print(s)
+			if s == mdccheckbox.INDETERMINATE_DISABLED {
+				c.SetState(mdccheckbox.UNCHECKED)
+				continue
+			}
+			c.SetState(s + mdccheckbox.DISABLED)
+		}
+	}
 }
