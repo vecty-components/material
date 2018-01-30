@@ -58,7 +58,7 @@ type component struct {
 	status StatusType
 }
 
-func New(n Type) *component {
+func New(n Type) C {
 	c := &component{}
 	c.name = n
 	o := makeMDComponent(c)
