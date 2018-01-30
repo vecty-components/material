@@ -1,13 +1,13 @@
-package mdc
+package component
 
 import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
-type ComponentName int
+type Type int
 
 const (
-	Custom ComponentName = iota
+	Custom Type = iota
 	Animation
 	Checkbox
 	Dialog
@@ -33,70 +33,57 @@ const (
 	Toolbar
 )
 
-type ComponentStatus int
+type StatusType int
 
 const (
-	Uninitialized ComponentStatus = iota
+	Uninitialized StatusType = iota
 	Stopped
 	Running
 )
 
 var (
-	nextID = 1
-	mdc    = js.Global.Get("mdc")
+	mdcObject = js.Global.Get("mdc")
 )
 
-type Component struct {
-	*js.Object
-	name   ComponentName
-	id     int
-	status ComponentStatus
+type C interface {
+	GetObject() *js.Object
+	Start()
+	StartWith(querySelector string)
+	Stop()
 }
 
-func New(n ComponentName) *Component {
-	c := &Component{}
+type component struct {
+	*js.Object
+	name   Type
+	status StatusType
+}
+
+func New(n Type) *component {
+	c := &component{}
 	c.name = n
 	o := makeMDComponent(c)
 	if o == nil || o == js.Undefined {
-		panic("Creating " + c.Name().classString() +
+		panic("Creating " + c.name.classString() +
 			" failed, object nil or undefined")
 	}
-	c.SetObject(o)
+	c.setObject(o)
 	c.setStatus(Stopped)
-	c.setID(nextID)
-	nextID = nextID + 1
 	return c
 }
 
-func (c *Component) ID() int {
-	return c.id
-}
-
-func (c *Component) setID(id int) {
-	c.id = id
-}
-
-func (c *Component) Status() ComponentStatus {
-	return c.status
-}
-
-func (c *Component) setStatus(s ComponentStatus) {
+func (c *component) setStatus(s StatusType) {
 	c.status = s
 }
 
-func (c *Component) Name() ComponentName {
-	return c.name
-}
-
-func (c *Component) GetObject() *js.Object {
+func (c *component) GetObject() *js.Object {
 	return c.Object
 }
 
-func (c *Component) SetObject(o *js.Object) {
+func (c *component) setObject(o *js.Object) {
 	c.Object = o
 }
 
-func (n ComponentName) componentString() string {
+func (n Type) componentString() string {
 	switch n {
 	case Animation:
 		return "MDCAnimation"
@@ -150,7 +137,7 @@ func (n ComponentName) componentString() string {
 	return ""
 }
 
-func (n ComponentName) classString() string {
+func (n Type) classString() string {
 	switch n {
 	case Animation:
 		return "animation"
@@ -204,87 +191,87 @@ func (n ComponentName) classString() string {
 	return ""
 }
 
-func makeMDComponent(c *Component) *js.Object {
-	switch c.Name() {
+func makeMDComponent(c *component) *js.Object {
+	switch c.name {
 	case Animation:
-		return mdc.Get("animation").Get(c.Name().componentString())
+		return mdcObject.Get("animation").Get(c.name.componentString())
 	case Checkbox:
-		return mdc.Get("checkbox").Get(c.Name().componentString())
+		return mdcObject.Get("checkbox").Get(c.name.componentString())
 	case Dialog:
-		return mdc.Get("dialog").Get(c.Name().componentString())
+		return mdcObject.Get("dialog").Get(c.name.componentString())
 	case PermanentDrawer:
-		return mdc.Get("drawer").Get(c.Name().componentString())
+		return mdcObject.Get("drawer").Get(c.name.componentString())
 	case PersistentDrawer:
-		return mdc.Get("drawer").Get(c.Name().componentString())
+		return mdcObject.Get("drawer").Get(c.name.componentString())
 	case SlidableDrawer:
-		return mdc.Get("drawer").Get(c.Name().componentString())
+		return mdcObject.Get("drawer").Get(c.name.componentString())
 	case TemporaryDrawer:
-		return mdc.Get("drawer").Get(c.Name().componentString())
+		return mdcObject.Get("drawer").Get(c.name.componentString())
 	case FormField:
-		return mdc.Get("formField").Get(c.Name().componentString())
+		return mdcObject.Get("formField").Get(c.name.componentString())
 	case GridList:
-		return mdc.Get("gridList").Get(c.Name().componentString())
+		return mdcObject.Get("gridList").Get(c.name.componentString())
 	case IconToggle:
-		return mdc.Get("iconToggle").Get(c.Name().componentString())
+		return mdcObject.Get("iconToggle").Get(c.name.componentString())
 	case LinearProgress:
-		return mdc.Get("linearProgress").Get(c.Name().componentString())
+		return mdcObject.Get("linearProgress").Get(c.name.componentString())
 	case Menu:
-		return mdc.Get("menu").Get(c.Name().componentString())
+		return mdcObject.Get("menu").Get(c.name.componentString())
 	case Radio:
-		return mdc.Get("radio").Get(c.Name().componentString())
+		return mdcObject.Get("radio").Get(c.name.componentString())
 	case Ripple:
-		return mdc.Get("ripple").Get(c.Name().componentString())
+		return mdcObject.Get("ripple").Get(c.name.componentString())
 	case Select:
-		return mdc.Get("select").Get(c.Name().componentString())
+		return mdcObject.Get("select").Get(c.name.componentString())
 	// case SelectionControl:
 	// 	return ""
 	case Slider:
-		return mdc.Get("slider").Get(c.Name().componentString())
+		return mdcObject.Get("slider").Get(c.name.componentString())
 	case Snackbar:
-		return mdc.Get("snackbar").Get(c.Name().componentString())
+		return mdcObject.Get("snackbar").Get(c.name.componentString())
 	case Tab:
-		return mdc.Get("tab").Get(c.Name().componentString())
+		return mdcObject.Get("tab").Get(c.name.componentString())
 	case TabBar:
-		return mdc.Get("tab").Get(c.Name().componentString())
+		return mdcObject.Get("tab").Get(c.name.componentString())
 	case TabBarScroller:
-		return mdc.Get("tab").Get(c.Name().componentString())
+		return mdcObject.Get("tab").Get(c.name.componentString())
 	// case Textfield:
 	// 	return ""
 	case Toolbar:
-		return mdc.Get("toolbar").Get(c.Name().componentString())
+		return mdcObject.Get("toolbar").Get(c.name.componentString())
 	}
 	return nil
 }
 
-func (c *Component) Start() {
-	switch c.Name() {
+func (c *component) Start() {
+	switch c.name {
 	case Checkbox:
-		c.StartWith("div.mdc-" + string(c.Name().classString()))
+		c.StartWith("div.mdc-" + string(c.name.classString()))
 	}
 }
 
-func (c *Component) StartWith(querySelector string) {
-	if c.Status() == Running {
+func (c *component) StartWith(querySelector string) {
+	if c.status == Running {
 		return
 	}
-	if c.Status() != Stopped {
+	if c.status != Stopped {
 		panic("Attempted to run Start() an uninitialized component. Use mdc.New()")
 	}
 
 	e := js.Global.Get("document").Call("querySelector", querySelector)
-	c.SetObject(c.GetObject().New(e))
+	c.setObject(c.GetObject().New(e))
 	c.setStatus(Running)
 }
 
-func (c *Component) Stop() {
-	if c.Status() == Stopped {
-		println(c.Name().classString())
+func (c *component) Stop() {
+	if c.status == Stopped {
+		println(c.name.classString())
 		print("Attempted to stop already stopped component: ")
 		return
 	}
 
-	if c.Status() != Running {
-		println(c.Name().classString())
+	if c.status != Running {
+		println(c.name.classString())
 		panic("Attempted to run Stop() an uninitialized component. Use mdc.New()")
 	}
 

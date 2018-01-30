@@ -1,6 +1,6 @@
 package checkbox
 
-import "agamigo.io/material/mdc"
+import "agamigo.io/material/component"
 
 type StateType int
 
@@ -17,19 +17,29 @@ const (
 	INDETERMINATE_DISABLED
 )
 
-type C struct {
-	*mdc.Component
+type C interface {
+	component.C
+	State() StateType
+	SetState(s StateType)
+	Value() string
+	SetValue(v string)
 }
 
-func New() *C {
-	return &C{Component: mdc.New(mdc.Checkbox)}
+type c struct {
+	component.C
 }
 
-func (c *C) State() StateType {
+func New() C {
+	return &c{
+		component.New(component.Checkbox),
+	}
+}
+
+func (c *c) State() StateType {
 	s := UNKNOWN
-	checked := c.Get("checked").Bool()
+	checked := c.GetObject().Get("checked").Bool()
 	switch {
-	case c.Get("indeterminate").Bool():
+	case c.GetObject().Get("indeterminate").Bool():
 		s = INDETERMINATE
 	case !checked:
 		s = UNCHECKED
@@ -37,7 +47,7 @@ func (c *C) State() StateType {
 		s = CHECKED
 	}
 
-	if c.Get("disabled").Bool() {
+	if c.GetObject().Get("disabled").Bool() {
 		s = s + DISABLED
 	}
 
@@ -48,34 +58,34 @@ func (c *C) State() StateType {
 	return s
 }
 
-func (c *C) SetState(s StateType) {
+func (c *c) SetState(s StateType) {
 	print("SetState called with:")
 	print(s)
 	switch s {
 	case UNKNOWN:
 		panic("SetState failed, invalid state given.")
 	case INDETERMINATE, INDETERMINATE_DISABLED:
-		c.Set("indeterminate", true)
+		c.GetObject().Set("indeterminate", true)
 	case UNCHECKED, UNCHECKED_DISABLED:
-		c.Set("checked", false)
-		c.Set("indeterminate", false)
+		c.GetObject().Set("checked", false)
+		c.GetObject().Set("indeterminate", false)
 	case CHECKED, CHECKED_DISABLED:
-		c.Set("checked", true)
-		c.Set("indeterminate", false)
+		c.GetObject().Set("checked", true)
+		c.GetObject().Set("indeterminate", false)
 	}
 
 	if s%2 != 0 {
-		c.Set("disabled", true)
+		c.GetObject().Set("disabled", true)
 		return
 	}
 
-	c.Set("disabled", false)
+	c.GetObject().Set("disabled", false)
 }
 
-func (c *C) Value() string {
-	return c.Get("value").String()
+func (c *c) Value() string {
+	return c.GetObject().Get("value").String()
 }
 
-func (c *C) SetValue(v string) {
-	c.Set("value", v)
+func (c *c) SetValue(v string) {
+	c.GetObject().Set("value", v)
 }

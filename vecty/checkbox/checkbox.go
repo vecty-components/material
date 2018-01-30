@@ -10,8 +10,8 @@ import (
 )
 
 type C struct {
-	*checkbox.C
 	vecty.Core
+	checkbox.C
 }
 
 func New() *C {
