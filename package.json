@@ -1,0 +1,8 @@
+{
+  "dependencies": {},
+  "devDependencies": {
+    "jsdom": "^11.6.2",
+    "material-components-web": "^0.28.0",
+    "source-map-support": "^0.5.3"
+  }
+}
