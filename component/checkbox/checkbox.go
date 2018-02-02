@@ -1,20 +1,7 @@
 package checkbox
 
-import "agamigo.io/material/component"
-
-type StateType int
-
-const (
-	// Unset state is zero
-	UNKNOWN StateType = iota
-	DISABLED
-	// Enabled states are even, disabled are odd
-	UNCHECKED
-	UNCHECKED_DISABLED
-	CHECKED
-	CHECKED_DISABLED
-	INDETERMINATE
-	INDETERMINATE_DISABLED
+import (
+	"agamigo.io/material/component"
 )
 
 type C interface {
@@ -29,15 +16,18 @@ type checkbox struct {
 	component.C
 }
 
-func New() C {
-	return &checkbox{
-		component.New(component.Checkbox),
+func New() (c C, err error) {
+	newC, err := component.New(component.Checkbox)
+	if err != nil {
+		return nil, err
 	}
+	return &checkbox{newC}, err
 }
 
 func (c *checkbox) State() StateType {
 	s := UNKNOWN
 	checked := c.GetObject().Get("checked").Bool()
+
 	switch {
 	case c.GetObject().Get("indeterminate").Bool():
 		s = INDETERMINATE
@@ -61,7 +51,7 @@ func (c *checkbox) State() StateType {
 func (c *checkbox) SetState(s StateType) {
 	switch s {
 	case UNKNOWN:
-		panic("SetState failed, invalid state given.")
+		println("SetState failed, invalid state given.")
 	case INDETERMINATE, INDETERMINATE_DISABLED:
 		c.GetObject().Set("indeterminate", true)
 	case UNCHECKED, UNCHECKED_DISABLED:

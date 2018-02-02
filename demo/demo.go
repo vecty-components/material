@@ -1,6 +1,11 @@
 package main
 
+//go:generate go get -u github.com/gopherjs/gopherjs
+//go:generate yarn install
+//go:generate gopherjs serve -v agamigo.io/material/demo
+
 import (
+	"log"
 	"time"
 
 	mdccheckbox "agamigo.io/material/component/checkbox"
@@ -10,12 +15,16 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
-type checkboxes []checkbox.C
+type checkboxes []checkbox.CB
 
 var cbs checkboxes
 
 func main() {
-	cbs = append(cbs, checkbox.New())
+	cb, err := checkbox.New()
+	if err != nil {
+		log.Fatalf("Failed to create checkbox component: %v", err)
+	}
+	cbs = append(cbs, cb)
 	vecty.SetTitle("Material Components Go")
 	vecty.RenderBody(&PageView{})
 }
@@ -27,7 +36,7 @@ type PageView struct {
 
 // Render implements the vecty.Component interface.
 func (p *PageView) Render() vecty.ComponentOrHTML {
-	vecty.AddStylesheet("node_modules/material-components-web/dist/material-components-web.css")
+	vecty.AddStylesheet("mcw.css")
 	return elem.Body(
 		elem.Div(
 			vecty.Markup(
