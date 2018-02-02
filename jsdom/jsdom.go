@@ -1,12 +1,4 @@
 // +build js
-package jsdom
-
-//go:generate yarn install
-
-import (
-	"agamigo.io/gojs"
-	"github.com/gopherjs/gopherjs/js"
-)
 
 // jsdom provides GopherJS wrappers for the jsdom Node module. jsdom is useful
 // for simulating a browser environment for basic testing purposes, without
@@ -18,6 +10,15 @@ import (
 // for safely running code in the emulated DOM without stuffing things into
 // Node's global environment. See:
 // https://github.com/jsdom/jsdom/wiki/Don't-stuff-jsdom-globals-onto-the-Node-global
+
+package jsdom
+
+//go:generate yarn install
+
+import (
+	"agamigo.io/gojs"
+	"github.com/gopherjs/gopherjs/js"
+)
 
 type JSDOM interface {
 	DOM() *js.Object
