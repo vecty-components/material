@@ -125,8 +125,8 @@ func makeMDComponent(c *component, dom *js.Object) (*js.Object, error) {
 		return mdcObject.Get("tabs").Get(c.name.String()), err
 	case TabBarScroller:
 		return mdcObject.Get("tabs").Get(c.name.String()), err
-	// case Textfield:
-	// 	return ""
+	case TextField:
+		return mdcObject.Get("textField").Get(c.name.String()), err
 	case Toolbar:
 		return mdcObject.Get("toolbar").Get(c.name.String()), err
 	}

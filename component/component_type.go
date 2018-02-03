@@ -20,7 +20,7 @@ const (
 	Tab
 	TabBar
 	TabBarScroller
-	// Textfield
+	TextField
 	Toolbar
 	TypeCount
 )
@@ -69,8 +69,8 @@ func (n Type) String() string {
 		return "MDCTabBar"
 	case TabBarScroller:
 		return "MDCTabBarScroller"
-	// case Textfield:
-	// 	return ""
+	case TextField:
+		return "MDCTextField"
 	case Toolbar:
 		return "MDCToolbar"
 	}
@@ -119,8 +119,8 @@ func (n Type) classString() string {
 		return "tab-bar"
 	case TabBarScroller:
 		return "tab-bar-scroller"
-	// case Textfield:
-	// 	return ""
+	case TextField:
+		return "text-field"
 	case Toolbar:
 		return "toolbar"
 	}
