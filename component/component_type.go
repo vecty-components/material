@@ -3,14 +3,10 @@ package component
 type Type int
 
 const (
-	Custom Type = iota
-	Animation
-	Checkbox
+	Checkbox Type = iota
 	Dialog
 	FormField
-	PermanentDrawer
 	PersistentDrawer
-	SlidableDrawer
 	TemporaryDrawer
 	GridList
 	IconToggle
@@ -19,32 +15,34 @@ const (
 	Radio
 	Ripple
 	Select
-	// SelectionControl
 	Slider
 	Snackbar
 	Tab
 	TabBar
 	TabBarScroller
-	// Textfield
+	TextField
 	Toolbar
+	TypeCount
 )
 
-func (n Type) componentString() string {
+func ComponentTypes() []Type {
+	types := make([]Type, TypeCount, TypeCount)
+	for i := Type(0); i < TypeCount; i = i + 1 {
+		types[i] = i
+	}
+	return types
+}
+
+func (n Type) String() string {
 	switch n {
-	case Animation:
-		return "MDCAnimation"
 	case Checkbox:
 		return "MDCCheckbox"
 	case Dialog:
 		return "MDCDialog"
-	case PermanentDrawer:
-		return "MDCDrawer"
 	case PersistentDrawer:
-		return "MDCDrawer"
-	case SlidableDrawer:
-		return "MDCDrawer"
+		return "MDCPersistentDrawer"
 	case TemporaryDrawer:
-		return "MDCDrawer"
+		return "MDCTemporaryDrawer"
 	case FormField:
 		return "MDCFormField"
 	case GridList:
@@ -54,15 +52,13 @@ func (n Type) componentString() string {
 	case LinearProgress:
 		return "MDCLinearProgress"
 	case Menu:
-		return "MDCMenu"
+		return "MDCSimpleMenu"
 	case Radio:
 		return "MDCRadio"
 	case Ripple:
 		return "MDCRipple"
 	case Select:
 		return "MDCSelect"
-	// case SelectionControl:
-	// 	return ""
 	case Slider:
 		return "MDCSlider"
 	case Snackbar:
@@ -73,8 +69,8 @@ func (n Type) componentString() string {
 		return "MDCTabBar"
 	case TabBarScroller:
 		return "MDCTabBarScroller"
-	// case Textfield:
-	// 	return ""
+	case TextField:
+		return "MDCTextField"
 	case Toolbar:
 		return "MDCToolbar"
 	}
@@ -85,18 +81,16 @@ func (n Type) componentString() string {
 
 func (n Type) classString() string {
 	switch n {
-	case Animation:
-		return "animation"
 	case Checkbox:
 		return "checkbox"
 	case Dialog:
 		return "dialog"
-	case PermanentDrawer:
-		return "drawer--permanent"
+	// case PermanentDrawer:
+	// 	return "drawer--permanent"
 	case PersistentDrawer:
 		return "drawer--persistent"
-	case SlidableDrawer:
-		return "drawer--slidable"
+	// case SlidableDrawer:
+	// 	return "drawer--slidable"
 	case TemporaryDrawer:
 		return "drawer--temporary"
 	case FormField:
@@ -115,8 +109,6 @@ func (n Type) classString() string {
 		return "ripple"
 	case Select:
 		return "select"
-	// case SelectionControl:
-	// 	return ""
 	case Slider:
 		return "slider"
 	case Snackbar:
@@ -127,8 +119,8 @@ func (n Type) classString() string {
 		return "tab-bar"
 	case TabBarScroller:
 		return "tab-bar-scroller"
-	// case Textfield:
-	// 	return ""
+	case TextField:
+		return "text-field"
 	case Toolbar:
 		return "toolbar"
 	}
