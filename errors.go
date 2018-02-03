@@ -1,4 +1,4 @@
-package gojs
+package gojs // import "agamigo.io/gojs"
 
 import "github.com/gopherjs/gopherjs/js"
 

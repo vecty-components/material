@@ -9,7 +9,7 @@
 // Node's global environment. See:
 // https://github.com/jsdom/jsdom/wiki/Don't-stuff-jsdom-globals-onto-the-Node-global
 
-package jsdom
+package jsdom // import "agamigo.io/gojs/jsdom"
 
 import (
 	"agamigo.io/gojs"
