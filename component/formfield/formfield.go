@@ -1,4 +1,4 @@
-package formrfield
+package formfield // import "agamigo.io/material/component/formfield"
 
 import (
 	"agamigo.io/material/component"

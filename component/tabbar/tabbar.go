@@ -1,4 +1,4 @@
-package tabbar
+package tabbar // import "agamigo.io/material/component/tabbar"
 
 import (
 	"agamigo.io/material/component"

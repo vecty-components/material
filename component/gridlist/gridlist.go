@@ -1,4 +1,4 @@
-package gridlist
+package gridlist // import "agamigo.io/material/component/gridlist"
 
 import (
 	"agamigo.io/material/component"

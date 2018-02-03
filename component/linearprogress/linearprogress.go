@@ -1,4 +1,4 @@
-package linearprogress
+package linearprogress // import "agamigo.io/material/component/linearprogress"
 
 import (
 	"agamigo.io/material/component"

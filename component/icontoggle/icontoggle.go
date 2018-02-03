@@ -1,4 +1,4 @@
-package icontoggle
+package icontoggle // import "agamigo.io/material/component/icontoggle"
 
 import (
 	"agamigo.io/material/component"

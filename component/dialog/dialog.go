@@ -1,4 +1,4 @@
-package dialog
+package dialog // import "agamigo.io/material/component/dialog"
 
 import (
 	"agamigo.io/material/component"

@@ -1,4 +1,4 @@
-package radio
+package radio // import "agamigo.io/material/component/radio"
 
 import (
 	"agamigo.io/material/component"

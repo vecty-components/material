@@ -1,4 +1,4 @@
-package tab
+package tab // import "agamigo.io/material/component/tab"
 
 import (
 	"agamigo.io/material/component"

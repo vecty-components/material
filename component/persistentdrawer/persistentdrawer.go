@@ -1,4 +1,4 @@
-package persistentdrawer
+package persistentdrawer // import "agamigo.io/material/component/persistentdrawer"
 
 import (
 	"agamigo.io/material/component"

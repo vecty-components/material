@@ -1,4 +1,4 @@
-package slider
+package slider // import "agamigo.io/material/component/slider"
 
 import (
 	"agamigo.io/material/component"

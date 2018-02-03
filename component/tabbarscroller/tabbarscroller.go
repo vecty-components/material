@@ -1,4 +1,4 @@
-package tabBarScroller
+package tabbarscroller // import "agamigo.io/material/component/tabbarscroller"
 
 import (
 	"agamigo.io/material/component"

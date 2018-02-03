@@ -1,4 +1,4 @@
-package selection
+package selection // import "agamigo.io/material/component/selection"
 
 import (
 	"agamigo.io/material/component"

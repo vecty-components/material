@@ -1,4 +1,4 @@
-package component
+package component // import "agamigo.io/material/component"
 
 import (
 	"errors"

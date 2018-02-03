@@ -1,4 +1,4 @@
-package menu
+package menu // import "agamigo.io/material/component/menu"
 
 import (
 	"agamigo.io/material/component"

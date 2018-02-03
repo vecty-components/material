@@ -1,4 +1,4 @@
-package checkbox
+package checkbox // import "agamigo.io/material/vecty/checkbox"
 
 import (
 	mdccheckbox "agamigo.io/material/component/checkbox"

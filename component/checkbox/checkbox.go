@@ -1,4 +1,4 @@
-package checkbox
+package checkbox // import "agamigo.io/material/component/checkbox"
 
 import (
 	"agamigo.io/material/component"

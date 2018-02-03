@@ -1,4 +1,4 @@
-package temporarydrawer
+package temporarydrawer // import "agamigo.io/material/component/temporarydrawer"
 
 import (
 	"agamigo.io/material/component"

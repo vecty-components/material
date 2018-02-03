@@ -1,4 +1,4 @@
-package ripple
+package ripple // import "agamigo.io/material/component/ripple"
 
 import (
 	"agamigo.io/material/component"

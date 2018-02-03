@@ -1,4 +1,4 @@
-package snackbar
+package snackbar // import "agamigo.io/material/component/snackbar"
 
 import (
 	"agamigo.io/material/component"

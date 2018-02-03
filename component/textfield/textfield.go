@@ -1,4 +1,4 @@
-package textfield
+package textfield // import "agamigo.io/material/component/textfield"
 
 import (
 	"agamigo.io/material/component"

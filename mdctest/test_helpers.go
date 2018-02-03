@@ -1,4 +1,4 @@
-package mdctest
+package mdctest // import "agamigo.io/material/mdctest"
 
 import (
 	"log"
