@@ -5,9 +5,10 @@ import (
 )
 
 const (
-	html = `<div class="mdc-checkbox">
-				<input class="mdc-checkbox__native-control" type="checkbox">
-			</div>`
+	defaultHTML = `
+	<div class="mdc-checkbox">
+		<input class="mdc-checkbox__native-control" type="checkbox">
+	</div>`
 )
 
 type CB interface {
@@ -29,7 +30,7 @@ func New() (c CB, err error) {
 	if err != nil {
 		return nil, err
 	}
-	return &checkbox{newC, html}, err
+	return &checkbox{newC, defaultHTML}, err
 }
 
 func (c *checkbox) State() StateType {
