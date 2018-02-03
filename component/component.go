@@ -54,7 +54,7 @@ func NewWith(n Type, dom *js.Object) (mdcComponent C, err error) {
 }
 
 func (c *component) String() string {
-	return "{\"component\":\"" + c.name.componentString() + "\"," +
+	return "{\"component\":\"" + c.name.String() + "\"," +
 		"\"status\":\"" + c.status.String() + "\"}"
 }
 
@@ -91,52 +91,44 @@ func makeMDComponent(c *component, dom *js.Object) (*js.Object, error) {
 	mdcObject := dom.Get("mdc")
 
 	switch c.name {
-	case Animation:
-		return mdcObject.Get("animation").Get(c.name.componentString()), err
 	case Checkbox:
-		return mdcObject.Get("checkbox").Get(c.name.componentString()), err
+		return mdcObject.Get("checkbox").Get(c.name.String()), err
 	case Dialog:
-		return mdcObject.Get("dialog").Get(c.name.componentString()), err
-	case PermanentDrawer:
-		return mdcObject.Get("drawer").Get(c.name.componentString()), err
+		return mdcObject.Get("dialog").Get(c.name.String()), err
 	case PersistentDrawer:
-		return mdcObject.Get("drawer").Get(c.name.componentString()), err
-	case SlidableDrawer:
-		return mdcObject.Get("drawer").Get(c.name.componentString()), err
+		return mdcObject.Get("drawer").Get(c.name.String()), err
 	case TemporaryDrawer:
-		return mdcObject.Get("drawer").Get(c.name.componentString()), err
+		return mdcObject.Get("drawer").Get(c.name.String()), err
 	case FormField:
-		return mdcObject.Get("formField").Get(c.name.componentString()), err
+		return mdcObject.Get("formField").Get(c.name.String()), err
 	case GridList:
-		return mdcObject.Get("gridList").Get(c.name.componentString()), err
+		return mdcObject.Get("gridList").Get(c.name.String()), err
 	case IconToggle:
-		return mdcObject.Get("iconToggle").Get(c.name.componentString()), err
+		return mdcObject.Get("iconToggle").Get(c.name.String()), err
 	case LinearProgress:
-		return mdcObject.Get("linearProgress").Get(c.name.componentString()), err
+		return mdcObject.Get("linearProgress").Get(c.name.String()), err
 	case Menu:
-		return mdcObject.Get("menu").Get(c.name.componentString()), err
+		return mdcObject.Get("menu").Get(c.name.String()), err
 	case Radio:
-		return mdcObject.Get("radio").Get(c.name.componentString()), err
+		return mdcObject.Get("radio").Get(c.name.String()), err
 	case Ripple:
-		return mdcObject.Get("ripple").Get(c.name.componentString()), err
+		return mdcObject.Get("ripple").Get(c.name.String()), err
 	case Select:
-		return mdcObject.Get("select").Get(c.name.componentString()), err
-	// case SelectionControl:
-	// 	return ""
+		return mdcObject.Get("select").Get(c.name.String()), err
 	case Slider:
-		return mdcObject.Get("slider").Get(c.name.componentString()), err
+		return mdcObject.Get("slider").Get(c.name.String()), err
 	case Snackbar:
-		return mdcObject.Get("snackbar").Get(c.name.componentString()), err
+		return mdcObject.Get("snackbar").Get(c.name.String()), err
 	case Tab:
-		return mdcObject.Get("tab").Get(c.name.componentString()), err
+		return mdcObject.Get("tabs").Get(c.name.String()), err
 	case TabBar:
-		return mdcObject.Get("tab").Get(c.name.componentString()), err
+		return mdcObject.Get("tabs").Get(c.name.String()), err
 	case TabBarScroller:
-		return mdcObject.Get("tab").Get(c.name.componentString()), err
+		return mdcObject.Get("tabs").Get(c.name.String()), err
 	// case Textfield:
 	// 	return ""
 	case Toolbar:
-		return mdcObject.Get("toolbar").Get(c.name.componentString()), err
+		return mdcObject.Get("toolbar").Get(c.name.String()), err
 	}
 	return nil, err
 }
