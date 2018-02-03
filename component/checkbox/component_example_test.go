@@ -1,10 +1,11 @@
-package component_test
+package checkbox_test
 
 import (
 	"fmt"
 	"log"
 
 	"agamigo.io/material/component/checkbox"
+	"agamigo.io/material/mdctest"
 )
 
 func Example() {
@@ -15,7 +16,7 @@ func Example() {
 	}
 	fmt.Printf("%s\n", c)
 
-	dom.SetHTML("<html><body>" + c.HTML() +
+	mdctest.Dom.SetHTML("<html><body>" + c.HTML() +
 		"</body></html>")
 
 	// Start the component after its HTMLElement is instantiated.

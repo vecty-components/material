@@ -3,6 +3,7 @@ package component
 import (
 	"testing"
 
+	_ "agamigo.io/material/mdctest"
 	"github.com/gopherjs/gopherjs/js"
 )
 

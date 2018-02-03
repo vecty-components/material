@@ -1,8 +1,8 @@
 package mdctest
 
-//go:generate yarn install
-
 import (
+	"log"
+
 	"agamigo.io/gojs"
 	"agamigo.io/gojs/jsdom"
 	"github.com/gopherjs/gopherjs/js"
@@ -11,6 +11,22 @@ import (
 const (
 	MCW_NODE_MODULE = "material-components-web/dist/material-components-web"
 )
+
+var (
+	Dom jsdom.JSDOM
+)
+
+func init() {
+	err := LoadMDCModule()
+	if err != nil {
+		log.Fatalf("Unable to load MDC JS module: %v", err)
+	}
+
+	Dom, err = EmulateDOM()
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+}
 
 // LoadMDCModule is a shortcut to
 func LoadMDCModule() (err error) {
