@@ -1,5 +1,3 @@
-// +build js
-
 // jsdom provides GopherJS wrappers for the jsdom Node module. jsdom is useful
 // for simulating a browser environment for basic testing purposes, without
 // requiring a full WebDriver setup.
@@ -12,8 +10,6 @@
 // https://github.com/jsdom/jsdom/wiki/Don't-stuff-jsdom-globals-onto-the-Node-global
 
 package jsdom
-
-//go:generate yarn install
 
 import (
 	"agamigo.io/gojs"
