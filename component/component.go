@@ -24,6 +24,11 @@ type C interface {
 	String() string
 }
 
+type HTMLElementer interface {
+	HTML() string
+	SetHTML(html string)
+}
+
 type component struct {
 	*js.Object
 	name   Type

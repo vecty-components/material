@@ -4,8 +4,15 @@ import (
 	"agamigo.io/material/component"
 )
 
+const (
+	html = `<div class="mdc-checkbox">
+				<input class="mdc-checkbox__native-control" type="checkbox">
+			</div>`
+)
+
 type CB interface {
 	component.C
+	component.HTMLElementer
 	State() StateType
 	SetState(s StateType)
 	Value() string
@@ -14,6 +21,7 @@ type CB interface {
 
 type checkbox struct {
 	component.C
+	html string
 }
 
 func New() (c CB, err error) {
@@ -21,7 +29,7 @@ func New() (c CB, err error) {
 	if err != nil {
 		return nil, err
 	}
-	return &checkbox{newC}, err
+	return &checkbox{newC, html}, err
 }
 
 func (c *checkbox) State() StateType {
@@ -76,4 +84,12 @@ func (c *checkbox) Value() string {
 
 func (c *checkbox) SetValue(v string) {
 	c.GetObject().Set("value", v)
+}
+
+func (c *checkbox) HTML() string {
+	return c.html
+}
+
+func (c *checkbox) SetHTML(html string) {
+	c.html = html
 }

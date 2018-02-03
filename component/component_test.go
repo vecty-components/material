@@ -6,31 +6,6 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
-// func TestNew(t *testing.T) {
-// 	type args struct {
-// 		n Type
-// 	}
-// 	tests := []struct {
-// 		name             string
-// 		args             args
-// 		wantMdcComponent C
-// 		wantErr          bool
-// 	}{
-// 	}
-// 	for _, tt := range tests {
-// 		t.Run(tt.name, func(t *testing.T) {
-// 			gotMdcComponent, err := New(tt.args.n)
-// 			if (err != nil) != tt.wantErr {
-// 				t.Errorf("New() error = %v, wantErr %v", err, tt.wantErr)
-// 				return
-// 			}
-// 			if !reflect.DeepEqual(gotMdcComponent, tt.wantMdcComponent) {
-// 				t.Errorf("New() = %v, want %v", gotMdcComponent, tt.wantMdcComponent)
-// 			}
-// 		})
-// 	}
-// 	}
-
 func TestNew(t *testing.T) {
 	type args struct {
 		n Type

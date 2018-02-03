@@ -4,16 +4,19 @@ import (
 	"fmt"
 	"log"
 
-	"agamigo.io/material/component"
+	"agamigo.io/material/component/checkbox"
 )
 
 func Example() {
 	// Create a new instance of a checkbox component.
-	c, err := component.New(component.Checkbox)
+	c, err := checkbox.New()
 	if err != nil {
 		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
 	}
 	fmt.Printf("%s\n", c)
+
+	dom.SetHTML("<html><body>" + c.HTML() +
+		"</body></html>")
 
 	// Start the component after its HTMLElement is instantiated.
 	// In this case it was instantiated in emulateDOM()
