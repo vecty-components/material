@@ -4,7 +4,7 @@ import (
 	"agamigo.io/material/component"
 )
 
-type C interface {
+type CB interface {
 	component.C
 	State() StateType
 	SetState(s StateType)
@@ -16,7 +16,7 @@ type checkbox struct {
 	component.C
 }
 
-func New() (c C, err error) {
+func New() (c CB, err error) {
 	newC, err := component.New(component.Checkbox)
 	if err != nil {
 		return nil, err

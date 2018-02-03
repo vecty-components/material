@@ -9,12 +9,12 @@ import (
 
 type CB interface {
 	vecty.Component
-	mdccheckbox.C
+	mdccheckbox.CB
 }
 
 type cb struct {
 	vecty.Core
-	mdccheckbox.C
+	mdccheckbox.CB
 }
 
 func New() (checkbox CB, err error) {
@@ -23,7 +23,7 @@ func New() (checkbox CB, err error) {
 		return nil, err
 	}
 
-	return &cb{C: c}, nil
+	return &cb{CB: c}, nil
 }
 
 func (c *cb) Render() vecty.ComponentOrHTML {
