@@ -76,7 +76,6 @@ func (n Type) String() string {
 	}
 
 	panic("Failed to convert MDCName to component string.")
-	return ""
 }
 
 func (n Type) classString() string {
@@ -126,5 +125,4 @@ func (n Type) classString() string {
 	}
 
 	panic("Failed to convert MDCName to class string.")
-	return ""
 }
