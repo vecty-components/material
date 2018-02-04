@@ -7,34 +7,66 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
+// StatusType holds a component's lifecycle status.
 type StatusType int
 
 const (
+	// An Uninitialized component has not been associated with the MDC library
+	// yet. This package does not provide a way to access an Uninitialized
+	// component.
 	Uninitialized StatusType = iota
+
+	// A Stopped component has been associated with a JS Object constructed from
+	// a MDC class. New() returns a Stopped component, and Stop() will stop a
+	// Running component.
 	Stopped
+
+	// A Running component has had its underlying MDC init() method called,
+	// which attaches the component to a specific HTMLElement in the DOM. It is
+	// ready to be used.
 	Running
 )
 
+// C is the base interface that all material components implement.
 type C interface {
+	// GetObject provides access to the underlying MDC JavaScript object.
 	GetObject() *js.Object
+
+	// Start{With,WithElement} starts the component, associating it with an
+	// HTMLElement, making it ready for use.
 	Start() error
 	StartWith(querySelector string) error
 	StartWithElement(element *js.Object) error
+
+	// Stop stops the component, disassociating it with its HTMLElement and
+	// cleaning up event-listeners.
 	Stop() error
 	String() string
 }
 
+// HTMLElementer is an interface that material components can implement in order
+// to give quick access to an HTML string that is appropriate for a component to
+// attach to in a DOM. These are convenience methods, and there is no attempt to
+// synchronize HTML with the actual HTMLElement object a component may be
+// attached to.
 type HTMLElementer interface {
+	// Get the HTML string for a component. This is usually set to a default
+	// HTML in the component's package, but can be changed with SetHTML().
 	HTML() string
+
+	// Sets the HTML that should be returned by HTML above.
 	SetHTML(html string)
 }
 
+// component is the internal implementation of C.
 type component struct {
 	*js.Object
 	name   Type
 	status StatusType
 }
 
+// New creates a material component that implements the C interface. It assumes
+// the MDC library and resulting component will live in the js.Global scope.
 func New(n Type) (mdcComponent C, err error) {
 	defer gojs.CatchException(&err)
 
@@ -42,6 +74,9 @@ func New(n Type) (mdcComponent C, err error) {
 	return c, err
 }
 
+// NewWith is like New(), with added option of specifying a *js.Object to store
+// the component. This is primarily intended for use in tests where we may want
+// to emulate a DOM somewhere other than Node's global scope.
 func NewWith(n Type, dom *js.Object) (mdcComponent C, err error) {
 	defer gojs.CatchException(&err)
 
@@ -58,6 +93,8 @@ func NewWith(n Type, dom *js.Object) (mdcComponent C, err error) {
 	return c, err
 }
 
+// String returns a JSON string for a component which includes the MDC
+// component's type, and status.
 func (c *component) String() string {
 	return "{\"component\":\"" + c.name.String() + "\"," +
 		"\"status\":\"" + c.status.String() + "\"}"
@@ -67,6 +104,7 @@ func (c *component) setStatus(s StatusType) {
 	c.status = s
 }
 
+// GetObject implements the C interface.
 func (c *component) GetObject() *js.Object {
 	return c.Object
 }
@@ -78,6 +116,8 @@ func (c *component) setObject(o *js.Object) error {
 	return err
 }
 
+// String returns the string representation of a StatusType. One of
+// "uninitialized", "stopped", or "running".
 func (s StatusType) String() string {
 	switch s {
 	case Stopped:
@@ -138,6 +178,17 @@ func makeMDComponent(c *component, dom *js.Object) (*js.Object, error) {
 	return nil, err
 }
 
+// Start implements the C interface. It associates the component to an
+// HTMLElement using a default querySelector that matches the first
+// "div.mdc-[component-class]" element it finds. For more fine-grained control
+// over the HTMLElement a component starts with, use the StartWith and
+// StartWithElement methods.
+//
+// Upon success the component's status will be Running, and err will be nil.
+//
+// If err is non-nil, it will contain any error thrown while calling the
+// underlying MDC object's init() method, and the component's status will remain
+// Stopped.
 func (c *component) Start() (err error) {
 	switch c.name {
 	case Checkbox:
@@ -146,6 +197,14 @@ func (c *component) Start() (err error) {
 	return err
 }
 
+// StartWith is like Start(), but allows you to specify the querySelector string
+// used to associate a component with an HTMLElement.
+//
+// Upon success the component's status will be Running, and err will be nil.
+//
+// If err is non-nil, it will contain any error thrown while calling the
+// underlying MDC object's init() method, and the component's status will remain
+// Stopped.
 func (c *component) StartWith(querySelector string) (err error) {
 	defer gojs.CatchException(&err)
 
@@ -155,6 +214,14 @@ func (c *component) StartWith(querySelector string) (err error) {
 	return c.StartWithElement(e)
 }
 
+// StartWithElement is like StartWith, but accepts a *js.Object that must
+// contain a valid HTMLElement for the component to associate itself with.
+//
+// Upon success the component's status will be Running, and err will be nil.
+//
+// If err is non-nil, it will contain any error thrown while calling the
+// underlying MDC object's init() method, and the component's status will remain
+// Stopped.
 func (c *component) StartWithElement(e *js.Object) (err error) {
 	defer gojs.CatchException(&err)
 
@@ -174,6 +241,9 @@ func (c *component) StartWithElement(e *js.Object) (err error) {
 	return err
 }
 
+// Stop stops a Running component, removing its association with an HTMLElement
+// and cleaning up event listeners, etc. It changes the component's status to
+// Stopped.
 func (c *component) Stop() (err error) {
 	defer gojs.CatchException(&err)
 
