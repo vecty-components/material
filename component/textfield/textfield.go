@@ -19,7 +19,7 @@ type textfield struct {
 }
 
 func New() (c T, err error) {
-	newT, err := component.New(component.Textfield)
+	newT, err := component.New(component.TextField)
 	if err != nil {
 		return nil, err
 	}

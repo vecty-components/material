@@ -1,9 +1,5 @@
 package main
 
-//go:generate go get -u github.com/gopherjs/gopherjs
-//go:generate yarn install
-//go:generate gopherjs serve -v agamigo.io/material/demo
-
 import (
 	"log"
 	"time"
