@@ -1,4 +1,4 @@
-// The checkbox package provides a material checkbox component implementation.
+// The checkbox package implements a material checkbox component.
 //
 // See: https://material.io/components/web/catalog/input-controls/checkboxes/
 package checkbox // import "agamigo.io/material/component/checkbox"
@@ -9,12 +9,12 @@ import (
 
 const (
 	defaultHTML = `
-	<div class="mdc-checkbox">
-		<input class="mdc-checkbox__native-control" type="checkbox">
-	</div>`
+<div class="mdc-checkbox">
+  <input class="mdc-checkbox__native-control" type="checkbox">
+</div>`
 )
 
-// CB is a material component interface for checkbox components.
+// CB is the interface for a material checkbox component.
 type CB interface {
 	component.C
 	component.HTMLElementer
@@ -39,6 +39,16 @@ func New() (c CB, err error) {
 		return nil, err
 	}
 	return &checkbox{newC, defaultHTML}, err
+}
+
+// HTML implements the material component.HTMLElementer interface.
+func (c *checkbox) HTML() string {
+	return c.html
+}
+
+// SetHTML implements the material component.HTMLElementer interface.
+func (c *checkbox) SetHTML(html string) {
+	c.html = html
 }
 
 // State gets the current StateType of the checkbox.
@@ -97,14 +107,4 @@ func (c *checkbox) Value() string {
 // SetValue sets the value property of the checkbox.
 func (c *checkbox) SetValue(v string) {
 	c.GetObject().Set("value", v)
-}
-
-// HTML implements the material component.HTMLElementer interface.
-func (c *checkbox) HTML() string {
-	return c.html
-}
-
-// SetHTML implements the material component.HTMLElementer interface.
-func (c *checkbox) SetHTML(html string) {
-	c.html = html
 }
