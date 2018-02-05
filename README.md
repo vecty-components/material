@@ -1,14 +1,12 @@
 # Material Components For GopherJS
 
-Material aims to provide GopherJS developers with an idiomatic way to use the
-features provided by the [material-components-web][]
-JavaScript library ([MDC](#Terminology)).
+Material is GopherJS bindings for the [material-components-web][] JavaScript
+library ([MDC](#Terminology)).
 
 ## Project Status
 
 Material is under active development, and the API is likely to change often, at
-any time. Any input is encouraged regarding Material's design at this early
-stage.
+any time. Input is encouraged regarding Material's design at this early stage.
 
 The core Material [component package][Material component] is usable. Work is
 underway to implement the specific Material component types, which is tracked in
