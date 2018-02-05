@@ -1,5 +1,9 @@
 package component // import "agamigo.io/material/component"
 
+// Type is a specific component type, as implemented by the
+// material-components-web library.
+//
+// See: https://material.io/components/web/catalog/
 type Type int
 
 const (
@@ -25,6 +29,8 @@ const (
 	TypeCount
 )
 
+// ComponentTypes is a convenience function that returns a slice containing
+// every ComponentType available in this package. Intended for use in testing.
 func ComponentTypes() []Type {
 	types := make([]Type, TypeCount, TypeCount)
 	for i := Type(0); i < TypeCount; i = i + 1 {
@@ -33,6 +39,8 @@ func ComponentTypes() []Type {
 	return types
 }
 
+// String returns the name of a component Type in the form of its MDCComponent
+// class name.
 func (n Type) String() string {
 	switch n {
 	case Checkbox:

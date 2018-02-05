@@ -1,3 +1,6 @@
+// The checkbox package implements a material checkbox component.
+//
+// See: https://material.io/components/web/catalog/input-controls/checkboxes/
 package checkbox // import "agamigo.io/material/component/checkbox"
 
 import (
@@ -6,11 +9,12 @@ import (
 
 const (
 	defaultHTML = `
-	<div class="mdc-checkbox">
-		<input class="mdc-checkbox__native-control" type="checkbox">
-	</div>`
+<div class="mdc-checkbox">
+  <input class="mdc-checkbox__native-control" type="checkbox">
+</div>`
 )
 
+// CB is the interface for a material checkbox component.
 type CB interface {
 	component.C
 	component.HTMLElementer
@@ -20,11 +24,15 @@ type CB interface {
 	SetValue(v string)
 }
 
+// checkbox is the internal implementation of CB made available publicly via
+// New().
 type checkbox struct {
 	component.C
 	html string
 }
 
+// New creates a material checkbox component that implement the CB interface.
+// It is a wrapper around component.New.
 func New() (c CB, err error) {
 	newC, err := component.New(component.Checkbox)
 	if err != nil {
@@ -33,6 +41,17 @@ func New() (c CB, err error) {
 	return &checkbox{newC, defaultHTML}, err
 }
 
+// HTML implements the material component.HTMLElementer interface.
+func (c *checkbox) HTML() string {
+	return c.html
+}
+
+// SetHTML implements the material component.HTMLElementer interface.
+func (c *checkbox) SetHTML(html string) {
+	c.html = html
+}
+
+// State gets the current StateType of the checkbox.
 func (c *checkbox) State() StateType {
 	s := UNKNOWN
 	checked := c.GetObject().Get("checked").Bool()
@@ -57,6 +76,7 @@ func (c *checkbox) State() StateType {
 	return s
 }
 
+// SetState changes the StateType of the checkbox.
 func (c *checkbox) SetState(s StateType) {
 	switch s {
 	case UNKNOWN:
@@ -79,18 +99,12 @@ func (c *checkbox) SetState(s StateType) {
 	c.GetObject().Set("disabled", false)
 }
 
+// Value gets the current value property of the checkbox.
 func (c *checkbox) Value() string {
 	return c.GetObject().Get("value").String()
 }
 
+// SetValue sets the value property of the checkbox.
 func (c *checkbox) SetValue(v string) {
 	c.GetObject().Set("value", v)
-}
-
-func (c *checkbox) HTML() string {
-	return c.html
-}
-
-func (c *checkbox) SetHTML(html string) {
-	c.html = html
 }

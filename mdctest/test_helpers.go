@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	MCW_NODE_MODULE = "material-components-web/dist/material-components-web"
+	MCW_MODULE = "material-components-web/dist/material-components-web"
 )
 
 var (
@@ -31,7 +31,7 @@ func init() {
 // LoadMDCModule is a shortcut to
 func LoadMDCModule() (err error) {
 	gojs.CatchException(&err)
-	js.Global.Set("mdc", js.Global.Call("require", MCW_NODE_MODULE))
+	js.Global.Set("mdc", js.Global.Call("require", MCW_MODULE))
 	return err
 }
 
