@@ -92,6 +92,7 @@ func (n Type) classString() string {
 		return "checkbox"
 	case Dialog:
 		return "dialog"
+	// TODO: Drawer components
 	// case PermanentDrawer:
 	// 	return "drawer--permanent"
 	case PersistentDrawer:

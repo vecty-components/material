@@ -1,8 +1,6 @@
 package mdctest // import "agamigo.io/material/mdctest"
 
 import (
-	"log"
-
 	"agamigo.io/gojs"
 	"agamigo.io/gojs/jsdom"
 	"github.com/gopherjs/gopherjs/js"
@@ -16,16 +14,20 @@ var (
 	Dom jsdom.JSDOM
 )
 
-func init() {
+func Init() error {
 	err := LoadMDCModule()
 	if err != nil {
-		log.Fatalf("Unable to load MDC JS module: %v", err)
+		// log.Fatalf("Unable to load MDC JS module: %v", err)
+		return err
 	}
 
 	Dom, err = EmulateDOM()
 	if err != nil {
-		log.Fatalf("%v", err)
+		// log.Fatalf("%v", err)
+		return err
 	}
+
+	return nil
 }
 
 // LoadMDCModule is a shortcut to

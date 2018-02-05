@@ -7,16 +7,6 @@ import (
 	"agamigo.io/material/component"
 )
 
-const (
-	defaultHTML = `
-<nav id="basic-tab-bar" class="mdc-tab-bar">
-  <a class="mdc-tab mdc-tab--active" href="#one">Home</a>
-  <a class="mdc-tab" href="#two">Merchandise</a>
-  <a class="mdc-tab" href="#three">About Us</a>
-  <span class="mdc-tab-bar__indicator"></span>
-</nav>`
-)
-
 // T is the interface for a material tab component.
 type T interface {
 	component.C
@@ -26,7 +16,6 @@ type T interface {
 // New().
 type tab struct {
 	component.C
-	html string
 }
 
 // New creates a material tab component that implement the T interface.
@@ -36,15 +25,5 @@ func New() (c T, err error) {
 	if err != nil {
 		return nil, err
 	}
-	return &tab{newT, defaultHTML}, err
-}
-
-// HTML implements the material component.HTMLElementer interface.
-func (t *tab) HTML() string {
-	return t.html
-}
-
-// SetHTML implements the material component.HTMLElementer interface.
-func (t *tab) SetHTML(html string) {
-	t.html = html
+	return &tab{newT}, err
 }

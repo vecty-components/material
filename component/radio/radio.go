@@ -7,18 +7,6 @@ import (
 	"agamigo.io/material/component"
 )
 
-const (
-	defaultHTML = `
-<div class="mdc-radio">
-  <input class="mdc-radio__native-control" type="radio" id="radio-1" name="radios" checked>
-  <div class="mdc-radio__background">
-    <div class="mdc-radio__outer-circle"></div>
-    <div class="mdc-radio__inner-circle"></div>
-  </div>
-</div>
-<label id="radio-1-label" for="radio-1">Radio 1</label>`
-)
-
 // R is the interface for a material radio component.
 type R interface {
 	component.C
@@ -28,7 +16,6 @@ type R interface {
 // New().
 type radio struct {
 	component.C
-	html string
 }
 
 // New creates a material radio component that implement the R interface.
@@ -38,15 +25,5 @@ func New() (c R, err error) {
 	if err != nil {
 		return nil, err
 	}
-	return &radio{newR, defaultHTML}, err
-}
-
-// HTML implements the material component.HTMLElementer interface.
-func (r *radio) HTML() string {
-	return r.html
-}
-
-// SetHTML implements the material component.HTMLElementer interface.
-func (r *radio) SetHTML(html string) {
-	r.html = html
+	return &radio{newR}, err
 }

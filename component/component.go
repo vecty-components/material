@@ -41,21 +41,9 @@ type C interface {
 	// Stop stops the component, disassociating it with its HTMLElement and
 	// cleaning up event-listeners.
 	Stop() error
+
 	String() string
-}
-
-// HTMLElementer is an interface that material components can implement in order
-// to give quick access to an HTML string that is appropriate for a component to
-// attach to in a DOM. These are convenience methods, and there is no attempt to
-// synchronize HTML with the actual HTMLElement object a component may be
-// attached to.
-type HTMLElementer interface {
-	// Get the HTML string for a component. This is usually set to a default
-	// HTML in the component's package, but can be changed with SetHTML().
-	HTML() string
-
-	// Sets the HTML that should be returned by HTML above.
-	SetHTML(html string)
+	CType() Type
 }
 
 // component is the internal implementation of C.
@@ -260,4 +248,9 @@ func (c *component) Stop() (err error) {
 	c.GetObject().Call("destroy")
 
 	return err
+}
+
+// CType returns the component's Type
+func (c *component) CType() Type {
+	return c.name
 }
