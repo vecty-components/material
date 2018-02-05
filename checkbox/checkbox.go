@@ -1,7 +1,7 @@
 package checkbox // import "agamigo.io/vecty-material/checkbox"
 
 import (
-	mdccheckbox "agamigo.io/material/component/checkbox"
+	mdccheckbox "agamigo.io/material/checkbox"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"

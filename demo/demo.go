@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	mdccheckbox "agamigo.io/material/component/checkbox"
+	mdccheckbox "agamigo.io/material/checkbox"
 	"agamigo.io/vecty-material/checkbox"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
