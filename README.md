@@ -46,7 +46,7 @@ definitions we are trying to enforce in Material.
 
 | Term                        | Definition                                           |
 | :---                        | :---------                                           |
-| [material-components-web][] | The official [upstream JavaScript library.           |
+| [material-components-web][] | The official upstream JavaScript library.            |
 | MDC or MCW                  | Synonyms/abbreviations of `material-components-web`. |
 | [Material][]                | This project.                                        |
 | [Material component][]      | Our `agamigo.io/material/component` Go package.      |
