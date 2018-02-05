@@ -3,11 +3,16 @@ package component
 import (
 	"testing"
 
-	_ "agamigo.io/material/mdctest"
+	"agamigo.io/material/mdctest"
 	"github.com/gopherjs/gopherjs/js"
 )
 
 func TestNew(t *testing.T) {
+	err := mdctest.Init()
+	if err != nil {
+		t.Fatalf("Unable to setup test environment: %v", err)
+	}
+
 	type args struct {
 		n Type
 	}

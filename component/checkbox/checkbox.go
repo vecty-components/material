@@ -7,17 +7,9 @@ import (
 	"agamigo.io/material/component"
 )
 
-const (
-	defaultHTML = `
-<div class="mdc-checkbox">
-  <input class="mdc-checkbox__native-control" type="checkbox">
-</div>`
-)
-
 // CB is the interface for a material checkbox component.
 type CB interface {
 	component.C
-	component.HTMLElementer
 	State() StateType
 	SetState(s StateType)
 	Value() string
@@ -28,7 +20,6 @@ type CB interface {
 // New().
 type checkbox struct {
 	component.C
-	html string
 }
 
 // New creates a material checkbox component that implement the CB interface.
@@ -38,17 +29,7 @@ func New() (c CB, err error) {
 	if err != nil {
 		return nil, err
 	}
-	return &checkbox{newC, defaultHTML}, err
-}
-
-// HTML implements the material component.HTMLElementer interface.
-func (c *checkbox) HTML() string {
-	return c.html
-}
-
-// SetHTML implements the material component.HTMLElementer interface.
-func (c *checkbox) SetHTML(html string) {
-	c.html = html
+	return &checkbox{newC}, err
 }
 
 // State gets the current StateType of the checkbox.

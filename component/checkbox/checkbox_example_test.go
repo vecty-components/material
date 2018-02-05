@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"agamigo.io/material/component/checkbox"
+	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
 )
 
@@ -17,7 +18,7 @@ func Example() {
 	fmt.Printf("%s\n", c)
 
 	// Set up the DOM with an HTMLElement suitable for a checkbox.
-	mdctest.Dom.SetHTML("<html><body>" + c.HTML() +
+	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
 		"</body></html>")
 
 	// Start the component, which associates it with an HTMLElement in the DOM.
@@ -30,4 +31,13 @@ func Example() {
 	// Output:
 	// {"component":"MDCCheckbox","status":"stopped"}
 	// {"component":"MDCCheckbox","status":"running"}
+}
+
+func init() {
+	// We emulate a DOM here since tests run in NodeJS.
+	// Not needed when running in a browser.
+	err := mdctest.Init()
+	if err != nil {
+		log.Fatalf("Unable to setup test environment: %v", err)
+	}
 }

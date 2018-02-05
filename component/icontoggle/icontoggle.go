@@ -7,16 +7,6 @@ import (
 	"agamigo.io/material/component"
 )
 
-const (
-	defaultHTML = `
-<i class="mdc-icon-toggle material-icons" role="button" aria-pressed="false"
-   aria-label="Add to favorites" tabindex="0"
-   data-toggle-on='{"label": "Remove from favorites", "content": "favorite"}'
-   data-toggle-off='{"label": "Add to favorites", "content": "favorite_border"}'>
-  favorite_border
-</i>`
-)
-
 // IT is the interface for a material icontoggle component.
 type IT interface {
 	component.C
@@ -26,7 +16,6 @@ type IT interface {
 // New().
 type iconToggle struct {
 	component.C
-	html string
 }
 
 // New creates a material icontoggle component that implement the IT interface.
@@ -36,15 +25,5 @@ func New() (c IT, err error) {
 	if err != nil {
 		return nil, err
 	}
-	return &iconToggle{newIT, defaultHTML}, err
-}
-
-// HTML implements the material component.HTMLElementer interface.
-func (it *iconToggle) HTML() string {
-	return it.html
-}
-
-// SetHTML implements the material component.HTMLElementer interface.
-func (it *iconToggle) SetHTML(html string) {
-	it.html = html
+	return &iconToggle{newIT}, err
 }

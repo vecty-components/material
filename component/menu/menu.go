@@ -7,20 +7,6 @@ import (
 	"agamigo.io/material/component"
 )
 
-const (
-	defaultHTML = `
-<div class="mdc-simple-menu" tabindex="-1">
-  <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
-    <li class="mdc-list-item" role="menuitem" tabindex="0">
-      A Menu Item
-    </li>
-    <li class="mdc-list-item" role="menuitem" tabindex="0">
-      Another Menu Item
-    </li>
-  </ul>
-</div>`
-)
-
 // M is the interface for a material menu component.
 type M interface {
 	component.C
@@ -30,7 +16,6 @@ type M interface {
 // New().
 type menu struct {
 	component.C
-	html string
 }
 
 // New creates a material menu component that implement the M interface.
@@ -40,15 +25,5 @@ func New() (c M, err error) {
 	if err != nil {
 		return nil, err
 	}
-	return &menu{newM, defaultHTML}, err
-}
-
-// HTML implements the material component.HTMLElementer interface.
-func (m *menu) HTML() string {
-	return m.html
-}
-
-// SetHTML implements the material component.HTMLElementer interface.
-func (m *menu) SetHTML(html string) {
-	m.html = html
+	return &menu{newM}, err
 }
