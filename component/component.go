@@ -178,11 +178,7 @@ func makeMDComponent(c *component, dom *js.Object) (*js.Object, error) {
 // underlying MDC object's init() method, and the component's status will remain
 // Stopped.
 func (c *component) Start() (err error) {
-	switch c.name {
-	case Checkbox:
-		err = c.StartWith("div.mdc-" + string(c.name.classString()))
-	}
-	return err
+	return c.StartWith(".mdc-" + string(c.name.classString()))
 }
 
 // StartWith is like Start(), but allows you to specify the querySelector string
