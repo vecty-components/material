@@ -30,13 +30,13 @@ type jsdom struct {
 	options js.M
 }
 
-func New() (JSDOM, error) {
+func New(html string, options *js.M) (JSDOM, error) {
 	c, err := jsdomClass()
 	if err != nil {
 		return nil, err
 	}
 
-	j, err := newJSDOM(c)
+	j, err := newJSDOM(c, html, options)
 	if err != nil {
 		return nil, err
 	}
@@ -50,10 +50,10 @@ func jsdomClass() (c *js.Object, err error) {
 	return c, err
 }
 
-func newJSDOM(c *js.Object) (j jsdom, err error) {
+func newJSDOM(c *js.Object, html string, options *js.M) (j jsdom, err error) {
 	defer gojs.CatchException(&err)
-	j.options = make(js.M)
-	j.Object = c.Get("JSDOM").New(``)
+	j.options = *options
+	j.Object = c.Get("JSDOM").New(html, options)
 	return j, err
 }
 
