@@ -27,26 +27,28 @@ func Example() {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
 	fmt.Printf("%s\n", c)
-	fmt.Printf("IsOpen: %v\n", c.IsOpen())
+	fmt.Printf("Open: %v\n", c.IsOpen)
 
 	err = c.Open()
 	if err != nil {
 		log.Fatalf("Unable to open dialog: %v", err)
 	}
-	fmt.Printf("IsOpen: %v\n", c.IsOpen())
+	fmt.Printf("Open: %v\n", c.IsOpen)
 
 	err = c.Close()
 	if err != nil {
 		log.Fatalf("Unable to close dialog: %v", err)
 	}
-	fmt.Printf("IsOpen: %v\n", c.IsOpen())
+	fmt.Printf("Open: %v\n", c.IsOpen)
+
+	// TODO: Test {Accept/Cancel}Chan
 
 	// Output:
 	// {"component":"MDCDialog","status":"stopped"}
 	// {"component":"MDCDialog","status":"running"}
-	// IsOpen: false
-	// IsOpen: true
-	// IsOpen: false
+	// Open: false
+	// Open: true
+	// Open: false
 }
 
 func init() {

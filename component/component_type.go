@@ -60,7 +60,7 @@ func (n Type) String() string {
 	case LinearProgress:
 		return "MDCLinearProgress"
 	case Menu:
-		return "MDCSimpleMenu"
+		return "MDCMenu"
 	case Radio:
 		return "MDCRadio"
 	case Ripple:

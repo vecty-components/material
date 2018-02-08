@@ -12,7 +12,7 @@ type GL interface {
 	component.C
 }
 
-// gridlist is the internal implementation of GL made available publicly via
+// gridList is the internal implementation of GL made available publicly via
 // New().
 type gridList struct {
 	component.C

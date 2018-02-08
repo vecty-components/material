@@ -17,20 +17,39 @@ func Example() {
 	}
 	fmt.Printf("%s\n", c)
 
-	// Set up the DOM with an HTMLElement suitable for a checkbox.
+	// Set up a DOM HTMLElement suitable for a checkbox.
 	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
 		"</body></html>")
 
-	// Start the component, which associates it with an HTMLElement in the DOM.
+	// Start the component, which associates it with an HTMLElement.
 	err = c.Start()
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
 	fmt.Printf("%s\n", c)
+	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: %v\n",
+		c.Checked, c.Indeterminate, c.Disabled, c.Value)
+
+	c.Checked = true
+	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: %v\n",
+		c.Checked, c.Indeterminate, c.Disabled, c.Value)
+
+	c.Disabled = true
+	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: %v\n",
+		c.Checked, c.Indeterminate, c.Disabled, c.Value)
+
+	c.Indeterminate = true
+	c.Value = "new value"
+	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: %v\n",
+		c.Checked, c.Indeterminate, c.Disabled, c.Value)
 
 	// Output:
 	// {"component":"MDCCheckbox","status":"stopped"}
 	// {"component":"MDCCheckbox","status":"running"}
+	// Checked: false, Indeterminate: false, Disabled: false, Value: on
+	// Checked: true, Indeterminate: false, Disabled: false, Value: on
+	// Checked: true, Indeterminate: false, Disabled: true, Value: on
+	// Checked: true, Indeterminate: true, Disabled: true, Value: new value
 }
 
 func init() {
