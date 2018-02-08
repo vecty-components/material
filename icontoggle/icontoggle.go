@@ -7,23 +7,23 @@ import (
 	"agamigo.io/material/component"
 )
 
-// IT is the interface for a material icontoggle component.
-type IT interface {
-	component.C
+// IT is a material icontoggle component. It should only be created using the
+// New function.
+type IT struct {
+	*component.C
+	On       bool `js:"on"`
+	Disabled bool `js:"disabled"`
 }
 
-// icontoggle is the internal implementation of IT made available publicly via
-// New().
-type iconToggle struct {
-	component.C
-}
-
-// New creates a material icontoggle component that implement the IT interface.
-// It is a wrapper around component.New.
-func New() (c IT, err error) {
+// New creates a material icontoggle component. It is a wrapper around
+// component.New which instantiates the component from the MDC library.
+func New() (*IT, error) {
 	newIT, err := component.New(component.IconToggle)
 	if err != nil {
 		return nil, err
 	}
-	return &iconToggle{newIT}, err
+	return &IT{C: newIT}, err
 }
+
+// TODO: Wrap refreshToggleData
+// TODO: Handle MDCIconToggle:change events
