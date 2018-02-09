@@ -7,26 +7,21 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
-type CB interface {
-	vecty.Component
-	mdccheckbox.CB
-}
-
-type cb struct {
+type CB struct {
 	vecty.Core
-	mdccheckbox.CB
+	*mdccheckbox.CB
 }
 
-func New() (checkbox CB, err error) {
+func New() (checkbox *CB, err error) {
 	c, err := mdccheckbox.New()
 	if err != nil {
 		return nil, err
 	}
 
-	return &cb{CB: c}, nil
+	return &CB{CB: c}, nil
 }
 
-func (c *cb) Render() vecty.ComponentOrHTML {
+func (c *CB) Render() vecty.ComponentOrHTML {
 	e := elem.Div(
 		vecty.Markup(
 			vecty.Class("mdc-checkbox"),
@@ -61,10 +56,10 @@ func (c *cb) Render() vecty.ComponentOrHTML {
 	return e
 }
 
-func (c *cb) Mount() {
+func (c *CB) Mount() {
 	c.Start()
 }
 
-func (c *cb) Unmount() {
+func (c *CB) Unmount() {
 	c.Stop()
 }
