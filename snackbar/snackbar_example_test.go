@@ -7,7 +7,6 @@ import (
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
 	"agamigo.io/material/snackbar"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func Example() {
@@ -30,7 +29,7 @@ func Example() {
 
 	fmt.Printf("%s\n", c)
 
-	spew.Dump(c.Data)
+	fmt.Printf("%+v\n", c.Data)
 	c.Message = "snackbar message here"
 	c.ActionHandler = func() {
 		fmt.Println("Action Handled!")
@@ -40,29 +39,14 @@ func Example() {
 	c.MultiLine = true
 	c.ActionOnBottom = true
 	c.DismissOnAction = true
-	spew.Dump(c.Data)
+	fmt.Printf("%+v\n", c.Data)
 
 	// Output:
 	// {"component":"MDCSnackbar","status":"stopped"}
 	// {"component":"MDCSnackbar","status":"running"}
-	// (*snackbar.Data)(<nil>)({
-	//  object: (*js.Object)(<nil>)(<already shown>),
-	//  Message: (string) (len=9) "undefined",
-	//  Timeout: (int) 2750,
-	//  ActionHandler: (func()) 0x1,
-	//  ActionText: (string) (len=9) "undefined",
-	//  MultiLine: (bool) false,
-	//  ActionOnBottom: (bool) false
-	// })
-	// (*snackbar.Data)(<nil>)({
-	//  object: (*js.Object)(<nil>)(<already shown>),
-	//  Message: (string) (len=21) "snackbar message here",
-	//  Timeout: (int) 1000,
-	//  ActionHandler: (func()) 0x1,
-	//  ActionText: (string) (len=18) "Action Button Text",
-	//  MultiLine: (bool) true,
-	//  ActionOnBottom: (bool) true
-	// })
+	// &{object:0x1 Message:undefined Timeout:2750 ActionHandler:0x1 ActionText:undefined MultiLine:false ActionOnBottom:false}
+	// &{object:0x1 Message:snackbar message here Timeout:1000 ActionHandler:0x1 ActionText:Action Button Text MultiLine:true ActionOnBottom:true}
+
 }
 
 func init() {
