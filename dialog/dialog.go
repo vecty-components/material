@@ -6,16 +6,15 @@ package dialog // import "agamigo.io/material/dialog"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/material/component"
-	"github.com/gopherjs/gopherjs/js"
 )
 
 // D is a material dialog component. It should only be created using the New
 // function.
 type D struct {
 	*component.C
-	IsOpen     bool `js:"open"`
-	AcceptChan chan *Event
-	CancelChan chan *Event
+	IsOpen bool `js:"open"`
+	// AcceptChan chan *Event
+	// CancelChan chan *Event
 }
 
 // New creates a material dialog component. It is a wrapper around component.New
@@ -26,9 +25,9 @@ func New() (*D, error) {
 		return nil, err
 	}
 	d := &D{
-		C:          newD,
-		AcceptChan: make(chan *Event),
-		CancelChan: make(chan *Event),
+		C: newD,
+		// AcceptChan: make(chan *Event),
+		// CancelChan: make(chan *Event),
 	}
 	return d, err
 }
@@ -50,51 +49,51 @@ func (d *D) Close() error {
 	return err
 }
 
-// Start wraps component.Start and adds event listeners that pass dialog events
-// over the channels provided by the dialog's OnAccessChan()/OnCancelChan()
-// methods.
-func (d *D) Start() error {
-	var err error
-	defer gojs.CatchException(&err)
+// // Start wraps component.Start and adds event listeners that pass dialog events
+// // over the channels provided by the dialog's OnAccessChan()/OnCancelChan()
+// // methods.
+// func (d *D) Start() error {
+// 	var err error
+// 	defer gojs.CatchException(&err)
 
-	err = d.C.Start()
-	if err != nil {
-		return err
-	}
+// 	err = d.C.Start()
+// 	if err != nil {
+// 		return err
+// 	}
 
-	d.GetObject().Call("listen", "MDCDialog:accept",
-		func(e *js.Object) {
-			d.AcceptChan <- &Event{
-				Type:      "MDCDialog:accept",
-				Event:     e,
-				Component: d,
-			}
-		},
-	)
+// 	d.GetObject().Call("listen", "MDCDialog:accept",
+// 		func(e *js.Object) {
+// 			d.AcceptChan <- &Event{
+// 				Type:      "MDCDialog:accept",
+// 				Event:     e,
+// 				Component: d,
+// 			}
+// 		},
+// 	)
 
-	d.GetObject().Call("listen", "MDCDialog:cancel",
-		func(e *js.Object) {
-			d.CancelChan <- &Event{
-				Type:      "MDCDialog:cancel",
-				Event:     e,
-				Component: d,
-			}
-		},
-	)
+// 	d.GetObject().Call("listen", "MDCDialog:cancel",
+// 		func(e *js.Object) {
+// 			d.CancelChan <- &Event{
+// 				Type:      "MDCDialog:cancel",
+// 				Event:     e,
+// 				Component: d,
+// 			}
+// 		},
+// 	)
 
-	return err
-}
+// 	return err
+// }
 
-// Stop wraps component.Stop and signals to receivers of
-// OnAcceptChan()/OnCancelChan() to close communication.
-func (d *D) Stop() error {
-	err := d.C.Stop()
-	if err != nil {
-		return err
-	}
-	d.AcceptChan <- nil
-	return nil
-}
+// // Stop wraps component.Stop and signals to receivers of
+// // OnAcceptChan()/OnCancelChan() to close communication.
+// func (d *D) Stop() error {
+// 	err := d.C.Stop()
+// 	if err != nil {
+// 		return err
+// 	}
+// 	d.AcceptChan <- nil
+// 	return nil
+// }
 
 // OnAcceptChan returns a channel through which the dialog sends event details
 // when a user chooses "accept" from the open dialog UI. Receivers should always
@@ -112,8 +111,8 @@ func (d *D) Stop() error {
 // 	return d.cancelChan
 // }
 
-type Event struct {
-	Type      string
-	Event     *js.Object
-	Component *D
-}
+// type Event struct {
+// 	Type      string
+// 	Event     *js.Object
+// 	Component *D
+// }

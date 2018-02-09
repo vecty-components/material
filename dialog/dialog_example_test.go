@@ -41,8 +41,6 @@ func Example() {
 	}
 	fmt.Printf("Open: %v\n", c.IsOpen)
 
-	// TODO: Test {Accept/Cancel}Chan
-
 	// Output:
 	// {"component":"MDCDialog","status":"stopped"}
 	// {"component":"MDCDialog","status":"running"}
