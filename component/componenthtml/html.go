@@ -155,8 +155,11 @@ func HTML(t component.Type) string {
 <label id="radio-1-label" for="radio-1">Radio 1</label>`
 	case component.Ripple:
 		return `
-<div class="mdc-ripple-surface mdc-ripple-surface--primary my-surface" tabindex="0">
-  Surface with a primary-colored ripple.
+<div>
+  <h2>Bounded</h2>
+  <div class="mdc-ripple-surface demo-surface mdc-elevation--z2" tabindex="0">
+    Interact with me!
+  </div>
 </div>`
 	case component.Select:
 		return `
@@ -168,12 +171,8 @@ func HTML(t component.Type) string {
   </div>
   <div class="mdc-simple-menu mdc-select__menu">
     <ul class="mdc-list mdc-simple-menu__items">
-      <li class="mdc-list-item" role="option" tabindex="0">
-        Bread, Cereal, Rice, and Pasta
-      </li>
-      <li class="mdc-list-item" role="option" tabindex="0">
-        Vegetables
-      </li>
+      <li class="mdc-list-item" role="option" tabindex="0">Option #1</li>
+      <li class="mdc-list-item" role="option" tabindex="0">Option #2</li>
     </ul>
   </div>
 </div>`
@@ -242,10 +241,15 @@ func HTML(t component.Type) string {
 	case component.TextField:
 		return `
 <div class="mdc-text-field">
-  <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-text-field__label" for="my-text-field">Hint text</label>
-  <div class="mdc-text-field__bottom-line"></div>
-</div>`
+  <input required pattern=".{8,}" type="password" class="mdc-text-field__input" id="pw"
+     aria-controls="pw-validation-msg"
+     autocomplete="current-password">
+  <label for="pw" class="mdc-text-field__label">Choose password</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+<p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg"
+id="pw-validation-msg">Must be at least 8 characters long
+</p>`
 	case component.Toolbar:
 		return `
 <header class="mdc-toolbar">

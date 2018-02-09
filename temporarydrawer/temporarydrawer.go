@@ -7,23 +7,23 @@ import (
 	"agamigo.io/material/component"
 )
 
-// TD is the interface for a material temporarydrawer component.
-type TD interface {
-	component.C
+// TD is a material temporarydrawer component. It should only be created using
+// the New function.
+type TD struct {
+	*component.C
+	Open bool `js:"open"`
 }
 
-// temporarydrawer is the internal implementation of TD made available publicly via
-// New().
-type temporaryDrawer struct {
-	component.C
-}
-
-// New creates a material temporarydrawer component that implement the TD interface.
-// It is a wrapper around component.New.
-func New() (c TD, err error) {
+// New creates a material temporarydrawer component. It is a wrapper around
+// component.New which instantiates the component from the MDC library.
+func New() (*TD, error) {
 	newTD, err := component.New(component.TemporaryDrawer)
 	if err != nil {
 		return nil, err
 	}
-	return &temporaryDrawer{newTD}, err
+	return &TD{C: newTD}, err
 }
+
+// TODO: Custom events
+// - MDCTemporaryDrawer:open
+// - MDCTemporaryDrawer:close

@@ -92,13 +92,8 @@ func (n Type) classString() string {
 		return "checkbox"
 	case Dialog:
 		return "dialog"
-	// TODO: Drawer components
-	// case PermanentDrawer:
-	// 	return "drawer--permanent"
 	case PersistentDrawer:
 		return "drawer--persistent"
-	// case SlidableDrawer:
-	// 	return "drawer--slidable"
 	case TemporaryDrawer:
 		return "drawer--temporary"
 	case FormField:
@@ -114,7 +109,7 @@ func (n Type) classString() string {
 	case Radio:
 		return "radio"
 	case Ripple:
-		return "ripple"
+		return "ripple-surface"
 	case Select:
 		return "select"
 	case Slider:

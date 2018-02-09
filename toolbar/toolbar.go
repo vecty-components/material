@@ -7,23 +7,21 @@ import (
 	"agamigo.io/material/component"
 )
 
-// T is the interface for a material toolbar component.
-type T interface {
-	component.C
+// T is a material toolbar component. It should only be created using the New
+// function.
+type T struct {
+	*component.C
 }
 
-// toolbar is the internal implementation of T made available publicly via
-// New().
-type toolbar struct {
-	component.C
-}
-
-// New creates a material toolbar component that implement the T interface.
-// It is a wrapper around component.New.
-func New() (c T, err error) {
+// New creates a material toolbar component. It is a wrapper around
+// component.New which instantiates the component from the MDC library.
+func New() (*T, error) {
 	newT, err := component.New(component.Toolbar)
 	if err != nil {
 		return nil, err
 	}
-	return &toolbar{newT}, err
+	return &T{C: newT}, err
 }
+
+// TODO: Handle custom events
+// - change

@@ -25,6 +25,11 @@ func Init() error {
 		return err
 	}
 
+	err = ShimHyperform()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -44,10 +49,15 @@ func InitMenu() (err error) {
 	return err
 }
 
-// LoadMDCModule is a shortcut to
 func LoadMDCModule() (err error) {
 	gojs.CatchException(&err)
 	js.Global.Set("mdc", js.Global.Call("require", MCW_MODULE))
+	return err
+}
+
+func ShimHyperform() (err error) {
+	gojs.CatchException(&err)
+	js.Global.Call("require", "hyperform").Invoke(js.Global.Get("window"))
 	return err
 }
 
@@ -59,12 +69,15 @@ func EmulateDOM() (dom jsdom.JSDOM, err error) {
 	if err != nil {
 		return nil, err
 	}
-	js.Debugger()
 	dom.SetHTML(`<html><body></body></html>`)
 	js.Global.Set("window", dom.Window())
 	js.Global.Set("document", dom.Window().Get("document"))
 	js.Global.Set("HTMLElement", dom.Window().Get("HTMLElement"))
 	raf := dom.Window().Get("requestAnimationFrame")
 	js.Global.Set("requestAnimationFrame", raf)
+	caf := dom.Window().Get("cancelAnimationFrame")
+	js.Global.Set("cancelAnimationFrame", caf)
+	gcs := dom.Window().Get("getComputedStyle")
+	js.Global.Set("getComputedStyle", gcs)
 	return dom, err
 }

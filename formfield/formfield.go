@@ -7,23 +7,21 @@ import (
 	"agamigo.io/material/component"
 )
 
-// FF is the interface for a material formfield component.
-type FF interface {
-	component.C
+// FF is a material formfield component. It should only be created using the
+// New function.
+type FF struct {
+	*component.C
+	// TODO: Automatically create a sub-component if we detect a compatible MDC
+	// Input within the form-field element. This should be done in Start*().
+	// inputComponent *js.Object `js:"input"`
 }
 
-// formField is the internal implementation of FF made available publicly via
-// New().
-type formField struct {
-	component.C
-}
-
-// New creates a material formfield component that implement the FF interface.
-// It is a wrapper around component.New.
-func New() (c FF, err error) {
+// New creates a material formfield component. It is a wrapper around
+// component.New which instantiates the component from the MDC library.
+func New() (*FF, error) {
 	newFF, err := component.New(component.FormField)
 	if err != nil {
 		return nil, err
 	}
-	return &formField{newFF}, err
+	return &FF{C: newFF}, err
 }

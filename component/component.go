@@ -84,6 +84,7 @@ func makeMDComponent(t Type, dom *js.Object) (*js.Object, error) {
 
 	mdcObject := dom.Get("mdc")
 
+	// TODO: Move switch to component_type.go
 	switch t {
 	case Checkbox:
 		return mdcObject.Get("checkbox").Get(t.String()), err

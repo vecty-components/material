@@ -7,23 +7,23 @@ import (
 	"agamigo.io/material/component"
 )
 
-// PD is the interface for a material persistentdrawer component.
-type PD interface {
-	component.C
+// PD is a material persistentdrawer component. It should only be created using
+// the New function.
+type PD struct {
+	*component.C
+	Open bool `js:"open"`
 }
 
-// persistentDrawer is the internal implementation of PD made available publicly via
-// New().
-type persistentDrawer struct {
-	component.C
-}
-
-// New creates a material persistentdrawer component that implement the PD interface.
-// It is a wrapper around component.New.
-func New() (c PD, err error) {
+// New creates a material persistentdrawer component. It is a wrapper around
+// component.New which instantiates the component from the MDC library.
+func New() (*PD, error) {
 	newPD, err := component.New(component.PersistentDrawer)
 	if err != nil {
 		return nil, err
 	}
-	return &persistentDrawer{newPD}, err
+	return &PD{C: newPD}, err
 }
+
+// TODO: Custom events
+// - MDCPersistentDrawer:open
+// - MDCPersistentDrawer:close
