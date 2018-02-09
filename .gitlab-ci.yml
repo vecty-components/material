@@ -6,7 +6,7 @@ variables:
 before_script:
   - mkdir -p "${GOPATH}/src/$(dirname ${REPO_NAME})"
   - cp -r "${CI_PROJECT_DIR}" "${GOPATH}/src/${REPO_NAME}"
-  - apk add -U git build-base python2 nodejs-npm yarn
+  - apk add -U git build-base python2 cairo-dev py-cairo nodejs-npm yarn
   - go get github.com/gopherjs/gopherjs
   - cd $GOPATH/src/github.com/gopherjs/gopherjs/node-syscall/
   - npm install --global node-gyp
