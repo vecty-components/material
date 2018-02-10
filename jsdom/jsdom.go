@@ -73,6 +73,14 @@ func (j jsdom) SetHTML(html string) {
 	j.Document().Get("documentElement").Set("innerHTML", html)
 }
 
+// PopulateBody resets documentElement with html inside a valid html/body DOM
+// and returns the HTMLElement of html.
+func (j jsdom) PopulateBody(html string) *js.Object {
+	j.SetHTML("<html><body>" + html +
+		"</body></html>")
+	return j.Document().Get("documentElement").Get("innerHTML")
+}
+
 func (j jsdom) QueryElement(querySelector string) (e *js.Object, err error) {
 	defer gojs.CatchException(&err)
 	e = j.Document().Call("querySelector", querySelector)
