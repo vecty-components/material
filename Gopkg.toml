@@ -1,0 +1,16 @@
+ignored = [
+  "github.com/gopherjs/gopherjs/js"
+]
+
+[prune]
+  non-go = true
+  go-tests = true
+  unused-packages = true
+
+[[constraint]]
+  branch = "master"
+  name = "agamigo.io/material"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/gopherjs/vecty"
