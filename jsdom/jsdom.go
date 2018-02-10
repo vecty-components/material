@@ -21,6 +21,7 @@ type JSDOM interface {
 	Window() *js.Object
 	Document() *js.Object
 	SetHTML(html string)
+	PopulateBody(html string) *js.Object
 	QueryElement(querySelector string) (e *js.Object, err error)
 	RootElement() *js.Object
 }
