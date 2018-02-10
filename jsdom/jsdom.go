@@ -79,7 +79,7 @@ func (j jsdom) SetHTML(html string) {
 func (j jsdom) PopulateBody(html string) *js.Object {
 	j.SetHTML("<html><body>" + html +
 		"</body></html>")
-	return j.Document().Get("documentElement").Get("innerHTML")
+	return js.Global.Get("document").Get("body").Get("firstElementChild")
 }
 
 func (j jsdom) QueryElement(querySelector string) (e *js.Object, err error) {
