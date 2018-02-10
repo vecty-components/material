@@ -2,8 +2,6 @@
 package dialog // import "agamigo.io/vecty-material/dialog"
 
 import (
-	"log"
-
 	mdcD "agamigo.io/material/dialog"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -130,7 +128,7 @@ func (c *D) Unmount() {
 func (c *D) OpenHandler(e *vecty.Event) {
 	err := c.D.Open()
 	if err != nil {
-		log.Fatalf("Unable to open dialog: %v", err)
+		println("[ERROR] Unable to open dialog: %v", err)
 	}
 }
 
