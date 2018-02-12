@@ -4,40 +4,50 @@ import (
 	"fmt"
 	"log"
 
+	"agamigo.io/material/component"
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
 	"agamigo.io/material/persistentdrawer"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func Example() {
 	// Create a new instance of a material persistentdrawer component.
-	c, err := persistentdrawer.New()
-	if err != nil {
-		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
-	}
-	fmt.Printf("%s\n", c)
+	c := &persistentdrawer.PD{}
+	printStatus(c)
 
-	// Set up a DOM HTMLElement suitable for an persistentdrawer.
-	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
-		"</body></html>")
+	// Set up a DOM HTMLElement suitable for a persistentdrawer.
+	js.Global.Get("document").Get("body").Set("innerHTML",
+		componenthtml.HTML(c.MDCType()))
+	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err = c.Start()
+	err := component.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	fmt.Printf("%s\n", c)
-	fmt.Printf("MDC Open: %v\n", c.GetObject().Get("open"))
+	printStatus(c)
 
-	// Open the drawer
+	printState(c)
 	c.Open = true
-	fmt.Printf("MDC Open: %v\n", c.GetObject().Get("open"))
+	printState(c)
 
 	// Output:
-	// {"component":"MDCPersistentDrawer","status":"stopped"}
-	// {"component":"MDCPersistentDrawer","status":"running"}
+	// MDCPersistentDrawer: uninitialized
+	// MDCPersistentDrawer: running
+	//
 	// MDC Open: false
+	//
 	// MDC Open: true
+}
+
+func printStatus(c *persistentdrawer.PD) {
+	fmt.Printf("%s\n", c)
+}
+
+func printState(c *persistentdrawer.PD) {
+	fmt.Println()
+	fmt.Printf("MDC Open: %v\n", c.GetObject().Get("open"))
 }
 
 func init() {

@@ -4,76 +4,92 @@ import (
 	"fmt"
 	"log"
 
+	"agamigo.io/material/component"
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
 	"agamigo.io/material/menu"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func Example() {
 	// Create a new instance of a material menu component.
-	c, err := menu.New()
-	if err != nil {
-		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
-	}
-	fmt.Printf("%s\n", c)
+	c := &menu.M{}
+	printStatus(c)
 
-	// Set up a DOM HTMLElement suitable for an menu.
-	mdctest.Dom.SetHTML(`<html><body>` + componenthtml.HTML(c.CType()) +
-		`</body></html>`)
+	// Set up a DOM HTMLElement suitable for a checkbox.
+	js.Global.Get("document").Get("body").Set("innerHTML",
+		componenthtml.HTML(c.MDCType()))
+	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err = c.Start()
+	err := component.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	fmt.Printf("%s\n", c)
-	fmt.Printf("Open: %v, QuickOpen, %v, Items: %v\n",
-		c.Open, c.QuickOpen, c.Items.Length())
-	fmt.Printf("AnchorCorner: %v, ItemsContainer: %v\n",
-		c.AnchorCorner(), c.ItemsContainer)
-	fmt.Printf("AnchorMargins\nLeft: %v, Right %v, Top %v, Bottom %v\n",
-		c.LeftMargin, c.RightMargin, c.TopMargin, c.BottomMargin)
+	printStatus(c)
 
+	printState(c)
 	c.OpenFocus(2)
 	c.QuickOpen = true
 	c.SetAnchorCorner(menu.BOTTOM_END)
-	c.LeftMargin = 50
-	c.RightMargin = 100
-	c.TopMargin = 150
-	c.BottomMargin = 200
-
-	fmt.Printf("Open: %v, QuickOpen, %v, Items: %v\n",
-		c.Open, c.QuickOpen, c.Items.Length())
-	fmt.Printf("AnchorCorner: %v, ItemsContainer: %v\n",
-		c.AnchorCorner(), c.ItemsContainer)
-	fmt.Printf("AnchorMargins\nLeft: %v, Right %v, Top %v, Bottom %v\n",
-		c.LeftMargin, c.RightMargin, c.TopMargin, c.BottomMargin)
-
+	ms := c.AnchorMargins()
+	ms.Left = ms.Left + 50
+	ms.Right = ms.Right + 100
+	ms.Top = ms.Top + 150
+	ms.Bottom = ms.Bottom + 200
+	c.SetAnchorMargins(ms)
+	printState(c)
 	c.Open = false
-	c.ItemsContainer.Call("removeChild", c.Items.Index(0))
-
-	fmt.Printf("Open: %v, QuickOpen, %v, Items: %v\n",
-		c.Open, c.QuickOpen, c.Items.Length())
-	fmt.Printf("AnchorCorner: %v, ItemsContainer: %v\n",
-		c.AnchorCorner(), c.ItemsContainer)
-	fmt.Printf("AnchorMargins\nLeft: %v, Right %v, Top %v, Bottom %v\n",
-		c.LeftMargin, c.RightMargin, c.TopMargin, c.BottomMargin)
+	c.ItemsContainer().Call("removeChild", c.Items()[0])
+	printState(c)
 
 	// Output:
-	// {"component":"MDCMenu","status":"stopped"}
-	// {"component":"MDCMenu","status":"running"}
+	// MDCMenu: uninitialized
+	// MDCMenu: running
+	//
 	// Open: false, QuickOpen, false, Items: 12
 	// AnchorCorner: 8, ItemsContainer: [object HTMLUListElement]
 	// AnchorMargins
-	// Left: 0, Right 0, Top 0, Bottom 0
+	// [Go] Left: 0, Right: 0, Top: 0, Bottom: 0
+	// [JS] Left: 0, Right: 0, Top: 0, Bottom: 0
+	//
 	// Open: true, QuickOpen, true, Items: 12
 	// AnchorCorner: 13, ItemsContainer: [object HTMLUListElement]
 	// AnchorMargins
-	// Left: 50, Right 100, Top 150, Bottom 200
+	// [Go] Left: 50, Right: 100, Top: 150, Bottom: 200
+	// [JS] Left: 50, Right: 100, Top: 150, Bottom: 200
+	//
 	// Open: false, QuickOpen, true, Items: 11
 	// AnchorCorner: 13, ItemsContainer: [object HTMLUListElement]
 	// AnchorMargins
-	// Left: 50, Right 100, Top 150, Bottom 200
+	// [Go] Left: 50, Right: 100, Top: 150, Bottom: 200
+	// [JS] Left: 50, Right: 100, Top: 150, Bottom: 200
+}
+
+func printStatus(c *menu.M) {
+	fmt.Printf("%s\n", c)
+}
+
+func printState(c *menu.M) {
+	fmt.Println()
+	fmt.Printf("Open: %v, QuickOpen, %v, Items: %v\n",
+		c.Open, c.QuickOpen, len(c.Items()))
+	fmt.Printf("AnchorCorner: %v, ItemsContainer: %v\n",
+		c.AnchorCorner(), c.ItemsContainer())
+	jsMargins := c.GetObject().Get("foundation_").Get("anchorMargin_")
+	fmt.Println("AnchorMargins")
+	fmt.Printf("[Go] Left: %v, Right: %v, Top: %v, Bottom: %v\n",
+		c.AnchorMargins().Left,
+		c.AnchorMargins().Right,
+		c.AnchorMargins().Top,
+		c.AnchorMargins().Bottom,
+	)
+	fmt.Printf("[JS] Left: %v, Right: %v, Top: %v, Bottom: %v\n",
+		jsMargins.Get("left"),
+		jsMargins.Get("right"),
+		jsMargins.Get("top"),
+		jsMargins.Get("bottom"),
+	)
 }
 
 func init() {

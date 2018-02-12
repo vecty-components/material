@@ -116,32 +116,26 @@ func HTML(t component.Type) string {
 </div>`
 	case component.Menu:
 		return `
-<div class="mdc-menu-anchor">
-  <button id="menu-button" class="mdc-button mdc-button--raised demo-button demo-button--normal">
-    Show<span class="demo-button__normal-text"> Menu</span><span class="demo-button__long-text"> From Here Now!</span>
-  </button>
-
-  <div class="mdc-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
-    <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
-      <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
-      <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
-      <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
-      <li class="mdc-list-divider" role="separator"></li>
-      <span class="demo-menu__long-items">
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
-      </span>
-      <span class="demo-menu__extra-long-items">
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item 6</li>
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item 7</li>
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item 8</li>
-        <li class="mdc-list-item" role="menuitem" tabindex="0">Item 9</li>
-      </span>
-    </ul>
-  </div>
+<div class="mdc-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
+  <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
+    <li class="mdc-list-item" role="menuitem" tabindex="0">Back</li>
+    <li class="mdc-list-item" role="menuitem" tabindex="0">Forward</li>
+    <li class="mdc-list-item" role="menuitem" tabindex="0">Reload</li>
+    <li class="mdc-list-divider" role="separator"></li>
+    <span class="demo-menu__long-items">
+      <li class="mdc-list-item" role="menuitem" tabindex="0">Item 1</li>
+      <li class="mdc-list-item" role="menuitem" tabindex="0">Item 2</li>
+    </span>
+    <span class="demo-menu__extra-long-items">
+      <li class="mdc-list-item" role="menuitem" tabindex="0">Item 3</li>
+      <li class="mdc-list-item" role="menuitem" tabindex="0">Item 4</li>
+      <li class="mdc-list-item" role="menuitem" tabindex="0">Item 5</li>
+      <li class="mdc-list-item" role="menuitem" tabindex="0">Item 6</li>
+      <li class="mdc-list-item" role="menuitem" tabindex="0">Item 7</li>
+      <li class="mdc-list-item" role="menuitem" tabindex="0">Item 8</li>
+      <li class="mdc-list-item" role="menuitem" tabindex="0">Item 9</li>
+    </span>
+  </ul>
 </div>`
 	case component.Radio:
 		return `

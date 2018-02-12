@@ -21,6 +21,7 @@ type JSDOM interface {
 	Window() *js.Object
 	Document() *js.Object
 	SetHTML(html string)
+	PopulateBody(html string) *js.Object
 	QueryElement(querySelector string) (e *js.Object, err error)
 	RootElement() *js.Object
 }
@@ -71,6 +72,14 @@ func (j jsdom) Document() *js.Object {
 
 func (j jsdom) SetHTML(html string) {
 	j.Document().Get("documentElement").Set("innerHTML", html)
+}
+
+// PopulateBody resets documentElement with html inside a valid html/body DOM
+// and returns the HTMLElement of html.
+func (j jsdom) PopulateBody(html string) *js.Object {
+	j.SetHTML("<html><body>" + html +
+		"</body></html>")
+	return js.Global.Get("document").Get("body").Get("firstElementChild")
 }
 
 func (j jsdom) QueryElement(querySelector string) (e *js.Object, err error) {
