@@ -24,4 +24,4 @@ default:
     script:
       - go fmt $(go list ./...)
       - go vet $(go list ./...)
-      - gopherjs test $(go list ./...)
+      - gopherjs test -v $(go list ./...)
