@@ -27,6 +27,10 @@ type MDComponenter interface {
 }
 
 type AfterStarter interface {
+	// AfterStarter is implemented by components that need further setup ran
+	// after their underlying MDC foundation has been initialized. rootElem is
+	// provided in case you need something from the component's root
+	// HTMLElement.
 	AfterStart(rootElem *js.Object) error
 }
 
@@ -50,7 +54,8 @@ const (
 	Running
 )
 
-// C is the base material component type.
+// C is the base material component type. Types that embed C and implement
+// MDComponenter can use the component.Start and component.Stop functions.
 type C struct {
 	mdc    *js.Object
 	status StatusType
@@ -59,18 +64,24 @@ type C struct {
 // String returns the MDComponent's StatusType as text.
 func (c *C) String() string {
 	if c == nil || c.status == Uninitialized {
-		return "uninitialized"
+		return Uninitialized.String()
 	}
-	switch c.status {
+	return c.Status().String()
+}
+
+// String returns the string version of a StatusType.
+func (s StatusType) String() string {
+	switch s {
 	case Stopped:
 		return "stopped"
 	case Running:
 		return "running"
 	}
-	panic(c.status)
+	return "uninitialized"
 }
 
-// Status returns the component's StatusType.
+// Status returns the component's StatusType. For the string version use
+// Status().String().
 func (c *C) Status() StatusType {
 	return c.status
 }
@@ -128,39 +139,39 @@ func makeMDComponent(t Type) (*js.Object, error) {
 	return nil, err
 }
 
-// Start associates the component to the HTMLElement returned by its
-// MDCRootElement() method using the base class returned by its MDCType()
-// method.
+// Start takes a component (c) and initializes it with an HTMLElement
+// (rootElem).  The documentation for the MDComponenter and AfterStarter
+// interfaces have more information.
 //
 // Upon success the component's status will be Running, and err will be nil.  If
 // err is non-nil, it will contain any error thrown while calling the underlying
 // MDC object's init() method, and the component's status will remain Stopped.
-func Start(mdc MDComponenter, rootElem *js.Object) (err error) {
+func Start(c MDComponenter, rootElem *js.Object) (err error) {
 	defer gojs.CatchException(&err)
 
 	switch {
 	case rootElem == nil, rootElem == js.Undefined:
 		return errors.New("rootElem is nil.")
-	case mdc.MDC() == nil:
-		mdc.SetMDC(&C{})
-	case mdc.MDC().status == Running:
+	case c.MDC() == nil:
+		c.SetMDC(&C{})
+	case c.MDC().status == Running:
 		return errors.New("Component already started: " +
-			mdc.MDCType().String() + " - " + mdc.MDC().String())
+			c.MDCType().String() + " - " + c.MDC().String())
 	}
 
 	// We create a new instance of the MDC component if MDCComponent is Stopped
 	// or Uninitialized.
-	newMDCClassObj, err := makeMDComponent(mdc.MDCType())
+	newMDCClassObj, err := makeMDComponent(c.MDCType())
 	if err != nil {
 		return err
 	}
 	newMDCObj := newMDCClassObj.New(rootElem)
-	mdc.MDC().mdc = newMDCObj
-	mdc.MDC().status = Running
+	c.MDC().mdc = newMDCObj
+	c.MDC().status = Running
 
-	switch c := mdc.(type) {
+	switch co := c.(type) {
 	case AfterStarter:
-		err = c.AfterStart(rootElem)
+		err = co.AfterStart(rootElem)
 		if err != nil {
 			return err
 		}
@@ -193,7 +204,7 @@ func Stop(mdc MDComponenter) (err error) {
 }
 
 // MDC implements the MDComponenter interface. Component implementations can use
-// this method as-is when embedding material.MDC.
+// this method as-is when embedding component.C.
 func (c *C) MDC() *C {
 	return c
 }
@@ -204,27 +215,7 @@ func (c *C) MDCType() Type {
 	return Invalid
 }
 
-// func (c *C) MDCObject() *js.Object {
-// 	return c.mdc
-// }
-
-// func (c *C) SetMDCObject(o *js.Object) {
-// 	// c.mdc = o
-// 	if c == nil {
-// 		c = &C{mdc: o, status: Uninitialized}
-// 		return
-// 	}
-// 	oldS := c.status
-// 	c = &C{mdc: o}
-// 	c.status = oldS
-// }
-
-// CType returns the component's Type
-// func (c *C) CType() Type {
-// 	return c.name
-// }
-
-//GetObject returns the MDC component's JavaScript object
+//GetObject returns the MDC component's JavaScript object.
 func (c *C) GetObject() *js.Object {
 	return c.mdc
 }
