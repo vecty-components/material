@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"agamigo.io/material/component"
-	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
 	"agamigo.io/material/toolbar"
 	"github.com/gopherjs/gopherjs/js"
@@ -18,7 +17,7 @@ func Example() {
 
 	// Set up a DOM HTMLElement suitable for a toolbar.
 	js.Global.Get("document").Get("body").Set("innerHTML",
-		componenthtml.HTML(c.ComponentType().MDCClassName))
+		mdctest.HTML(c.ComponentType().MDCClassName))
 	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.

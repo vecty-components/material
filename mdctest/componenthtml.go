@@ -1,4 +1,4 @@
-package componenthtml
+package mdctest
 
 func HTML(t string) string {
 	switch t {
