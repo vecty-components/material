@@ -7,6 +7,29 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
+// MDComponenter is the base interface for every material component
+// implementation.
+type MDComponenter interface {
+	// MDCType should return the component's corresponding MDCType.
+	MDCType() Type
+
+	// MDCClassAttr should return the component's typical root element HTTP
+	// Class Attribute. For example, an MDCCheckbox would return "mdc-checkbox".
+	MDCClassAttr() string
+
+	// SetMDC should replace a component implementation's MDComponent with mdc.
+	SetMDC(mdc *C)
+
+	// MDC should return a pointer to the component implementation's underlying
+	// MDComponent. Implementors that embed a *MDComponent directly get this for
+	// free.
+	MDC() *C
+}
+
+type AfterStarter interface {
+	AfterStart(rootElem *js.Object) error
+}
+
 // StatusType holds a component's lifecycle status.
 type StatusType int
 
@@ -27,62 +50,39 @@ const (
 	Running
 )
 
-// C is the base material component type
+// C is the base material component type.
 type C struct {
 	mdc    *js.Object
-	name   Type
 	status StatusType
 }
 
-// New creates a material component of Type t. It assumes the MDC library and
-// resulting component will live in the js.Global scope.
-func New(t Type) (mdcComponent *C, err error) {
-	defer gojs.CatchException(&err)
-	c, err := NewWith(t, js.Global)
-	return c, err
-}
-
-// NewWith is like New(), with added option of specifying a *js.Object to store
-// the component. This is primarily intended for use in tests where we may want
-// to emulate a DOM somewhere other than Node's global scope.
-func NewWith(t Type, dom *js.Object) (mdcComponent *C, err error) {
-	defer gojs.CatchException(&err)
-	c := &C{}
-	c.mdc, err = makeMDComponent(t, dom)
-	if err != nil {
-		return nil, err
-	}
-
-	c.name = t
-	c.status = Stopped
-	return c, err
-}
-
-// String returns a JSON string for a component which includes the MDC
-// component's type, and status.
+// String returns the MDComponent's StatusType as text.
 func (c *C) String() string {
-	return "{\"component\":\"" + c.name.String() + "\"," +
-		"\"status\":\"" + c.status.String() + "\"}"
-}
-
-// String returns the string representation of a StatusType. One of
-// "uninitialized", "stopped", or "running".
-func (s StatusType) String() string {
-	switch s {
+	if c == nil || c.status == Uninitialized {
+		return "uninitialized"
+	}
+	switch c.status {
 	case Stopped:
 		return "stopped"
 	case Running:
 		return "running"
 	}
-
-	return "uninitialized"
+	panic(c.status)
 }
 
-func makeMDComponent(t Type, dom *js.Object) (*js.Object, error) {
+// Status returns the component's StatusType.
+func (c *C) Status() StatusType {
+	return c.status
+}
+
+func makeMDComponent(t Type) (*js.Object, error) {
 	var err error
 	defer gojs.CatchException(&err)
+	if t == Invalid {
+		return nil, errors.New("component type is Invalid")
+	}
 
-	mdcObject := dom.Get("mdc")
+	mdcObject := js.Global.Get("mdc")
 
 	// TODO: Move switch to component_type.go
 	switch t {
@@ -128,60 +128,43 @@ func makeMDComponent(t Type, dom *js.Object) (*js.Object, error) {
 	return nil, err
 }
 
-// Start associates the component to an HTMLElement using a default
-// querySelector that matches the first "div.mdc-[component-class]" element it
-// finds. For more fine-grained control over the HTMLElement a component starts
-// with, use the StartWith and StartWithElement methods.
+// Start associates the component to the HTMLElement returned by its
+// MDCRootElement() method using the base class returned by its MDCType()
+// method.
 //
-// Upon success the component's status will be Running, and err will be nil.
-//
-// If err is non-nil, it will contain any error thrown while calling the
-// underlying MDC object's init() method, and the component's status will remain
-// Stopped.
-func (c *C) Start() (err error) {
-	return c.StartWith(".mdc-" + string(c.name.classString()))
-}
-
-// StartWith is like Start(), but allows you to specify the querySelector string
-// used to associate a component with an HTMLElement.
-//
-// Upon success the component's status will be Running, and err will be nil.
-//
-// If err is non-nil, it will contain any error thrown while calling the
-// underlying MDC object's init() method, and the component's status will remain
-// Stopped.
-func (c *C) StartWith(querySelector string) (err error) {
+// Upon success the component's status will be Running, and err will be nil.  If
+// err is non-nil, it will contain any error thrown while calling the underlying
+// MDC object's init() method, and the component's status will remain Stopped.
+func Start(mdc MDComponenter, rootElem *js.Object) (err error) {
 	defer gojs.CatchException(&err)
 
-	e := js.Global.Get("window").Get("document").Call("querySelector",
-		querySelector)
-
-	return c.StartWithElement(e)
-}
-
-// StartWithElement is like StartWith, but accepts a *js.Object that must
-// contain a valid HTMLElement for the component to associate itself with.
-//
-// Upon success the component's status will be Running, and err will be nil.
-//
-// If err is non-nil, it will contain any error thrown while calling the
-// underlying MDC object's init() method, and the component's status will remain
-// Stopped.
-func (c *C) StartWithElement(e *js.Object) (err error) {
-	defer gojs.CatchException(&err)
-
-	if c.status == Running {
-		return nil
+	switch {
+	case rootElem == nil, rootElem == js.Undefined:
+		return errors.New("rootElem is nil.")
+	case mdc.MDC() == nil:
+		mdc.SetMDC(&C{})
+	case mdc.MDC().status == Running:
+		return errors.New("Component already started: " +
+			mdc.MDCType().String() + " - " + mdc.MDC().String())
 	}
 
-	if c.status != Stopped {
-		return errors.New("Attempted to Start() an uninitialized component: " +
-			c.String() + ". Use mdc.New()")
+	// We create a new instance of the MDC component if MDCComponent is Stopped
+	// or Uninitialized.
+	newMDCClassObj, err := makeMDComponent(mdc.MDCType())
+	if err != nil {
+		return err
 	}
+	newMDCObj := newMDCClassObj.New(rootElem)
+	mdc.MDC().mdc = newMDCObj
+	mdc.MDC().status = Running
 
-	o := c.mdc.New(e)
-	c.mdc = o
-	c.status = Running
+	switch c := mdc.(type) {
+	case AfterStarter:
+		err = c.AfterStart(rootElem)
+		if err != nil {
+			return err
+		}
+	}
 
 	return err
 }
@@ -189,30 +172,59 @@ func (c *C) StartWithElement(e *js.Object) (err error) {
 // Stop stops a Running component, removing its association with an HTMLElement
 // and cleaning up event listeners, etc. It changes the component's status to
 // Stopped.
-func (c *C) Stop() (err error) {
+func Stop(mdc MDComponenter) (err error) {
 	defer gojs.CatchException(&err)
 
-	if c.status == Stopped {
-		return errors.New("Cannot Stop() already stopped component: " +
-			c.String())
+	if mdc.MDC() == nil {
+		return errors.New("MDC() returned nil.")
 	}
 
-	if c.status != Running {
-		return errors.New("Cannot Stop() an uninitialized component: " +
-			c.String() + ". Use mdc.New()")
+	switch mdc.MDC().status {
+	case Stopped:
+		return errors.New("Component already stopped: " +
+			mdc.MDCType().String() + " - " + mdc.MDC().String())
+	case Uninitialized:
+		return errors.New("Component is uninitialized: " +
+			mdc.MDCType().String() + " - " + mdc.MDC().String())
 	}
-
-	c.mdc.Call("destroy")
-
+	mdc.MDC().mdc.Call("destroy")
+	mdc.SetMDC(&C{status: Stopped})
 	return err
 }
 
-// CType returns the component's Type
-func (c *C) CType() Type {
-	return c.name
+// MDC implements the MDComponenter interface. Component implementations can use
+// this method as-is when embedding material.MDC.
+func (c *C) MDC() *C {
+	return c
 }
 
-// GetObject returns the MDC component's JavaScript object
+// MDCType implements the MDComponenter interface. This should be shadowed by a
+// component implementation.
+func (c *C) MDCType() Type {
+	return Invalid
+}
+
+// func (c *C) MDCObject() *js.Object {
+// 	return c.mdc
+// }
+
+// func (c *C) SetMDCObject(o *js.Object) {
+// 	// c.mdc = o
+// 	if c == nil {
+// 		c = &C{mdc: o, status: Uninitialized}
+// 		return
+// 	}
+// 	oldS := c.status
+// 	c = &C{mdc: o}
+// 	c.status = oldS
+// }
+
+// CType returns the component's Type
+// func (c *C) CType() Type {
+// 	return c.name
+// }
+
+//GetObject returns the MDC component's JavaScript object
 func (c *C) GetObject() *js.Object {
 	return c.mdc
 }

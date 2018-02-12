@@ -4,57 +4,61 @@ import (
 	"fmt"
 	"log"
 
+	"agamigo.io/material/component"
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
 	"agamigo.io/material/selection"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func Example() {
 	// Create a new instance of a material selection component.
-	c, err := selection.New()
-	if err != nil {
-		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
-	}
-	fmt.Printf("%s\n", c)
+	c := &selection.S{}
+	printStatus(c)
 
-	// Set up a DOM HTMLElement suitable for an selection.
-	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
-		"</body></html>")
+	// Set up a DOM HTMLElement suitable for a selection.
+	js.Global.Get("document").Get("body").Set("innerHTML",
+		componenthtml.HTML(c.MDCType()))
+	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err = c.Start()
+	err := component.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
+	printStatus(c)
 
-	fmt.Printf("%s\n", c)
-	fmt.Printf("SelectedIndex: %v, SelectedString: %v, Disabled: %v\n",
-		c.GetObject().Get("selectedIndex"), c.SelectedString(),
-		c.GetObject().Get("disabled"))
-	fmt.Printf("SelectedElem: %v\nOptions: %v\n",
-		c.SelectedElem(), c.Options())
-
+	printState(c)
 	c.SelectedIndex = 0
 	c.Disabled = true
-
 	l := c.GetObject().Get("root_").Call("querySelector", ".mdc-list")
 	l.Call("removeChild", c.Options().Index(1))
-
-	fmt.Printf("SelectedIndex: %v, SelectedString: %v, Disabled: %v\n",
-		c.GetObject().Get("selectedIndex"), c.SelectedString(),
-		c.GetObject().Get("disabled"))
-	fmt.Printf("SelectedElem: %v\nOptions: %v\n",
-		c.SelectedElem(), c.Options())
+	printState(c)
 
 	// Output:
-	// {"component":"MDCSelect","status":"stopped"}
-	// {"component":"MDCSelect","status":"running"}
+	// MDCSelect: uninitialized
+	// MDCSelect: running
+	//
 	// SelectedIndex: -1, SelectedString: , Disabled: false
 	// SelectedElem: [object NodeList]
 	// Options: [object HTMLLIElement],[object HTMLLIElement]
+	//
 	// SelectedIndex: 0, SelectedString: Option #1, Disabled: true
 	// SelectedElem: [object NodeList]
 	// Options: [object HTMLLIElement]
+}
+
+func printStatus(c *selection.S) {
+	fmt.Printf("%s\n", c)
+}
+
+func printState(c *selection.S) {
+	fmt.Println()
+	fmt.Printf("SelectedIndex: %v, SelectedString: %v, Disabled: %v\n",
+		c.GetObject().Get("selectedIndex"), c.SelectedString(),
+		c.GetObject().Get("disabled"))
+	fmt.Printf("SelectedElem: %v\nOptions: %v\n",
+		c.SelectedElem(), c.Options())
 }
 
 func init() {

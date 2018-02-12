@@ -1,4 +1,4 @@
-// The textfield package implements a material textfield component.
+// textfield implements a material textfield component.
 //
 // See: https://material.io/components/web/catalog/input-controls/text-field/
 package textfield // import "agamigo.io/material/textfield"
@@ -8,8 +8,7 @@ import (
 	"agamigo.io/material/component"
 )
 
-// TF is a material textfield component. It should only be created using the New
-// function.
+// TF is a material textfield component.
 type TF struct {
 	*component.C
 
@@ -30,14 +29,27 @@ type TF struct {
 	HelperText string `js:"helperText"`
 }
 
-// New creates a material textfield component. It is a wrapper around
-// component.New which instantiates the component from the MDC library.
-func New() (*TF, error) {
-	newT, err := component.New(component.TextField)
-	if err != nil {
-		return nil, err
-	}
-	return &TF{C: newT}, err
+// MDCType implements the MDComponenter interface.
+func (c *TF) MDCType() component.Type {
+	return component.TextField
+}
+
+// MDCClassAttr implements the MDComponenter interface and returns the HTML
+// Class Attribute that is expected to be assigned to the component's root
+// HTMLElement.
+func (c *TF) MDCClassAttr() string {
+	return "mdc-text-field"
+}
+
+// SetMDC implements the MDComponenter interface and replaces the component's
+// base MDComponent with mdcC.
+func (c *TF) SetMDC(mdcC *component.C) {
+	c.C = mdcC
+}
+
+// String returns the component's "MDCType: status" information.
+func (c *TF) String() string {
+	return c.MDCType().String() + ": " + c.C.String()
 }
 
 // Layout adjusts the dimensions and positions for all sub-elements.

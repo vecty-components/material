@@ -7,7 +7,8 @@ package component // import "agamigo.io/material/component"
 type Type int
 
 const (
-	Checkbox Type = iota
+	Invalid Type = iota
+	Checkbox
 	Dialog
 	FormField
 	PersistentDrawer
@@ -26,18 +27,7 @@ const (
 	TabBarScroller
 	TextField
 	Toolbar
-	TypeCount
 )
-
-// ComponentTypes is a convenience function that returns a slice containing
-// every ComponentType available in this package. Intended for use in testing.
-func ComponentTypes() []Type {
-	types := make([]Type, TypeCount, TypeCount)
-	for i := Type(0); i < TypeCount; i = i + 1 {
-		types[i] = i
-	}
-	return types
-}
 
 // String returns the name of a component Type in the form of its MDCComponent
 // class name.
@@ -82,8 +72,7 @@ func (n Type) String() string {
 	case Toolbar:
 		return "MDCToolbar"
 	}
-
-	panic("Failed to convert MDCName to component string.")
+	return "Invalid"
 }
 
 func (n Type) classString() string {
@@ -128,5 +117,5 @@ func (n Type) classString() string {
 		return "toolbar"
 	}
 
-	panic("Failed to convert MDCName to class string.")
+	return "invalid"
 }

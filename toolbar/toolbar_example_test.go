@@ -4,34 +4,37 @@ import (
 	"fmt"
 	"log"
 
+	"agamigo.io/material/component"
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
 	"agamigo.io/material/toolbar"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func Example() {
 	// Create a new instance of a material toolbar component.
-	c, err := toolbar.New()
-	if err != nil {
-		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
-	}
-	fmt.Printf("%s\n", c)
+	c := &toolbar.T{}
+	printStatus(c)
 
-	// Set up a DOM HTMLElement suitable for an toolbar.
-	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
-		"</body></html>")
+	// Set up a DOM HTMLElement suitable for a toolbar.
+	js.Global.Get("document").Get("body").Set("innerHTML",
+		componenthtml.HTML(c.MDCType()))
+	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err = c.Start()
+	err := component.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-
-	fmt.Printf("%s\n", c)
+	printStatus(c)
 
 	// Output:
-	// {"component":"MDCToolbar","status":"stopped"}
-	// {"component":"MDCToolbar","status":"running"}
+	// MDCTextField: uninitialized
+	// MDCTextField: running
+}
+
+func printStatus(c *toolbar.T) {
+	fmt.Printf("%s\n", c)
 }
 
 func init() {

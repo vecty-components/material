@@ -1,4 +1,4 @@
-// The slider package implements a material slider component.
+// slider implements a material slider component.
 //
 // See: https://material.io/components/web/catalog/input-controls/sliders/
 package slider // import "agamigo.io/material/slider"
@@ -8,8 +8,7 @@ import (
 	"agamigo.io/material/component"
 )
 
-// S is a material slider component. It should only be created using the New
-// function.
+// S is a material slider component.
 type S struct {
 	*component.C
 
@@ -36,14 +35,27 @@ type S struct {
 	Disabled bool `js:"disabled"`
 }
 
-// New creates a material slider component. It is a wrapper around component.New
-// which instantiates the component from the MDC library.
-func New() (*S, error) {
-	newS, err := component.New(component.Slider)
-	if err != nil {
-		return nil, err
-	}
-	return &S{C: newS}, err
+// MDCType implements the MDComponenter interface.
+func (c *S) MDCType() component.Type {
+	return component.Slider
+}
+
+// MDCClassAttr implements the MDComponenter interface and returns the HTML
+// Class Attribute that is expected to be assigned to the component's root
+// HTMLElement.
+func (c *S) MDCClassAttr() string {
+	return "mdc-slider"
+}
+
+// SetMDC implements the MDComponenter interface and replaces the component's
+// base MDComponent with mdcC.
+func (c *S) SetMDC(mdcC *component.C) {
+	c.C = mdcC
+}
+
+// String returns the component's "MDCType: status" information.
+func (c *S) String() string {
+	return c.MDCType().String() + ": " + c.C.String()
 }
 
 // Layout recomputes the dimensions and re-lays out the component. This should

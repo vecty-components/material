@@ -4,47 +4,54 @@ import (
 	"fmt"
 	"log"
 
+	"agamigo.io/material/component"
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
 	"agamigo.io/material/radio"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func Example() {
 	// Create a new instance of a material radio component.
-	c, err := radio.New()
-	if err != nil {
-		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
-	}
-	fmt.Printf("%s\n", c)
+	c := &radio.R{}
+	printStatus(c)
 
-	// Set up a DOM HTMLElement suitable for an radio.
-	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
-		"</body></html>")
+	// Set up a DOM HTMLElement suitable for a radio.
+	js.Global.Get("document").Get("body").Set("innerHTML",
+		componenthtml.HTML(c.MDCType()))
+	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err = c.Start()
+	err := component.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
+	printStatus(c)
 
-	fmt.Printf("%s\n", c)
-	fmt.Printf("Checked: %v, Disabled: %v, Value: %v\n",
-		c.GetObject().Get("checked"), c.GetObject().Get("disabled"),
-		c.GetObject().Get("value"))
-
+	printState(c)
 	c.Checked = false
 	c.Disabled = true
 	c.Value = "new value"
+	printState(c)
 
+	// Output:
+	// MDCRadio: uninitialized
+	// MDCRadio: running
+	//
+	// Checked: true, Disabled: false, Value: on
+	//
+	// Checked: false, Disabled: true, Value: new value
+}
+
+func printStatus(c *radio.R) {
+	fmt.Printf("%s\n", c)
+}
+
+func printState(c *radio.R) {
+	fmt.Println()
 	fmt.Printf("Checked: %v, Disabled: %v, Value: %v\n",
 		c.GetObject().Get("checked"), c.GetObject().Get("disabled"),
 		c.GetObject().Get("value"))
-
-	// Output:
-	// {"component":"MDCRadio","status":"stopped"}
-	// {"component":"MDCRadio","status":"running"}
-	// Checked: true, Disabled: false, Value: on
-	// Checked: false, Disabled: true, Value: new value
 }
 
 func init() {

@@ -8,7 +8,7 @@
     ".",
     "jsdom"
   ]
-  revision = "3aae9f72716248d4682909c66b6da7ea2625d47d"
+  revision = "ec2136c8d5bef18c172f2cabe4f7574e2b2232ea"
 
 [solve-meta]
   analyzer-name = "dep"

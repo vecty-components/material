@@ -1,4 +1,4 @@
-// The selection package implements a material selection component.
+// selection implements a material selection component.
 //
 // See: https://material.io/components/web/catalog/input-controls/select-menus/
 package selection // import "agamigo.io/material/selection"
@@ -8,22 +8,34 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
-// S is a material selection component. It should only be created using the New
-// function.
+// S is a material selection component.
 type S struct {
 	*component.C
 	SelectedIndex int  `js:"selectedIndex"`
 	Disabled      bool `js:"disabled"`
 }
 
-// New creates a material selection component. It is a wrapper around
-// component.New which instantiates the component from the MDC library.
-func New() (*S, error) {
-	newS, err := component.New(component.Select)
-	if err != nil {
-		return nil, err
-	}
-	return &S{C: newS}, err
+// MDCType implements the MDComponenter interface.
+func (c *S) MDCType() component.Type {
+	return component.Select
+}
+
+// MDCClassAttr implements the MDComponenter interface and returns the HTML
+// Class Attribute that is expected to be assigned to the component's root
+// HTMLElement.
+func (c *S) MDCClassAttr() string {
+	return "mdc-drawer"
+}
+
+// SetMDC implements the MDComponenter interface and replaces the component's
+// base MDComponent with mdcC.
+func (c *S) SetMDC(mdcC *component.C) {
+	c.C = mdcC
+}
+
+// String returns the component's "MDCType: status" information.
+func (c *S) String() string {
+	return c.MDCType().String() + ": " + c.C.String()
 }
 
 // Selected returns the id of the currently selected option. If no id is present

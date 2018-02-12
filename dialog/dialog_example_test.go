@@ -4,49 +4,65 @@ import (
 	"fmt"
 	"log"
 
+	"agamigo.io/material/component"
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/dialog"
 	"agamigo.io/material/mdctest"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func Example() {
-	// Create a new instance of a material dialog component.
-	c, err := dialog.New()
-	if err != nil {
-		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
-	}
-	fmt.Printf("%s\n", c)
+	// Create the dialog component.
+	c := &dialog.D{}
+	printStatus(c)
 
-	// Set up the DOM with an HTMLElement suitable for a dialog.
-	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
-		"</body></html>")
+	// Set up a DOM HTMLElement suitable for a dialog.
+	js.Global.Get("document").Get("body").Set("innerHTML",
+		componenthtml.HTML(c.MDCType()))
+	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
-	// Start the component, which associates it with an HTMLElement in the DOM.
-	err = c.Start()
+	// Start the component, which associates it with an HTMLElement.
+	err := component.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	fmt.Printf("%s\n", c)
-	fmt.Printf("Open: %v\n", c.IsOpen)
+	printStatus(c)
 
+	printState(c)
 	err = c.Open()
 	if err != nil {
 		log.Fatalf("Unable to open dialog: %v", err)
 	}
-	fmt.Printf("Open: %v\n", c.IsOpen)
-
+	printState(c)
 	err = c.Close()
 	if err != nil {
 		log.Fatalf("Unable to close dialog: %v", err)
 	}
-	fmt.Printf("Open: %v\n", c.IsOpen)
+	printState(c)
 
 	// Output:
-	// {"component":"MDCDialog","status":"stopped"}
-	// {"component":"MDCDialog","status":"running"}
-	// Open: false
-	// Open: true
-	// Open: false
+	// MDCDialog: uninitialized
+	// MDCDialog: running
+	//
+	// [Go] IsOpen: false
+	// [JS] IsOpen: false
+	//
+	// [Go] IsOpen: true
+	// [JS] IsOpen: true
+	//
+	// [Go] IsOpen: false
+	// [JS] IsOpen: false
+}
+
+func printStatus(c *dialog.D) {
+	fmt.Printf("%s\n", c)
+}
+
+func printState(c *dialog.D) {
+	fmt.Println()
+	mdcObj := c.GetObject()
+	fmt.Printf("[Go] IsOpen: %v\n", c.IsOpen)
+	fmt.Printf("[JS] IsOpen: %v\n", mdcObj.Get("open"))
 }
 
 func init() {

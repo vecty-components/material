@@ -4,42 +4,53 @@ import (
 	"fmt"
 	"log"
 
+	"agamigo.io/material/component"
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/icontoggle"
 	"agamigo.io/material/mdctest"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func Example() {
-	// Create a new instance of a material icontoggle component.
-	c, err := icontoggle.New()
-	if err != nil {
-		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
-	}
-	fmt.Printf("%s\n", c)
+	// Create the icontoggle component.
+	c := &icontoggle.IT{}
+	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for an icontoggle.
-	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
-		"</body></html>")
+	js.Global.Get("document").Get("body").Set("innerHTML",
+		componenthtml.HTML(c.MDCType()))
+	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err = c.Start()
+	err := component.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	fmt.Printf("%s\n", c)
-	fmt.Printf("MDC On: %v, MDC Disabled: %v\n",
-		c.GetObject().Get("on"), c.GetObject().Get("disabled"))
+	printStatus(c)
 
+	printState(c)
 	c.Disabled = true
 	c.On = true
-	fmt.Printf("MDC On: %v, MDC Disabled: %v\n",
-		c.GetObject().Get("on"), c.GetObject().Get("disabled"))
+	printState(c)
 
 	// Output:
-	// {"component":"MDCIconToggle","status":"stopped"}
-	// {"component":"MDCIconToggle","status":"running"}
-	// MDC On: false, MDC Disabled: false
-	// MDC On: true, MDC Disabled: true
+	// MDCIconToggle: uninitialized
+	// MDCIconToggle: running
+	//
+	// On: false, Disabled: false
+	//
+	// On: true, Disabled: true
+}
+
+func printStatus(c *icontoggle.IT) {
+	fmt.Printf("%s\n", c)
+}
+
+func printState(c *icontoggle.IT) {
+	fmt.Println()
+	mdcObj := c.GetObject()
+	fmt.Printf("On: %v, Disabled: %v\n",
+		mdcObj.Get("on"), mdcObj.Get("disabled"))
 }
 
 func init() {

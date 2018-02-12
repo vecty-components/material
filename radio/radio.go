@@ -1,4 +1,4 @@
-// The radio package implements a material radio component.
+// radio implements a material radio component.
 //
 // See: https://material.io/components/web/catalog/input-controls/radio-buttons/
 package radio // import "agamigo.io/material/radio"
@@ -7,8 +7,7 @@ import (
 	"agamigo.io/material/component"
 )
 
-// R is a material radio component. It should only be created using the New
-// function.
+// R is a material radio component.
 type R struct {
 	*component.C
 	Checked  bool   `js:"checked"`
@@ -16,12 +15,25 @@ type R struct {
 	Value    string `js:"value"`
 }
 
-// New creates a material radio component. It is a wrapper around component.New
-// which instantiates the component from the MDC library.
-func New() (*R, error) {
-	newR, err := component.New(component.Radio)
-	if err != nil {
-		return nil, err
-	}
-	return &R{C: newR}, err
+// MDCType implements the MDComponenter interface.
+func (c *R) MDCType() component.Type {
+	return component.Radio
+}
+
+// MDCClassAttr implements the MDComponenter interface and returns the HTML
+// Class Attribute that is expected to be assigned to the component's root
+// HTMLElement.
+func (c *R) MDCClassAttr() string {
+	return "mdc-radio"
+}
+
+// SetMDC implements the MDComponenter interface and replaces the component's
+// base MDComponent with mdcC.
+func (c *R) SetMDC(mdcC *component.C) {
+	c.C = mdcC
+}
+
+// String returns the component's "MDCType: status" information.
+func (c *R) String() string {
+	return c.MDCType().String() + ": " + c.C.String()
 }

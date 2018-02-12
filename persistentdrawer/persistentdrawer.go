@@ -1,4 +1,4 @@
-// The persistentdrawer package implements a material persistentdrawer component.
+// persistentdrawer implements a material persistentdrawer component.
 //
 // See: https://material.io/components/web/catalog/drawers/
 package persistentdrawer // import "agamigo.io/material/persistentdrawer"
@@ -7,21 +7,33 @@ import (
 	"agamigo.io/material/component"
 )
 
-// PD is a material persistentdrawer component. It should only be created using
-// the New function.
+// PD is a material persistentdrawer component.
 type PD struct {
 	*component.C
 	Open bool `js:"open"`
 }
 
-// New creates a material persistentdrawer component. It is a wrapper around
-// component.New which instantiates the component from the MDC library.
-func New() (*PD, error) {
-	newPD, err := component.New(component.PersistentDrawer)
-	if err != nil {
-		return nil, err
-	}
-	return &PD{C: newPD}, err
+// MDCType implements the MDComponenter interface.
+func (c *PD) MDCType() component.Type {
+	return component.PersistentDrawer
+}
+
+// MDCClassAttr implements the MDComponenter interface and returns the HTML
+// Class Attribute that is expected to be assigned to the component's root
+// HTMLElement.
+func (c *PD) MDCClassAttr() string {
+	return "mdc-drawer"
+}
+
+// SetMDC implements the MDComponenter interface and replaces the component's
+// base MDComponent with mdcC.
+func (c *PD) SetMDC(mdcC *component.C) {
+	c.C = mdcC
+}
+
+// String returns the component's "MDCType: status" information.
+func (c *PD) String() string {
+	return c.MDCType().String() + ": " + c.C.String()
 }
 
 // TODO: Custom events

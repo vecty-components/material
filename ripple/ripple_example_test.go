@@ -4,33 +4,31 @@ import (
 	"fmt"
 	"log"
 
+	"agamigo.io/material/component"
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
 	"agamigo.io/material/ripple"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func Example() {
 	// Create a new instance of a material ripple component.
-	c, err := ripple.New()
-	if err != nil {
-		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
-	}
-	fmt.Printf("%s\n", c)
+	c := &ripple.R{}
+	printStatus(c)
 
-	// Set up a DOM HTMLElement suitable for an ripple.
-	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
-		"</body></html>")
+	// Set up a DOM HTMLElement suitable for a ripple.
+	js.Global.Get("document").Get("body").Set("innerHTML",
+		componenthtml.HTML(c.MDCType()))
+	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err = c.Start()
+	err := component.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
+	printStatus(c)
 
-	fmt.Printf("%s\n", c)
-	fmt.Printf("Unbounded: %v, Disabled: %v\n",
-		c.GetObject().Get("unbounded"), c.GetObject().Get("disabled"))
-
+	printState(c)
 	c.Unbounded = true
 	err = c.Activate()
 	if err != nil {
@@ -45,15 +43,25 @@ func Example() {
 		fmt.Printf("Unable to recompute ripple layout: %v", err)
 	}
 	c.Disabled = true
-
-	fmt.Printf("Unbounded: %v, Disabled: %v\n",
-		c.GetObject().Get("unbounded"), c.GetObject().Get("disabled"))
+	printState(c)
 
 	// Output:
-	// {"component":"MDCRipple","status":"stopped"}
-	// {"component":"MDCRipple","status":"running"}
+	// MDCRipple: uninitialized
+	// MDCRipple: running
+	//
 	// Unbounded: false, Disabled: false
+	//
 	// Unbounded: true, Disabled: true
+}
+
+func printStatus(c *ripple.R) {
+	fmt.Printf("%s\n", c)
+}
+
+func printState(c *ripple.R) {
+	fmt.Println()
+	fmt.Printf("Unbounded: %v, Disabled: %v\n",
+		c.GetObject().Get("unbounded"), c.GetObject().Get("disabled"))
 }
 
 func init() {

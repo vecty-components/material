@@ -1,4 +1,4 @@
-// The ripple package implements a material ripple component.
+// ripple implements a material ripple component.
 //
 // See: https://material.io/components/web/catalog/ripples/
 package ripple // import "agamigo.io/material/ripple"
@@ -8,22 +8,34 @@ import (
 	"agamigo.io/material/component"
 )
 
-// R is a material ripple component. It should only be created using the New
-// function.
+// R is a material ripple component.
 type R struct {
 	*component.C
 	Unbounded bool `js:"unbounded"`
 	Disabled  bool `js:"disabled"`
 }
 
-// New creates a material ripple component. It is a wrapper around component.New
-// which instantiates the component from the MDC library.
-func New() (*R, error) {
-	newR, err := component.New(component.Ripple)
-	if err != nil {
-		return nil, err
-	}
-	return &R{C: newR}, err
+// MDCType implements the MDComponenter interface.
+func (c *R) MDCType() component.Type {
+	return component.Ripple
+}
+
+// MDCClassAttr implements the MDComponenter interface and returns the HTML
+// Class Attribute that is expected to be assigned to the component's root
+// HTMLElement.
+func (c *R) MDCClassAttr() string {
+	return "mdc-ripple-surface"
+}
+
+// SetMDC implements the MDComponenter interface and replaces the component's
+// base MDComponent with mdcC.
+func (c *R) SetMDC(mdcC *component.C) {
+	c.C = mdcC
+}
+
+// String returns the component's "MDCType: status" information.
+func (c *R) String() string {
+	return c.MDCType().String() + ": " + c.C.String()
 }
 
 // Activate triggers an activation of the ripple (the first stage, which happens

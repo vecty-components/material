@@ -5,51 +5,55 @@ import (
 	"log"
 
 	"agamigo.io/material/checkbox"
+	"agamigo.io/material/component"
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func Example() {
-	// Create a new instance of a material checkbox component.
-	c, err := checkbox.New()
-	if err != nil {
-		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
-	}
-	fmt.Printf("%s\n", c)
+	// Create the checkbox component.
+	c := &checkbox.CB{}
+	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for a checkbox.
-	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
-		"</body></html>")
+	js.Global.Get("document").Get("body").Set("innerHTML",
+		componenthtml.HTML(c.MDCType()))
+	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err = c.Start()
+	err := component.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	fmt.Printf("%s\n", c)
-	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: %v\n",
-		c.Checked, c.Indeterminate, c.Disabled, c.Value)
+	printStatus(c)
 
+	printState(c)
 	c.Checked = true
-	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: %v\n",
-		c.Checked, c.Indeterminate, c.Disabled, c.Value)
-
 	c.Disabled = true
-	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: %v\n",
-		c.Checked, c.Indeterminate, c.Disabled, c.Value)
-
 	c.Indeterminate = true
 	c.Value = "new value"
-	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: %v\n",
-		c.Checked, c.Indeterminate, c.Disabled, c.Value)
+	printState(c)
 
 	// Output:
-	// {"component":"MDCCheckbox","status":"stopped"}
-	// {"component":"MDCCheckbox","status":"running"}
+	// MDCCheckbox: uninitialized
+	// MDCCheckbox: running
+	//
 	// Checked: false, Indeterminate: false, Disabled: false, Value: on
-	// Checked: true, Indeterminate: false, Disabled: false, Value: on
-	// Checked: true, Indeterminate: false, Disabled: true, Value: on
+	//
 	// Checked: true, Indeterminate: true, Disabled: true, Value: new value
+}
+
+func printStatus(c *checkbox.CB) {
+	fmt.Printf("%s\n", c)
+}
+
+func printState(c *checkbox.CB) {
+	fmt.Println()
+	mdcObj := c.GetObject()
+	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: %v\n",
+		mdcObj.Get("checked"), mdcObj.Get("indeterminate"),
+		mdcObj.Get("disabled"), mdcObj.Get("value"))
 }
 
 func init() {

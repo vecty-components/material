@@ -1,4 +1,4 @@
-// The menu package implements a material menu component.
+// menu implements a material menu component.
 //
 // See: https://material.io/components/web/catalog/menus/
 package menu // import "agamigo.io/material/menu"
@@ -21,159 +21,101 @@ const (
 	BOTTOM_END          = 13
 )
 
-const ITEMS_SELECTOR = ".mdc-menu__items"
-
-// M is a material menu component. It should only be created using the New
-// function.
+// M is a material menu component.
 type M struct {
 	*component.C
-	*State
-	Open           bool       `js:"open"`
-	Items          *js.Object `js:"items"`
-	ItemsContainer *js.Object `js:"itemsContainer_"`
-}
 
-// State holds some of the menu's r/w settings. It is in its own struct due to
-// the structure of the MDC component storing properties in the "foundation_".
-// The properties here can still be accessed directly from an instance of M.
-//
-// TODO: Find a way to put these properties into the M struct directly.
-type State struct {
-	*state
-	*AnchorMargins
+	// Open is the visible state of the menu component.
+	Open bool `js:"open"`
+
+	// QuickOpen controls whether the menu should open and close without
+	// animation. False uses animation, true does not.
 	QuickOpen bool `js:"quickOpen"`
+
+	// For now we give read-only access with the Items() method.
+	items []*js.Object `js:"items"`
+
+	// For now we give read-only access with the ItemsContainer() method.
+	itemsContainer *js.Object `js:"itemsContainer_"`
 }
 
-// state exists as the unexposed portion of State.
-type state struct {
-	object *js.Object
+// Margins holds margin values used to configure menu anchor margins via
+// {Set}AnchorMargins() methods.
+type Margins struct {
+	Left   int
+	Right  int
+	Top    int
+	Bottom int
 }
 
-type AnchorMargins struct {
-	*anchorMargins
-	LeftMargin   int `js:"left"`
-	RightMargin  int `js:"right"`
-	TopMargin    int `js:"top"`
-	BottomMargin int `js:"bottom"`
+// MDCType implements the MDComponenter interface.
+func (c *M) MDCType() component.Type {
+	return component.Menu
 }
 
-type anchorMargins struct {
-	object *js.Object
+// MDCClassAttr implements the MDComponenter interface and returns the HTML
+// Class Attribute that is expected to be assigned to the component's root
+// HTMLElement.
+func (c *M) MDCClassAttr() string {
+	return "mdc-menu"
 }
 
-// New creates a material menu component. It is a wrapper around component.New
-// which instantiates the component from the MDC library.
-func New() (*M, error) {
-	newM, err := component.New(component.Menu)
-	if err != nil {
-		return nil, err
-	}
-	m := &M{
-		C: newM,
-		State: &State{
-			state:         &state{},
-			AnchorMargins: &AnchorMargins{anchorMargins: &anchorMargins{}}},
-	}
-	return m, err
+// SetMDC implements the MDComponenter interface and replaces the component's
+// base MDComponent with mdcC.
+func (c *M) SetMDC(mdcC *component.C) {
+	c.C = mdcC
 }
 
-// Start wraps component.Start.
-func (m *M) Start() (err error) {
-	err = m.C.Start()
-	if err != nil {
-		return err
-	}
-
-	m.State.object = m.GetObject().Get("foundation_")
-	m.State.anchorMargins.object = m.State.object.Get("anchorMargin_")
-	return err
+// String returns the component's "MDCType: status" information.
+func (c *M) String() string {
+	return c.MDCType().String() + ": " + c.C.String()
 }
 
-// StartWith wraps component.StartWith.
-func (m *M) StartWith(querySelector string) (err error) {
-	err = m.C.StartWith(querySelector)
-	if err != nil {
-		return err
-	}
-
-	m.State = &State{state: &state{object: m.GetObject().Get("foundation_")}}
-	m.State.anchorMargins.object = m.State.object.Get("anchorMargin_")
-	return err
-}
-
-// StartWithElement wraps component.StartWithElement.
-func (m *M) StartWithElement(e *js.Object) (err error) {
-	err = m.C.StartWithElement(e)
-	if err != nil {
-		return err
-	}
-
-	m.State = &State{state: &state{object: m.GetObject().Get("foundation_")}}
-	m.State.anchorMargins.object = m.State.object.Get("anchorMargin_")
-	return err
-}
-
-// func (m *M) IsOpen() bool {
-// 	return m.GetObject().Get("open").Bool()
-// }
-
-// TODO: Should we manipulate menu items via JS?
-// func (m *M) SetItems(elems ...*js.Object) {
-// 	m.GetObject().Set("items", js.S(elems))
-// }
-
-// func (m *M) AddItems(elems ...*js.Object) {
-// 	return
-// }
-
-// func (m *M) DelItems(elems ...*js.Object) {
-// 	return
-// }
-
-// func (m *M) Items() js.S {
-// 	items := m.GetObject().Get("items").Interface().([]interface{})
-// 	// if !ok {
-// 	// 	panic("Unable to convert element list in menu.Items.")
-// 	// }
-// 	return items
-// }
-
-// func (m *M) ItemsContainer() *js.Object {
-// 	return m.GetObject().Get("root_").Call("querySelector", ITEMS_SELECTOR)
-// }
-
-// func (m *M) IsQuickOpen() bool {
-// 	return m.GetObject().Get("quickOpen").Bool()
-// }
-
-// func (m *M) SetQuickOpen(q bool) {
-// 	m.GetObject().Set("quickOpen", q)
-// }
-
-// func (m *M) Open() {
-// 	m.GetObject().Call("show")
-// }
-
+// OpenFocus opens the menu with an item at index given initial focus.
 func (m *M) OpenFocus(index int) {
 	m.GetObject().Call("show", index)
 }
 
-// func (m *M) Close() {
-// 	m.GetObject().Call("hide")
-// }
+// Items returns the HTMLLIElements that represent the menu's items.
+func (m *M) Items() []*js.Object {
+	return m.items
+}
 
+// ItemsContainer is the HTMLUListElement that contains the menu's items
+func (m *M) ItemsContainer() *js.Object {
+	return m.itemsContainer
+}
+
+// AnchorCorner returns the Corner the menu is/will be attached to.
 func (m *M) AnchorCorner() Corner {
 	return Corner(m.GetObject().Get("foundation_").Get("anchorCorner_").Int())
 }
 
+// AnchorCorner sets the Corner the menu is/will be attached to.
 func (m *M) SetAnchorCorner(c Corner) {
 	m.GetObject().Call("setAnchorCorner", c)
 }
 
-// func (m *M) AnchorMargin() (pixels int) {
-// 	return m.GetObject().Get("foundation_").Get("anchorMargin_").Int()
-// }
+// AnchorMargins returns the distance from the anchor point that the menu
+// is/will be.
+func (m *M) AnchorMargins() *Margins {
+	o := m.GetObject().Get("foundation_").Get("anchorMargin_")
+	return &Margins{
+		Left:   o.Get("left").Int(),
+		Right:  o.Get("right").Int(),
+		Top:    o.Get("top").Int(),
+		Bottom: o.Get("bottom").Int(),
+	}
+}
 
-// func (m *M) SetAnchorMargin(margins *js.M) {
-// 	m.GetObject().Call("setAnchorMargin", pixels)
-// }
+// AnchorMargins sets the distance from the anchor point that the menu is/will
+// be.
+func (m *M) SetAnchorMargins(ms *Margins) {
+	o := &js.M{
+		"left":   ms.Left,
+		"right":  ms.Right,
+		"top":    ms.Top,
+		"bottom": ms.Bottom,
+	}
+	m.GetObject().Call("setAnchorMargin", o)
+}

@@ -4,51 +4,57 @@ import (
 	"fmt"
 	"log"
 
+	"agamigo.io/material/component"
 	"agamigo.io/material/component/componenthtml"
 	"agamigo.io/material/mdctest"
 	"agamigo.io/material/textfield"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func Example() {
 	// Create a new instance of a material textfield component.
-	c, err := textfield.New()
-	if err != nil {
-		log.Fatalf("Unable to create component %s: %v\n", c, err.Error())
-	}
-	fmt.Printf("%s\n", c)
+	c := &textfield.TF{}
+	printStatus(c)
 
-	// Set up a DOM HTMLElement suitable for an textfield.
-	mdctest.Dom.SetHTML("<html><body>" + componenthtml.HTML(c.CType()) +
-		"</body></html>")
+	// Set up a DOM HTMLElement suitable for a textfield.
+	js.Global.Get("document").Get("body").Set("innerHTML",
+		componenthtml.HTML(c.MDCType()))
+	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err = c.Start()
+	err := component.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
+	printStatus(c)
 
-	fmt.Printf("%s\n", c)
-
-	fmt.Printf("Disabled: %v, Valid: %v, Required: %v\n",
-		c.Disabled, c.Valid, c.Required)
-	fmt.Printf("Value: %v, HelperText: %v\n", c.Value, c.HelperText)
-
+	printState(c)
 	c.Required = false
 	c.HelperText = "Must be at least 8 characters."
 	c.Value = "longerpassword"
 	c.Disabled = true
+	printState(c)
 
+	// Output:
+	// MDCTextField: uninitialized
+	// MDCTextField: running
+
+	// Disabled: false, Valid: false, Required: true
+	// Value: , HelperText: undefined
+
+	// Disabled: true, Valid: true, Required: false
+	// Value: longerpassword, HelperText: Must be at least 8 characters.
+}
+
+func printStatus(c *textfield.TF) {
+	fmt.Printf("%s\n", c)
+}
+
+func printState(c *textfield.TF) {
+	fmt.Println()
 	fmt.Printf("Disabled: %v, Valid: %v, Required: %v\n",
 		c.Disabled, c.Valid, c.Required)
 	fmt.Printf("Value: %v, HelperText: %v\n", c.Value, c.HelperText)
-
-	// Output:
-	// {"component":"MDCTextField","status":"stopped"}
-	// {"component":"MDCTextField","status":"running"}
-	// Disabled: false, Valid: false, Required: true
-	// Value: , HelperText: undefined
-	// Disabled: true, Valid: true, Required: false
-	// Value: longerpassword, HelperText: Must be at least 8 characters.
 }
 
 func init() {
