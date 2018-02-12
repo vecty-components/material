@@ -18,7 +18,7 @@ func Example() {
 
 	// Set up a DOM HTMLElement suitable for a selection.
 	js.Global.Get("document").Get("body").Set("innerHTML",
-		componenthtml.HTML(c.MDCType()))
+		componenthtml.HTML(c.ComponentType().MDCClassName))
 	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.

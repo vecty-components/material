@@ -1,121 +1,22 @@
 package component // import "agamigo.io/material/component"
 
-// Type is a specific component type, as implemented by the
-// material-components-web library.
+// ComponentType is a specific component type, as implemented by the
+// material-components-web library.//
 //
 // See: https://material.io/components/web/catalog/
-type Type int
+type ComponentType struct {
+	//  MDCClassName represents the name of the MDC class of the component. For
+	//  example, a form-field is "MDCFormField".
+	MDCClassName string
 
-const (
-	Invalid Type = iota
-	Checkbox
-	Dialog
-	FormField
-	PersistentDrawer
-	TemporaryDrawer
-	GridList
-	IconToggle
-	LinearProgress
-	Menu
-	Radio
-	Ripple
-	Select
-	Slider
-	Snackbar
-	Tab
-	TabBar
-	TabBarScroller
-	TextField
-	Toolbar
-)
-
-// String returns the name of a component Type in the form of its MDCComponent
-// class name.
-func (n Type) String() string {
-	switch n {
-	case Checkbox:
-		return "MDCCheckbox"
-	case Dialog:
-		return "MDCDialog"
-	case PersistentDrawer:
-		return "MDCPersistentDrawer"
-	case TemporaryDrawer:
-		return "MDCTemporaryDrawer"
-	case FormField:
-		return "MDCFormField"
-	case GridList:
-		return "MDCGridList"
-	case IconToggle:
-		return "MDCIconToggle"
-	case LinearProgress:
-		return "MDCLinearProgress"
-	case Menu:
-		return "MDCMenu"
-	case Radio:
-		return "MDCRadio"
-	case Ripple:
-		return "MDCRipple"
-	case Select:
-		return "MDCSelect"
-	case Slider:
-		return "MDCSlider"
-	case Snackbar:
-		return "MDCSnackbar"
-	case Tab:
-		return "MDCTab"
-	case TabBar:
-		return "MDCTabBar"
-	case TabBarScroller:
-		return "MDCTabBarScroller"
-	case TextField:
-		return "MDCTextField"
-	case Toolbar:
-		return "MDCToolbar"
-	}
-	return "Invalid"
+	// MDCCamelCaseName is the lower camel case version of an MDC component.
+	// When using the all-in-one distribution of the MDC library, it is the
+	// name of the object that holds the MDCComponent/MDCFoundation etc. For
+	// example in "mdc.formField.MDCFormField" the MDCamelCaseName is
+	// "formField".
+	MDCCamelCaseName string
 }
 
-func (n Type) classString() string {
-	switch n {
-	case Checkbox:
-		return "checkbox"
-	case Dialog:
-		return "dialog"
-	case PersistentDrawer:
-		return "drawer--persistent"
-	case TemporaryDrawer:
-		return "drawer--temporary"
-	case FormField:
-		return "form-field"
-	case GridList:
-		return "grid-list"
-	case IconToggle:
-		return "icon-toggle"
-	case LinearProgress:
-		return "linear-progress"
-	case Menu:
-		return "menu"
-	case Radio:
-		return "radio"
-	case Ripple:
-		return "ripple-surface"
-	case Select:
-		return "select"
-	case Slider:
-		return "slider"
-	case Snackbar:
-		return "snackbar"
-	case Tab:
-		return "tab"
-	case TabBar:
-		return "tab-bar"
-	case TabBarScroller:
-		return "tab-bar-scroller"
-	case TextField:
-		return "text-field"
-	case Toolbar:
-		return "toolbar"
-	}
-
-	return "invalid"
+func (n ComponentType) String() string {
+	return n.MDCClassName
 }

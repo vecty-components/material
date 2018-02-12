@@ -1,15 +1,13 @@
 package componenthtml
 
-import "agamigo.io/material/component"
-
-func HTML(t component.Type) string {
+func HTML(t string) string {
 	switch t {
-	case component.Checkbox:
+	case "MDCCheckbox":
 		return `
 <div class="mdc-checkbox">
   <input class="mdc-checkbox__native-control" type="checkbox">
 </div>`
-	case component.Dialog:
+	case "MDCDialog":
 		return `
 <aside id="my-mdc-dialog"
   class="mdc-dialog"
@@ -32,7 +30,7 @@ func HTML(t component.Type) string {
   </div>
   <div class="mdc-dialog__backdrop"></div>
 </aside>`
-	case component.PersistentDrawer:
+	case "MDCPersistentDrawer":
 		return `
 <aside class="mdc-drawer mdc-drawer--persistent mdc-typography">
   <nav class="mdc-drawer__drawer">
@@ -51,7 +49,7 @@ func HTML(t component.Type) string {
     </nav>
   </nav>
 </aside>`
-	case component.TemporaryDrawer:
+	case "MDCTemporaryDrawer":
 		return `
 <aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
   <nav class="mdc-drawer__drawer">
@@ -70,7 +68,7 @@ func HTML(t component.Type) string {
     </nav>
   </nav>
 </aside>`
-	case component.FormField:
+	case "MDCFormField":
 		return `
 <div class="mdc-form-field">
   <div class="mdc-checkbox">
@@ -80,7 +78,7 @@ func HTML(t component.Type) string {
   </div>
   <label for="my-checkbox" id="my-checkbox-label">This is my checkbox</label>
 </div>`
-	case component.GridList:
+	case "MDCGridList":
 		return `
 <div class="mdc-grid-list">
   <ul class="mdc-grid-list__tiles">
@@ -94,7 +92,7 @@ func HTML(t component.Type) string {
     </li>
   </ul>
 </div>`
-	case component.IconToggle:
+	case "MDCIconToggle":
 		return `
 <i class="mdc-icon-toggle material-icons" role="button" aria-pressed="false"
    aria-label="Add to favorites" tabindex="0"
@@ -102,7 +100,7 @@ func HTML(t component.Type) string {
    data-toggle-off='{"label": "Add to favorites", "content": "favorite_border"}'>
   favorite_border
 </i>`
-	case component.LinearProgress:
+	case "MDCLinearProgress":
 		return `
 <div role="progressbar" class="mdc-linear-progress">
   <div class="mdc-linear-progress__buffering-dots"></div>
@@ -114,7 +112,7 @@ func HTML(t component.Type) string {
     <span class="mdc-linear-progress__bar-inner"></span>
   </div>
 </div>`
-	case component.Menu:
+	case "MDCMenu":
 		return `
 <div class="mdc-menu" style="position: absolute;" tabindex="-1" id="demo-menu">
   <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
@@ -137,7 +135,7 @@ func HTML(t component.Type) string {
     </span>
   </ul>
 </div>`
-	case component.Radio:
+	case "MDCRadio":
 		return `
 <div class="mdc-radio">
   <input class="mdc-radio__native-control" type="radio" id="radio-1" name="radios" checked>
@@ -147,7 +145,7 @@ func HTML(t component.Type) string {
   </div>
 </div>
 <label id="radio-1-label" for="radio-1">Radio 1</label>`
-	case component.Ripple:
+	case "MDCRipple":
 		return `
 <div>
   <h2>Bounded</h2>
@@ -155,7 +153,7 @@ func HTML(t component.Type) string {
     Interact with me!
   </div>
 </div>`
-	case component.Select:
+	case "MDCSelect":
 		return `
 <div class="mdc-select" role="listbox">
   <div class="mdc-select__surface" tabindex="0">
@@ -170,7 +168,7 @@ func HTML(t component.Type) string {
     </ul>
   </div>
 </div>`
-	case component.Slider:
+	case "MDCSlider":
 		return `
 <div class="mdc-slider" tabindex="0" role="slider"
      aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
@@ -185,7 +183,7 @@ func HTML(t component.Type) string {
     <div class="mdc-slider__focus-ring"></div>
   </div>
 </div>`
-	case component.Snackbar:
+	case "MDCSnackbar":
 		return `
 <div class="mdc-snackbar"
      aria-live="assertive"
@@ -196,7 +194,7 @@ func HTML(t component.Type) string {
     <button type="button" class="mdc-snackbar__action-button"></button>
   </div>
 </div>`
-	case component.Tab, component.TabBar:
+	case "MDCTab", "MDCTabBar":
 		return `
 <nav id="basic-tab-bar" class="mdc-tab-bar">
   <a class="mdc-tab mdc-tab--active" href="#one">Home</a>
@@ -204,7 +202,7 @@ func HTML(t component.Type) string {
   <a class="mdc-tab" href="#three">About Us</a>
   <span class="mdc-tab-bar__indicator"></span>
 </nav>`
-	case component.TabBarScroller:
+	case "MDCTabBarScroller":
 		return `
 <div id="my-mdc-tab-bar-scroller" class="mdc-tab-bar-scroller">
   <div class="mdc-tab-bar-scroller__indicator mdc-tab-bar-scroller__indicator--back">
@@ -232,7 +230,7 @@ func HTML(t component.Type) string {
     </a>
   </div>
 </div>`
-	case component.TextField:
+	case "MDCTextField":
 		return `
 <div class="mdc-text-field">
   <input required pattern=".{8,}" type="password" class="mdc-text-field__input" id="pw"
@@ -244,7 +242,7 @@ func HTML(t component.Type) string {
 <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg"
 id="pw-validation-msg">Must be at least 8 characters long
 </p>`
-	case component.Toolbar:
+	case "MDCToolbar":
 		return `
 <header class="mdc-toolbar">
   <div class="mdc-toolbar__row">
@@ -256,5 +254,5 @@ id="pw-validation-msg">Must be at least 8 characters long
 </header>`
 	}
 
-	panic("Failed to get HTML for component type: " + t.String())
+	panic("Failed to get HTML for component type: " + t)
 }

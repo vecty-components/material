@@ -8,7 +8,7 @@ import (
 // AfterStart implements the component.AfterStarter interface. It defines
 // missing getters for the MDCLinearProgress properties, so that we can use our
 // struct fields as one would normally expect.
-func (c *LP) AfterStart(rootElem *js.Object) error {
+func (c *LP) AfterStart() error {
 	var err error
 	gojs.CatchException(&err)
 	o := c.GetObject()

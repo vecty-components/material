@@ -12,13 +12,13 @@ import (
 )
 
 func Example() {
-	// Create the checkbox component.
+	// Create a new instance of a material checkbox component.
 	c := &checkbox.CB{}
 	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for a checkbox.
 	js.Global.Get("document").Get("body").Set("innerHTML",
-		componenthtml.HTML(c.MDCType()))
+		componenthtml.HTML(c.ComponentType().MDCClassName))
 	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.

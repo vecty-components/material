@@ -10,7 +10,7 @@ import (
 
 // LP is a material libearprogress component.
 type LP struct {
-	*component.C
+	*component.Component
 	Determinate bool    `js:"determinate"`
 	Reverse     bool    `js:"reverse"`
 	Progress    float64 `js:"progress"`
@@ -18,27 +18,23 @@ type LP struct {
 	bufferCache float64
 }
 
-// MDCType implements the MDComponenter interface.
-func (c *LP) MDCType() component.Type {
-	return component.LinearProgress
+// ComponentType implements the ComponentTyper interface.
+func (c *LP) ComponentType() component.ComponentType {
+	return component.ComponentType{
+		MDCClassName:     "MDCLinearProgress",
+		MDCCamelCaseName: "linearProgress",
+	}
 }
 
-// MDCClassAttr implements the MDComponenter interface and returns the HTML
-// Class Attribute that is expected to be assigned to the component's root
-// HTMLElement.
-func (c *LP) MDCClassAttr() string {
-	return "mdc-linear-progress"
+// SetComponent implements the Componenter interface and replaces the component's
+// base Component with mdcC.
+func (c *LP) SetComponent(mdcC *component.Component) {
+	c.Component = mdcC
 }
 
-// SetMDC implements the MDComponenter interface and replaces the component's
-// base MDComponent with mdcC.
-func (c *LP) SetMDC(mdcC *component.C) {
-	c.C = mdcC
-}
-
-// String returns the component's "MDCType: status" information.
+// String returns the component's "ComponentType: status" information.
 func (c *LP) String() string {
-	return c.MDCType().String() + ": " + c.C.String()
+	return c.ComponentType().String() + ": " + c.Component.String()
 }
 
 // Open opens the linearProgress component.

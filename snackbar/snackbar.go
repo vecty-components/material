@@ -13,7 +13,7 @@ import (
 
 // S is a material snackbar component.
 type S struct {
-	*component.C
+	*component.Component
 	isNew bool
 
 	// DismissOnAction causes the snackbar to be dimissed when the user presses
@@ -58,27 +58,23 @@ type S struct {
 // 	actionOnBottom bool   `js:"actionOnBottom"`
 // }
 
-// MDCType implements the MDComponenter interface.
-func (c *S) MDCType() component.Type {
-	return component.Snackbar
+// ComponentType implements the ComponentTyper interface.
+func (c *S) ComponentType() component.ComponentType {
+	return component.ComponentType{
+		MDCClassName:     "MDCSnackbar",
+		MDCCamelCaseName: "snackbar",
+	}
 }
 
-// MDCClassAttr implements the MDComponenter interface and returns the HTML
-// Class Attribute that is expected to be assigned to the component's root
-// HTMLElement.
-func (c *S) MDCClassAttr() string {
-	return "mdc-slider"
+// SetComponent implements the Componenter interface and replaces the component's
+// base Component with mdcC.
+func (c *S) SetComponent(mdcC *component.Component) {
+	c.Component = mdcC
 }
 
-// SetMDC implements the MDComponenter interface and replaces the component's
-// base MDComponent with mdcC.
-func (c *S) SetMDC(mdcC *component.C) {
-	c.C = mdcC
-}
-
-// String returns the component's "MDCType: status" information.
+// String returns the component's "ComponentType: status" information.
 func (c *S) String() string {
-	return c.MDCType().String() + ": " + c.C.String()
+	return c.ComponentType().String() + ": " + c.Component.String()
 }
 
 // Show displays the snackbar. If the configuration is invalid an error message

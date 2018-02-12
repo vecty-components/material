@@ -9,30 +9,26 @@ import (
 
 // T is a material toolbar component.
 type T struct {
-	*component.C
+	*component.Component
 }
 
-// MDCType implements the MDComponenter interface.
-func (c *T) MDCType() component.Type {
-	return component.TextField
+// ComponentType implements the ComponentTyper interface.
+func (c *T) ComponentType() component.ComponentType {
+	return component.ComponentType{
+		MDCClassName:     "MDCTextField",
+		MDCCamelCaseName: "textField",
+	}
 }
 
-// MDCClassAttr implements the MDComponenter interface and returns the HTML
-// Class Attribute that is expected to be assigned to the component's root
-// HTMLElement.
-func (c *T) MDCClassAttr() string {
-	return "mdc-text-field"
+// SetComponent implements the Componenter interface and replaces the component's
+// base Component with mdcC.
+func (c *T) SetComponent(mdcC *component.Component) {
+	c.Component = mdcC
 }
 
-// SetMDC implements the MDComponenter interface and replaces the component's
-// base MDComponent with mdcC.
-func (c *T) SetMDC(mdcC *component.C) {
-	c.C = mdcC
-}
-
-// String returns the component's "MDCType: status" information.
+// String returns the component's "ComponentType: status" information.
 func (c *T) String() string {
-	return c.MDCType().String() + ": " + c.C.String()
+	return c.ComponentType().String() + ": " + c.Component.String()
 }
 
 // TODO: Handle events?

@@ -9,31 +9,27 @@ import (
 
 // R is a material radio component.
 type R struct {
-	*component.C
+	*component.Component
 	Checked  bool   `js:"checked"`
 	Disabled bool   `js:"disabled"`
 	Value    string `js:"value"`
 }
 
-// MDCType implements the MDComponenter interface.
-func (c *R) MDCType() component.Type {
-	return component.Radio
+// ComponentType implements the ComponentTyper interface.
+func (c *R) ComponentType() component.ComponentType {
+	return component.ComponentType{
+		MDCClassName:     "MDCRadio",
+		MDCCamelCaseName: "radio",
+	}
 }
 
-// MDCClassAttr implements the MDComponenter interface and returns the HTML
-// Class Attribute that is expected to be assigned to the component's root
-// HTMLElement.
-func (c *R) MDCClassAttr() string {
-	return "mdc-radio"
+// SetComponent implements the Componenter interface and replaces the component's
+// base Component with mdcC.
+func (c *R) SetComponent(mdcC *component.Component) {
+	c.Component = mdcC
 }
 
-// SetMDC implements the MDComponenter interface and replaces the component's
-// base MDComponent with mdcC.
-func (c *R) SetMDC(mdcC *component.C) {
-	c.C = mdcC
-}
-
-// String returns the component's "MDCType: status" information.
+// String returns the component's "ComponentType: status" information.
 func (c *R) String() string {
-	return c.MDCType().String() + ": " + c.C.String()
+	return c.ComponentType().String() + ": " + c.Component.String()
 }
