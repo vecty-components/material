@@ -13,7 +13,6 @@ import (
 func Example() {
 	// Create a new instance of a material textfield component.
 	c := &textfield.TF{}
-	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for a textfield.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,8 +24,8 @@ func Example() {
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	printStatus(c)
 
+	printStatus(c)
 	printState(c)
 	c.Required = false
 	c.HelperText = "Must be at least 8 characters."
@@ -35,8 +34,7 @@ func Example() {
 	printState(c)
 
 	// Output:
-	// MDCTextField: uninitialized
-	// MDCTextField: running
+	// MDCTextField
 
 	// Disabled: false, Valid: false, Required: true
 	// Value: , HelperText: undefined

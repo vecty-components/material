@@ -13,7 +13,6 @@ import (
 func Example() {
 	// Create a new instance of a material selection component.
 	c := &selection.S{}
-	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for a selection.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,18 +24,17 @@ func Example() {
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	printStatus(c)
 
+	printStatus(c)
 	printState(c)
 	c.SelectedIndex = 0
 	c.Disabled = true
-	l := c.GetObject().Get("root_").Call("querySelector", ".mdc-list")
+	l := c.Component().Get("root_").Call("querySelector", ".mdc-list")
 	l.Call("removeChild", c.Options().Index(1))
 	printState(c)
 
 	// Output:
-	// MDCSelect: uninitialized
-	// MDCSelect: running
+	// MDCSelect
 	//
 	// SelectedIndex: -1, SelectedString: , Disabled: false
 	// SelectedElem: [object NodeList]
@@ -54,8 +52,8 @@ func printStatus(c *selection.S) {
 func printState(c *selection.S) {
 	fmt.Println()
 	fmt.Printf("SelectedIndex: %v, SelectedString: %v, Disabled: %v\n",
-		c.GetObject().Get("selectedIndex"), c.SelectedString(),
-		c.GetObject().Get("disabled"))
+		c.Component().Get("selectedIndex"), c.SelectedString(),
+		c.Component().Get("disabled"))
 	fmt.Printf("SelectedElem: %v\nOptions: %v\n",
 		c.SelectedElem(), c.Options())
 }

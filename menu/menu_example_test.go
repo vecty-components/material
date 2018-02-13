@@ -13,7 +13,6 @@ import (
 func Example() {
 	// Create a new instance of a material menu component.
 	c := &menu.M{}
-	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for a checkbox.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,8 +24,8 @@ func Example() {
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	printStatus(c)
 
+	printStatus(c)
 	printState(c)
 	c.OpenFocus(2)
 	c.QuickOpen = true
@@ -43,8 +42,7 @@ func Example() {
 	printState(c)
 
 	// Output:
-	// MDCMenu: uninitialized
-	// MDCMenu: running
+	// MDCMenu
 	//
 	// Open: false, QuickOpen, false, Items: 12
 	// AnchorCorner: 8, ItemsContainer: [object HTMLUListElement]
@@ -75,7 +73,7 @@ func printState(c *menu.M) {
 		c.Open, c.QuickOpen, len(c.Items()))
 	fmt.Printf("AnchorCorner: %v, ItemsContainer: %v\n",
 		c.AnchorCorner(), c.ItemsContainer())
-	jsMargins := c.GetObject().Get("foundation_").Get("anchorMargin_")
+	jsMargins := c.Component().Get("foundation_").Get("anchorMargin_")
 	fmt.Println("AnchorMargins")
 	fmt.Printf("[Go] Left: %v, Right: %v, Top: %v, Bottom: %v\n",
 		c.AnchorMargins().Left,

@@ -2,11 +2,14 @@
 //
 // See: https://material.io/components/web/catalog/drawers/
 package temporarydrawer // import "agamigo.io/material/temporarydrawer"
-import "agamigo.io/material"
+import (
+	"agamigo.io/material"
+	"github.com/gopherjs/gopherjs/js"
+)
 
 // TD is a material temporarydrawer component.
 type TD struct {
-	*material.Component
+	mdc  *js.Object
 	Open bool `js:"open"`
 }
 
@@ -18,15 +21,20 @@ func (c *TD) ComponentType() material.ComponentType {
 	}
 }
 
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdcC.
-func (c *TD) SetComponent(mdcC *material.Component) {
-	c.Component = mdcC
+// Component implements the material.Componenter interface.
+func (c *TD) Component() *js.Object {
+	return c.mdc
 }
 
-// String returns the component's "ComponentType: status" information.
+// SetComponent implements the Componenter interface and replaces the component's
+// base Component with mdc.
+func (c *TD) SetComponent(mdc *js.Object) {
+	c.mdc = mdc
+}
+
+// String returns the component's ComponentType MDCClassName.
 func (c *TD) String() string {
-	return c.ComponentType().String() + ": " + c.Component.String()
+	return c.ComponentType().String()
 }
 
 // TODO: Custom events

@@ -11,7 +11,7 @@ import (
 func (c *LP) AfterStart() error {
 	var err error
 	gojs.CatchException(&err)
-	o := c.GetObject()
+	o := c.Component()
 	js.Global.Get("Object").Call("defineProperty",
 		c, "determinate",
 		js.M{

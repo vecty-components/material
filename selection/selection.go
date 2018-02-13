@@ -10,7 +10,7 @@ import (
 
 // S is a material selection component.
 type S struct {
-	*material.Component
+	mdc           *js.Object
 	SelectedIndex int  `js:"selectedIndex"`
 	Disabled      bool `js:"disabled"`
 }
@@ -23,22 +23,27 @@ func (c *S) ComponentType() material.ComponentType {
 	}
 }
 
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdcC.
-func (c *S) SetComponent(mdcC *material.Component) {
-	c.Component = mdcC
+// Component implements the material.Componenter interface.
+func (c *S) Component() *js.Object {
+	return c.mdc
 }
 
-// String returns the component's "ComponentType: status" information.
+// SetComponent implements the Componenter interface and replaces the component's
+// base Component with mdc.
+func (c *S) SetComponent(mdc *js.Object) {
+	c.mdc = mdc
+}
+
+// String returns the component's ComponentType MDCClassName.
 func (c *S) String() string {
-	return c.ComponentType().String() + ": " + c.Component.String()
+	return c.ComponentType().String()
 }
 
 // Selected returns the id of the currently selected option. If no id is present
 // on the selected option, its textContent is used. Returns an empty string when
 // no option is selected.
 func (s *S) SelectedString() string {
-	v := s.GetObject().Get("value").String()
+	v := s.mdc.Get("value").String()
 	if v == "undefined" {
 		return ""
 	}
@@ -48,10 +53,10 @@ func (s *S) SelectedString() string {
 // SelectedElem returns a NodeList of either the currently selected option, or
 // an empty js.S if nothing is selected.
 func (s *S) SelectedElem() *js.Object {
-	return s.GetObject().Get("selectedOptions")
+	return s.mdc.Get("selectedOptions")
 }
 
 // Options returns a slice of menu items comprising the select’s options.
 func (s *S) Options() *js.Object {
-	return s.GetObject().Get("options")
+	return s.mdc.Get("options")
 }

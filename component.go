@@ -7,18 +7,11 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
-// Component is the base material component type. Types that embed Component and
-// implement Componenter can use the material.Start and material.Stop functions.
-type Component struct {
-	mdc    *js.Object
-	status ComponentStatus
-}
-
 // Start takes a component implementation (c) and initializes it with an
-// HTMLElement (rootElem). Upon success the component's status will be Running,
-// and err will be nil.  If err is non-nil, it will contain any error thrown
-// while calling the underlying MDC object's init() method, and the component's
-// status will remain Stopped.
+// HTMLElement (rootElem). Upon success err will be nil. If err is non-nil, it
+// will contain any error thrown while calling the underlying MDC object's
+// init() method. An error will also be returned if GetComponent() is non-nil.
+// Use Stop to clean up the component before calling Start again.
 //
 // Finding The MDC Library
 //
@@ -27,10 +20,11 @@ type Component struct {
 // project via the ComponentType method. This default works in the general case
 // that the all-in-one MDC library is available under the global var "mdc".
 //
-// The second case, MDCClasser, is needed if the MDC code you need is elsewhere,
-// for example if you are using individual MDC component "@material/checkbox"
-// libraries instead of the all-in-one distribution. Implement the MDCClasser to
-// provide Start with the exact object for the MDC component class.
+// The second case, MDCClasser, is needed if the MDC code for your component is
+// elsewhere, for example if you are using the individual MDC component
+// "@material/checkbox" library instead of the all-in-one distribution.
+// Implement the MDCClasser interface to provide Start with the exact object for
+// the MDC component class.
 //
 // Implementing A Component
 //
@@ -48,14 +42,11 @@ func Start(c Componenter, rootElem *js.Object) (err error) {
 	switch {
 	case rootElem == nil, rootElem == js.Undefined:
 		return errors.New("rootElem is nil.")
-	case c.GetComponent() == nil:
-		c.SetComponent(&Component{})
-	case c.GetComponent().status == Running:
-		return errors.New("Component already started.")
+	case c.Component() != nil:
+		return errors.New("Refusing to Start non-nil component. " +
+			"Use Stop() before starting it again.")
 	}
 
-	// We create a new instance of the MDC component if c is Stopped or
-	// Uninitialized.
 	var newMDCClassObj *js.Object
 	switch co := c.(type) {
 	case MDCClasser:
@@ -74,9 +65,7 @@ func Start(c Componenter, rootElem *js.Object) (err error) {
 	}
 
 	// Create a new MDC component instance tied to rootElem
-	newMDCObj := newMDCClassObj.New(rootElem)
-	c.GetComponent().mdc = newMDCObj
-	c.GetComponent().status = Running
+	c.SetComponent(newMDCClassObj.New(rootElem))
 
 	switch co := c.(type) {
 	case AfterStarter:
@@ -90,54 +79,16 @@ func Start(c Componenter, rootElem *js.Object) (err error) {
 	return err
 }
 
-// Stop stops a Running component, removing its association with an HTMLElement
-// and cleaning up event listeners, etc. It changes the component's status to
-// Stopped.
+// Stop stops a started component, removing its association with an HTMLElement
+// and cleaning up event listeners, etc. It then runs SetComponent(nil).
 func Stop(c Componenter) (err error) {
 	defer gojs.CatchException(&err)
 
-	if c.GetComponent() == nil {
+	if c.Component() == nil {
 		return errors.New("GetComponent() returned nil.")
 	}
 
-	switch c.GetComponent().status {
-	case Stopped:
-		return errors.New("Component already stopped")
-	case Uninitialized:
-		return errors.New("Component is uninitialized")
-	}
-	c.GetComponent().mdc.Call("destroy")
-	c.SetComponent(&Component{status: Stopped})
+	c.Component().Call("destroy")
+	c.SetComponent(nil)
 	return err
-}
-
-// GetComponent implements the Componenter interface. Component implementations
-// can use this method as-is when embedding an exposed material.Component.
-func (c *Component) GetComponent() *Component {
-	return c
-}
-
-// ComponentType implements the Componenter interface. This should be shadowed
-// by a component implementation.
-func (c *Component) ComponentType() ComponentType {
-	return ComponentType{}
-}
-
-// GetObject returns the component's MDC JavaScript object.
-func (c *Component) GetObject() *js.Object {
-	return c.mdc
-}
-
-// String returns the Component's StatusType as text.
-func (c *Component) String() string {
-	if c == nil || c.status == Uninitialized {
-		return Uninitialized.String()
-	}
-	return c.Status().String()
-}
-
-// Status returns the component's StatusType. For the string version use
-// Status().String().
-func (c *Component) Status() ComponentStatus {
-	return c.status
 }

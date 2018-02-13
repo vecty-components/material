@@ -13,7 +13,6 @@ import (
 func Example() {
 	// Create a new instance of a material temporarydrawer component.
 	c := &temporarydrawer.TD{}
-	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for a temporarydrawer.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,15 +24,14 @@ func Example() {
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	printStatus(c)
 
+	printStatus(c)
 	printState(c)
 	c.Open = true
 	printState(c)
 
 	// Output:
-	// MDCTemporaryDrawer: uninitialized
-	// MDCTemporaryDrawer: running
+	// MDCTemporaryDrawer
 	//
 	// MDC Open: false
 	//
@@ -46,7 +44,7 @@ func printStatus(c *temporarydrawer.TD) {
 
 func printState(c *temporarydrawer.TD) {
 	fmt.Println()
-	fmt.Printf("MDC Open: %v\n", c.GetObject().Get("open"))
+	fmt.Printf("MDC Open: %v\n", c.Component().Get("open"))
 }
 
 func init() {

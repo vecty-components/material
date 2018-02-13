@@ -23,7 +23,7 @@ const (
 
 // M is a material menu component.
 type M struct {
-	*material.Component
+	mdc *js.Object
 
 	// Open is the visible state of the menu component.
 	Open bool `js:"open"`
@@ -56,20 +56,25 @@ func (c *M) ComponentType() material.ComponentType {
 	}
 }
 
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdcC.
-func (c *M) SetComponent(mdcC *material.Component) {
-	c.Component = mdcC
+// Component implements the material.Componenter interface.
+func (c *M) Component() *js.Object {
+	return c.mdc
 }
 
-// String returns the component's "ComponentType: status" information.
+// SetComponent implements the Componenter interface and replaces the
+// component's base Component with mdc.
+func (c *M) SetComponent(mdc *js.Object) {
+	c.mdc = mdc
+}
+
+// String returns the component's ComponentType MDCClassName.
 func (c *M) String() string {
-	return c.ComponentType().String() + ": " + c.Component.String()
+	return c.ComponentType().String()
 }
 
 // OpenFocus opens the menu with an item at index given initial focus.
 func (m *M) OpenFocus(index int) {
-	m.GetObject().Call("show", index)
+	m.Component().Call("show", index)
 }
 
 // Items returns the HTMLLIElements that represent the menu's items.
@@ -84,18 +89,18 @@ func (m *M) ItemsContainer() *js.Object {
 
 // AnchorCorner returns the Corner the menu is/will be attached to.
 func (m *M) AnchorCorner() Corner {
-	return Corner(m.GetObject().Get("foundation_").Get("anchorCorner_").Int())
+	return Corner(m.Component().Get("foundation_").Get("anchorCorner_").Int())
 }
 
 // AnchorCorner sets the Corner the menu is/will be attached to.
 func (m *M) SetAnchorCorner(c Corner) {
-	m.GetObject().Call("setAnchorCorner", c)
+	m.Component().Call("setAnchorCorner", c)
 }
 
 // AnchorMargins returns the distance from the anchor point that the menu
 // is/will be.
 func (m *M) AnchorMargins() *Margins {
-	o := m.GetObject().Get("foundation_").Get("anchorMargin_")
+	o := m.Component().Get("foundation_").Get("anchorMargin_")
 	return &Margins{
 		Left:   o.Get("left").Int(),
 		Right:  o.Get("right").Int(),
@@ -113,5 +118,5 @@ func (m *M) SetAnchorMargins(ms *Margins) {
 		"top":    ms.Top,
 		"bottom": ms.Bottom,
 	}
-	m.GetObject().Call("setAnchorMargin", o)
+	m.Component().Call("setAnchorMargin", o)
 }

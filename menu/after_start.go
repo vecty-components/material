@@ -11,7 +11,7 @@ import (
 func (c *M) AfterStart() error {
 	var err error
 	gojs.CatchException(&err)
-	o := c.GetObject()
+	o := c.Component()
 
 	// Adds a getter for M.quickOpen.
 	proto := js.Global.Get("Object").Call("getPrototypeOf", c)

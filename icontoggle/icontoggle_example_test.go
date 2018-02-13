@@ -13,7 +13,6 @@ import (
 func Example() {
 	// Create a new instance of a material icontoggle component.
 	c := &icontoggle.IT{}
-	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for an icontoggle.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,16 +24,15 @@ func Example() {
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	printStatus(c)
 
+	printStatus(c)
 	printState(c)
 	c.Disabled = true
 	c.On = true
 	printState(c)
 
 	// Output:
-	// MDCIconToggle: uninitialized
-	// MDCIconToggle: running
+	// MDCIconToggle
 	//
 	// On: false, Disabled: false
 	//
@@ -47,7 +45,7 @@ func printStatus(c *icontoggle.IT) {
 
 func printState(c *icontoggle.IT) {
 	fmt.Println()
-	mdcObj := c.GetObject()
+	mdcObj := c.Component()
 	fmt.Printf("On: %v, Disabled: %v\n",
 		mdcObj.Get("on"), mdcObj.Get("disabled"))
 }

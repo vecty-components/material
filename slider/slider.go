@@ -6,11 +6,12 @@ package slider // import "agamigo.io/material/slider"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/material"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 // S is a material slider component.
 type S struct {
-	*material.Component
+	mdc *js.Object
 
 	// The current value of the slider. Changing this will update the slider’s
 	// value.
@@ -43,15 +44,20 @@ func (c *S) ComponentType() material.ComponentType {
 	}
 }
 
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdcC.
-func (c *S) SetComponent(mdcC *material.Component) {
-	c.Component = mdcC
+// Component implements the material.Componenter interface.
+func (c *S) Component() *js.Object {
+	return c.mdc
 }
 
-// String returns the component's "ComponentType: status" information.
+// SetComponent implements the Componenter interface and replaces the component's
+// base Component with mdc.
+func (c *S) SetComponent(mdc *js.Object) {
+	c.mdc = mdc
+}
+
+// String returns the component's ComponentType MDCClassName.
 func (c *S) String() string {
-	return c.ComponentType().String() + ": " + c.Component.String()
+	return c.ComponentType().String()
 }
 
 // Layout recomputes the dimensions and re-lays out the component. This should
@@ -60,7 +66,7 @@ func (c *S) String() string {
 func (s *S) Layout() error {
 	var err error
 	gojs.CatchException(&err)
-	s.GetObject().Call("layout")
+	s.mdc.Call("layout")
 	return err
 }
 

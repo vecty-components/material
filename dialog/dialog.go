@@ -6,11 +6,12 @@ package dialog // import "agamigo.io/material/dialog"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/material"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 // D is a material dialog component.
 type D struct {
-	*material.Component
+	mdc    *js.Object
 	IsOpen bool `js:"open"`
 }
 
@@ -22,22 +23,27 @@ func (c *D) ComponentType() material.ComponentType {
 	}
 }
 
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdcC.
-func (c *D) SetComponent(mdcC *material.Component) {
-	c.Component = mdcC
+// Component implements the material.Componenter interface.
+func (c *D) Component() *js.Object {
+	return c.mdc
 }
 
-// String returns the component's "ComponentType: status" information.
+// SetComponent implements the Componenter interface and replaces the
+// component's base Component with mdc.
+func (c *D) SetComponent(mdc *js.Object) {
+	c.mdc = mdc
+}
+
+// String returns the component's ComponentType MDCClassName.
 func (c *D) String() string {
-	return c.ComponentType().String() + ": " + c.Component.String()
+	return c.ComponentType().String()
 }
 
 // Open shows the dialog. If the dialog is already open then Open is a no-op.
 func (c *D) Open() error {
 	var err error
 	defer gojs.CatchException(&err)
-	c.GetObject().Call("show")
+	c.Component().Call("show")
 	return err
 }
 
@@ -46,6 +52,6 @@ func (c *D) Open() error {
 func (c *D) Close() error {
 	var err error
 	defer gojs.CatchException(&err)
-	c.GetObject().Call("close")
+	c.Component().Call("close")
 	return err
 }

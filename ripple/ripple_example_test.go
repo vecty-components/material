@@ -13,7 +13,6 @@ import (
 func Example() {
 	// Create a new instance of a material ripple component.
 	c := &ripple.R{}
-	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for a ripple.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,8 +24,8 @@ func Example() {
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	printStatus(c)
 
+	printStatus(c)
 	printState(c)
 	c.Unbounded = true
 	err = c.Activate()
@@ -45,8 +44,7 @@ func Example() {
 	printState(c)
 
 	// Output:
-	// MDCRipple: uninitialized
-	// MDCRipple: running
+	// MDCRipple
 	//
 	// Unbounded: false, Disabled: false
 	//
@@ -60,7 +58,7 @@ func printStatus(c *ripple.R) {
 func printState(c *ripple.R) {
 	fmt.Println()
 	fmt.Printf("Unbounded: %v, Disabled: %v\n",
-		c.GetObject().Get("unbounded"), c.GetObject().Get("disabled"))
+		c.Component().Get("unbounded"), c.Component().Get("disabled"))
 }
 
 func init() {

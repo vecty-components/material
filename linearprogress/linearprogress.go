@@ -6,11 +6,12 @@ package linearprogress // import "agamigo.io/material/linearprogress"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/material"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 // LP is a material libearprogress component.
 type LP struct {
-	*material.Component
+	mdc         *js.Object
 	Determinate bool    `js:"determinate"`
 	Reverse     bool    `js:"reverse"`
 	Progress    float64 `js:"progress"`
@@ -26,27 +27,32 @@ func (c *LP) ComponentType() material.ComponentType {
 	}
 }
 
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdcC.
-func (c *LP) SetComponent(mdcC *material.Component) {
-	c.Component = mdcC
+// Component implements the material.Componenter interface.
+func (c *LP) Component() *js.Object {
+	return c.mdc
 }
 
-// String returns the component's "ComponentType: status" information.
+// SetComponent implements the Componenter interface and replaces the
+// component's base Component with mdc.
+func (c *LP) SetComponent(mdc *js.Object) {
+	c.mdc = mdc
+}
+
+// String returns the component's ComponentType MDCClassName.
 func (c *LP) String() string {
-	return c.ComponentType().String() + ": " + c.Component.String()
+	return c.ComponentType().String()
 }
 
 // Open opens the linearProgress component.
 func (lp *LP) Open() (err error) {
 	gojs.CatchException(&err)
-	lp.GetObject().Call("open")
+	lp.Component().Call("open")
 	return err
 }
 
 // Close closes the linearProgress component.
 func (lp *LP) Close() (err error) {
 	gojs.CatchException(&err)
-	lp.GetObject().Call("close")
+	lp.Component().Call("close")
 	return err
 }

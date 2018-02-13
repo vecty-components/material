@@ -13,7 +13,6 @@ import (
 func Example() {
 	// Create a new instance of a material linearprogress component.
 	c := &linearprogress.LP{}
-	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for a checkbox.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,8 +24,8 @@ func Example() {
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	printStatus(c)
 
+	printStatus(c)
 	printState(c)
 	err = c.Open()
 	if err != nil {
@@ -45,8 +44,7 @@ func Example() {
 	printState(c)
 
 	// Output:
-	// MDCLinearProgress: uninitialized
-	// MDCLinearProgress: running
+	// MDCLinearProgress
 	//
 	// [Go] Determinate: true, Progress: 0, Buffer: 0, Reverse: false
 	// [JS] Determinate: true, Progress: 0, Buffer: 0, Reverse: false
@@ -66,17 +64,17 @@ func printState(c *linearprogress.LP) {
 	fmt.Println()
 	fmt.Printf("[Go] Determinate: %v, Progress: %v, Buffer: %v, Reverse: %v\n",
 		c.Determinate, c.Progress, c.Buffer, c.Reverse)
-	mdcObj := c.GetObject().Get("foundation_")
+	mdcObj := c.Component().Get("foundation_")
 	fmt.Printf("[JS] Determinate: %v, Progress: %v, Buffer: %v, Reverse: %v\n",
 		mdcObj.Get("determinate_"),
 		mdcObj.Get("progress_"),
-		c.GetObject().Get("buffer"),
+		c.Component().Get("buffer"),
 		mdcObj.Get("reverse_"),
 	)
 }
 
 func jsTests(c *linearprogress.LP) {
-	o := c.GetObject()
+	o := c.Component()
 	o.Set("determinate", true)
 	o.Set("progress", .45)
 	o.Set("buffer", .40)

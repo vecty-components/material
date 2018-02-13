@@ -6,11 +6,12 @@ package textfield // import "agamigo.io/material/textfield"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/material"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 // TF is a material textfield component.
 type TF struct {
-	*material.Component
+	mdc *js.Object
 
 	// The current value of the textfield. Changing this will update the
 	// textfield’s value.
@@ -37,21 +38,26 @@ func (c *TF) ComponentType() material.ComponentType {
 	}
 }
 
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdcC.
-func (c *TF) SetComponent(mdcC *material.Component) {
-	c.Component = mdcC
+// Component implements the material.Componenter interface.
+func (c *TF) Component() *js.Object {
+	return c.mdc
 }
 
-// String returns the component's "ComponentType: status" information.
+// SetComponent implements the Componenter interface and replaces the component's
+// base Component with mdc.
+func (c *TF) SetComponent(mdc *js.Object) {
+	c.mdc = mdc
+}
+
+// String returns the component's ComponentType MDCClassName.
 func (c *TF) String() string {
-	return c.ComponentType().String() + ": " + c.Component.String()
+	return c.ComponentType().String()
 }
 
 // Layout adjusts the dimensions and positions for all sub-elements.
 func (tf *TF) Layout() error {
 	var err error
 	gojs.CatchException(&err)
-	tf.GetObject().Call("layout")
+	tf.mdc.Call("layout")
 	return err
 }

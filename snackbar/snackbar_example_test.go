@@ -13,7 +13,6 @@ import (
 func Example() {
 	// Create a new instance of a material snackbar component.
 	c := &snackbar.S{}
-	printStatus(c)
 
 	// Set up a DOM HTMLElement suitable for a snackbar.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,8 +24,8 @@ func Example() {
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}
-	printStatus(c)
 
+	printStatus(c)
 	printState(c)
 	c.Message = "snackbar message here"
 	c.ActionHandler = func() { fmt.Println("Action Handled!") }
@@ -42,8 +41,7 @@ func Example() {
 	printState(c)
 
 	// Output:
-	// MDCSnackbar: uninitialized
-	// MDCSnackbar: running
+	// MDCSnackbar
 
 	// DismissOnAction: undefined
 	// Snackbar has not been shown yet.
@@ -62,9 +60,9 @@ func printStatus(c *snackbar.S) {
 func printState(c *snackbar.S) {
 	fmt.Println()
 	fmt.Printf("DismissOnAction: %v\n",
-		c.GetObject().Get("dismissOnAction"))
+		c.Component().Get("dismissOnAction"))
 
-	o := c.GetObject().Get("foundation_").Get("snackbarData_")
+	o := c.Component().Get("foundation_").Get("snackbarData_")
 	if o == nil {
 		fmt.Println("Snackbar has not been shown yet.")
 		return

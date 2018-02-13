@@ -13,7 +13,7 @@ import (
 
 // S is a material snackbar component.
 type S struct {
-	*material.Component
+	mdc   *js.Object
 	isNew bool
 
 	// DismissOnAction causes the snackbar to be dimissed when the user presses
@@ -47,17 +47,6 @@ type S struct {
 	ActionOnBottom bool `js:"actionOnBottom"`
 }
 
-// data holds configuration for the snackbar.
-// type Data struct {
-// 	*js.Object
-// 	message        string `js:"message"`
-// 	timeout        int    `js:"timeout"`
-// 	actionHandler  func() `js:"actionHandler"`
-// 	actionText     string `js:"actionText"`
-// 	multiLine      bool   `js:"multiline"`
-// 	actionOnBottom bool   `js:"actionOnBottom"`
-// }
-
 // ComponentType implements the ComponentTyper interface.
 func (c *S) ComponentType() material.ComponentType {
 	return material.ComponentType{
@@ -66,15 +55,20 @@ func (c *S) ComponentType() material.ComponentType {
 	}
 }
 
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdcC.
-func (c *S) SetComponent(mdcC *material.Component) {
-	c.Component = mdcC
+// Component implements the material.Componenter interface.
+func (c *S) Component() *js.Object {
+	return c.mdc
 }
 
-// String returns the component's "ComponentType: status" information.
+// SetComponent implements the Componenter interface and replaces the component's
+// base Component with mdc.
+func (c *S) SetComponent(mdc *js.Object) {
+	c.mdc = mdc
+}
+
+// String returns the component's ComponentType MDCClassName.
 func (c *S) String() string {
-	return c.ComponentType().String() + ": " + c.Component.String()
+	return c.ComponentType().String()
 }
 
 // Show displays the snackbar. If the configuration is invalid an error message
@@ -102,7 +96,7 @@ func (c *S) Show() error {
 		data["actionHandler"] = c.ActionHandler
 		data["actionText"] = c.ActionText
 	}
-	c.GetObject().Call("show", data)
+	c.mdc.Call("show", data)
 	c.isNew = false
 	return err
 }

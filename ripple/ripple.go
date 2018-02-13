@@ -6,11 +6,12 @@ package ripple // import "agamigo.io/material/ripple"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/material"
+	"github.com/gopherjs/gopherjs/js"
 )
 
 // R is a material ripple component.
 type R struct {
-	*material.Component
+	mdc       *js.Object
 	Unbounded bool `js:"unbounded"`
 	Disabled  bool `js:"disabled"`
 }
@@ -23,15 +24,20 @@ func (c *R) ComponentType() material.ComponentType {
 	}
 }
 
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdcC.
-func (c *R) SetComponent(mdcC *material.Component) {
-	c.Component = mdcC
+// Component implements the material.Componenter interface.
+func (c *R) Component() *js.Object {
+	return c.mdc
 }
 
-// String returns the component's "ComponentType: status" information.
+// SetComponent implements the Componenter interface and replaces the component's
+// base Component with mdc.
+func (c *R) SetComponent(mdc *js.Object) {
+	c.mdc = mdc
+}
+
+// String returns the component's ComponentType MDCClassName.
 func (c *R) String() string {
-	return c.ComponentType().String() + ": " + c.Component.String()
+	return c.ComponentType().String()
 }
 
 // Activate triggers an activation of the ripple (the first stage, which happens
@@ -40,7 +46,7 @@ func (c *R) String() string {
 func (r *R) Activate() error {
 	var err error
 	gojs.CatchException(&err)
-	r.GetObject().Call("activate")
+	r.mdc.Call("activate")
 	return err
 }
 
@@ -50,7 +56,7 @@ func (r *R) Activate() error {
 func (r *R) Deactivate() error {
 	var err error
 	gojs.CatchException(&err)
-	r.GetObject().Call("deactivate")
+	r.mdc.Call("deactivate")
 	return err
 }
 
@@ -59,6 +65,6 @@ func (r *R) Deactivate() error {
 func (r *R) Layout() error {
 	var err error
 	gojs.CatchException(&err)
-	r.GetObject().Call("layout")
+	r.mdc.Call("layout")
 	return err
 }
