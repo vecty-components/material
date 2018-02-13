@@ -7,13 +7,13 @@ import (
 	"errors"
 
 	"agamigo.io/gojs"
-	"agamigo.io/material/component"
+	"agamigo.io/material"
 	"github.com/gopherjs/gopherjs/js"
 )
 
 // S is a material snackbar component.
 type S struct {
-	*component.Component
+	*material.Component
 	isNew bool
 
 	// DismissOnAction causes the snackbar to be dimissed when the user presses
@@ -59,8 +59,8 @@ type S struct {
 // }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *S) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *S) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCSnackbar",
 		MDCCamelCaseName: "snackbar",
 	}
@@ -68,7 +68,7 @@ func (c *S) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *S) SetComponent(mdcC *component.Component) {
+func (c *S) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

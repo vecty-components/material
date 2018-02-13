@@ -3,20 +3,18 @@
 // See: https://material.io/components/web/catalog/buttons/icon-toggle-buttons/
 package icontoggle // import "agamigo.io/material/icontoggle"
 
-import (
-	"agamigo.io/material/component"
-)
+import "agamigo.io/material"
 
 // IT is a material icontoggle component.
 type IT struct {
-	*component.Component
+	*material.Component
 	On       bool `js:"on"`
 	Disabled bool `js:"disabled"`
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *IT) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *IT) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCIconToggle",
 		MDCCamelCaseName: "iconToggle",
 	}
@@ -24,7 +22,7 @@ func (c *IT) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *IT) SetComponent(mdcC *component.Component) {
+func (c *IT) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

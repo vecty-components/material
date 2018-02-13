@@ -3,21 +3,19 @@
 // See: https://material.io/components/web/catalog/input-controls/radio-buttons/
 package radio // import "agamigo.io/material/radio"
 
-import (
-	"agamigo.io/material/component"
-)
+import "agamigo.io/material"
 
 // R is a material radio component.
 type R struct {
-	*component.Component
+	*material.Component
 	Checked  bool   `js:"checked"`
 	Disabled bool   `js:"disabled"`
 	Value    string `js:"value"`
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *R) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *R) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCRadio",
 		MDCCamelCaseName: "radio",
 	}
@@ -25,7 +23,7 @@ func (c *R) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *R) SetComponent(mdcC *component.Component) {
+func (c *R) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

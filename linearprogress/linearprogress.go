@@ -5,12 +5,12 @@ package linearprogress // import "agamigo.io/material/linearprogress"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/component"
+	"agamigo.io/material"
 )
 
 // LP is a material libearprogress component.
 type LP struct {
-	*component.Component
+	*material.Component
 	Determinate bool    `js:"determinate"`
 	Reverse     bool    `js:"reverse"`
 	Progress    float64 `js:"progress"`
@@ -19,8 +19,8 @@ type LP struct {
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *LP) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *LP) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCLinearProgress",
 		MDCCamelCaseName: "linearProgress",
 	}
@@ -28,7 +28,7 @@ func (c *LP) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *LP) SetComponent(mdcC *component.Component) {
+func (c *LP) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

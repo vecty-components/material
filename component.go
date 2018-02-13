@@ -1,4 +1,40 @@
-package component // import "agamigo.io/material/component"
+/*
+The material package provides interfaces and functions needed to implement/run
+material components in GopherJS.
+
+Quickstart Guide
+
+1. In your project include the all-in-one distribution of the MDC javascript
+library and set it to the global variable "mdc". This can be done a number of
+ways (HTML script element, webpack, filename "mdc.inc.js" for gopherjs to pick
+up, etc).
+
+2. Import a Material component from this project in your Go progrem.
+
+	import "agamigo.io/material"
+	import "agamigo.io/material/checkbox"
+
+3. Make the HTML suitable for that MDC component available to your GopherJS
+program. See: https://material.io/components/web/catalog/
+
+	<html>
+		<body>
+			<div class="mdc-checkbox">
+				<input class="mdc-checkbox__native-control" type="checkbox">
+			</div>
+		</body>
+	</html>
+
+4. Put that HTMLElement into a GopherJS object.
+
+	cbElem := js.Global.Get("document").Get("body").Get("firstElementChild")
+
+5. Create a new instance of the component and start it.
+
+	cb := checkbox.CB{}
+	material.Start(cb, cbElem)
+*/
+package material // import "agamigo.io/material"
 
 import (
 	"errors"
@@ -7,86 +43,11 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
-// Componenter is the base interface for every material component
-// implementation.
-type Componenter interface {
-	// SetComponent should replace a component implementation's Component with
-	// the provided component.
-	SetComponent(c *Component)
-
-	// GetComponent should return a pointer to the component implementation's
-	// underlying Component. Implementors that embed a *Component directly
-	// get this for free.
-	GetComponent() (c *Component)
-}
-
-// AfterStarter is implemented by components that need further setup ran
-// after their underlying MDC foundation has been initialized.
-type AfterStarter interface {
-	AfterStart() error
-}
-
-type ComponentTyper interface {
-	ComponentType() ComponentType
-}
-
-// MDCClasser is an interface that allows component users to specify the MDC
-// class object that will be used to create/initialize the component.
-type MDCClasser interface {
-	MDCClass() *js.Object
-}
-
-// ComponentStatus holds a component's lifecycle status.
-type ComponentStatus int
-
-const (
-	// An Uninitialized component has not been associated with the MDC library
-	// yet. This package does not provide a way to access an Uninitialized
-	// component.
-	Uninitialized ComponentStatus = iota
-
-	// A Stopped component has been associated with a JS Object constructed from
-	// a MDC class. New() returns a Stopped component, and Stop() will stop a
-	// Running component.
-	Stopped
-
-	// A Running component has had its underlying MDC init() method called,
-	// which attaches the component to a specific HTMLElement in the DOM. It is
-	// ready to be used.
-	Running
-)
-
 // Component is the base material component type. Types that embed Component and
-// implement Componenter can use the component.Start and component.Stop
-// functions.
+// implement Componenter can use the material.Start and material.Stop functions.
 type Component struct {
 	mdc    *js.Object
 	status ComponentStatus
-}
-
-// String returns the Component's StatusType as text.
-func (c *Component) String() string {
-	if c == nil || c.status == Uninitialized {
-		return Uninitialized.String()
-	}
-	return c.Status().String()
-}
-
-// String returns the string version of a StatusType.
-func (s ComponentStatus) String() string {
-	switch s {
-	case Stopped:
-		return "stopped"
-	case Running:
-		return "running"
-	}
-	return "uninitialized"
-}
-
-// Status returns the component's StatusType. For the string version use
-// Status().String().
-func (c *Component) Status() ComponentStatus {
-	return c.status
 }
 
 // Start takes a component implementation (c) and initializes it with an
@@ -145,7 +106,7 @@ func Start(c Componenter, rootElem *js.Object) (err error) {
 		newMDCClassObj = mdcObject.Get(CCaseName).Get(ClassName)
 	default:
 		return errors.New("The provided component does not implement " +
-			"component.ComponentTyper or component.MDCClasser.")
+			"material.ComponentTyper or material.MDCClasser.")
 	}
 
 	// Create a new MDC component instance tied to rootElem
@@ -187,7 +148,7 @@ func Stop(c Componenter) (err error) {
 }
 
 // GetComponent implements the Componenter interface. Component implementations
-// can use this method as-is when embedding an exposed component.Component.
+// can use this method as-is when embedding an exposed material.Component.
 func (c *Component) GetComponent() *Component {
 	return c
 }
@@ -201,4 +162,18 @@ func (c *Component) ComponentType() ComponentType {
 // GetObject returns the component's MDC JavaScript object.
 func (c *Component) GetObject() *js.Object {
 	return c.mdc
+}
+
+// String returns the Component's StatusType as text.
+func (c *Component) String() string {
+	if c == nil || c.status == Uninitialized {
+		return Uninitialized.String()
+	}
+	return c.Status().String()
+}
+
+// Status returns the component's StatusType. For the string version use
+// Status().String().
+func (c *Component) Status() ComponentStatus {
+	return c.status
 }

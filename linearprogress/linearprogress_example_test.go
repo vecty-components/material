@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"agamigo.io/material/component"
+	"agamigo.io/material"
 	"agamigo.io/material/linearprogress"
 	"agamigo.io/material/mdctest"
 	"github.com/gopherjs/gopherjs/js"
@@ -21,7 +21,7 @@ func Example() {
 	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err := component.Start(c, rootElem)
+	err := material.Start(c, rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
 	}

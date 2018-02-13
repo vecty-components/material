@@ -4,7 +4,7 @@
 package menu // import "agamigo.io/material/menu"
 
 import (
-	"agamigo.io/material/component"
+	"agamigo.io/material"
 	"github.com/gopherjs/gopherjs/js"
 )
 
@@ -23,7 +23,7 @@ const (
 
 // M is a material menu component.
 type M struct {
-	*component.Component
+	*material.Component
 
 	// Open is the visible state of the menu component.
 	Open bool `js:"open"`
@@ -49,8 +49,8 @@ type Margins struct {
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *M) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *M) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCMenu",
 		MDCCamelCaseName: "menu",
 	}
@@ -58,7 +58,7 @@ func (c *M) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *M) SetComponent(mdcC *component.Component) {
+func (c *M) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

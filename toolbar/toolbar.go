@@ -3,18 +3,16 @@
 // See: https://material.io/components/web/catalog/toolbar/
 package toolbar
 
-import (
-	"agamigo.io/material/component"
-)
+import "agamigo.io/material"
 
 // T is a material toolbar component.
 type T struct {
-	*component.Component
+	*material.Component
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *T) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *T) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCTextField",
 		MDCCamelCaseName: "textField",
 	}
@@ -22,7 +20,7 @@ func (c *T) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *T) SetComponent(mdcC *component.Component) {
+func (c *T) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

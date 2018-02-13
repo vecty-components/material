@@ -2,20 +2,17 @@
 //
 // See: https://material.io/components/web/catalog/drawers/
 package persistentdrawer // import "agamigo.io/material/persistentdrawer"
-
-import (
-	"agamigo.io/material/component"
-)
+import "agamigo.io/material"
 
 // PD is a material persistentdrawer component.
 type PD struct {
-	*component.Component
+	*material.Component
 	Open bool `js:"open"`
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *PD) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *PD) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCPersistentDrawer",
 		MDCCamelCaseName: "drawer",
 	}
@@ -23,7 +20,7 @@ func (c *PD) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *PD) SetComponent(mdcC *component.Component) {
+func (c *PD) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

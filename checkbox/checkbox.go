@@ -4,12 +4,12 @@
 package checkbox // import "agamigo.io/material/checkbox"
 
 import (
-	"agamigo.io/material/component"
+	"agamigo.io/material"
 )
 
 // CB is a material checkbox component.
 type CB struct {
-	*component.Component
+	*material.Component
 	Checked       bool   `js:"checked"`
 	Indeterminate bool   `js:"indeterminate"`
 	Disabled      bool   `js:"disabled"`
@@ -17,8 +17,8 @@ type CB struct {
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *CB) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *CB) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCCheckbox",
 		MDCCamelCaseName: "checkbox",
 	}
@@ -26,7 +26,7 @@ func (c *CB) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *CB) SetComponent(mdcC *component.Component) {
+func (c *CB) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 
