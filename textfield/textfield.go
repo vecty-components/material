@@ -5,12 +5,12 @@ package textfield // import "agamigo.io/material/textfield"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/component"
+	"agamigo.io/material"
 )
 
 // TF is a material textfield component.
 type TF struct {
-	*component.Component
+	*material.Component
 
 	// The current value of the textfield. Changing this will update the
 	// textfield’s value.
@@ -30,8 +30,8 @@ type TF struct {
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *TF) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *TF) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCTextField",
 		MDCCamelCaseName: "textField",
 	}
@@ -39,7 +39,7 @@ func (c *TF) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *TF) SetComponent(mdcC *component.Component) {
+func (c *TF) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

@@ -12,6 +12,12 @@ The core Material [component package][Material component] is usable. Work is
 underway to implement the specific Material component types, which is tracked in
 [an issue][gl-issue-1].
 
+## Getting Started
+
+There is a quickstart guide in the [material package][material component]
+documentation, and every component package's documentation page on GoDoc has a
+basic example of how to set up and use it.
+
 ## Contributing
 
 Any and all ideas, changes, bug reports, etc. are encouraged.
@@ -47,12 +53,12 @@ definitions we are trying to enforce in Material.
 | [material-components-web][] | The official upstream JavaScript library.            |
 | MDC or MCW                  | Synonyms/abbreviations of `material-components-web`. |
 | [Material][]                | This project.                                        |
-| [Material component][]      | Our `agamigo.io/material/component` Go package.      |
+| [Material component][]      | Our `agamigo.io/material/*` Go packages.             |
 | [Material menu][]           | An example of a specific type of Material component. |
 
 [material-components-web]: https://github.com/material-components/material-components-web
 [Material]: https://gitlab.com/agamigo/material
-[Material component]: https://godoc.org/agamigo.io/material/component
+[Material component]: https://godoc.org/agamigo.io/material
 [Material menu]: https://godoc.org/agamigo.io/material/menu
 [vecty-material]: https://gitlab.com/agamigo/vecty-material
 [Gopher Slack]: https://gophers.slack.com

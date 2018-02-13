@@ -1,4 +1,4 @@
-package component // import "agamigo.io/material/component"
+package material // import "agamigo.io/material"
 
 // ComponentType is a specific component type, as implemented by the
 // material-components-web library.//

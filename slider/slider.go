@@ -5,12 +5,12 @@ package slider // import "agamigo.io/material/slider"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/component"
+	"agamigo.io/material"
 )
 
 // S is a material slider component.
 type S struct {
-	*component.Component
+	*material.Component
 
 	// The current value of the slider. Changing this will update the slider’s
 	// value.
@@ -36,8 +36,8 @@ type S struct {
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *S) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *S) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCSlider",
 		MDCCamelCaseName: "slider",
 	}
@@ -45,7 +45,7 @@ func (c *S) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *S) SetComponent(mdcC *component.Component) {
+func (c *S) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

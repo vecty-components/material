@@ -5,18 +5,18 @@ package dialog // import "agamigo.io/material/dialog"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/component"
+	"agamigo.io/material"
 )
 
 // D is a material dialog component.
 type D struct {
-	*component.Component
+	*material.Component
 	IsOpen bool `js:"open"`
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *D) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *D) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCDialog",
 		MDCCamelCaseName: "dialog",
 	}
@@ -24,7 +24,7 @@ func (c *D) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *D) SetComponent(mdcC *component.Component) {
+func (c *D) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

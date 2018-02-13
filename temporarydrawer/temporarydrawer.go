@@ -2,20 +2,17 @@
 //
 // See: https://material.io/components/web/catalog/drawers/
 package temporarydrawer // import "agamigo.io/material/temporarydrawer"
-
-import (
-	"agamigo.io/material/component"
-)
+import "agamigo.io/material"
 
 // TD is a material temporarydrawer component.
 type TD struct {
-	*component.Component
+	*material.Component
 	Open bool `js:"open"`
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *TD) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *TD) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCTemporaryDrawer",
 		MDCCamelCaseName: "drawer",
 	}
@@ -23,7 +20,7 @@ func (c *TD) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *TD) SetComponent(mdcC *component.Component) {
+func (c *TD) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 

@@ -5,19 +5,19 @@ package ripple // import "agamigo.io/material/ripple"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/component"
+	"agamigo.io/material"
 )
 
 // R is a material ripple component.
 type R struct {
-	*component.Component
+	*material.Component
 	Unbounded bool `js:"unbounded"`
 	Disabled  bool `js:"disabled"`
 }
 
 // ComponentType implements the ComponentTyper interface.
-func (c *R) ComponentType() component.ComponentType {
-	return component.ComponentType{
+func (c *R) ComponentType() material.ComponentType {
+	return material.ComponentType{
 		MDCClassName:     "MDCRipple",
 		MDCCamelCaseName: "ripple",
 	}
@@ -25,7 +25,7 @@ func (c *R) ComponentType() component.ComponentType {
 
 // SetComponent implements the Componenter interface and replaces the component's
 // base Component with mdcC.
-func (c *R) SetComponent(mdcC *component.Component) {
+func (c *R) SetComponent(mdcC *material.Component) {
 	c.Component = mdcC
 }
 
