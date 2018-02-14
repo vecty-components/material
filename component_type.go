@@ -1,7 +1,7 @@
 package material // import "agamigo.io/material"
 
 // ComponentType is a specific component type, as implemented by the
-// material-components-web library.//
+// material-components-web library.
 //
 // See: https://material.io/components/web/catalog/
 type ComponentType struct {
@@ -17,6 +17,7 @@ type ComponentType struct {
 	MDCCamelCaseName string
 }
 
+// String returns the ComponentType's MDCClassName field.
 func (n ComponentType) String() string {
 	return n.MDCClassName
 }

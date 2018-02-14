@@ -11,8 +11,7 @@ up, etc).
 
 2. Import a Material component from this project in your Go progrem.
 
-	import "agamigo.io/material"
-	import "agamigo.io/material/checkbox"
+  import "agamigo.io/material/checkbox"
 
 3. Make the HTML suitable for that MDC component available to your GopherJS
 program. See: https://material.io/components/web/catalog/
@@ -27,11 +26,11 @@ program. See: https://material.io/components/web/catalog/
 
 4. Put that HTMLElement into a GopherJS object.
 
-	cbElem := js.Global.Get("document").Get("body").Get("firstElementChild")
+  cbElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 5. Create a new instance of the component and start it.
 
-	cb := checkbox.CB{}
-	material.Start(cb, cbElem)
+  cb := checkbox.CB{}
+  cb.Start(cbElem)
 */
 package material // import "agamigo.io/material"

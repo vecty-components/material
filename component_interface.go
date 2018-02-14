@@ -13,12 +13,6 @@ type Componenter interface {
 	SetComponent(mdc *js.Object)
 }
 
-// AfterStarter is implemented by components that need further setup ran
-// after their underlying MDC foundation has been initialized.
-type AfterStarter interface {
-	AfterStart() error
-}
-
 // ComponentTyper is one way to tell material.Start how to find the MDC library
 // needed for a component. For more control, implement MDCClasser.
 type ComponentTyper interface {
@@ -26,7 +20,8 @@ type ComponentTyper interface {
 }
 
 // MDCClasser is an interface that allows component users to specify the MDC
-// class object that will be used to create/initialize the component.
+// class object that will be used to create/initialize the component. It
+// overrides ComponentTyper when calling material.Start.
 type MDCClasser interface {
 	MDCClass() *js.Object
 }
