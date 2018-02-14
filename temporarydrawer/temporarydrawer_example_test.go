@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"agamigo.io/material/mdctest"
+	"agamigo.io/material/internal/mdctest"
 	"agamigo.io/material/temporarydrawer"
 	"github.com/gopherjs/gopherjs/js"
 )

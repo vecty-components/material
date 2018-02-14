@@ -15,8 +15,8 @@ underway to implement the specific Material component types, which is tracked in
 ## Getting Started
 
 There is a quickstart guide in the [material package][material component]
-documentation, and every component package's documentation page on GoDoc has a
-basic example of how to set up and use it.
+documentation, and every component package's documentation page has a basic
+example of how to set up and use it.
 
 ## Contributing
 

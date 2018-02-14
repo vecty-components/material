@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"agamigo.io/material/dialog"
-	"agamigo.io/material/mdctest"
+	"agamigo.io/material/internal/mdctest"
 	"github.com/gopherjs/gopherjs/js"
 )
 
