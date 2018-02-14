@@ -51,7 +51,7 @@ type Margins struct {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *M) Start(rootElem *js.Object) error {
-	err := base.Start(c.mdc, rootElem)
+	err := base.Start(c.Component(), rootElem)
 	if err != nil {
 		return err
 	}

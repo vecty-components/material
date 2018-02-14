@@ -20,7 +20,7 @@ type CB struct {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *CB) Start(rootElem *js.Object) error {
-	return base.Start(c.mdc, rootElem)
+	return base.Start(c.Component(), rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
