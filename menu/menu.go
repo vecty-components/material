@@ -23,7 +23,7 @@ const (
 
 // M is a material menu component.
 type M struct {
-	mdc *js.Object
+	mdc *material.Component
 
 	// Open is the visible state of the menu component.
 	Open bool `js:"open"`
@@ -48,28 +48,38 @@ type Margins struct {
 	Bottom int
 }
 
-// ComponentType implements the ComponentTyper interface.
-func (c *M) ComponentType() material.ComponentType {
-	return material.ComponentType{
-		MDCClassName:     "MDCMenu",
-		MDCCamelCaseName: "menu",
+// Start initializes the component with an existing HTMLElement, rootElem. Start
+// should only be used on a newly created component, or after calling Stop.
+func (c *M) Start(rootElem *js.Object) error {
+	err := material.Start(c.mdc, rootElem)
+	if err != nil {
+		return err
 	}
+	err = c.afterStart()
+	if err != nil {
+		// TODO: handle afterStart + stop error
+		_ = c.Stop()
+		return err
+	}
+	return nil
 }
 
-// Component implements the material.Componenter interface.
-func (c *M) Component() *js.Object {
+// Stop removes the component's association with its HTMLElement and cleans up
+// event listeners, etc.
+func (c *M) Stop() error {
+	return material.Stop(c.mdc)
+}
+
+// Component returns the component's underlying material.Component.
+func (c *M) Component() *material.Component {
+	if c.mdc == nil {
+		c.mdc = &material.Component{}
+		c.mdc.Type = material.ComponentType{
+			MDCClassName:     "MDCMenu",
+			MDCCamelCaseName: "menu",
+		}
+	}
 	return c.mdc
-}
-
-// SetComponent implements the Componenter interface and replaces the
-// component's base Component with mdc.
-func (c *M) SetComponent(mdc *js.Object) {
-	c.mdc = mdc
-}
-
-// String returns the component's ComponentType MDCClassName.
-func (c *M) String() string {
-	return c.ComponentType().String()
 }
 
 // OpenFocus opens the menu with an item at index given initial focus.

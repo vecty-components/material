@@ -8,7 +8,7 @@ import (
 // AfterStart implements the material.AfterStarter interface. It adds a missing
 // getter to MDCMenu.quickOpen so we can work with that variable as expected in
 // Go.
-func (c *M) AfterStart() error {
+func (c *M) afterStart() error {
 	var err error
 	gojs.CatchException(&err)
 	o := c.Component()

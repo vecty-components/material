@@ -9,32 +9,37 @@ import (
 
 // PD is a material persistentdrawer component.
 type PD struct {
-	mdc  *js.Object
+	mdc  *material.Component
 	Open bool `js:"open"`
+}
+
+// Start initializes the component with an existing HTMLElement, rootElem. Start
+// should only be used on a newly created component, or after calling Stop.
+func (c *PD) Start(rootElem *js.Object) error {
+	return material.Start(c.mdc, rootElem)
+}
+
+// Stop removes the component's association with its HTMLElement and cleans up
+// event listeners, etc.
+func (c *PD) Stop() error {
+	return material.Stop(c.mdc)
+}
+
+// Component returns the component's underlying material.Component.
+func (c *PD) Component() *material.Component {
+	if c.mdc == nil {
+		c.mdc = &material.Component{}
+		c.mdc.Type = material.ComponentType{
+			MDCClassName:     "MDCPersistentDrawer",
+			MDCCamelCaseName: "drawer",
+		}
+	}
+	return c.mdc
 }
 
 // ComponentType implements the ComponentTyper interface.
 func (c *PD) ComponentType() material.ComponentType {
-	return material.ComponentType{
-		MDCClassName:     "MDCPersistentDrawer",
-		MDCCamelCaseName: "drawer",
-	}
-}
-
-// Component implements the material.Componenter interface.
-func (c *PD) Component() *js.Object {
-	return c.mdc
-}
-
-// SetComponent implements the Componenter interface and replaces the
-// component's base Component with mdcC.
-func (c *PD) SetComponent(mdc *js.Object) {
-	c.mdc = mdc
-}
-
-// String returns the component's ComponentType MDCClassName.
-func (c *PD) String() string {
-	return c.ComponentType().String()
+	return material.ComponentType{}
 }
 
 // TODO: Custom events

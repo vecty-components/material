@@ -11,32 +11,32 @@ import (
 
 // D is a material dialog component.
 type D struct {
-	mdc    *js.Object
+	mdc    *material.Component
 	IsOpen bool `js:"open"`
 }
 
-// ComponentType implements the ComponentTyper interface.
-func (c *D) ComponentType() material.ComponentType {
-	return material.ComponentType{
-		MDCClassName:     "MDCDialog",
-		MDCCamelCaseName: "dialog",
+// Start initializes the component with an existing HTMLElement, rootElem. Start
+// should only be used on a newly created component, or after calling Stop.
+func (c *D) Start(rootElem *js.Object) error {
+	return material.Start(c.mdc, rootElem)
+}
+
+// Stop removes the component's association with its HTMLElement and cleans up
+// event listeners, etc.
+func (c *D) Stop() error {
+	return material.Stop(c.mdc)
+}
+
+// Component returns the component's underlying material.Component.
+func (c *D) Component() *material.Component {
+	if c.mdc == nil {
+		c.mdc = &material.Component{}
+		c.mdc.Type = material.ComponentType{
+			MDCClassName:     "MDCDialog",
+			MDCCamelCaseName: "dialog",
+		}
 	}
-}
-
-// Component implements the material.Componenter interface.
-func (c *D) Component() *js.Object {
 	return c.mdc
-}
-
-// SetComponent implements the Componenter interface and replaces the
-// component's base Component with mdc.
-func (c *D) SetComponent(mdc *js.Object) {
-	c.mdc = mdc
-}
-
-// String returns the component's ComponentType MDCClassName.
-func (c *D) String() string {
-	return c.ComponentType().String()
 }
 
 // Open shows the dialog. If the dialog is already open then Open is a no-op.

@@ -11,7 +11,7 @@ import (
 
 // S is a material slider component.
 type S struct {
-	mdc *js.Object
+	mdc *material.Component
 
 	// The current value of the slider. Changing this will update the slider’s
 	// value.
@@ -36,28 +36,28 @@ type S struct {
 	Disabled bool `js:"disabled"`
 }
 
-// ComponentType implements the ComponentTyper interface.
-func (c *S) ComponentType() material.ComponentType {
-	return material.ComponentType{
-		MDCClassName:     "MDCSlider",
-		MDCCamelCaseName: "slider",
+// Start initializes the component with an existing HTMLElement, rootElem. Start
+// should only be used on a newly created component, or after calling Stop.
+func (c *S) Start(rootElem *js.Object) error {
+	return material.Start(c.mdc, rootElem)
+}
+
+// Stop removes the component's association with its HTMLElement and cleans up
+// event listeners, etc.
+func (c *S) Stop() error {
+	return material.Stop(c.mdc)
+}
+
+// Component returns the component's underlying material.Component.
+func (c *S) Component() *material.Component {
+	if c.mdc == nil {
+		c.mdc = &material.Component{}
+		c.mdc.Type = material.ComponentType{
+			MDCClassName:     "MDCSlider",
+			MDCCamelCaseName: "slider",
+		}
 	}
-}
-
-// Component implements the material.Componenter interface.
-func (c *S) Component() *js.Object {
 	return c.mdc
-}
-
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdc.
-func (c *S) SetComponent(mdc *js.Object) {
-	c.mdc = mdc
-}
-
-// String returns the component's ComponentType MDCClassName.
-func (c *S) String() string {
-	return c.ComponentType().String()
 }
 
 // Layout recomputes the dimensions and re-lays out the component. This should

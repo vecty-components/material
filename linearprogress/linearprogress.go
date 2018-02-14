@@ -11,7 +11,7 @@ import (
 
 // LP is a material libearprogress component.
 type LP struct {
-	mdc         *js.Object
+	mdc         *material.Component
 	Determinate bool    `js:"determinate"`
 	Reverse     bool    `js:"reverse"`
 	Progress    float64 `js:"progress"`
@@ -19,28 +19,38 @@ type LP struct {
 	bufferCache float64
 }
 
-// ComponentType implements the ComponentTyper interface.
-func (c *LP) ComponentType() material.ComponentType {
-	return material.ComponentType{
-		MDCClassName:     "MDCLinearProgress",
-		MDCCamelCaseName: "linearProgress",
+// Start initializes the component with an existing HTMLElement, rootElem. Start
+// should only be used on a newly created component, or after calling Stop.
+func (c *LP) Start(rootElem *js.Object) error {
+	err := material.Start(c.mdc, rootElem)
+	if err != nil {
+		return err
 	}
+	err = c.afterStart()
+	if err != nil {
+		// TODO: handle afterStart + stop error
+		_ = c.Stop()
+		return err
+	}
+	return nil
 }
 
-// Component implements the material.Componenter interface.
-func (c *LP) Component() *js.Object {
+// Stop removes the component's association with its HTMLElement and cleans up
+// event listeners, etc.
+func (c *LP) Stop() error {
+	return material.Stop(c.mdc)
+}
+
+// Component returns the component's underlying material.Component.
+func (c *LP) Component() *material.Component {
+	if c.mdc == nil {
+		c.mdc = &material.Component{}
+		c.mdc.Type = material.ComponentType{
+			MDCClassName:     "MDCLinearProgress",
+			MDCCamelCaseName: "linearProgress",
+		}
+	}
 	return c.mdc
-}
-
-// SetComponent implements the Componenter interface and replaces the
-// component's base Component with mdc.
-func (c *LP) SetComponent(mdc *js.Object) {
-	c.mdc = mdc
-}
-
-// String returns the component's ComponentType MDCClassName.
-func (c *LP) String() string {
-	return c.ComponentType().String()
 }
 
 // Open opens the linearProgress component.

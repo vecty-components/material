@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 
-	"agamigo.io/material"
 	"agamigo.io/material/mdctest"
 	"agamigo.io/material/persistentdrawer"
 	"github.com/gopherjs/gopherjs/js"
@@ -16,19 +15,26 @@ func Example() {
 
 	// Set up a DOM HTMLElement suitable for a persistentdrawer.
 	js.Global.Get("document").Get("body").Set("innerHTML",
-		mdctest.HTML(c.ComponentType().MDCClassName))
+		mdctest.HTML(c.Component().Type.MDCClassName))
 	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
-	err := material.Start(c, rootElem)
+	err := c.Start(rootElem)
 	if err != nil {
-		log.Fatalf("Unable to start component %s: %v\n", c, err.Error())
+		log.Fatalf("Unable to start component %s: %v\n",
+			c.Component().Type, err)
 	}
 
 	printStatus(c)
 	printState(c)
 	c.Open = true
 	printState(c)
+
+	err = c.Stop()
+	if err != nil {
+		log.Fatalf("Unable to stop component %s: %v\n",
+			c.Component().Type, err)
+	}
 
 	// Output:
 	// MDCPersistentDrawer
@@ -39,7 +45,7 @@ func Example() {
 }
 
 func printStatus(c *persistentdrawer.PD) {
-	fmt.Printf("%s\n", c)
+	fmt.Printf("%s\n", c.Component().Type)
 }
 
 func printState(c *persistentdrawer.PD) {

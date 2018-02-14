@@ -10,31 +10,31 @@ import (
 
 // T is a material toolbar component.
 type T struct {
-	mdc *js.Object
+	mdc *material.Component
 }
 
-// ComponentType implements the ComponentTyper interface.
-func (c *T) ComponentType() material.ComponentType {
-	return material.ComponentType{
-		MDCClassName:     "MDCTextField",
-		MDCCamelCaseName: "textField",
+// Start initializes the component with an existing HTMLElement, rootElem. Start
+// should only be used on a newly created component, or after calling Stop.
+func (c *T) Start(rootElem *js.Object) error {
+	return material.Start(c.mdc, rootElem)
+}
+
+// Stop removes the component's association with its HTMLElement and cleans up
+// event listeners, etc.
+func (c *T) Stop() error {
+	return material.Stop(c.mdc)
+}
+
+// Component returns the component's underlying material.Component.
+func (c *T) Component() *material.Component {
+	if c.mdc == nil {
+		c.mdc = &material.Component{}
+		c.mdc.Type = material.ComponentType{
+			MDCClassName:     "MDCTextField",
+			MDCCamelCaseName: "textField",
+		}
 	}
-}
-
-// Component implements the material.Componenter interface.
-func (c *T) Component() *js.Object {
 	return c.mdc
-}
-
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdc.
-func (c *T) SetComponent(mdc *js.Object) {
-	c.mdc = mdc
-}
-
-// String returns the component's ComponentType MDCClassName.
-func (c *T) String() string {
-	return c.ComponentType().String()
 }
 
 // TODO: Handle events?

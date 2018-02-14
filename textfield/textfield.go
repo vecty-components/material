@@ -11,7 +11,7 @@ import (
 
 // TF is a material textfield component.
 type TF struct {
-	mdc *js.Object
+	mdc *material.Component
 
 	// The current value of the textfield. Changing this will update the
 	// textfield’s value.
@@ -30,28 +30,28 @@ type TF struct {
 	HelperText string `js:"helperText"`
 }
 
-// ComponentType implements the ComponentTyper interface.
-func (c *TF) ComponentType() material.ComponentType {
-	return material.ComponentType{
-		MDCClassName:     "MDCTextField",
-		MDCCamelCaseName: "textField",
+// Start initializes the component with an existing HTMLElement, rootElem. Start
+// should only be used on a newly created component, or after calling Stop.
+func (c *TF) Start(rootElem *js.Object) error {
+	return material.Start(c.mdc, rootElem)
+}
+
+// Stop removes the component's association with its HTMLElement and cleans up
+// event listeners, etc.
+func (c *TF) Stop() error {
+	return material.Stop(c.mdc)
+}
+
+// Component returns the component's underlying material.Component.
+func (c *TF) Component() *material.Component {
+	if c.mdc == nil {
+		c.mdc = &material.Component{}
+		c.mdc.Type = material.ComponentType{
+			MDCClassName:     "MDCTextField",
+			MDCCamelCaseName: "textField",
+		}
 	}
-}
-
-// Component implements the material.Componenter interface.
-func (c *TF) Component() *js.Object {
 	return c.mdc
-}
-
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdc.
-func (c *TF) SetComponent(mdc *js.Object) {
-	c.mdc = mdc
-}
-
-// String returns the component's ComponentType MDCClassName.
-func (c *TF) String() string {
-	return c.ComponentType().String()
 }
 
 // Layout adjusts the dimensions and positions for all sub-elements.

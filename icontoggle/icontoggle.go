@@ -10,33 +10,33 @@ import (
 
 // IT is a material icontoggle component.
 type IT struct {
-	mdc      *js.Object
+	mdc      *material.Component
 	On       bool `js:"on"`
 	Disabled bool `js:"disabled"`
 }
 
-// ComponentType implements the ComponentTyper interface.
-func (c *IT) ComponentType() material.ComponentType {
-	return material.ComponentType{
-		MDCClassName:     "MDCIconToggle",
-		MDCCamelCaseName: "iconToggle",
+// Start initializes the component with an existing HTMLElement, rootElem. Start
+// should only be used on a newly created component, or after calling Stop.
+func (c *IT) Start(rootElem *js.Object) error {
+	return material.Start(c.mdc, rootElem)
+}
+
+// Stop removes the component's association with its HTMLElement and cleans up
+// event listeners, etc.
+func (c *IT) Stop() error {
+	return material.Stop(c.mdc)
+}
+
+// Component returns the component's underlying material.Component.
+func (c *IT) Component() *material.Component {
+	if c.mdc == nil {
+		c.mdc = &material.Component{}
+		c.mdc.Type = material.ComponentType{
+			MDCClassName:     "MDCIconToggle",
+			MDCCamelCaseName: "iconToggle",
+		}
 	}
-}
-
-// Component implements the material.Componenter interface.
-func (c *IT) Component() *js.Object {
 	return c.mdc
-}
-
-// SetComponent implements the Componenter interface and replaces the
-// component's base Component with mdc.
-func (c *IT) SetComponent(mdc *js.Object) {
-	c.mdc = mdc
-}
-
-// String returns the component's ComponentType MDCClassName.
-func (c *IT) String() string {
-	return c.ComponentType().String()
 }
 
 // TODO: Wrap refreshToggleData

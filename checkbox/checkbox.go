@@ -10,39 +10,33 @@ import (
 
 // CB is a material checkbox component.
 type CB struct {
-	*component
+	mdc           *material.Component
 	Checked       bool   `js:"checked"`
 	Indeterminate bool   `js:"indeterminate"`
 	Disabled      bool   `js:"disabled"`
 	Value         string `js:"value"`
 }
 
-// component has fields and methods we need to satisfy material.Componenter but
-// we do not need to expose to component users.
-type component struct {
-	*js.Object
+// Start initializes the component with an existing HTMLElement, rootElem. Start
+// should only be used on a newly created component, or after calling Stop.
+func (c *CB) Start(rootElem *js.Object) error {
+	return material.Start(c.mdc, rootElem)
 }
 
-// ComponentType implements the ComponentTyper interface.
-func (c *CB) ComponentType() material.ComponentType {
-	return material.ComponentType{
-		MDCClassName:     "MDCCheckbox",
-		MDCCamelCaseName: "checkbox",
+// Stop removes the component's association with its HTMLElement and cleans up
+// event listeners, etc.
+func (c *CB) Stop() error {
+	return material.Stop(c.mdc)
+}
+
+// Component returns the component's underlying material.Component.
+func (c *CB) Component() *material.Component {
+	if c.mdc == nil {
+		c.mdc = &material.Component{}
+		c.mdc.Type = material.ComponentType{
+			MDCClassName:     "MDCCheckbox",
+			MDCCamelCaseName: "checkbox",
+		}
 	}
-}
-
-// Component implements the material.Componenter interface.
-func (c *CB) Component() *js.Object {
 	return c.mdc
-}
-
-// SetComponent implements the material.Componenter interface and replaces the
-// component's base Component with mdcC.
-func (c *CB) SetComponent(mdc *js.Object) {
-	c.mdc = mdc
-}
-
-// String returns the component's ComponentType MDCClassName.
-func (c *CB) String() string {
-	return c.ComponentType().String()
 }

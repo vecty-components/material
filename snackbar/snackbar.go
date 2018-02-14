@@ -13,7 +13,7 @@ import (
 
 // S is a material snackbar component.
 type S struct {
-	mdc   *js.Object
+	mdc   *material.Component
 	isNew bool
 
 	// DismissOnAction causes the snackbar to be dimissed when the user presses
@@ -47,28 +47,28 @@ type S struct {
 	ActionOnBottom bool `js:"actionOnBottom"`
 }
 
-// ComponentType implements the ComponentTyper interface.
-func (c *S) ComponentType() material.ComponentType {
-	return material.ComponentType{
-		MDCClassName:     "MDCSnackbar",
-		MDCCamelCaseName: "snackbar",
+// Start initializes the component with an existing HTMLElement, rootElem. Start
+// should only be used on a newly created component, or after calling Stop.
+func (c *S) Start(rootElem *js.Object) error {
+	return material.Start(c.mdc, rootElem)
+}
+
+// Stop removes the component's association with its HTMLElement and cleans up
+// event listeners, etc.
+func (c *S) Stop() error {
+	return material.Stop(c.mdc)
+}
+
+// Component returns the component's underlying material.Component.
+func (c *S) Component() *material.Component {
+	if c.mdc == nil {
+		c.mdc = &material.Component{}
+		c.mdc.Type = material.ComponentType{
+			MDCClassName:     "MDCSnackbar",
+			MDCCamelCaseName: "snackbar",
+		}
 	}
-}
-
-// Component implements the material.Componenter interface.
-func (c *S) Component() *js.Object {
 	return c.mdc
-}
-
-// SetComponent implements the Componenter interface and replaces the component's
-// base Component with mdc.
-func (c *S) SetComponent(mdc *js.Object) {
-	c.mdc = mdc
-}
-
-// String returns the component's ComponentType MDCClassName.
-func (c *S) String() string {
-	return c.ComponentType().String()
 }
 
 // Show displays the snackbar. If the configuration is invalid an error message
