@@ -5,13 +5,13 @@ package textfield // import "agamigo.io/material/textfield"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material"
+	"agamigo.io/material/internal/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 
 // TF is a material textfield component.
 type TF struct {
-	mdc *material.Component
+	mdc *base.Component
 
 	// The current value of the textfield. Changing this will update the
 	// textfield’s value.
@@ -33,20 +33,20 @@ type TF struct {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *TF) Start(rootElem *js.Object) error {
-	return material.Start(c.mdc, rootElem)
+	return base.Start(c.mdc, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *TF) Stop() error {
-	return material.Stop(c.mdc)
+	return base.Stop(c.mdc)
 }
 
-// Component returns the component's underlying material.Component.
-func (c *TF) Component() *material.Component {
+// Component returns the component's underlying base.Component.
+func (c *TF) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &material.Component{}
-		c.mdc.Type = material.ComponentType{
+		c.mdc = &base.Component{}
+		c.mdc.Type = base.ComponentType{
 			MDCClassName:     "MDCTextField",
 			MDCCamelCaseName: "textField",
 		}

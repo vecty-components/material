@@ -4,13 +4,13 @@
 package icontoggle // import "agamigo.io/material/icontoggle"
 
 import (
-	"agamigo.io/material"
+	"agamigo.io/material/internal/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 
 // IT is a material icontoggle component.
 type IT struct {
-	mdc      *material.Component
+	mdc      *base.Component
 	On       bool `js:"on"`
 	Disabled bool `js:"disabled"`
 }
@@ -18,20 +18,20 @@ type IT struct {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *IT) Start(rootElem *js.Object) error {
-	return material.Start(c.mdc, rootElem)
+	return base.Start(c.mdc, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *IT) Stop() error {
-	return material.Stop(c.mdc)
+	return base.Stop(c.mdc)
 }
 
-// Component returns the component's underlying material.Component.
-func (c *IT) Component() *material.Component {
+// Component returns the component's underlying base.Component.
+func (c *IT) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &material.Component{}
-		c.mdc.Type = material.ComponentType{
+		c.mdc = &base.Component{}
+		c.mdc.Type = base.ComponentType{
 			MDCClassName:     "MDCIconToggle",
 			MDCCamelCaseName: "iconToggle",
 		}

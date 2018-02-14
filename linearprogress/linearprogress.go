@@ -5,13 +5,13 @@ package linearprogress // import "agamigo.io/material/linearprogress"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material"
+	"agamigo.io/material/internal/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 
 // LP is a material libearprogress component.
 type LP struct {
-	mdc         *material.Component
+	mdc         *base.Component
 	Determinate bool    `js:"determinate"`
 	Reverse     bool    `js:"reverse"`
 	Progress    float64 `js:"progress"`
@@ -22,7 +22,7 @@ type LP struct {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *LP) Start(rootElem *js.Object) error {
-	err := material.Start(c.mdc, rootElem)
+	err := base.Start(c.mdc, rootElem)
 	if err != nil {
 		return err
 	}
@@ -38,14 +38,14 @@ func (c *LP) Start(rootElem *js.Object) error {
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *LP) Stop() error {
-	return material.Stop(c.mdc)
+	return base.Stop(c.mdc)
 }
 
-// Component returns the component's underlying material.Component.
-func (c *LP) Component() *material.Component {
+// Component returns the component's underlying base.Component.
+func (c *LP) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &material.Component{}
-		c.mdc.Type = material.ComponentType{
+		c.mdc = &base.Component{}
+		c.mdc.Type = base.ComponentType{
 			MDCClassName:     "MDCLinearProgress",
 			MDCCamelCaseName: "linearProgress",
 		}

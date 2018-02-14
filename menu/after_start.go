@@ -5,9 +5,8 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
-// AfterStart implements the material.AfterStarter interface. It adds a missing
-// getter to MDCMenu.quickOpen so we can work with that variable as expected in
-// Go.
+// afterStart adds a missing getter to MDCMenu.quickOpen so we can work with
+// that variable as expected in Go.
 func (c *M) afterStart() error {
 	var err error
 	gojs.CatchException(&err)

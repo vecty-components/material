@@ -4,7 +4,7 @@
 package menu // import "agamigo.io/material/menu"
 
 import (
-	"agamigo.io/material"
+	"agamigo.io/material/internal/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 
@@ -23,7 +23,7 @@ const (
 
 // M is a material menu component.
 type M struct {
-	mdc *material.Component
+	mdc *base.Component
 
 	// Open is the visible state of the menu component.
 	Open bool `js:"open"`
@@ -51,7 +51,7 @@ type Margins struct {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *M) Start(rootElem *js.Object) error {
-	err := material.Start(c.mdc, rootElem)
+	err := base.Start(c.mdc, rootElem)
 	if err != nil {
 		return err
 	}
@@ -67,14 +67,14 @@ func (c *M) Start(rootElem *js.Object) error {
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *M) Stop() error {
-	return material.Stop(c.mdc)
+	return base.Stop(c.mdc)
 }
 
-// Component returns the component's underlying material.Component.
-func (c *M) Component() *material.Component {
+// Component returns the component's underlying base.Component.
+func (c *M) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &material.Component{}
-		c.mdc.Type = material.ComponentType{
+		c.mdc = &base.Component{}
+		c.mdc.Type = base.ComponentType{
 			MDCClassName:     "MDCMenu",
 			MDCCamelCaseName: "menu",
 		}

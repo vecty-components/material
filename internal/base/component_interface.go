@@ -1,4 +1,4 @@
-package material // import "agamigo.io/material"
+package base // import "agamigo.io/material/internal/base"
 
 import "github.com/gopherjs/gopherjs/js"
 
@@ -13,7 +13,7 @@ type Componenter interface {
 	SetComponent(mdc *js.Object)
 }
 
-// ComponentTyper is one way to tell material.Start how to find the MDC library
+// ComponentTyper is one way to tell base.Start how to find the MDC library
 // needed for a component. For more control, implement MDCClasser.
 type ComponentTyper interface {
 	ComponentType() ComponentType
@@ -21,7 +21,7 @@ type ComponentTyper interface {
 
 // MDCClasser is an interface that allows component users to specify the MDC
 // class object that will be used to create/initialize the component. It
-// overrides ComponentTyper when calling material.Start.
+// overrides ComponentTyper when calling base.Start.
 type MDCClasser interface {
 	MDCClass() *js.Object
 }

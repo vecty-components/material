@@ -1,4 +1,8 @@
-package material // import "agamigo.io/material"
+/*
+The base package contains code shared by implementations of material components
+for GopherJS.
+*/
+package base // import "agamigo.io/material/internal/base"
 
 import (
 	"errors"
@@ -13,12 +17,12 @@ type Component struct {
 	Type ComponentType
 }
 
-// Component implements the material.Componenter interface.
+// Component implements the base.Componenter interface.
 func (c *Component) Component() *js.Object {
 	return c.Object
 }
 
-// SetComponent implements the material.Componenter interface and replaces the
+// SetComponent implements the base.Componenter interface and replaces the
 // Component's base Component with mdc.
 func (c *Component) SetComponent(mdc *js.Object) {
 	c.Object = mdc
@@ -83,7 +87,7 @@ func Start(c Componenter, rootElem *js.Object) (err error) {
 		newMDCClassObj = mdcObject.Get(CCaseName).Get(ClassName)
 	default:
 		return errors.New("The provided component does not implement " +
-			"material.ComponentTyper or material.MDCClasser.")
+			"base.ComponentTyper or base.MDCClasser.")
 	}
 
 	// Create a new MDC component instance tied to rootElem

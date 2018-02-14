@@ -5,9 +5,8 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
-// afterStart implements the material.AfterStarter interface. It defines missing
-// getters for the MDCLinearProgress properties, so that we can use our struct
-// fields as one would normally expect.
+// afterStart defines missing getters for MDCLinearProgress properties, so that
+// we can use our struct fields as one would normally expect.
 func (c *LP) afterStart() error {
 	var err error
 	gojs.CatchException(&err)

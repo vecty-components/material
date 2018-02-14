@@ -1,7 +1,4 @@
 /*
-The material package provides interfaces and functions needed to implement/run
-material components in GopherJS.
-
 Quickstart Guide
 
 1. In your project include the all-in-one distribution of the MDC javascript

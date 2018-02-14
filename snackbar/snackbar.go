@@ -7,13 +7,13 @@ import (
 	"errors"
 
 	"agamigo.io/gojs"
-	"agamigo.io/material"
+	"agamigo.io/material/internal/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 
 // S is a material snackbar component.
 type S struct {
-	mdc   *material.Component
+	mdc   *base.Component
 	isNew bool
 
 	// DismissOnAction causes the snackbar to be dimissed when the user presses
@@ -50,20 +50,20 @@ type S struct {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *S) Start(rootElem *js.Object) error {
-	return material.Start(c.mdc, rootElem)
+	return base.Start(c.mdc, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *S) Stop() error {
-	return material.Stop(c.mdc)
+	return base.Stop(c.mdc)
 }
 
-// Component returns the component's underlying material.Component.
-func (c *S) Component() *material.Component {
+// Component returns the component's underlying base.Component.
+func (c *S) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &material.Component{}
-		c.mdc.Type = material.ComponentType{
+		c.mdc = &base.Component{}
+		c.mdc.Type = base.ComponentType{
 			MDCClassName:     "MDCSnackbar",
 			MDCCamelCaseName: "snackbar",
 		}
