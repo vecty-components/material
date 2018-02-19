@@ -2,52 +2,48 @@
 package dialog // import "agamigo.io/vecty-material/dialog"
 
 import (
+	"math/rand"
+
 	mdcD "agamigo.io/material/dialog"
+	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
 )
 
 const (
-	MDCClass  = "mdc-dialog"
-	DefaultID = "vecty-dialog"
+	MDCClass = "mdc-dialog"
 )
 
 // D is a material dialog component. It should only be created using the New
 // function.
 type D struct {
-	vecty.Core
 	*mdcD.D
-	Identity    string
-	Role        string
-	Label       string
-	Description string
-	AcceptBtn   string
-	CancelBtn   string
+	vecty.Core
+	id            string
+	Role          string
+	Label         string
+	Description   string
+	AcceptBtn     string
+	CancelBtn     string
+	AcceptHandler *vecty.EventListener
+	CancelHandler *vecty.EventListener
 }
 
-// New creates a new vecty-material dialog component.
-func New(id string) (*D, error) {
-	c, err := mdcD.New()
-	if err != nil {
-		return nil, err
-	}
-	if id == "" {
-		id = DefaultID
-	}
-	return &D{
-		D:         c,
-		Identity:  id,
-		Role:      "dialog",
-		AcceptBtn: "Accept",
-		CancelBtn: "Deny",
-	}, nil
+func New() (c *D) {
+	c = &D{}
+	c.D = &mdcD.D{}
+	c.Role = "dialog"
+	c.AcceptBtn = "Accept"
+	c.CancelBtn = "Deny"
+	return c
 }
 
 // Render implements the vecty.Component interface.
 func (c *D) Render() vecty.ComponentOrHTML {
-	e := elem.Aside(
+	return elem.Aside(
 		vecty.Markup(
+			prop.ID(c.String()),
 			vecty.Class(MDCClass),
 			vecty.Attribute("role", c.Role),
 			c.ariaLabelledBy(),
@@ -82,11 +78,12 @@ func (c *D) Render() vecty.ComponentOrHTML {
 				),
 				elem.Button(
 					vecty.Markup(
-						prop.Type(prop.TypeButton),
 						vecty.Class("mdc-button"),
 						vecty.Class("mdc-dialog__footer__button"),
 						vecty.Class("mdc-dialog__footer__button--cancel"),
 						prop.Value(c.CancelBtn),
+						vecty.MarkupIf(c.CancelHandler != nil,
+							c.CancelHandler),
 					),
 					vecty.Text(c.CancelBtn),
 				),
@@ -97,6 +94,8 @@ func (c *D) Render() vecty.ComponentOrHTML {
 						vecty.Class("mdc-dialog__footer__button"),
 						vecty.Class("mdc-dialog__footer__button--accept"),
 						prop.Value(c.AcceptBtn),
+						vecty.MarkupIf(c.AcceptHandler != nil,
+							c.AcceptHandler),
 					),
 					vecty.Text(c.AcceptBtn),
 				),
@@ -108,13 +107,12 @@ func (c *D) Render() vecty.ComponentOrHTML {
 			),
 		),
 	)
-	return e
 }
 
 // Mount implements the vecty.Mounter interface and calls Start() on the
 // underlying material dialog component.
 func (c *D) Mount() {
-	c.Start()
+	c.Start(js.Global.Get("document").Call("getElementById", c.String()))
 }
 
 // Unmount implements the vecty.Unmounter interface and calls Stop() on the
@@ -132,8 +130,16 @@ func (c *D) OpenHandler(e *vecty.Event) {
 	}
 }
 
+func (c *D) String() string {
+	if c.id == "" {
+		rand.Seed(13)
+		c.id = c.Component().Type.MDCClassName + string(rand.Int())
+	}
+	return c.id
+}
+
 func (c *D) labelID() string {
-	return c.Identity + "-label"
+	return c.String() + "-label"
 }
 
 func (c *D) ariaLabelledBy() vecty.Applyer {
@@ -141,7 +147,7 @@ func (c *D) ariaLabelledBy() vecty.Applyer {
 }
 
 func (c *D) descriptionID() string {
-	return c.Identity + "-description"
+	return c.String() + "-description"
 }
 
 func (c *D) ariaDescribedBy() vecty.Applyer {
@@ -149,5 +155,5 @@ func (c *D) ariaDescribedBy() vecty.Applyer {
 }
 
 func (c *D) headerID() vecty.Applyer {
-	return prop.ID(c.Identity + "-header")
+	return prop.ID(c.String() + "-header")
 }

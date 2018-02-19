@@ -5,17 +5,17 @@
   branch = "master"
   name = "agamigo.io/gojs"
   packages = ["."]
-  revision = "3aae9f72716248d4682909c66b6da7ea2625d47d"
+  revision = "ec2136c8d5bef18c172f2cabe4f7574e2b2232ea"
 
 [[projects]]
   branch = "master"
   name = "agamigo.io/material"
   packages = [
     "checkbox",
-    "component",
-    "dialog"
+    "dialog",
+    "internal/base"
   ]
-  revision = "1fd574e183695b9c8625adf24a161f4ef3916999"
+  revision = "7e9a709c11240fa7b99fc3e9743d589ea64fd262"
 
 [[projects]]
   name = "github.com/PuerkitoBio/goquery"
@@ -47,7 +47,7 @@
     "html",
     "html/atom"
   ]
-  revision = "f5dfe339be1d06f81b22525fe34671ee7d2c8904"
+  revision = "cbe0f9307d0156177f9dd5dc85da1a31abc5f2fb"
 
 [solve-meta]
   analyzer-name = "dep"

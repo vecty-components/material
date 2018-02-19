@@ -1,36 +1,37 @@
 package checkbox // import "agamigo.io/vecty-material/checkbox"
 
 import (
-	mdccheckbox "agamigo.io/material/checkbox"
+	"math/rand"
+
+	mdccb "agamigo.io/material/checkbox"
+	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
 )
 
 type CB struct {
+	*mdccb.CB
 	vecty.Core
-	*mdccheckbox.CB
+	id string
 }
 
-func New() (checkbox *CB, err error) {
-	c, err := mdccheckbox.New()
-	if err != nil {
-		return nil, err
-	}
-
-	return &CB{CB: c}, nil
+func New() *CB {
+	cb := &CB{}
+	cb.CB = &mdccb.CB{}
+	return cb
 }
 
 func (c *CB) Render() vecty.ComponentOrHTML {
-	e := elem.Div(
+	return elem.Div(
 		vecty.Markup(
 			vecty.Class("mdc-checkbox"),
+			prop.ID(c.String()),
 		),
 		elem.Input(
 			vecty.Markup(
 				vecty.Class("mdc-checkbox__native-control"),
 				prop.Type(prop.TypeCheckbox),
-				prop.ID("native-js-checkbox"),
 			),
 		),
 		elem.Div(
@@ -53,13 +54,26 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 			),
 		),
 	)
-	return e
 }
 
 func (c *CB) Mount() {
-	c.Start()
+	e := js.Global.Get("document").Call("getElementById", c.String())
+	err := c.Start(e)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (c *CB) Unmount() {
-	c.Stop()
+	err := c.Stop()
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (c *CB) String() string {
+	if c.id == "" {
+		c.id = "MDCCheckbox-" + string(rand.Intn(1000))
+	}
+	return c.id
 }
