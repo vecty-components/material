@@ -11,6 +11,10 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
+const (
+	MDC_CSS = "https://unpkg.com/material-components-web@0.30.0/dist/material-components-web.min.css"
+)
+
 // PageView is our main page component.
 type PageView struct {
 	vecty.Core
@@ -27,7 +31,7 @@ type cbStatusText struct {
 
 func main() {
 	vecty.SetTitle("Vecty Material Components")
-	vecty.AddStylesheet("mcw.css")
+	vecty.AddStylesheet(MDC_CSS)
 	pv := &PageView{}
 	pv.cb = checkbox.New()
 	pv.cbStatus = cbStatus(pv.cb)
