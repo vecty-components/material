@@ -486,8 +486,8 @@ hawk@~6.0.2:
     sntp "2.x.x"
 
 hoek@4.x.x:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.0.tgz#72d9d0754f7fe25ca2d01ad8f8f9a9449a89526d"
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
 
 html-encoding-sniffer@^1.0.2:
   version "1.0.2"
@@ -625,15 +625,15 @@ material-components-web@^0.28.0:
     "@material/toolbar" "^0.28.0"
     "@material/typography" "^0.28.0"
 
-mime-db@~1.30.0:
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.30.0.tgz#74c643da2dd9d6a45399963465b26d5ca7d71f01"
+mime-db@~1.33.0:
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.33.0.tgz#a3492050a5cb9b63450541e39d9788d2272783db"
 
 mime-types@^2.1.12, mime-types@~2.1.17:
-  version "2.1.17"
-  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.17.tgz#09d7a393f03e995a79f8af857b70a9e0ab16557a"
+  version "2.1.18"
+  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.18.tgz#6f323f60a83d11146f831ff11fd66e2fe5503bb8"
   dependencies:
-    mime-db "~1.30.0"
+    mime-db "~1.33.0"
 
 nwmatcher@^1.4.3:
   version "1.4.3"
