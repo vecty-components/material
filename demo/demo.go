@@ -12,20 +12,20 @@ import (
 )
 
 const (
-	MDC_CSS = "https://unpkg.com/material-components-web@0.30.0/dist/material-components-web.min.css"
+	MDC_CSS = "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"
 )
 
 // PageView is our main page component.
 type PageView struct {
 	vecty.Core
-	cb           *checkbox.CB
+	cb           *checkbox.CBEnhanced
 	dialog       *dialog.D
 	cbStatus     string
 	dialogStatus string
 }
 
 type cbStatusText struct {
-	*checkbox.CB
+	*checkbox.CBEnhanced
 	status string
 }
 
@@ -94,7 +94,7 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func cbStatus(cb *checkbox.CB) string {
+func cbStatus(cb *checkbox.CBEnhanced) string {
 	s := "Checkbox Status - [ID: \"" + cb.String() + "\"]"
 	if cb.Component().Object == nil {
 		return s + " [Value: \"\"]"

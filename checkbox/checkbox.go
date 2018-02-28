@@ -1,37 +1,53 @@
 package checkbox // import "agamigo.io/vecty-material/checkbox"
 
 import (
-	"math/rand"
-
-	mdccb "agamigo.io/material/checkbox"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
 )
 
-type CB struct {
-	*mdccb.CB
-	vecty.Core
-	id string
+type CB interface {
+	vecty.Component
+	vecty.Mounter
+	vecty.Unmounter
+	Checked() bool
+	SetChecked(v bool)
+	Disabled() bool
+	SetDisabled(v bool)
+	Indeterminate() bool
+	SetIndeterminate(v bool)
+	Value() string
+	SetValue(v string)
+	ID() string
+	Element() *js.Object
+	AddClass(c string)
+	DelClass(c string)
+	getClasses() vecty.ClassMap
 }
 
-func New() *CB {
-	cb := &CB{}
-	cb.CB = &mdccb.CB{}
-	return cb
-}
-
-func (c *CB) Render() vecty.ComponentOrHTML {
+func render(c CB) vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
 			vecty.Class("mdc-checkbox"),
-			prop.ID(c.String()),
+			vecty.MarkupIf(c.Disabled(),
+				vecty.Class("mdc-checkbox--disabled"),
+			),
+			c.getClasses(),
 		),
 		elem.Input(
 			vecty.Markup(
 				vecty.Class("mdc-checkbox__native-control"),
+				prop.ID(c.ID()),
 				prop.Type(prop.TypeCheckbox),
+				prop.Checked(c.Checked()),
+				vecty.MarkupIf(c.Value() != "",
+					prop.Value(c.Value())),
+				vecty.MarkupIf(c.Disabled(),
+					vecty.Property("disabled", true),
+				),
+				vecty.MarkupIf(c.Indeterminate(),
+					vecty.Property("indeterminate", true)),
 			),
 		),
 		elem.Div(
@@ -39,12 +55,12 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 				vecty.Class("mdc-checkbox__background"),
 				vecty.UnsafeHTML(
 					`<svg class="mdc-checkbox__checkmark"
-						viewBox="0 0 24 24">
-					<path class="mdc-checkbox__checkmark__path"
-						fill="none"
-						stroke="white"
-						d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-					</svg>`,
+							viewBox="0 0 24 24">
+							<path class="mdc-checkbox__checkmark-path"
+								fill="none"
+								stroke="white"
+								d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+							</svg>`,
 				),
 			),
 			elem.Div(
@@ -54,26 +70,4 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 			),
 		),
 	)
-}
-
-func (c *CB) Mount() {
-	e := js.Global.Get("document").Call("getElementById", c.String())
-	err := c.Start(e)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func (c *CB) Unmount() {
-	err := c.Stop()
-	if err != nil {
-		panic(err)
-	}
-}
-
-func (c *CB) String() string {
-	if c.id == "" {
-		c.id = "MDCCheckbox-" + string(rand.Intn(1000))
-	}
-	return c.id
 }
