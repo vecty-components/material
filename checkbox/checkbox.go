@@ -7,10 +7,15 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
-type CB interface {
+type CBInterface interface {
 	vecty.Component
 	vecty.Mounter
 	vecty.Unmounter
+	ID() string
+	Element() *js.Object
+	AddClass(c string)
+	DelClass(c string)
+	getClasses() vecty.ClassMap
 	Checked() bool
 	SetChecked(v bool)
 	Disabled() bool
@@ -19,14 +24,9 @@ type CB interface {
 	SetIndeterminate(v bool)
 	Value() string
 	SetValue(v string)
-	ID() string
-	Element() *js.Object
-	AddClass(c string)
-	DelClass(c string)
-	getClasses() vecty.ClassMap
 }
 
-func render(c CB) vecty.ComponentOrHTML {
+func render(c CBInterface) vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
 			vecty.Class("mdc-checkbox"),

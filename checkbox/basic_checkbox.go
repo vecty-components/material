@@ -8,7 +8,7 @@ import (
 	"github.com/gopherjs/vecty"
 )
 
-type basicCB struct {
+type BasicCB struct {
 	vecty.Core
 	id            string
 	element       *js.Object
@@ -19,18 +19,18 @@ type basicCB struct {
 	value         string
 }
 
-func NewBasic(id string) CB {
-	return &basicCB{
+func NewBasic(id string) CBInterface {
+	return &BasicCB{
 		id:            id,
 		customClasses: make(vecty.ClassMap, 0),
 	}
 }
 
-func (c *basicCB) Render() vecty.ComponentOrHTML {
+func (c *BasicCB) Render() vecty.ComponentOrHTML {
 	return render(c)
 }
 
-func (c *basicCB) Checked() bool {
+func (c *BasicCB) Checked() bool {
 	v, err := c.getInputBoolProp("checked")
 	if err != nil {
 		return c.checked
@@ -38,7 +38,7 @@ func (c *basicCB) Checked() bool {
 	return v
 }
 
-func (c *basicCB) SetChecked(v bool) {
+func (c *BasicCB) SetChecked(v bool) {
 	c.checked = v
 	_ = c.setInputProp("checked", v)
 	// if err != nil {
@@ -46,7 +46,7 @@ func (c *basicCB) SetChecked(v bool) {
 	// }
 }
 
-func (c *basicCB) Disabled() bool {
+func (c *BasicCB) Disabled() bool {
 	v, err := c.getInputBoolProp("disabled")
 	if err != nil {
 		return c.disabled
@@ -54,7 +54,7 @@ func (c *basicCB) Disabled() bool {
 	return v
 }
 
-func (c *basicCB) SetDisabled(v bool) {
+func (c *BasicCB) SetDisabled(v bool) {
 	c.disabled = v
 	_ = c.setInputProp("disabled", v)
 	// if err != nil {
@@ -62,7 +62,7 @@ func (c *basicCB) SetDisabled(v bool) {
 	// }
 }
 
-func (c *basicCB) Indeterminate() bool {
+func (c *BasicCB) Indeterminate() bool {
 	v, err := c.getInputBoolProp("indeterminate")
 	if err != nil {
 		return c.indeterminate
@@ -70,7 +70,7 @@ func (c *basicCB) Indeterminate() bool {
 	return v
 }
 
-func (c *basicCB) SetIndeterminate(v bool) {
+func (c *BasicCB) SetIndeterminate(v bool) {
 	c.indeterminate = v
 	_ = c.setInputProp("indeterminate", v)
 	// if err != nil {
@@ -78,7 +78,7 @@ func (c *basicCB) SetIndeterminate(v bool) {
 	// }
 }
 
-func (c *basicCB) Value() string {
+func (c *BasicCB) Value() string {
 	v, err := c.getInputStringProp("value")
 	if err != nil {
 		return c.value
@@ -86,7 +86,7 @@ func (c *basicCB) Value() string {
 	return v
 }
 
-func (c *basicCB) SetValue(v string) {
+func (c *BasicCB) SetValue(v string) {
 	c.value = v
 	_ = c.setInputProp("checked", v)
 	// if err != nil {
@@ -94,15 +94,15 @@ func (c *basicCB) SetValue(v string) {
 	// }
 }
 
-func (c *basicCB) ID() string {
+func (c *BasicCB) ID() string {
 	return c.id
 }
 
-func (c *basicCB) Element() *js.Object {
+func (c *BasicCB) Element() *js.Object {
 	return c.element
 }
 
-func (c *basicCB) getInputProp(prop string) (value *js.Object, err error) {
+func (c *BasicCB) getInputProp(prop string) (value *js.Object, err error) {
 	gojs.CatchException(&err)
 	e := js.Global.Get("document").Call("getElementById", c.ID())
 	if e == nil || e == js.Undefined {
@@ -111,7 +111,7 @@ func (c *basicCB) getInputProp(prop string) (value *js.Object, err error) {
 	return e.Get(prop), err
 }
 
-func (c *basicCB) getInputStringProp(prop string) (value string, err error) {
+func (c *BasicCB) getInputStringProp(prop string) (value string, err error) {
 	v, err := c.getInputProp(prop)
 	if err != nil || v == nil || v == js.Undefined {
 		return "", err
@@ -119,7 +119,7 @@ func (c *basicCB) getInputStringProp(prop string) (value string, err error) {
 	return v.String(), err
 }
 
-func (c *basicCB) getInputBoolProp(prop string) (value bool, err error) {
+func (c *BasicCB) getInputBoolProp(prop string) (value bool, err error) {
 	v, err := c.getInputProp(prop)
 	if err != nil || v == nil || v == js.Undefined {
 		return false, err
@@ -127,7 +127,7 @@ func (c *basicCB) getInputBoolProp(prop string) (value bool, err error) {
 	return v.Bool(), err
 }
 
-func (c *basicCB) setInputProp(prop string, value interface{}) (err error) {
+func (c *BasicCB) setInputProp(prop string, value interface{}) (err error) {
 	gojs.CatchException(&err)
 	e := js.Global.Get("document").Call("getElementById", c.ID())
 	if e == nil || e == js.Undefined {
@@ -137,22 +137,22 @@ func (c *basicCB) setInputProp(prop string, value interface{}) (err error) {
 	return err
 }
 
-func (c *basicCB) Mount() {
+func (c *BasicCB) Mount() {
 	ie := js.Global.Get("document").Call("getElementById", c.ID())
 	c.element = ie.Get("parentNode")
 }
 
-func (c *basicCB) Unmount() {
+func (c *BasicCB) Unmount() {
 }
 
-func (c *basicCB) AddClass(class string) {
+func (c *BasicCB) AddClass(class string) {
 	c.customClasses[class] = true
 }
 
-func (c *basicCB) DelClass(class string) {
+func (c *BasicCB) DelClass(class string) {
 	c.customClasses[class] = false
 }
 
-func (c *basicCB) getClasses() vecty.ClassMap {
+func (c *BasicCB) getClasses() vecty.ClassMap {
 	return c.customClasses
 }

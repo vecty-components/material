@@ -1,10 +1,12 @@
 package main
 
 import (
+	"agamigo.io/vecty-material/button"
 	"agamigo.io/vecty-material/checkbox"
+	"agamigo.io/vecty-material/demos/common"
+	"agamigo.io/vecty-material/formfield"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
 )
 
@@ -13,16 +15,7 @@ type PageView struct {
 	vecty.Core
 }
 
-// form-field + checkbox component
-type FFCB struct {
-	vecty.Core
-	Checkbox checkbox.CB
-	label    string
-	alignEnd bool
-}
-
 func main() {
-	vecty.SetTitle("Checkbox - Material Components Catalog")
 	pv := &PageView{}
 	vecty.RenderBody(pv)
 }
@@ -30,57 +23,34 @@ func main() {
 // Render implements the vecty.Component interface.
 func (p *PageView) Render() vecty.ComponentOrHTML {
 	heroCB := checkbox.NewBasic("hero-checkbox")
-	defaultFFCB := &FFCB{
-		label:    "Default checkbox",
-		Checkbox: checkbox.NewBasic("basic-checkbox"),
+	defaultCB := checkbox.NewBasic("basic-checkbox")
+	defaultFF := &formfield.FF{
+		Label: "Default checkbox",
+		Input: defaultCB,
 	}
-	defaultFFCBU := &FFCB{
-		label:    "Default checkbox",
-		Checkbox: checkbox.NewUpgraded("native-js-checkbox"),
-	}
-	disabledFFCB := &FFCB{
-		label:    "Disabled checkbox",
-		Checkbox: checkbox.NewBasic("basic-disabled-checkbox"),
-	}
-	disabledFFCB.Checkbox.SetDisabled(true)
-	indeterminateFFCB := &FFCB{
-		label:    "Indeterminate checkbox",
-		Checkbox: checkbox.NewBasic("basic-indeterminate-checkbox"),
-	}
-	indeterminateFFCBU := &FFCB{
-		label:    "Indeterminate checkbox",
-		Checkbox: checkbox.NewUpgraded("native-js-checkbox-indeterminate"),
-	}
-	indeterminateFFCB.Checkbox.SetIndeterminate(true)
-	indeterminateFFCB.Checkbox.SetChecked(true)
-	indeterminateFFCBU.Checkbox.SetIndeterminate(true)
-	indeterminateFFCBU.Checkbox.SetChecked(true)
-	customAllFFCB := &FFCB{
-		label:    "Custom colored checkbox (stroke, fill, ripple, and focus)",
-		Checkbox: checkbox.NewBasic("basic-custom-checkbox-all"),
-	}
-	customAllFFCBU := &FFCB{
-		label:    "Custom colored checkbox (stroke, fill, ripple, and focus)",
-		Checkbox: checkbox.NewUpgraded("native-js-checkbox-custom-all"),
-	}
-	customAllFFCB.Checkbox.AddClass("demo-checkbox--custom-all")
-	customAllFFCBU.Checkbox.AddClass("demo-checkbox--custom-all")
-	customSomeFFCB := &FFCB{
-		label:    "Custom colored checkbox (stroke and fill only)",
-		Checkbox: checkbox.NewBasic("basic-custom-checkbox-stroke-and-fill"),
-	}
-	customSomeFFCBU := &FFCB{
-		label:    "Custom colored checkbox (stroke and fill only)",
-		Checkbox: checkbox.NewUpgraded("native-js-checkbox-custom-stroke-and-fill"),
-	}
-	customSomeFFCB.Checkbox.AddClass("demo-checkbox--custom-stroke-and-fill")
-	customSomeFFCBU.Checkbox.AddClass("demo-checkbox--custom-stroke-and-fill")
+	defaultCBU := checkbox.NewUpgraded("native-js-checkbox")
+	disabledCB := checkbox.NewBasic("basic-disabled-checkbox")
+	disabledCB.SetDisabled(true)
+	indeterminateCB := checkbox.NewBasic("basic-indeterminate-checkbox")
+	indeterminateCB.SetIndeterminate(true)
+	indeterminateCB.SetChecked(true)
+	indeterminateCBU := checkbox.NewUpgraded("native-js-checkbox-indeterminate")
+	indeterminateCBU.SetIndeterminate(true)
+	indeterminateCBU.SetChecked(true)
+	customAllCB := checkbox.NewBasic("basic-custom-checkbox-all")
+	customAllCB.AddClass("demo-checkbox--custom-all")
+	customAllCBU := checkbox.NewUpgraded("native-js-checkbox-custom-all")
+	customAllCBU.AddClass("demo-checkbox--custom-all")
+	customSomeCB := checkbox.NewBasic("basic-custom-checkbox-stroke-and-fill")
+	customSomeCB.AddClass("demo-checkbox--custom-stroke-and-fill")
+	customSomeCBU := checkbox.NewUpgraded("native-js-checkbox-custom-stroke-and-fill")
+	customSomeCBU.AddClass("demo-checkbox--custom-stroke-and-fill")
 
 	return elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
 		),
-		renderHeader(),
+		&common.ToolbarHeader{Title: "Checkbox"},
 		elem.Main(
 			elem.Div(
 				vecty.Markup(
@@ -108,13 +78,16 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 					vecty.Text("CSS Only"),
 				),
 				elem.Div(
-					defaultFFCB,
+					defaultFF,
 					elem.Div(
 						vecty.Markup(
 							vecty.Class("demo-toggle-group"),
 						),
-						renderButton(
-							func(e *vecty.Event) {
+						&button.B{
+							Label:   vecty.Text("Toggle RTL"),
+							Stroked: true,
+							Compact: true,
+							ClickHandler: func(e *vecty.Event) {
 								ff := e.Target.Get("parentElement")
 								ff = ff.Get("parentElement")
 								dir := ff.Call("hasAttribute", "dir").Bool()
@@ -124,30 +97,45 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 								}
 								ff.Call("setAttribute", "dir", "rtl")
 							},
-							vecty.Text("Toggle RTL"),
-						),
-						renderButton(
-							func(e *vecty.Event) {
-								defaultFFCB.alignEnd = !defaultFFCB.alignEnd
-								vecty.Rerender(defaultFFCB)
+						},
+						&button.B{
+							Label: vecty.List{
+								vecty.Text("Toggle "),
+								elem.Code(
+									vecty.Text("--align-end"),
+								),
 							},
-							vecty.Text("Toggle "),
-							elem.Code(
-								vecty.Text("--align-end"),
-							),
-						),
+							Stroked: true,
+							Compact: true,
+							ClickHandler: func(e *vecty.Event) {
+								defaultFF.AlignEnd = !defaultFF.AlignEnd
+								vecty.Rerender(defaultFF)
+							},
+						},
 					),
 				),
 				elem.Div(
-					disabledFFCB,
+					&formfield.FF{
+						Label: "Disabled checkbox",
+						Input: disabledCB,
+					},
 					elem.Div(
-						indeterminateFFCB,
+						&formfield.FF{
+							Label: "Indeterminate checkbox",
+							Input: indeterminateCB,
+						},
 					),
 					elem.Div(
-						customAllFFCB,
+						&formfield.FF{
+							Label: "Custom colored checkbox (stroke, fill, ripple, and focus)",
+							Input: customAllCB,
+						},
 					),
 					elem.Div(
-						customSomeFFCB,
+						&formfield.FF{
+							Label: "Custom colored checkbox (stroke and fill only)",
+							Input: customSomeCB,
+						},
 					),
 				),
 			),
@@ -160,43 +148,55 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 					vecty.Text("With JavaScript"),
 				),
 				elem.Div(
-					defaultFFCBU,
+					&formfield.FF{
+						Label: "Default checkbox",
+						Input: defaultCBU,
+					},
 					elem.Div(
 						vecty.Markup(
 							vecty.Class("demo-toggle-group"),
 						),
-						renderIndeterminateButton(defaultFFCBU.Checkbox),
-						renderDisabledButton(defaultFFCBU.Checkbox),
+						makeIndeterminateButton(defaultCBU),
+						makeDisabledButton(defaultCBU),
 					),
 				),
 				elem.Div(
-					indeterminateFFCBU,
+					&formfield.FF{
+						Label: "Indeterminate checkbox",
+						Input: indeterminateCBU,
+					},
 					elem.Div(
 						vecty.Markup(
 							vecty.Class("demo-toggle-group"),
 						),
-						renderIndeterminateButton(indeterminateFFCBU.Checkbox),
-						renderDisabledButton(indeterminateFFCBU.Checkbox),
+						makeIndeterminateButton(indeterminateCB),
+						makeDisabledButton(indeterminateCB),
 					),
 				),
 				elem.Div(
-					customAllFFCBU,
+					&formfield.FF{
+						Label: "Custom colored checkbox (stroke, fill, ripple, and focus)",
+						Input: customAllCBU,
+					},
 					elem.Div(
 						vecty.Markup(
 							vecty.Class("demo-toggle-group"),
 						),
-						renderIndeterminateButton(customAllFFCBU.Checkbox),
-						renderDisabledButton(customAllFFCBU.Checkbox),
+						makeIndeterminateButton(customAllCB),
+						makeDisabledButton(customAllCB),
 					),
 				),
 				elem.Div(
-					customSomeFFCBU,
+					&formfield.FF{
+						Label: "Custom colored checkbox (stroke and fill only)",
+						Input: customSomeCBU,
+					},
 					elem.Div(
 						vecty.Markup(
 							vecty.Class("demo-toggle-group"),
 						),
-						renderIndeterminateButton(customSomeFFCBU.Checkbox),
-						renderDisabledButton(customSomeFFCBU.Checkbox),
+						makeIndeterminateButton(customSomeCB),
+						makeDisabledButton(customSomeCB),
 					),
 				),
 			),
@@ -204,112 +204,40 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func renderHeader() *vecty.HTML {
-	return elem.Header(
-		vecty.Markup(
-			vecty.Class("mdc-toolbar"),
-			vecty.Class("mdc-toolbar--fixed"),
-		),
-		elem.Div(
-			vecty.Markup(
-				vecty.Class("mdc-toolbar__row"),
-			),
-			elem.Section(
-				vecty.Markup(
-					vecty.Class("mdc-toolbar__section"),
-					vecty.Class("mdc-toolbar__section--align-start"),
-				),
-				elem.Anchor(
-					vecty.Markup(
-						prop.Href("/"),
-						vecty.Class("catalog-back"),
-						vecty.Class("mdc-toolbar__menu-icon"),
-					),
-					elem.Italic(
-						vecty.Markup(
-							vecty.Class("material-icons"),
-						),
-						// vecty.Text("&#xE5C4;"),
-						vecty.Text("arrow_back"),
-					),
-				),
-				elem.Span(
-					vecty.Markup(
-						vecty.Class("mdc-toolbar__title"),
-						vecty.Class("catalog-title"),
-					),
-					vecty.Text("Checkbox"),
-				),
-			),
-		),
-	)
-}
-
-func (c *FFCB) Render() vecty.ComponentOrHTML {
-	return elem.Div(
-		vecty.Markup(
-			vecty.Class("mdc-form-field"),
-			vecty.MarkupIf(c.alignEnd,
-				vecty.Class("mdc-form-field--align-end"),
-			),
-		),
-		c.Checkbox,
-		elem.Label(
-			vecty.Markup(
-				prop.For(c.Checkbox.ID()),
-			),
-			vecty.Text(c.label),
-		),
-	)
-}
-
-func (c *FFCB) Mount() {
-	c.Checkbox.Mount()
-}
-
-func (c *FFCB) Unmount() {
-	c.Checkbox.Unmount()
-}
-
-func renderButton(handler func(*vecty.Event), label ...*vecty.HTML) *vecty.HTML {
-	list := make(vecty.List, len(label))
-	for i, v := range label {
-		list[i] = v
+func makeButton(h func(*vecty.Event), l vecty.List) *button.B {
+	return &button.B{
+		Label:        l,
+		ClickHandler: h,
+		Stroked:      true,
+		Compact:      true,
 	}
-	return elem.Button(
-		vecty.Markup(
-			vecty.Class("mdc-button"),
-			vecty.Class("mdc-button--stroked"),
-			vecty.Class("mdc-button--compact"),
-			prop.Type(prop.TypeButton),
-			event.Click(handler),
-		),
-		list,
-	)
 }
 
-func renderIndeterminateButton(cb checkbox.CB) *vecty.HTML {
-	return renderButton(
+func makeIndeterminateButton(cb checkbox.CBInterface) *button.B {
+	return makeButton(
 		func(e *vecty.Event) {
 			cb.SetIndeterminate(
 				!cb.Indeterminate())
 		},
-		vecty.Text("Toggle "),
-		elem.Code(
-			vecty.Text("indeterminate"),
-		),
+		vecty.List{vecty.Text("Toggle "),
+			elem.Code(
+				vecty.Text("indeterminate"),
+			),
+		},
 	)
 }
 
-func renderDisabledButton(cb checkbox.CB) *vecty.HTML {
-	return renderButton(
+func makeDisabledButton(cb checkbox.CBInterface) *button.B {
+	return makeButton(
 		func(e *vecty.Event) {
 			cb.SetDisabled(
 				!cb.Disabled())
 		},
-		vecty.Text("Toggle "),
-		elem.Code(
-			vecty.Text("disabled"),
-		),
+		vecty.List{
+			vecty.Text("Toggle "),
+			elem.Code(
+				vecty.Text("disabled"),
+			),
+		},
 	)
 }

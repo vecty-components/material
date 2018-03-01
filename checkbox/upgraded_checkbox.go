@@ -6,81 +6,81 @@ import (
 	"github.com/gopherjs/vecty"
 )
 
-type upgradedCB struct {
+type CB struct {
 	*mdccb.CB
-	*basicCB
+	*BasicCB
 	started bool
 }
 
-func NewUpgraded(id string) CB {
-	cb := &upgradedCB{}
+func NewUpgraded(id string) CBInterface {
+	cb := &CB{}
 	cb.CB = &mdccb.CB{}
-	cb.basicCB = NewBasic(id).(*basicCB)
+	cb.BasicCB = NewBasic(id).(*BasicCB)
 	return cb
 }
 
-func (c *upgradedCB) Render() vecty.ComponentOrHTML {
+func (c *CB) Render() vecty.ComponentOrHTML {
 	return render(c)
 }
 
-func (c *upgradedCB) Checked() bool {
+func (c *CB) Checked() bool {
 	if c.started {
 		return c.CB.Checked
 	}
-	return c.basicCB.Checked()
+	return c.BasicCB.Checked()
 }
 
-func (c *upgradedCB) SetChecked(v bool) {
+func (c *CB) SetChecked(v bool) {
 	if c.started {
 		c.CB.Checked = v
 	}
-	c.basicCB.SetChecked(v)
+	c.BasicCB.SetChecked(v)
 }
 
-func (c *upgradedCB) Disabled() bool {
+func (c *CB) Disabled() bool {
 	if c.started {
 		return c.CB.Disabled
 	}
-	return c.basicCB.Disabled()
+	return c.BasicCB.Disabled()
 }
 
-func (c *upgradedCB) SetDisabled(v bool) {
+func (c *CB) SetDisabled(v bool) {
 	if c.started {
 		c.CB.Disabled = v
 	}
-	c.basicCB.SetDisabled(v)
+	c.BasicCB.SetDisabled(v)
 }
 
-func (c *upgradedCB) Indeterminate() bool {
+func (c *CB) Indeterminate() bool {
 	if c.started {
 		return c.CB.Indeterminate
 	}
-	return c.basicCB.Indeterminate()
+	return c.BasicCB.Indeterminate()
 }
 
-func (c *upgradedCB) SetIndeterminate(v bool) {
+func (c *CB) SetIndeterminate(v bool) {
 	if c.started {
 		c.CB.Indeterminate = v
 	}
-	c.basicCB.SetIndeterminate(v)
+	c.BasicCB.SetIndeterminate(v)
 }
 
-func (c *upgradedCB) Value() string {
+func (c *CB) Value() string {
 	if c.started {
 		return c.CB.Value
 	}
-	return c.basicCB.Value()
+	return c.BasicCB.Value()
 }
 
-func (c *upgradedCB) SetValue(v string) {
+func (c *CB) SetValue(v string) {
 	if c.started {
 		c.CB.Value = v
 	}
-	c.basicCB.SetValue(v)
+	c.BasicCB.SetValue(v)
 }
 
-func (c *upgradedCB) Mount() {
-	c.basicCB.Mount()
+func (c *CB) Mount() {
+	c.BasicCB.Mount()
 	e := c.Element()
 	if e == nil || e == js.Undefined {
 		panic("Element() is null while mounting upgradedCB.")
@@ -92,7 +92,7 @@ func (c *upgradedCB) Mount() {
 	c.started = true
 }
 
-func (c *upgradedCB) Unmount() {
+func (c *CB) Unmount() {
 	err := c.Stop()
 	if err != nil {
 		panic(err)
