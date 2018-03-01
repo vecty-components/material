@@ -22,7 +22,7 @@ func (c *Component) Component() *js.Object {
 	return c.Object
 }
 
-// SetComponent implements the base.Componenter interface and replaces the
+// SetComponent implements the base.ComponenterSetter interface and replaces the
 // Component's base Component with mdc.
 func (c *Component) SetComponent(mdc *js.Object) {
 	c.Object = mdc
@@ -46,7 +46,7 @@ func (c *Component) ComponentType() ComponentType {
 // Implementing A Component
 //
 // If you are writing a component implementation the documentation for the
-// Componenter interface provides useful information.
+// Componenter{Setter} interfaces provides useful information.
 //
 // Finding The MDC Library
 //
@@ -62,7 +62,7 @@ func (c *Component) ComponentType() ComponentType {
 // the MDC component class.
 //
 // See: https://material.io/components/web/docs/framework-integration/
-func Start(c Componenter, rootElem *js.Object) (err error) {
+func Start(c ComponenterSetter, rootElem *js.Object) (err error) {
 	defer gojs.CatchException(&err)
 
 	switch {
@@ -98,7 +98,7 @@ func Start(c Componenter, rootElem *js.Object) (err error) {
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc. It then runs SetComponent(nil).
-func Stop(c Componenter) (err error) {
+func Stop(c ComponenterSetter) (err error) {
 	defer gojs.CatchException(&err)
 
 	if c.Component() == nil {
