@@ -5,7 +5,7 @@ func HTML(t string) string {
 	case "MDCCheckbox":
 		return `
 <div class="mdc-checkbox">
-  <input class="mdc-checkbox__native-control" type="checkbox">
+  <input class="mdc-checkbox__native-control" id="my-checkbox" type="checkbox">
 </div>`
 	case "MDCDialog":
 		return `
@@ -72,11 +72,9 @@ func HTML(t string) string {
 		return `
 <div class="mdc-form-field">
   <div class="mdc-checkbox">
-    <input type="checkbox" id="my-checkbox"
-    class="mdc-checkbox__native-control"/>
-    </div>
+    <input class="mdc-checkbox__native-control" id="my-checkbox" type="checkbox">
   </div>
-  <label for="my-checkbox" id="my-checkbox-label">This is my checkbox</label>
+  <label for="my-checkbox" id="ff-child-label">Form Field Label</label>
 </div>`
 	case "MDCGridList":
 		return `
