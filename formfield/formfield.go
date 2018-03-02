@@ -5,7 +5,7 @@ package formfield // import "agamigo.io/material/formfield"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/internal/base"
+	"agamigo.io/material/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 

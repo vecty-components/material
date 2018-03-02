@@ -4,7 +4,7 @@
 package icontoggle // import "agamigo.io/material/icontoggle"
 
 import (
-	"agamigo.io/material/internal/base"
+	"agamigo.io/material/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 

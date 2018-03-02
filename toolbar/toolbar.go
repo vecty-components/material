@@ -4,7 +4,7 @@
 package toolbar
 
 import (
-	"agamigo.io/material/internal/base"
+	"agamigo.io/material/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 

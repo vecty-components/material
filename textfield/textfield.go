@@ -5,7 +5,7 @@ package textfield // import "agamigo.io/material/textfield"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/internal/base"
+	"agamigo.io/material/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 

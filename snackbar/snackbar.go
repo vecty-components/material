@@ -7,7 +7,7 @@ import (
 	"errors"
 
 	"agamigo.io/gojs"
-	"agamigo.io/material/internal/base"
+	"agamigo.io/material/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 

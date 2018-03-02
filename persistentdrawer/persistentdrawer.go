@@ -3,7 +3,7 @@
 // See: https://material.io/components/web/catalog/drawers/
 package persistentdrawer // import "agamigo.io/material/persistentdrawer"
 import (
-	"agamigo.io/material/internal/base"
+	"agamigo.io/material/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 

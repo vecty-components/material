@@ -4,7 +4,7 @@
 package checkbox // import "agamigo.io/material/checkbox"
 
 import (
-	"agamigo.io/material/internal/base"
+	"agamigo.io/material/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 
