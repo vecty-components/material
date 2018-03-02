@@ -11,7 +11,14 @@ import (
 
 func Example() {
 	// Create a new instance of a material checkbox component.
-	c := &checkbox.CB{}
+	c := checkbox.New()
+	printName(c)
+	printState(c)
+	c.Checked = true
+	c.Disabled = true
+	c.Indeterminate = true
+	c.Value = "new value"
+	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a checkbox.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,12 +32,7 @@ func Example() {
 			c.Component().Type, err.Error())
 	}
 
-	printName(c)
-	printState(c)
-	c.Checked = true
-	c.Disabled = true
-	c.Indeterminate = true
-	c.Value = "new value"
+	c.Value = "after start"
 	printState(c)
 
 	err = c.Stop()
@@ -42,9 +44,11 @@ func Example() {
 	// Output:
 	// MDCCheckbox
 	//
-	// Checked: false, Indeterminate: false, Disabled: false, Value: on
+	// Checked: undefined, Indeterminate: undefined, Disabled: undefined, Value: undefined
 	//
 	// Checked: true, Indeterminate: true, Disabled: true, Value: new value
+	//
+	// Checked: true, Indeterminate: true, Disabled: true, Value: after start
 }
 
 func printName(c *checkbox.CB) {
