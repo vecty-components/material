@@ -19,6 +19,7 @@ type B struct {
 	Stroked      bool
 	Dense        bool
 	Compact      bool
+	Classes      vecty.ClassMap
 	Icon         string
 	IconClass    string
 	Href         string
@@ -29,6 +30,7 @@ func (c *B) Render() vecty.ComponentOrHTML {
 	return elem.Button(
 		vecty.Markup(
 			vecty.Class("mdc-button"),
+			c.Classes,
 			prop.Type(prop.TypeButton),
 			vecty.MarkupIf(c.ClickHandler != nil,
 				event.Click(c.ClickHandler),
