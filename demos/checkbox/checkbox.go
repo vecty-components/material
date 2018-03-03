@@ -28,6 +28,7 @@ type PageView struct {
 	vecty.Core
 	checkboxes map[string]*checkbox.CB
 	defaultFF  *formfield.FF
+	testFF     *formfield.FF
 }
 
 func main() {
@@ -63,7 +64,12 @@ func main() {
 			cb.WithClass("demo-checkbox--custom-stroke-and-fill")
 		}
 	}
-	pv.defaultFF = formfield.New("Default checkbox", pv.checkboxes[BASIC_ID])
+	pv.defaultFF = formfield.New().WithConfig(
+		&formfield.Config{
+			Label: "Default checkbox",
+			Input: pv.checkboxes[BASIC_ID],
+		},
+	)
 	vecty.RenderBody(pv)
 }
 
@@ -138,26 +144,34 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 					),
 				),
 				elem.Div(
-					formfield.New(
-						"Disabled checkbox",
-						p.checkboxes[BASIC_DISABLED_ID],
+					formfield.New().WithConfig(
+						&formfield.Config{
+							Label: "Disabled checkbox",
+							Input: p.checkboxes[BASIC_DISABLED_ID],
+						},
 					),
 					elem.Div(
-						formfield.New(
-							"Indeterminate checkbox",
-							p.checkboxes[BASIC_INDETERMINATE_ID],
+						formfield.New().WithConfig(
+							&formfield.Config{
+								Label: "Indeterminate checkbox",
+								Input: p.checkboxes[BASIC_INDETERMINATE_ID],
+							},
 						),
 					),
 					elem.Div(
-						formfield.New(
-							"Custom colored checkbox (stroke, fill, ripple, and focus)",
-							p.checkboxes[BASIC_CUSTOM_ALL_ID],
+						formfield.New().WithConfig(
+							&formfield.Config{
+								Label: "Custom colored checkbox (stroke, fill, ripple, and focus)",
+								Input: p.checkboxes[BASIC_CUSTOM_ALL_ID],
+							},
 						),
 					),
 					elem.Div(
-						formfield.New(
-							"Custom colored checkbox (stroke and fill only)",
-							p.checkboxes[BASIC_CUSTOM_SOME_ID],
+						formfield.New().WithConfig(
+							&formfield.Config{
+								Label: "Custom colored checkbox (stroke and fill only)",
+								Input: p.checkboxes[BASIC_CUSTOM_SOME_ID],
+							},
 						),
 					),
 				),
@@ -171,9 +185,11 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 					vecty.Text("With JavaScript"),
 				),
 				elem.Div(
-					formfield.New(
-						"Default checkbox",
-						p.checkboxes[JS_ID],
+					formfield.New().WithConfig(
+						&formfield.Config{
+							Label: "Default checkbox",
+							Input: p.checkboxes[JS_ID],
+						},
 					),
 					elem.Div(
 						vecty.Markup(
@@ -184,9 +200,11 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 					),
 				),
 				elem.Div(
-					formfield.New(
-						"Indeterminate checkbox",
-						p.checkboxes[JS_INDETERMINATE_ID],
+					formfield.New().WithConfig(
+						&formfield.Config{
+							Label: "Indeterminate checkbox",
+							Input: p.checkboxes[JS_INDETERMINATE_ID],
+						},
 					),
 					elem.Div(
 						vecty.Markup(
@@ -198,9 +216,11 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 					),
 				),
 				elem.Div(
-					formfield.New(
-						"Custom colored checkbox (stroke, fill, ripple, and focus)",
-						p.checkboxes[JS_CUSTOM_ALL_ID],
+					formfield.New().WithConfig(
+						&formfield.Config{
+							Label: "Custom colored checkbox (stroke, fill, ripple, and focus)",
+							Input: p.checkboxes[JS_CUSTOM_ALL_ID],
+						},
 					),
 					elem.Div(
 						vecty.Markup(
@@ -211,9 +231,11 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 					),
 				),
 				elem.Div(
-					formfield.New(
-						"Custom colored checkbox (stroke and fill only)",
-						p.checkboxes[JS_CUSTOM_SOME_ID],
+					formfield.New().WithConfig(
+						&formfield.Config{
+							Label: "Custom colored checkbox (stroke and fill only)",
+							Input: p.checkboxes[JS_CUSTOM_SOME_ID],
+						},
 					),
 					elem.Div(
 						vecty.Markup(

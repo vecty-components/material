@@ -1,9 +1,8 @@
 package formfield
 
 import (
-	"strconv"
-
 	"agamigo.io/material/formfield"
+	"agamigo.io/vecty-material/checkbox"
 	"agamigo.io/vecty-material/internal/base"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
@@ -11,26 +10,75 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
-var (
-	autoID int
-)
-
 // FF is a vecty-material formfield component.
 type FF struct {
+	*formfield.FF
 	vecty.Core
-	mdc      *formfield.FF
-	id       string
-	autoID   int
+	id      string
+	inputID string
+	classes vecty.ClassMap
+	basic   bool
+	started bool
+	element *vecty.HTML
+	*Config
+}
+
+type Config struct {
 	Input    vecty.ComponentOrHTML
-	InputID  string
 	Label    string
 	AlignEnd bool
 }
 
+func New() *FF {
+	c := &FF{}
+	return c.WithConfig(&Config{}).WithClass("")
+}
+
+func (c *FF) WithBasic() *FF {
+	if c.started {
+		err := c.Stop()
+		if err != nil {
+			print(err)
+		}
+	}
+	c.basic = true
+	return c
+}
+
+func (c *FF) WithID(id string) *FF {
+	c.id = id
+	return c
+}
+
+func (c *FF) ID() string {
+	return c.id
+}
+
+func (c *FF) WithClass(class string) *FF {
+	if c.classes == nil {
+		c.classes = make(vecty.ClassMap, 1)
+	}
+	if class != "" {
+		c.classes[class] = true
+	}
+	return c
+}
+
+func (c *FF) WithConfig(s *Config) *FF {
+	c.FF = formfield.New()
+	c.Config = s
+	return c
+}
+
 // Render implements the vecty.Component interface.
 func (c *FF) Render() vecty.ComponentOrHTML {
-	c.updateInputID()
-	return elem.Div(
+	if c.Input != nil && c.inputID == "" {
+		switch t := c.Input.(type) {
+		case base.IDer:
+			c.inputID = t.ID()
+		}
+	}
+	c.element = elem.Div(
 		vecty.Markup(
 			vecty.Class("mdc-form-field"),
 			prop.ID(c.ID()),
@@ -41,63 +89,47 @@ func (c *FF) Render() vecty.ComponentOrHTML {
 		c.Input,
 		elem.Label(
 			vecty.Markup(
-				vecty.MarkupIf(c.InputID != "",
-					prop.For(c.InputID),
+				vecty.MarkupIf(c.inputID != "",
+					prop.For(c.inputID),
 				),
 			),
 			vecty.Text(c.Label),
 		),
 	)
+	return c.element
 }
 
 func (c *FF) Mount() {
-	if c.mdc == nil {
-		c.mdc = &formfield.FF{}
+	if c.FF == nil {
+		c.FF = formfield.New()
 	}
-	e := js.Global.Get("document").Call("getElementById", c.ID())
+	if c.basic {
+		return
+	}
+	if c.element == nil {
+		panic("Element is nil during Mount().")
+	}
+	e := c.element.Node()
 	if e == nil || e == js.Undefined {
-		panic("Unable to find element during Mount()")
+		panic("Element is nil during Mount().")
 	}
-	err := c.mdc.Start(e)
+	err := c.Start(e)
 	if err != nil {
 		panic(err)
 	}
+	if c.Input != nil {
+		switch t := c.Input.(type) {
+		case *checkbox.CB:
+			c.SetInput(t.Component())
+		}
+	}
+	c.started = true
 }
 
 func (c *FF) Unmount() {
-	err := c.mdc.Stop()
+	err := c.FF.Stop()
 	if err != nil {
 		panic(err)
 	}
-}
-
-func (c *FF) ID() string {
-	if c.id != "" {
-		return c.id
-	}
-	// Set up new component autoID if needed
-	if c.autoID == 0 {
-		autoID = autoID + 1
-		c.autoID = autoID
-	}
-	// Generate an ID, increment global autoID
-	c.id = "vecty-material-formfield-gen-" + strconv.Itoa(c.autoID)
-	return c.id
-}
-
-func (c *FF) SetID(id string) {
-	if id == "" {
-		return // Don't allow clearing the ID
-	}
-	c.id = id
-}
-
-func (c *FF) updateInputID() {
-	if c.InputID != "" {
-		return
-	}
-	switch t := c.Input.(type) {
-	case base.IDer:
-		c.InputID = t.ID()
-	}
+	c.started = false
 }
