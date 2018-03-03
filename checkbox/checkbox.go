@@ -18,7 +18,7 @@ type CB struct {
 	element *vecty.HTML
 }
 
-type State struct {
+type Config struct {
 	Checked       bool
 	Indeterminate bool
 	Disabled      bool
@@ -27,7 +27,7 @@ type State struct {
 
 func New() *CB {
 	c := &CB{}
-	return c.WithState(&State{})
+	return c.WithConfig(&Config{}).WithClass("")
 }
 
 func (c *CB) WithBasic() *CB {
@@ -54,11 +54,13 @@ func (c *CB) WithClass(class string) *CB {
 	if c.classes == nil {
 		c.classes = make(vecty.ClassMap, 1)
 	}
-	c.classes[class] = true
+	if class != "" {
+		c.classes[class] = true
+	}
 	return c
 }
 
-func (c *CB) WithState(s *State) *CB {
+func (c *CB) WithConfig(s *Config) *CB {
 	c.CB = checkbox.New()
 	c.Checked = s.Checked
 	c.Indeterminate = s.Indeterminate
@@ -126,11 +128,11 @@ func (c *CB) Mount() {
 		return
 	}
 	if c.element == nil {
-		panic("Element is nil while mounting upgradedCB.")
+		panic("Element is nil during Mount().")
 	}
 	e := c.element.Node()
 	if e == nil || e == js.Undefined {
-		panic("Element is nil while mounting upgradedCB.")
+		panic("Element is nil during Mount().")
 	}
 	err := c.Start(e)
 	if err != nil {

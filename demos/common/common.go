@@ -17,7 +17,6 @@ func main() {
 
 func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 	path := js.Global.Get("window").Get("location").Get("pathname").String()
-	print(path)
 	return elem.Header(
 		vecty.Markup(
 			vecty.Class("mdc-toolbar"),
