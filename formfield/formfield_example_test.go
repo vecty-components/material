@@ -13,8 +13,8 @@ import (
 func Example() {
 	// Create a new instance of a material formfield component and its
 	// childElement.
-	child := &checkbox.CB{}
-	c := &formfield.FF{}
+	child := checkbox.New()
+	c := formfield.New()
 
 	// Set up a DOM HTMLElement suitable for a formfield.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -44,7 +44,7 @@ func Example() {
 		log.Fatalf("Unable to stop component %s: %v\n",
 			c.Component().Type, err)
 	}
-	c.ChildComponent = child.Component()
+	c.SetInput(child.Component())
 	err = c.Start(rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n",

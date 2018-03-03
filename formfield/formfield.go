@@ -4,29 +4,36 @@
 package formfield // import "agamigo.io/material/formfield"
 
 import (
-	"agamigo.io/gojs"
 	"agamigo.io/material/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 
 // FF is a material formfield component.
 type FF struct {
-	mdc            *base.Component
-	ChildComponent *base.Component
-	// hasChildComponent bool
+	mdc   *base.Component
+	input *js.Object `js:"input"`
+}
+
+func New() *FF {
+	c := &FF{}
+	c.newMDC()
+	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *FF) Start(rootElem *js.Object) error {
-	var err error
-	gojs.CatchException(&err)
-	err = base.Start(c.Component(), rootElem)
+	// Copy state variables before MDC init() destroys them.
+	var input *js.Object
+	if c.mdc.Object != nil {
+		input = c.input
+	}
+	err := base.Start(c.Component(), rootElem)
 	if err != nil {
 		return err
 	}
-	if c.ChildComponent != nil {
-		c.Component().Set("input", c.ChildComponent.Component())
+	if input != nil {
+		c.input = input
 	}
 	return err
 }
@@ -40,18 +47,23 @@ func (c *FF) Stop() error {
 // Component returns the component's underlying base.Component.
 func (c *FF) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &base.Component{}
-		c.mdc.Type = base.ComponentType{
-			MDCClassName:     "MDCFormField",
-			MDCCamelCaseName: "formField",
-		}
+		c.newMDC()
 	}
 	return c.mdc
 }
 
-// // SetChildComponent associates a material component with the formfield
-// // component.
-// func (c *FF) SetChildComponent(childC base.Componenter) {
-// 	c.childComponent = childC
-// 	// c.hasChildComponent = true
-// }
+func (c *FF) newMDC() {
+	c.mdc = &base.Component{}
+	c.mdc.Type = base.ComponentType{
+		MDCClassName:     "MDCFormField",
+		MDCCamelCaseName: "formField",
+	}
+	c.mdc.Object = js.Global.Get("Object").New()
+}
+
+func (c *FF) SetInput(i base.Componenter) {
+	if c.mdc == nil || c.mdc.Object == nil {
+		c.newMDC()
+	}
+	c.input = i.Component()
+}
