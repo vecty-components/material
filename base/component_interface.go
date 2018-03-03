@@ -1,4 +1,4 @@
-package base // import "agamigo.io/material/internal/base"
+package base // import "agamigo.io/material/base"
 
 import "github.com/gopherjs/gopherjs/js"
 

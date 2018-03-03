@@ -2,7 +2,7 @@
 The base package contains code shared by implementations of material components
 for GopherJS.
 */
-package base // import "agamigo.io/material/internal/base"
+package base // import "agamigo.io/material/base"
 
 import (
 	"errors"
@@ -68,9 +68,9 @@ func Start(c ComponenterSetter, rootElem *js.Object) (err error) {
 	switch {
 	case rootElem == nil, rootElem == js.Undefined:
 		return errors.New("rootElem is nil.")
-	case c.Component() != nil:
-		return errors.New("Refusing to Start non-nil component. " +
-			"Use Stop() before starting it again.")
+		// case c.Component() != nil:
+		// 	return errors.New("Refusing to Start non-nil component. " +
+		// 		"Use Stop() before starting it again.")
 	}
 
 	var newMDCClassObj *js.Object

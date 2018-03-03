@@ -5,7 +5,7 @@ package slider // import "agamigo.io/material/slider"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/internal/base"
+	"agamigo.io/material/base"
 	"github.com/gopherjs/gopherjs/js"
 )
 
