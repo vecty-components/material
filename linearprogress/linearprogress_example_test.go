@@ -29,7 +29,8 @@ func Example() {
 	printState(c)
 	err = c.Open()
 	if err != nil {
-		log.Fatalf("Unable to Open component %s: %v\n", c, err.Error())
+		log.Fatalf("Unable to Open component %s: %v\n", c.Component().Type,
+			err.Error())
 	}
 	c.Determinate = false
 	c.Progress = .54
@@ -37,7 +38,8 @@ func Example() {
 	c.Reverse = true
 	err = c.Close()
 	if err != nil {
-		log.Fatalf("Unable to Close component %s: %v\n", c, err.Error())
+		log.Fatalf("Unable to Close component %s: %v\n", c.Component().Type,
+			err.Error())
 	}
 	printState(c)
 	jsTests(c)
