@@ -1,9 +1,7 @@
-package checkbox // import "agamigo.io/vecty-material/checkbox"
+package checkbox
 
 import (
-	"math/rand"
-
-	mdccb "agamigo.io/material/checkbox"
+	"agamigo.io/material/checkbox"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -11,27 +9,88 @@ import (
 )
 
 type CB struct {
-	*mdccb.CB
+	*checkbox.CB
 	vecty.Core
-	id string
+	id      string
+	classes vecty.ClassMap
+	basic   bool
+	started bool
+	element *vecty.HTML
+}
+
+type Config struct {
+	Checked       bool
+	Indeterminate bool
+	Disabled      bool
+	Value         string
 }
 
 func New() *CB {
-	cb := &CB{}
-	cb.CB = &mdccb.CB{}
-	return cb
+	c := &CB{}
+	return c.WithConfig(&Config{}).WithClass("")
+}
+
+func (c *CB) WithBasic() *CB {
+	if c.started {
+		err := c.Stop()
+		if err != nil {
+			print(err)
+		}
+	}
+	c.basic = true
+	return c
+}
+
+func (c *CB) WithID(id string) *CB {
+	c.id = id
+	return c
+}
+
+func (c *CB) ID() string {
+	return c.id
+}
+
+func (c *CB) WithClass(class string) *CB {
+	if c.classes == nil {
+		c.classes = make(vecty.ClassMap, 1)
+	}
+	if class != "" {
+		c.classes[class] = true
+	}
+	return c
+}
+
+func (c *CB) WithConfig(s *Config) *CB {
+	c.CB = checkbox.New()
+	c.Checked = s.Checked
+	c.Indeterminate = s.Indeterminate
+	c.Disabled = s.Disabled
+	c.Value = s.Value
+	return c
 }
 
 func (c *CB) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+	c.element = elem.Div(
 		vecty.Markup(
 			vecty.Class("mdc-checkbox"),
-			prop.ID(c.String()),
+			vecty.MarkupIf(c.Disabled,
+				vecty.Class("mdc-checkbox--disabled"),
+			),
+			c.getClasses(),
 		),
 		elem.Input(
 			vecty.Markup(
 				vecty.Class("mdc-checkbox__native-control"),
+				vecty.MarkupIf(c.ID() != "",
+					prop.ID(c.ID()),
+				),
 				prop.Type(prop.TypeCheckbox),
+				prop.Checked(c.CB.Checked),
+				vecty.MarkupIf(c.Value != "",
+					prop.Value(c.Value),
+				),
+				vecty.Property("disabled", c.Disabled),
+				vecty.Property("indeterminate", c.Indeterminate),
 			),
 		),
 		elem.Div(
@@ -39,12 +98,12 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 				vecty.Class("mdc-checkbox__background"),
 				vecty.UnsafeHTML(
 					`<svg class="mdc-checkbox__checkmark"
-						viewBox="0 0 24 24">
-					<path class="mdc-checkbox__checkmark__path"
-						fill="none"
-						stroke="white"
-						d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-					</svg>`,
+							viewBox="0 0 24 24">
+							<path class="mdc-checkbox__checkmark-path"
+								fill="none"
+								stroke="white"
+								d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+							</svg>`,
 				),
 			),
 			elem.Div(
@@ -54,14 +113,32 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 			),
 		),
 	)
+	return c.element
+}
+
+func (c *CB) getClasses() vecty.ClassMap {
+	return c.classes
 }
 
 func (c *CB) Mount() {
-	e := js.Global.Get("document").Call("getElementById", c.String())
+	if c.CB == nil {
+		c.CB = checkbox.New()
+	}
+	if c.basic {
+		return
+	}
+	if c.element == nil {
+		panic("Element is nil during Mount().")
+	}
+	e := c.element.Node()
+	if e == nil || e == js.Undefined {
+		panic("Element is nil during Mount().")
+	}
 	err := c.Start(e)
 	if err != nil {
 		panic(err)
 	}
+	c.started = true
 }
 
 func (c *CB) Unmount() {
@@ -69,11 +146,5 @@ func (c *CB) Unmount() {
 	if err != nil {
 		panic(err)
 	}
-}
-
-func (c *CB) String() string {
-	if c.id == "" {
-		c.id = "MDCCheckbox-" + string(rand.Intn(1000))
-	}
-	return c.id
+	c.started = false
 }
