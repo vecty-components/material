@@ -2,8 +2,8 @@ package formfield
 
 import (
 	"agamigo.io/material/formfield"
+	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/checkbox"
-	"agamigo.io/vecty-material/internal/base"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
