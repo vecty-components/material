@@ -10,42 +10,65 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
+const (
+	HERO_ID                = "hero-checkbox"
+	BASIC_ID               = "basic-checkbox"
+	BASIC_DISABLED_ID      = "basic-disabled-checkbox"
+	BASIC_INDETERMINATE_ID = "basic-indeterminate-checkbox"
+	BASIC_CUSTOM_ALL_ID    = "basic-custom-checkbox-all"
+	BASIC_CUSTOM_SOME_ID   = "basic-custom-checkbox-stroke-and-fill"
+	JS_ID                  = "native-js-checkbox"
+	JS_INDETERMINATE_ID    = "native-js-checkbox-indeterminate"
+	JS_CUSTOM_ALL_ID       = "native-js-checkbox-custom-all"
+	JS_CUSTOM_SOME_ID      = "native-js-checkbox-custom-stroke-and-fill"
+)
+
 // PageView is our main page component.
 type PageView struct {
 	vecty.Core
+	checkboxes map[string]*checkbox.CB
+	defaultFF  *formfield.FF
 }
 
 func main() {
-	pv := &PageView{}
+	pv := &PageView{
+		checkboxes: map[string]*checkbox.CB{
+			HERO_ID:                checkbox.New().WithID(HERO_ID),
+			BASIC_ID:               checkbox.New().WithID(BASIC_ID),
+			BASIC_DISABLED_ID:      checkbox.New().WithID(BASIC_DISABLED_ID),
+			BASIC_INDETERMINATE_ID: checkbox.New().WithID(BASIC_INDETERMINATE_ID),
+			BASIC_CUSTOM_ALL_ID:    checkbox.New().WithID(BASIC_CUSTOM_ALL_ID),
+			BASIC_CUSTOM_SOME_ID:   checkbox.New().WithID(BASIC_CUSTOM_SOME_ID),
+			JS_ID:                  checkbox.New().WithID(JS_ID),
+			JS_INDETERMINATE_ID:    checkbox.New().WithID(JS_INDETERMINATE_ID),
+			JS_CUSTOM_ALL_ID:       checkbox.New().WithID(JS_CUSTOM_ALL_ID),
+			JS_CUSTOM_SOME_ID:      checkbox.New().WithID(JS_CUSTOM_SOME_ID),
+		},
+	}
+	for id, cb := range pv.checkboxes {
+		switch id {
+		case BASIC_ID, BASIC_DISABLED_ID, BASIC_INDETERMINATE_ID,
+			BASIC_CUSTOM_ALL_ID, BASIC_CUSTOM_SOME_ID:
+			cb.WithBasic()
+		}
+		switch id {
+		case BASIC_DISABLED_ID:
+			cb.Disabled = true
+		case BASIC_INDETERMINATE_ID, JS_INDETERMINATE_ID:
+			cb.Checked = true
+			cb.Indeterminate = true
+		case BASIC_CUSTOM_ALL_ID, JS_CUSTOM_ALL_ID:
+			cb.WithClass("demo-checkbox--custom-all")
+		case BASIC_CUSTOM_SOME_ID, JS_CUSTOM_SOME_ID:
+			cb.WithClass("demo-checkbox--custom-stroke-and-fill")
+		}
+	}
+	pv.defaultFF = formfield.New("Default checkbox", pv.checkboxes[BASIC_ID])
 	vecty.RenderBody(pv)
 }
 
 // Render implements the vecty.Component interface.
 func (p *PageView) Render() vecty.ComponentOrHTML {
-	heroCB := checkbox.NewBasic("hero-checkbox")
-	defaultCB := checkbox.NewBasic("basic-checkbox")
-	defaultFF := &formfield.FF{
-		Label: "Default checkbox",
-		Input: defaultCB,
-	}
-	defaultCBU := checkbox.NewUpgraded("native-js-checkbox")
-	disabledCB := checkbox.NewBasic("basic-disabled-checkbox")
-	disabledCB.SetDisabled(true)
-	indeterminateCB := checkbox.NewBasic("basic-indeterminate-checkbox")
-	indeterminateCB.SetIndeterminate(true)
-	indeterminateCB.SetChecked(true)
-	indeterminateCBU := checkbox.NewUpgraded("native-js-checkbox-indeterminate")
-	indeterminateCBU.SetIndeterminate(true)
-	indeterminateCBU.SetChecked(true)
-	customAllCB := checkbox.NewBasic("basic-custom-checkbox-all")
-	customAllCB.AddClass("demo-checkbox--custom-all")
-	customAllCBU := checkbox.NewUpgraded("native-js-checkbox-custom-all")
-	customAllCBU.AddClass("demo-checkbox--custom-all")
-	customSomeCB := checkbox.NewBasic("basic-custom-checkbox-stroke-and-fill")
-	customSomeCB.AddClass("demo-checkbox--custom-stroke-and-fill")
-	customSomeCBU := checkbox.NewUpgraded("native-js-checkbox-custom-stroke-and-fill")
-	customSomeCBU.AddClass("demo-checkbox--custom-stroke-and-fill")
-
 	return elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
@@ -61,11 +84,11 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 				vecty.Markup(
 					vecty.Class("hero"),
 				),
-				heroCB,
+				p.checkboxes[HERO_ID],
 				elem.Label(
 					vecty.Markup(
 						prop.ID("hero-checkbox-label"),
-						prop.For("hero-checkbox"),
+						prop.For(HERO_ID),
 					),
 					vecty.Text("Checkbox"),
 				),
@@ -78,7 +101,7 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 					vecty.Text("CSS Only"),
 				),
 				elem.Div(
-					defaultFF,
+					p.defaultFF,
 					elem.Div(
 						vecty.Markup(
 							vecty.Class("demo-toggle-group"),
@@ -108,34 +131,34 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 							Stroked: true,
 							Compact: true,
 							ClickHandler: func(e *vecty.Event) {
-								defaultFF.AlignEnd = !defaultFF.AlignEnd
-								vecty.Rerender(defaultFF)
+								p.defaultFF.AlignEnd = !p.defaultFF.AlignEnd
+								vecty.Rerender(p.defaultFF)
 							},
 						},
 					),
 				),
 				elem.Div(
-					&formfield.FF{
-						Label: "Disabled checkbox",
-						Input: disabledCB,
-					},
-					elem.Div(
-						&formfield.FF{
-							Label: "Indeterminate checkbox",
-							Input: indeterminateCB,
-						},
+					formfield.New(
+						"Disabled checkbox",
+						p.checkboxes[BASIC_DISABLED_ID],
 					),
 					elem.Div(
-						&formfield.FF{
-							Label: "Custom colored checkbox (stroke, fill, ripple, and focus)",
-							Input: customAllCB,
-						},
+						formfield.New(
+							"Indeterminate checkbox",
+							p.checkboxes[BASIC_INDETERMINATE_ID],
+						),
 					),
 					elem.Div(
-						&formfield.FF{
-							Label: "Custom colored checkbox (stroke and fill only)",
-							Input: customSomeCB,
-						},
+						formfield.New(
+							"Custom colored checkbox (stroke, fill, ripple, and focus)",
+							p.checkboxes[BASIC_CUSTOM_ALL_ID],
+						),
+					),
+					elem.Div(
+						formfield.New(
+							"Custom colored checkbox (stroke and fill only)",
+							p.checkboxes[BASIC_CUSTOM_SOME_ID],
+						),
 					),
 				),
 			),
@@ -148,55 +171,56 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 					vecty.Text("With JavaScript"),
 				),
 				elem.Div(
-					&formfield.FF{
-						Label: "Default checkbox",
-						Input: defaultCBU,
-					},
+					formfield.New(
+						"Default checkbox",
+						p.checkboxes[JS_ID],
+					),
 					elem.Div(
 						vecty.Markup(
 							vecty.Class("demo-toggle-group"),
 						),
-						makeIndeterminateButton(defaultCBU),
-						makeDisabledButton(defaultCBU),
+						makeIndeterminateButton(p.checkboxes[JS_ID]),
+						makeDisabledButton(p.checkboxes[JS_ID]),
 					),
 				),
 				elem.Div(
-					&formfield.FF{
-						Label: "Indeterminate checkbox",
-						Input: indeterminateCBU,
-					},
+					formfield.New(
+						"Indeterminate checkbox",
+						p.checkboxes[JS_INDETERMINATE_ID],
+					),
 					elem.Div(
 						vecty.Markup(
 							vecty.Class("demo-toggle-group"),
 						),
-						makeIndeterminateButton(indeterminateCB),
-						makeDisabledButton(indeterminateCB),
+						makeIndeterminateButton(
+							p.checkboxes[JS_INDETERMINATE_ID]),
+						makeDisabledButton(p.checkboxes[JS_INDETERMINATE_ID]),
 					),
 				),
 				elem.Div(
-					&formfield.FF{
-						Label: "Custom colored checkbox (stroke, fill, ripple, and focus)",
-						Input: customAllCBU,
-					},
+					formfield.New(
+						"Custom colored checkbox (stroke, fill, ripple, and focus)",
+						p.checkboxes[JS_CUSTOM_ALL_ID],
+					),
 					elem.Div(
 						vecty.Markup(
 							vecty.Class("demo-toggle-group"),
 						),
-						makeIndeterminateButton(customAllCB),
-						makeDisabledButton(customAllCB),
+						makeIndeterminateButton(p.checkboxes[JS_CUSTOM_ALL_ID]),
+						makeDisabledButton(p.checkboxes[JS_CUSTOM_ALL_ID]),
 					),
 				),
 				elem.Div(
-					&formfield.FF{
-						Label: "Custom colored checkbox (stroke and fill only)",
-						Input: customSomeCBU,
-					},
+					formfield.New(
+						"Custom colored checkbox (stroke and fill only)",
+						p.checkboxes[JS_CUSTOM_SOME_ID],
+					),
 					elem.Div(
 						vecty.Markup(
 							vecty.Class("demo-toggle-group"),
 						),
-						makeIndeterminateButton(customSomeCB),
-						makeDisabledButton(customSomeCB),
+						makeIndeterminateButton(p.checkboxes[JS_CUSTOM_SOME_ID]),
+						makeDisabledButton(p.checkboxes[JS_CUSTOM_SOME_ID]),
 					),
 				),
 			),
@@ -204,34 +228,34 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func makeButton(h func(*vecty.Event), l vecty.List) *button.B {
+func makeButton(h func(*vecty.Event), l vecty.List, class string) *button.B {
 	return &button.B{
 		Label:        l,
 		ClickHandler: h,
 		Stroked:      true,
 		Compact:      true,
+		Classes:      vecty.ClassMap{class: true},
 	}
 }
 
-func makeIndeterminateButton(cb checkbox.CBInterface) *button.B {
+func makeIndeterminateButton(cb *checkbox.CB) *button.B {
 	return makeButton(
 		func(e *vecty.Event) {
-			cb.SetIndeterminate(
-				!cb.Indeterminate())
+			cb.Indeterminate = !cb.Indeterminate
 		},
 		vecty.List{vecty.Text("Toggle "),
 			elem.Code(
 				vecty.Text("indeterminate"),
 			),
 		},
+		"toggle-indeterminate",
 	)
 }
 
-func makeDisabledButton(cb checkbox.CBInterface) *button.B {
+func makeDisabledButton(cb *checkbox.CB) *button.B {
 	return makeButton(
 		func(e *vecty.Event) {
-			cb.SetDisabled(
-				!cb.Disabled())
+			cb.Disabled = !cb.Disabled
 		},
 		vecty.List{
 			vecty.Text("Toggle "),
@@ -239,5 +263,14 @@ func makeDisabledButton(cb checkbox.CBInterface) *button.B {
 				vecty.Text("disabled"),
 			),
 		},
+		"toggle-disabled",
 	)
+}
+
+func newCBsWithIDs(ids ...string) map[string]*checkbox.CB {
+	cbs := make(map[string]*checkbox.CB, len(ids))
+	for _, id := range ids {
+		cbs[id] = checkbox.New().WithID(id)
+	}
+	return cbs
 }
