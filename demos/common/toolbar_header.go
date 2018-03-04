@@ -14,9 +14,6 @@ type ToolbarHeader struct {
 	Title string
 }
 
-func main() {
-}
-
 func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 	pathname := js.Global.Get("window").Get("location").Get("pathname").String()
 	basepath := path.Base(pathname)
