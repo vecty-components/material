@@ -19,9 +19,9 @@ func main() {
 
 func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 	pathname := js.Global.Get("window").Get("location").Get("pathname").String()
-	pathname = path.Base(pathname)
+	basepath := path.Base(pathname)
 	var toolbarNav *vecty.HTML
-	if pathname == "/" || pathname == "." || pathname == "demos" {
+	if basepath == "/" || basepath == "." || basepath == "demos" {
 		toolbarNav = elem.Span(
 			vecty.Markup(
 				vecty.Class("catalog-logo"),
@@ -36,7 +36,7 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 	} else {
 		toolbarNav = elem.Anchor(
 			vecty.Markup(
-				prop.Href("../"),
+				prop.Href(path.Clean(pathname+"/..")),
 				vecty.Class("catalog-back"),
 				vecty.Class("mdc-toolbar__menu-icon"),
 			),
