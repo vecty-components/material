@@ -171,7 +171,7 @@ func (c *listItem) Render() vecty.ComponentOrHTML {
 		vecty.Markup(
 			vecty.Attribute("role", "listitem"),
 			vecty.Class("mdc-list-item"),
-			prop.Href(c.cssName+"/index.html"),
+			prop.Href(c.cssName),
 		),
 		elem.Span(
 			vecty.Markup(
@@ -180,12 +180,7 @@ func (c *listItem) Render() vecty.ComponentOrHTML {
 			),
 			elem.Image(
 				vecty.Markup(
-					vecty.MarkupIf(c.imgPath == "",
-						prop.Src("/images/ic_"+c.cssName+"_24px.svg"),
-					),
-					vecty.MarkupIf(c.imgPath != "",
-						prop.Src(c.imgPath),
-					),
+					prop.Src(c.imgPath),
 				),
 			),
 		),
