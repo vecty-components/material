@@ -11,8 +11,8 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
-// PageView is our main page component.
-type PageView struct {
+// demosCatalogView is our main page component.
+type demosCatalogView struct {
 	vecty.Core
 }
 
@@ -24,12 +24,12 @@ type listItem struct {
 }
 
 func main() {
-	pv := &PageView{}
-	vecty.RenderBody(pv)
+	dcv := &demosCatalogView{}
+	vecty.RenderBody(dcv)
 }
 
 // Render implements the vecty.Component interface.
-func (p *PageView) Render() vecty.ComponentOrHTML {
+func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
