@@ -1,9 +1,11 @@
 package main
 
 import (
+	"path"
 	"strings"
 
 	"agamigo.io/vecty-material/demos/common"
+	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
@@ -167,11 +169,12 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 
 // Render implements the vecty.Component interface.
 func (c *listItem) Render() vecty.ComponentOrHTML {
+	pathname := js.Global.Get("window").Get("location").Get("pathname").String()
 	return elem.Anchor(
 		vecty.Markup(
 			vecty.Attribute("role", "listitem"),
 			vecty.Class("mdc-list-item"),
-			prop.Href("./"+c.cssName),
+			prop.Href(path.Clean(pathname+"/"+c.cssName)),
 		),
 		elem.Span(
 			vecty.Markup(
