@@ -46,17 +46,17 @@ func (p *PageView) Render() vecty.ComponentOrHTML {
 						vecty.Class("mdc-list--two-line"),
 					),
 				),
-				&listItem{
-					cssName:     "button",
-					description: "Raised and flat buttons",
-				},
+				// &listItem{
+				// 	cssName:     "button",
+				// 	description: "Raised and flat buttons",
+				// },
 				// &listItem{
 				// 	cssName:     "card",
 				// 	description: "Various card layout styles",
 				// },
 				&listItem{
 					cssName:     "checkbox",
-					imgPath:     "/images/ic_selection_control_24px.svg",
+					imgPath:     "https://material-components-web.appspot.com/images/ic_selection_control_24px.svg",
 					description: "Multi-selection controls",
 				},
 				// &listItem{
