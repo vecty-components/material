@@ -171,7 +171,7 @@ func (c *listItem) Render() vecty.ComponentOrHTML {
 		vecty.Markup(
 			vecty.Attribute("role", "listitem"),
 			vecty.Class("mdc-list-item"),
-			prop.Href(c.cssName),
+			prop.Href("./"+c.cssName),
 		),
 		elem.Span(
 			vecty.Markup(
