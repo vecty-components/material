@@ -11,7 +11,19 @@ import (
 
 func Example() {
 	// Create a new instance of a material menu component.
-	c := &menu.M{}
+	c := menu.New()
+	printName(c)
+	printState(c)
+	c.OpenFocus(2)
+	c.QuickOpen = true
+	c.SetAnchorCorner(menu.BOTTOM_LEFT)
+	ms := c.AnchorMargins()
+	ms.Left = ms.Left + 50
+	ms.Right = ms.Right + 100
+	ms.Top = ms.Top + 150
+	ms.Bottom = ms.Bottom + 200
+	c.SetAnchorMargins(ms)
+	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a checkbox.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,12 +37,11 @@ func Example() {
 			c.Component().Type, err)
 	}
 
-	printStatus(c)
 	printState(c)
 	c.OpenFocus(2)
 	c.QuickOpen = true
 	c.SetAnchorCorner(menu.BOTTOM_END)
-	ms := c.AnchorMargins()
+	ms = c.AnchorMargins()
 	ms.Left = ms.Left + 50
 	ms.Right = ms.Right + 100
 	ms.Top = ms.Top + 150
@@ -69,7 +80,7 @@ func Example() {
 	// [JS] Left: 50, Right: 100, Top: 150, Bottom: 200
 }
 
-func printStatus(c *menu.M) {
+func printName(c *menu.M) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 

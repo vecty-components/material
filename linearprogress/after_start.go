@@ -1,59 +1,57 @@
 package linearprogress
 
 import (
-	"agamigo.io/gojs"
-	"github.com/gopherjs/gopherjs/js"
+	"agamigo.io/material/base"
 )
 
 // afterStart defines missing getters for MDCLinearProgress properties, so that
 // we can use our struct fields as one would normally expect.
 func (c *LP) afterStart() error {
-	var err error
-	gojs.CatchException(&err)
 	o := c.Component()
-	js.Global.Get("Object").Call("defineProperty",
-		c, "determinate",
-		js.M{
-			"set": func(v bool) {
-				o.Get("foundation_").Call("setDeterminate", v)
-			},
-			"get": func() bool {
-				return o.Get("foundation_").Get("determinate_").Bool()
-			},
+	err := base.DefineSetGet(c, "determinate",
+		func(v interface{}) {
+			o.Get("foundation_").Call("setDeterminate", v)
+		},
+		func() interface{} {
+			return o.Get("foundation_").Get("determinate_").Bool()
 		},
 	)
-	js.Global.Get("Object").Call("defineProperty",
-		c, "progress",
-		js.M{
-			"set": func(v float64) {
-				o.Get("foundation_").Call("setProgress", v)
-			},
-			"get": func() float64 {
-				return o.Get("foundation_").Get("progress_").Float()
-			},
+	if err != nil {
+		return err
+	}
+	err = base.DefineSetGet(c, "progress",
+		func(v interface{}) {
+			o.Get("foundation_").Call("setProgress", v)
+		},
+		func() interface{} {
+			return o.Get("foundation_").Get("progress_").Float()
 		},
 	)
-	js.Global.Get("Object").Call("defineProperty",
-		c, "buffer",
-		js.M{
-			"set": func(v float64) {
-				o.Get("foundation_").Call("setBuffer", v)
-				c.bufferCache = v
-			},
-			"get": func() float64 {
-				return c.GetBufferCache()
-			},
+	if err != nil {
+		return err
+	}
+	err = base.DefineSetGet(c, "buffer",
+		func(v interface{}) {
+			vFloat, ok := v.(float64)
+			if !ok {
+				panic("Unable to set buffer. Unable to parse float.")
+			}
+			o.Get("foundation_").Call("setBuffer", v)
+			c.bufferCache = vFloat
+		},
+		func() interface{} {
+			return c.GetBufferCache()
 		},
 	)
-	js.Global.Get("Object").Call("defineProperty",
-		c, "reverse",
-		js.M{
-			"set": func(v bool) {
-				o.Get("foundation_").Call("setReverse", v)
-			},
-			"get": func() bool {
-				return o.Get("foundation_").Get("reverse_").Bool()
-			},
+	if err != nil {
+		return err
+	}
+	err = base.DefineSetGet(c, "reverse",
+		func(v interface{}) {
+			o.Get("foundation_").Call("setReverse", v)
+		},
+		func() interface{} {
+			return o.Get("foundation_").Get("reverse_").Bool()
 		},
 	)
 	return err
