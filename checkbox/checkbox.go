@@ -21,6 +21,10 @@ type CB struct {
 func New() *CB {
 	c := &CB{}
 	c.Component()
+	c.Checked = false
+	c.Indeterminate = false
+	c.Disabled = false
+	c.Value = ""
 	return c
 }
 

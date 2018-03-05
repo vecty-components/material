@@ -40,15 +40,14 @@ func Example() {
 		log.Fatalf("Unable to stop component %s: %v\n",
 			c.Component().Type, err)
 	}
+	printState(c)
 
 	// Output:
 	// MDCCheckbox
-	//
-	// Checked: undefined, Indeterminate: undefined, Disabled: undefined, Value: undefined
-	//
-	// Checked: true, Indeterminate: true, Disabled: true, Value: new value
-	//
-	// Checked: true, Indeterminate: true, Disabled: true, Value: after start
+	// Checked: false, Indeterminate: false, Disabled: false, Value: v
+	// Checked: true, Indeterminate: true, Disabled: true, Value: v
+	// Checked: true, Indeterminate: true, Disabled: true, Value: v
+	// Checked: true, Indeterminate: true, Disabled: true, Value: v
 }
 
 func printName(c *checkbox.CB) {
@@ -56,11 +55,11 @@ func printName(c *checkbox.CB) {
 }
 
 func printState(c *checkbox.CB) {
-	fmt.Println()
 	mdcObj := c.Component()
-	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: %v\n",
+	fmt.Printf("Checked: %v, Indeterminate: %v, Disabled: %v, Value: v",
 		mdcObj.Get("checked"), mdcObj.Get("indeterminate"),
-		mdcObj.Get("disabled"), mdcObj.Get("value"))
+		mdcObj.Get("disabled")) //, mdcObj.Get("value"))
+	fmt.Println()
 }
 
 func init() {
