@@ -60,10 +60,10 @@ func New() *M {
 // should only be used on a newly created component, or after calling Stop.
 func (c *M) Start(rootElem *js.Object) error {
 	err := base.Start(c.Component(), rootElem, js.M{
-		"open":            c.Open,
-		"quickOpen":       c.QuickOpen,
-		"items":           c.Items(),
-		"itemsContainer_": c.ItemsContainer(),
+		"open":      c.Open,
+		"quickOpen": c.QuickOpen,
+		// "items":           c.Items(),
+		// "itemsContainer_": c.ItemsContainer(),
 	})
 	if err != nil {
 		return err
@@ -113,6 +113,9 @@ func (m *M) ItemsContainer() *js.Object {
 
 // AnchorCorner returns the Corner the menu is/will be attached to.
 func (m *M) AnchorCorner() Corner {
+	if m.Component().Get("foundation_") == js.Undefined {
+		return 0
+	}
 	return Corner(m.Component().Get("foundation_").Get("anchorCorner_").Int())
 }
 
@@ -124,6 +127,9 @@ func (m *M) SetAnchorCorner(c Corner) {
 // AnchorMargins returns the distance from the anchor point that the menu
 // is/will be.
 func (m *M) AnchorMargins() *Margins {
+	if m.Component().Get("foundation_") == js.Undefined {
+		return &Margins{}
+	}
 	o := m.Component().Get("foundation_").Get("anchorMargin_")
 	return &Margins{
 		Left:   o.Get("left").Int(),
@@ -136,6 +142,9 @@ func (m *M) AnchorMargins() *Margins {
 // AnchorMargins sets the distance from the anchor point that the menu is/will
 // be.
 func (m *M) SetAnchorMargins(ms *Margins) {
+	if m.Component().Get("foundation_") == js.Undefined {
+		return
+	}
 	o := &js.M{
 		"left":   ms.Left,
 		"right":  ms.Right,

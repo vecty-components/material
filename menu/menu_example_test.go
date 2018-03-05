@@ -14,15 +14,8 @@ func Example() {
 	c := menu.New()
 	printName(c)
 	printState(c)
-	c.OpenFocus(2)
 	c.QuickOpen = true
-	c.SetAnchorCorner(menu.BOTTOM_LEFT)
-	ms := c.AnchorMargins()
-	ms.Left = ms.Left + 50
-	ms.Right = ms.Right + 100
-	ms.Top = ms.Top + 150
-	ms.Bottom = ms.Bottom + 200
-	c.SetAnchorMargins(ms)
+	c.Open = true
 	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a checkbox.
@@ -37,11 +30,12 @@ func Example() {
 			c.Component().Type, err)
 	}
 
+	c.Open = false
 	printState(c)
 	c.OpenFocus(2)
 	c.QuickOpen = true
 	c.SetAnchorCorner(menu.BOTTOM_END)
-	ms = c.AnchorMargins()
+	ms := c.AnchorMargins()
 	ms.Left = ms.Left + 50
 	ms.Right = ms.Right + 100
 	ms.Top = ms.Top + 150
@@ -61,7 +55,17 @@ func Example() {
 	// Output:
 	// MDCMenu
 	//
-	// Open: false, QuickOpen, false, Items: 12
+	// Open: false, QuickOpen, false, Items: 0
+	// AnchorCorner: 0, ItemsContainer: undefined
+	// AnchorMargins
+	// [Go] Left: 0, Right: 0, Top: 0, Bottom: 0
+	//
+	// Open: true, QuickOpen, true, Items: 0
+	// AnchorCorner: 0, ItemsContainer: undefined
+	// AnchorMargins
+	// [Go] Left: 0, Right: 0, Top: 0, Bottom: 0
+	//
+	// Open: false, QuickOpen, true, Items: 12
 	// AnchorCorner: 8, ItemsContainer: [object HTMLUListElement]
 	// AnchorMargins
 	// [Go] Left: 0, Right: 0, Top: 0, Bottom: 0
@@ -90,7 +94,6 @@ func printState(c *menu.M) {
 		c.Open, c.QuickOpen, len(c.Items()))
 	fmt.Printf("AnchorCorner: %v, ItemsContainer: %v\n",
 		c.AnchorCorner(), c.ItemsContainer())
-	jsMargins := c.Component().Get("foundation_").Get("anchorMargin_")
 	fmt.Println("AnchorMargins")
 	fmt.Printf("[Go] Left: %v, Right: %v, Top: %v, Bottom: %v\n",
 		c.AnchorMargins().Left,
@@ -98,12 +101,15 @@ func printState(c *menu.M) {
 		c.AnchorMargins().Top,
 		c.AnchorMargins().Bottom,
 	)
-	fmt.Printf("[JS] Left: %v, Right: %v, Top: %v, Bottom: %v\n",
-		jsMargins.Get("left"),
-		jsMargins.Get("right"),
-		jsMargins.Get("top"),
-		jsMargins.Get("bottom"),
-	)
+	if c.Component().Get("foundation_") != js.Undefined {
+		jsMargins := c.Component().Get("foundation_").Get("anchorMargin_")
+		fmt.Printf("[JS] Left: %v, Right: %v, Top: %v, Bottom: %v\n",
+			jsMargins.Get("left"),
+			jsMargins.Get("right"),
+			jsMargins.Get("top"),
+			jsMargins.Get("bottom"),
+		)
+	}
 }
 
 func init() {
