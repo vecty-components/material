@@ -11,7 +11,14 @@ import (
 
 func Example() {
 	// Create a new instance of a material textfield component.
-	c := &textfield.TF{}
+	c := textfield.New()
+	printName(c)
+	printState(c)
+	c.Required = false
+	c.HelperText = "Must be at least 8 characters."
+	c.Value = "longerpassword"
+	c.Disabled = true
+	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a textfield.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,7 +32,6 @@ func Example() {
 			c.Component().Type, err)
 	}
 
-	printStatus(c)
 	printState(c)
 	c.Required = false
 	c.HelperText = "Must be at least 8 characters."
@@ -38,18 +44,28 @@ func Example() {
 		log.Fatalf("Unable to stop component %s: %v\n",
 			c.Component().Type, err)
 	}
+	printState(c)
 
 	// Output:
 	// MDCTextField
-
-	// Disabled: false, Valid: false, Required: true
+	//
+	// Disabled: false, Valid: false, Required: false
 	// Value: , HelperText: undefined
-
+	//
+	// Disabled: true, Valid: false, Required: false
+	// Value: longerpassword, HelperText: Must be at least 8 characters.
+	//
+	// Disabled: true, Valid: true, Required: true
+	// Value: longerpassword, HelperText: undefined
+	//
+	// Disabled: true, Valid: true, Required: false
+	// Value: longerpassword, HelperText: Must be at least 8 characters.
+	//
 	// Disabled: true, Valid: true, Required: false
 	// Value: longerpassword, HelperText: Must be at least 8 characters.
 }
 
-func printStatus(c *textfield.TF) {
+func printName(c *textfield.TF) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 

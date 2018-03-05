@@ -36,28 +36,47 @@ type S struct {
 	Disabled bool `js:"disabled"`
 }
 
+// New returns a new component.
+func New() *S {
+	c := &S{}
+	c.Component()
+	c.Value = 0.0
+	c.Min = 0.0
+	c.Max = 0.0
+	c.Step = 0.0
+	c.Disabled = false
+	return c
+}
+
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *S) Start(rootElem *js.Object) error {
-	return base.Start(c.Component(), rootElem)
+	return base.Start(c, rootElem, js.M{
+		"value":    c.Value,
+		"min":      c.Min,
+		"max":      c.Max,
+		"step":     c.Step,
+		"disabled": c.Disabled,
+	})
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *S) Stop() error {
-	return base.Stop(c.mdc)
+	return base.Stop(c.Component())
 }
 
 // Component returns the component's underlying base.Component.
 func (c *S) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &base.Component{}
-		c.mdc.Type = base.ComponentType{
-			MDCClassName:     "MDCSlider",
-			MDCCamelCaseName: "slider",
+		c.mdc = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCSlider",
+				MDCCamelCaseName: "slider",
+			},
 		}
 	}
-	return c.mdc
+	return c.mdc.Component()
 }
 
 // Layout recomputes the dimensions and re-lays out the component. This should

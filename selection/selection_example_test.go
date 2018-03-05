@@ -11,7 +11,12 @@ import (
 
 func Example() {
 	// Create a new instance of a material selection component.
-	c := &selection.S{}
+	c := selection.New()
+	printName(c)
+	printState(c)
+	c.SelectedIndex = 1
+	c.Disabled = true
+	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a selection.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,10 +30,9 @@ func Example() {
 			c.Component().Type, err)
 	}
 
-	printStatus(c)
 	printState(c)
 	c.SelectedIndex = 0
-	c.Disabled = true
+	c.Disabled = false
 	l := c.Component().Get("root_").Call("querySelector", ".mdc-list")
 	l.Call("removeChild", c.Options().Index(1))
 	printState(c)
@@ -38,20 +42,33 @@ func Example() {
 		log.Fatalf("Unable to stop component %s: %v\n",
 			c.Component().Type, err)
 	}
+	printState(c)
 
 	// Output:
 	// MDCSelect
 	//
-	// SelectedIndex: -1, SelectedString: , Disabled: false
+	// SelectedIndex: 0, SelectedString: , Disabled: false
+	// SelectedElem: undefined
+	// Options: undefined
+	//
+	// SelectedIndex: 1, SelectedString: , Disabled: true
+	// SelectedElem: undefined
+	// Options: undefined
+	//
+	// SelectedIndex: 1, SelectedString: Option #2, Disabled: true
 	// SelectedElem: [object NodeList]
 	// Options: [object HTMLLIElement],[object HTMLLIElement]
 	//
-	// SelectedIndex: 0, SelectedString: Option #1, Disabled: true
+	// SelectedIndex: 0, SelectedString: Option #1, Disabled: false
+	// SelectedElem: [object NodeList]
+	// Options: [object HTMLLIElement]
+	//
+	// SelectedIndex: 0, SelectedString: Option #1, Disabled: false
 	// SelectedElem: [object NodeList]
 	// Options: [object HTMLLIElement]
 }
 
-func printStatus(c *selection.S) {
+func printName(c *selection.S) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 

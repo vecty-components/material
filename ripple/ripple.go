@@ -16,28 +16,41 @@ type R struct {
 	Disabled  bool `js:"disabled"`
 }
 
+// New returns a new component.
+func New() *R {
+	c := &R{}
+	c.Component()
+	c.Unbounded = false
+	c.Disabled = false
+	return c
+}
+
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *R) Start(rootElem *js.Object) error {
-	return base.Start(c.Component(), rootElem)
+	return base.Start(c, rootElem, js.M{
+		"unbounded": c.Unbounded,
+		"disabled":  c.Disabled,
+	})
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *R) Stop() error {
-	return base.Stop(c.mdc)
+	return base.Stop(c.Component())
 }
 
 // Component returns the component's underlying base.Component.
 func (c *R) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &base.Component{}
-		c.mdc.Type = base.ComponentType{
-			MDCClassName:     "MDCRipple",
-			MDCCamelCaseName: "ripple",
+		c.mdc = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCRipple",
+				MDCCamelCaseName: "ripple",
+			},
 		}
 	}
-	return c.mdc
+	return c.mdc.Component()
 }
 
 // Activate triggers an activation of the ripple (the first stage, which happens

@@ -15,28 +15,41 @@ type S struct {
 	Disabled      bool `js:"disabled"`
 }
 
+// New returns a new component.
+func New() *S {
+	c := &S{}
+	c.Component()
+	c.SelectedIndex = 0
+	c.Disabled = false
+	return c
+}
+
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *S) Start(rootElem *js.Object) error {
-	return base.Start(c.Component(), rootElem)
+	return base.Start(c, rootElem, js.M{
+		"selectedIndex": c.SelectedIndex,
+		"disabled":      c.Disabled,
+	})
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *S) Stop() error {
-	return base.Stop(c.mdc)
+	return base.Stop(c.Component())
 }
 
 // Component returns the component's underlying base.Component.
 func (c *S) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &base.Component{}
-		c.mdc.Type = base.ComponentType{
-			MDCClassName:     "MDCSelect",
-			MDCCamelCaseName: "select",
+		c.mdc = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCSelect",
+				MDCCamelCaseName: "select",
+			},
 		}
 	}
-	return c.mdc
+	return c.mdc.Component()
 }
 
 // Selected returns the id of the currently selected option. If no id is present

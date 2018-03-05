@@ -11,7 +11,11 @@ import (
 
 func Example() {
 	// Create a new instance of a material persistentdrawer component.
-	c := &persistentdrawer.PD{}
+	c := persistentdrawer.New()
+	printName(c)
+	printState(c)
+	c.Open = true
+	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a persistentdrawer.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,9 +29,8 @@ func Example() {
 			c.Component().Type, err)
 	}
 
-	printStatus(c)
 	printState(c)
-	c.Open = true
+	c.Open = false
 	printState(c)
 
 	err = c.Stop()
@@ -42,9 +45,13 @@ func Example() {
 	// MDC Open: false
 	//
 	// MDC Open: true
+	//
+	// MDC Open: true
+	//
+	// MDC Open: false
 }
 
-func printStatus(c *persistentdrawer.PD) {
+func printName(c *persistentdrawer.PD) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 
