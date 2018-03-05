@@ -12,6 +12,12 @@ import (
 func Example() {
 	// Create a new instance of a material radio component.
 	c := &radio.R{}
+	printName(c)
+	printState(c)
+	c.Checked = false
+	c.Disabled = true
+	c.Value = "before Start()"
+	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a radio.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,11 +31,10 @@ func Example() {
 			c.Component().Type, err)
 	}
 
-	printStatus(c)
 	printState(c)
-	c.Checked = false
-	c.Disabled = true
-	c.Value = "new value"
+	c.Checked = true
+	c.Disabled = false
+	c.Value = "after Start()"
 	printState(c)
 
 	err = c.Stop()
@@ -37,22 +42,37 @@ func Example() {
 		log.Fatalf("Unable to stop component %s: %v\n",
 			c.Component().Type, err)
 	}
+	c.Value = "after Stop()"
+	printState(c)
 
 	// Output:
 	// MDCRadio
 	//
-	// Checked: true, Disabled: false, Value: on
+	// [Go] Checked: false, Disabled: false, Value: undefined
+	// [JS] Checked: undefined, Disabled: undefined, Value: undefined
 	//
-	// Checked: false, Disabled: true, Value: new value
+	// [Go] Checked: false, Disabled: true, Value: before Start()
+	// [JS] Checked: false, Disabled: true, Value: before Start()
+	//
+	// [Go] Checked: false, Disabled: true, Value: before Start()
+	// [JS] Checked: false, Disabled: true, Value: before Start()
+	//
+	// [Go] Checked: true, Disabled: false, Value: after Start()
+	// [JS] Checked: true, Disabled: false, Value: after Start()
+	//
+	// [Go] Checked: true, Disabled: false, Value: after Stop()
+	// [JS] Checked: true, Disabled: false, Value: after Stop()
 }
 
-func printStatus(c *radio.R) {
+func printName(c *radio.R) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 
 func printState(c *radio.R) {
 	fmt.Println()
-	fmt.Printf("Checked: %v, Disabled: %v, Value: %v\n",
+	fmt.Printf("[Go] Checked: %v, Disabled: %v, Value: %v\n",
+		c.Checked, c.Disabled, c.Value)
+	fmt.Printf("[JS] Checked: %v, Disabled: %v, Value: %v\n",
 		c.Component().Get("checked"), c.Component().Get("disabled"),
 		c.Component().Get("value"))
 }

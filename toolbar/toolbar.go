@@ -13,28 +13,36 @@ type T struct {
 	mdc *base.Component
 }
 
+// New returns a new component.
+func New() *T {
+	c := &T{}
+	c.Component()
+	return c
+}
+
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *T) Start(rootElem *js.Object) error {
-	return base.Start(c.Component(), rootElem)
+	return base.Start(c, rootElem, js.M{})
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *T) Stop() error {
-	return base.Stop(c.mdc)
+	return base.Stop(c.Component())
 }
 
 // Component returns the component's underlying base.Component.
 func (c *T) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &base.Component{}
-		c.mdc.Type = base.ComponentType{
-			MDCClassName:     "MDCTextField",
-			MDCCamelCaseName: "textField",
+		c.mdc = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCTextField",
+				MDCCamelCaseName: "textField",
+			},
 		}
 	}
-	return c.mdc
+	return c.mdc.Component()
 }
 
 // TODO: Handle events?

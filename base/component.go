@@ -14,18 +14,31 @@ import (
 // Component is a base type for all Material components.
 type Component struct {
 	*js.Object
+	*MDCState
 	Type ComponentType
 }
 
-// Component implements the base.Componenter interface.
-func (c *Component) Component() *js.Object {
-	return c.Object
+type MDCState struct {
+	Basic       bool
+	Started     bool
+	RootElement *js.Object
 }
 
-// SetComponent implements the base.ComponenterSetter interface and replaces the
-// Component's base Component with mdc.
-func (c *Component) SetComponent(mdc *js.Object) {
-	c.Object = mdc
+// Component implements the base.Componenter interface.
+func (c *Component) Component() *Component {
+	if c.Object == nil || c.Object == js.Undefined {
+		c.Object = js.Global.Get("Object").New()
+	}
+	if c.MDCState == nil {
+		c.MDCState = &MDCState{}
+	}
+	return c
+}
+
+// SetComponent implements the base.ComponentSetter interface and replaces the
+// Component's properties with those of c's.
+func (c *Component) SetComponent(newC *Component) {
+	c = newC
 }
 
 // ComponentType implements the ComponentTyper interface.
@@ -62,50 +75,65 @@ func (c *Component) ComponentType() ComponentType {
 // the MDC component class.
 //
 // See: https://material.io/components/web/docs/framework-integration/
-func Start(c ComponenterSetter, rootElem *js.Object) (err error) {
+func Start(c Componenter, rootElem *js.Object, state js.M) (err error) {
 	defer gojs.CatchException(&err)
 
-	switch {
-	case rootElem == nil, rootElem == js.Undefined:
+	if c.Component().MDCState.Basic {
+		return
+	}
+	if c.Component().MDCState.Started {
+		err = Stop(c)
+		if err != nil {
+			return err
+		}
+	}
+	if rootElem == nil || rootElem == js.Undefined {
 		return errors.New("rootElem is nil.")
-		// case c.Component() != nil:
-		// 	return errors.New("Refusing to Start non-nil component. " +
-		// 		"Use Stop() before starting it again.")
 	}
 
 	var newMDCClassObj *js.Object
-	switch co := c.(type) {
+	switch t := c.(type) {
 	case MDCClasser:
-		newMDCClassObj = co.MDCClass()
-	case ComponentTyper:
-		CCaseName := co.ComponentType().MDCCamelCaseName
-		ClassName := co.ComponentType().MDCClassName
+		newMDCClassObj = t.MDCClass()
+	default:
+		CCaseName := t.Component().ComponentType().MDCCamelCaseName
+		ClassName := t.Component().ComponentType().MDCClassName
 		if CCaseName == "" || ClassName == "" {
 			return errors.New("Empty string in ComponentType")
 		}
 		mdcObject := js.Global.Get("mdc")
 		newMDCClassObj = mdcObject.Get(CCaseName).Get(ClassName)
-	default:
-		return errors.New("The provided component does not implement " +
-			"base.ComponentTyper or base.MDCClasser.")
 	}
 
 	// Create a new MDC component instance tied to rootElem
-	c.SetComponent(newMDCClassObj.New(rootElem))
+	c.Component().Object = newMDCClassObj.New(rootElem)
+	c.Component().MDCState.RootElement = rootElem
+	c.Component().MDCState.Started = true
+
+	// Restore the component state
+	if state != nil {
+		for k, v := range state {
+			if v != nil {
+				c.Component().Set(k, v)
+			}
+		}
+	}
 
 	return err
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc. It then runs SetComponent(nil).
-func Stop(c ComponenterSetter) (err error) {
+func Stop(c Componenter) (err error) {
 	defer gojs.CatchException(&err)
 
+	if !c.Component().MDCState.Started {
+		return errors.New("Refusing to stop non-started component.")
+	}
 	if c.Component() == nil {
 		return errors.New("GetComponent() returned nil.")
 	}
-
 	c.Component().Call("destroy")
-	c.SetComponent(nil)
+	c.Component().SetComponent(nil)
 	return err
 }

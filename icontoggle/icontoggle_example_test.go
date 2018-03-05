@@ -11,7 +11,11 @@ import (
 
 func Example() {
 	// Create a new instance of a material icontoggle component.
-	c := &icontoggle.IT{}
+	c := icontoggle.New()
+	printName(c)
+	printState(c)
+	c.On = true
+	c.Disabled = true
 
 	// Set up a DOM HTMLElement suitable for an icontoggle.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,10 +29,9 @@ func Example() {
 			c.Component().Type, err.Error())
 	}
 
-	printStatus(c)
 	printState(c)
-	c.Disabled = true
-	c.On = true
+	c.Disabled = false
+	c.On = false
 	printState(c)
 
 	err = c.Stop()
@@ -40,19 +43,26 @@ func Example() {
 	// Output:
 	// MDCIconToggle
 	//
-	// On: false, Disabled: false
+	// [Go] On: false, Disabled: false
+	// [JS] On: undefined, Disabled: undefined
 	//
-	// On: true, Disabled: true
+	// [Go] On: true, Disabled: true
+	// [JS] On: true, Disabled: true
+	//
+	// [Go] On: false, Disabled: false
+	// [JS] On: false, Disabled: false
 }
 
-func printStatus(c *icontoggle.IT) {
+func printName(c *icontoggle.IT) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 
 func printState(c *icontoggle.IT) {
 	fmt.Println()
 	mdcObj := c.Component()
-	fmt.Printf("On: %v, Disabled: %v\n",
+	fmt.Printf("[Go] On: %v, Disabled: %v\n",
+		c.On, c.Disabled)
+	fmt.Printf("[JS] On: %v, Disabled: %v\n",
 		mdcObj.Get("on"), mdcObj.Get("disabled"))
 }
 

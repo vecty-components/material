@@ -11,7 +11,12 @@ import (
 
 func Example() {
 	// Create a new instance of a material ripple component.
-	c := &ripple.R{}
+	c := ripple.New()
+	printName(c)
+	printState(c)
+	c.Unbounded = true
+	c.Disabled = true
+	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a ripple.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,9 +30,8 @@ func Example() {
 			c.Component().Type, err)
 	}
 
-	printStatus(c)
 	printState(c)
-	c.Unbounded = true
+	c.Unbounded = false
 	err = c.Activate()
 	if err != nil {
 		fmt.Printf("Unable to active ripple: %v", err)
@@ -40,7 +44,7 @@ func Example() {
 	if err != nil {
 		fmt.Printf("Unable to recompute ripple layout: %v", err)
 	}
-	c.Disabled = true
+	c.Disabled = false
 	printState(c)
 
 	err = c.Stop()
@@ -48,6 +52,7 @@ func Example() {
 		log.Fatalf("Unable to stop component %s: %v\n",
 			c.Component().Type, err)
 	}
+	printState(c)
 
 	// Output:
 	// MDCRipple
@@ -55,9 +60,15 @@ func Example() {
 	// Unbounded: false, Disabled: false
 	//
 	// Unbounded: true, Disabled: true
+	//
+	// Unbounded: true, Disabled: true
+	//
+	// Unbounded: false, Disabled: false
+	//
+	// Unbounded: false, Disabled: false
 }
 
-func printStatus(c *ripple.R) {
+func printName(c *ripple.R) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 

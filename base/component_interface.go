@@ -5,17 +5,17 @@ import "github.com/gopherjs/gopherjs/js"
 // Componenter is a base interface for every material component implementation.
 type Componenter interface {
 	// Component should return the object that holds its MDC instance.
-	Component() (mdc *js.Object)
+	Component() (c *Component)
 }
 
-// ComponenterSetter is a base interface for every material component
+// ComponentSetter is a base interface for every material component
 // implementation.
-type ComponenterSetter interface {
+type ComponentSetter interface {
 	Componenter
 
 	// SetComponent should replace a component implementation's *js.Object
 	// variable that holds its MDC instance.
-	SetComponent(mdc *js.Object)
+	SetComponent(c *Component)
 }
 
 // ComponentTyper is one way to tell base.Start how to find the MDC library

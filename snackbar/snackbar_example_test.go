@@ -11,7 +11,17 @@ import (
 
 func Example() {
 	// Create a new instance of a material snackbar component.
-	c := &snackbar.S{}
+	c := snackbar.New()
+	printName(c)
+	printState(c)
+	c.Message = "snackbar message. before Start()"
+	c.ActionHandler = func() { fmt.Println("Action Handled! before Start()") }
+	c.ActionText = "Action Button Text. before Start()"
+	c.Timeout = 1000 // 1 second
+	c.MultiLine = true
+	c.ActionOnBottom = true
+	c.DismissOnAction = true
+	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a snackbar.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,15 +35,14 @@ func Example() {
 			c.Component().Type, err)
 	}
 
-	printStatus(c)
 	printState(c)
-	c.Message = "snackbar message here"
-	c.ActionHandler = func() { fmt.Println("Action Handled!") }
-	c.ActionText = "Action Button Text"
-	c.Timeout = 1000 // 1 second
-	c.MultiLine = true
-	c.ActionOnBottom = true
-	c.DismissOnAction = true
+	c.Message = "snackbar message. after Start()"
+	c.ActionHandler = func() { fmt.Println("Action Handled! after Start()") }
+	c.ActionText = "Action Button Text. after Start()"
+	c.Timeout = 2000 // 2 second
+	c.MultiLine = false
+	c.ActionOnBottom = false
+	c.DismissOnAction = false
 	err = c.Show()
 	if err != nil {
 		log.Fatalf("Unable to show snackbar: %v", err)
@@ -45,44 +54,55 @@ func Example() {
 		log.Fatalf("Unable to stop component %s: %v\n",
 			c.Component().Type, err)
 	}
+	printState(c)
 
 	// Output:
 	// MDCSnackbar
-
-	// DismissOnAction: undefined
-	// Snackbar has not been shown yet.
-
+	// DismissOnAction: false
+	// [Go] Message: , Timeout: 2750, ActionHandler Exists: false, ActionText: Multiline: false, ActionOnBottom: false
 	// DismissOnAction: true
-	// Message: snackbar message here
-	// Timeout: 1000
-	// ActionHandler: 0x1, ActionText: Action Button Text
-	// Multiline: true, ActionOnBottom: true
+	// [Go] Message: snackbar message. before Start(), Timeout: 1000, ActionHandler Exists: true, ActionText: Action Button Text. before Start()Multiline: true, ActionOnBottom: true
+	// DismissOnAction: true
+	// [Go] Message: snackbar message. before Start(), Timeout: 1000, ActionHandler Exists: true, ActionText: Action Button Text. before Start()Multiline: false, ActionOnBottom: true
+	// Snackbar has not been shown yet.
+	// DismissOnAction: false
+	// [Go] Message: snackbar message. after Start(), Timeout: 2000, ActionHandler Exists: true, ActionText: Action Button Text. after Start()Multiline: false, ActionOnBottom: false
+	// [Js] Message: snackbar message. after Start(), Timeout: 2000, ActionHandler: 0x1, ActionText: Action Button Text. after Start()Multiline: false, ActionOnBottom: false
+	// DismissOnAction: false
+	// [Go] Message: snackbar message. after Start(), Timeout: 2000, ActionHandler Exists: true, ActionText: Action Button Text. after Start()Multiline: false, ActionOnBottom: false
+	// [Js] Message: snackbar message. after Start(), Timeout: 2000, ActionHandler: 0x1, ActionText: Action Button Text. after Start()Multiline: false, ActionOnBottom: false
 }
 
-func printStatus(c *snackbar.S) {
+func printName(c *snackbar.S) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 
 func printState(c *snackbar.S) {
-	fmt.Println()
 	fmt.Printf("DismissOnAction: %v\n",
 		c.Component().Get("dismissOnAction"))
 
-	o := c.Component().Get("foundation_").Get("snackbarData_")
-	if o == nil {
-		fmt.Println("Snackbar has not been shown yet.")
-		return
-	}
-	fmt.Printf("Message: %v\nTimeout: %v\nActionHandler: %v, ActionText: %v\n",
-		o.Get("message"),
-		o.Get("timeout"),
-		o.Get("actionHandler").Interface(),
-		o.Get("actionText"),
-	)
+	fmt.Printf("[Go] Message: %v, Timeout: %v, ActionHandler Exists: %v,"+
+		" ActionText: %v", c.Message, c.Timeout,
+		c.Component().Get("actionHandler") != nil, c.ActionText)
 	fmt.Printf("Multiline: %v, ActionOnBottom: %v\n",
-		o.Get("multiline"),
-		o.Get("actionOnBottom"),
-	)
+		c.MultiLine, c.ActionOnBottom)
+	if c.Component().Get("foundation_") != js.Undefined {
+		o := c.Component().Get("foundation_").Get("snackbarData_")
+		if o == nil {
+			fmt.Println("Snackbar has not been shown yet.")
+			return
+		}
+		fmt.Printf("[Js] Message: %v, Timeout: %v, ActionHandler: %v, ActionText: %v",
+			o.Get("message"),
+			o.Get("timeout"),
+			o.Get("actionHandler").Interface(),
+			o.Get("actionText"),
+		)
+		fmt.Printf("Multiline: %v, ActionOnBottom: %v\n",
+			o.Get("multiline"),
+			o.Get("actionOnBottom"),
+		)
+	}
 }
 
 func init() {

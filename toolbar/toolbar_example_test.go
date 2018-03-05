@@ -11,7 +11,8 @@ import (
 
 func Example() {
 	// Create a new instance of a material toolbar component.
-	c := &toolbar.T{}
+	c := toolbar.New()
+	printName(c)
 
 	// Set up a DOM HTMLElement suitable for a toolbar.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -24,20 +25,22 @@ func Example() {
 		log.Fatalf("Unable to start component %s: %v\n",
 			c.Component().Type, err)
 	}
-
-	printStatus(c)
+	printName(c)
 
 	err = c.Stop()
 	if err != nil {
 		log.Fatalf("Unable to stop component %s: %v\n",
 			c.Component().Type, err)
 	}
+	printName(c)
 
 	// Output:
 	// MDCTextField
+	// MDCTextField
+	// MDCTextField
 }
 
-func printStatus(c *toolbar.T) {
+func printName(c *toolbar.T) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 

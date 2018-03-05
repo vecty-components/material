@@ -47,28 +47,50 @@ type S struct {
 	ActionOnBottom bool `js:"actionOnBottom"`
 }
 
+// New returns a new component.
+func New() *S {
+	c := &S{}
+	c.Component()
+	c.DismissOnAction = false
+	c.Message = ""
+	c.Timeout = 2750
+	c.ActionHandler = nil
+	c.ActionText = ""
+	c.MultiLine = false
+	c.ActionOnBottom = false
+	return c
+}
+
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *S) Start(rootElem *js.Object) error {
-	return base.Start(c.Component(), rootElem)
+	return base.Start(c, rootElem, js.M{
+		"dismissOnAction": c.DismissOnAction,
+		"message":         c.Message,
+		"timeout":         c.Timeout,
+		"actionHandler":   c.ActionHandler,
+		"actionText":      c.ActionText,
+		"actionOnBottom":  c.ActionOnBottom,
+	})
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *S) Stop() error {
-	return base.Stop(c.mdc)
+	return base.Stop(c.Component())
 }
 
 // Component returns the component's underlying base.Component.
 func (c *S) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &base.Component{}
-		c.mdc.Type = base.ComponentType{
-			MDCClassName:     "MDCSnackbar",
-			MDCCamelCaseName: "snackbar",
+		c.mdc = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCSnackbar",
+				MDCCamelCaseName: "snackbar",
+			},
 		}
 	}
-	return c.mdc
+	return c.mdc.Component()
 }
 
 // Show displays the snackbar. If the configuration is invalid an error message

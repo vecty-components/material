@@ -11,7 +11,9 @@ import (
 
 func Example() {
 	// Create a new instance of a material dialog component.
-	c := &dialog.D{}
+	c := dialog.New()
+	printName(c)
+	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a dialog.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -25,7 +27,6 @@ func Example() {
 			c.Component().Type, err.Error())
 	}
 
-	printStatus(c)
 	printState(c)
 	err = c.Open()
 	if err != nil {
@@ -48,6 +49,9 @@ func Example() {
 	// MDCDialog
 	//
 	// [Go] IsOpen: false
+	// [JS] IsOpen: undefined
+	//
+	// [Go] IsOpen: false
 	// [JS] IsOpen: false
 	//
 	// [Go] IsOpen: true
@@ -57,7 +61,7 @@ func Example() {
 	// [JS] IsOpen: false
 }
 
-func printStatus(c *dialog.D) {
+func printName(c *dialog.D) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 

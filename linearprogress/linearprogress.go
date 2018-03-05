@@ -19,10 +19,28 @@ type LP struct {
 	bufferCache float64
 }
 
+// New returns a new component.
+func New() *LP {
+	c := &LP{}
+	c.Component()
+	c.Determinate = false
+	c.Reverse = false
+	c.Progress = 0.0
+	c.Buffer = 0.0
+	c.bufferCache = 0.0
+	return c
+}
+
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *LP) Start(rootElem *js.Object) error {
-	err := base.Start(c.Component(), rootElem)
+	c.bufferCache = c.Buffer
+	err := base.Start(c, rootElem, js.M{
+		"determinate": c.Determinate,
+		"reverse":     c.Reverse,
+		"progress":    c.Progress,
+		"buffer":      c.Buffer,
+	})
 	if err != nil {
 		return err
 	}
@@ -38,19 +56,20 @@ func (c *LP) Start(rootElem *js.Object) error {
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *LP) Stop() error {
-	return base.Stop(c.mdc)
+	return base.Stop(c.Component())
 }
 
 // Component returns the component's underlying base.Component.
 func (c *LP) Component() *base.Component {
 	if c.mdc == nil {
-		c.mdc = &base.Component{}
-		c.mdc.Type = base.ComponentType{
-			MDCClassName:     "MDCLinearProgress",
-			MDCCamelCaseName: "linearProgress",
+		c.mdc = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCLinearProgress",
+				MDCCamelCaseName: "linearProgress",
+			},
 		}
 	}
-	return c.mdc
+	return c.mdc.Component()
 }
 
 // Open opens the linearProgress component.
