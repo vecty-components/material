@@ -17,54 +17,39 @@ type CB struct {
 	Value         string `js:"value"`
 }
 
+// New returns a new component.
 func New() *CB {
 	c := &CB{}
-	c.newMDC()
+	c.Component()
 	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *CB) Start(rootElem *js.Object) error {
-	var checked, indeterminate, disabled bool
-	var value string
-	// Copy state variables before MDC init() destroys them.
-	if c.mdc.Object != nil {
-		checked = c.Checked
-		indeterminate = c.Indeterminate
-		disabled = c.Disabled
-		value = c.Value
-	}
-	err := base.Start(c.Component(), rootElem)
-	if err != nil {
-		return err
-	}
-	c.Checked = checked
-	c.Indeterminate = indeterminate
-	c.Disabled = disabled
-	c.Value = value
-	return err
+	return base.Start(c, rootElem, js.M{
+		"checked":       c.Checked,
+		"indeterminate": c.Indeterminate,
+		"disabled":      c.Disabled,
+		"value":         c.Value,
+	})
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *CB) Stop() error {
-	return base.Stop(c.mdc)
+	return base.Stop(c.Component())
 }
 
 // Component returns the component's underlying base.Component.
 func (c *CB) Component() *base.Component {
 	if c.mdc == nil {
-		c.newMDC()
+		c.mdc = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCCheckbox",
+				MDCCamelCaseName: "checkbox",
+			},
+		}
 	}
-	return c.mdc
-}
-
-func (c *CB) newMDC() {
-	c.mdc = &base.Component{}
-	c.mdc.Type = base.ComponentType{
-		MDCClassName:     "MDCCheckbox",
-		MDCCamelCaseName: "checkbox",
-	}
-	c.mdc.Object = js.Global.Get("Object").New()
+	return c.mdc.Component()
 }
