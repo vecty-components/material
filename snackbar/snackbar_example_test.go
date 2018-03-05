@@ -59,17 +59,17 @@ func Example() {
 	// Output:
 	// MDCSnackbar
 	// DismissOnAction: false
-	// [Go] Message: , Timeout: 2750, ActionHandler: 0x1, ActionText: Multiline: false, ActionOnBottom: false
+	// [Go] Message: , Timeout: 2750, ActionHandler Exists: false, ActionText: Multiline: false, ActionOnBottom: false
 	// DismissOnAction: true
-	// [Go] Message: snackbar message. before Start(), Timeout: 1000, ActionHandler: 0x1, ActionText: Action Button Text. before Start()Multiline: true, ActionOnBottom: true
+	// [Go] Message: snackbar message. before Start(), Timeout: 1000, ActionHandler Exists: true, ActionText: Action Button Text. before Start()Multiline: true, ActionOnBottom: true
 	// DismissOnAction: true
-	// [Go] Message: snackbar message. before Start(), Timeout: 1000, ActionHandler: 0x1, ActionText: Action Button Text. before Start()Multiline: false, ActionOnBottom: true
+	// [Go] Message: snackbar message. before Start(), Timeout: 1000, ActionHandler Exists: true, ActionText: Action Button Text. before Start()Multiline: false, ActionOnBottom: true
 	// Snackbar has not been shown yet.
 	// DismissOnAction: false
-	// [Go] Message: snackbar message. after Start(), Timeout: 2000, ActionHandler: 0x1, ActionText: Action Button Text. after Start()Multiline: false, ActionOnBottom: false
+	// [Go] Message: snackbar message. after Start(), Timeout: 2000, ActionHandler Exists: true, ActionText: Action Button Text. after Start()Multiline: false, ActionOnBottom: false
 	// [Js] Message: snackbar message. after Start(), Timeout: 2000, ActionHandler: 0x1, ActionText: Action Button Text. after Start()Multiline: false, ActionOnBottom: false
 	// DismissOnAction: false
-	// [Go] Message: snackbar message. after Start(), Timeout: 2000, ActionHandler: 0x1, ActionText: Action Button Text. after Start()Multiline: false, ActionOnBottom: false
+	// [Go] Message: snackbar message. after Start(), Timeout: 2000, ActionHandler Exists: true, ActionText: Action Button Text. after Start()Multiline: false, ActionOnBottom: false
 	// [Js] Message: snackbar message. after Start(), Timeout: 2000, ActionHandler: 0x1, ActionText: Action Button Text. after Start()Multiline: false, ActionOnBottom: false
 }
 
@@ -81,8 +81,9 @@ func printState(c *snackbar.S) {
 	fmt.Printf("DismissOnAction: %v\n",
 		c.Component().Get("dismissOnAction"))
 
-	fmt.Printf("[Go] Message: %v, Timeout: %v, ActionHandler: %v, ActionText: %v",
-		c.Message, c.Timeout, c.ActionHandler, c.ActionText)
+	fmt.Printf("[Go] Message: %v, Timeout: %v, ActionHandler Exists: %v,"+
+		" ActionText: %v", c.Message, c.Timeout,
+		c.Component().Get("actionHandler") != nil, c.ActionText)
 	fmt.Printf("Multiline: %v, ActionOnBottom: %v\n",
 		c.MultiLine, c.ActionOnBottom)
 	if c.Component().Get("foundation_") != js.Undefined {
