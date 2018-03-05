@@ -44,7 +44,7 @@ func Example() {
 		log.Fatalf("Unable to stop component %s: %v\n",
 			c.Component().Type, err)
 	}
-	c.SetInput(child.Component())
+	c.Input = child.Component().Object
 	err = c.Start(rootElem)
 	if err != nil {
 		log.Fatalf("Unable to start component %s: %v\n",
