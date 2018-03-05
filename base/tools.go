@@ -6,7 +6,7 @@ import (
 )
 
 func DefineSetGet(c Componenter, key string,
-	setter func(value interface{}), getter func() interface{}) (err error) {
+	setter interface{}, getter interface{}) (err error) {
 	gojs.CatchException(&err)
 	js.Global.Get("Object").Call("defineProperty",
 		c, key,
@@ -17,15 +17,3 @@ func DefineSetGet(c Componenter, key string,
 	)
 	return err
 }
-
-// func DefineSetter(c Componenter, key string, set func(v interface{})) error {
-// 	var err error
-// 	gojs.CatchException(&err)
-// 	js.Global.Get("Object").Call("defineProperty",
-// 		c, key,
-// 		js.M{
-// 			"set": setter,
-// 		},
-// 	)
-// 	return err
-// }
