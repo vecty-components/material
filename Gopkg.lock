@@ -14,9 +14,10 @@
     "base",
     "checkbox",
     "dialog",
-    "formfield"
+    "formfield",
+    "ripple"
   ]
-  revision = "23c624cd5151f2ca52b531d93a20e39a23824ed0"
+  revision = "5e5824dea4f989b937cfe2bff58fbce379b25c53"
 
 [[projects]]
   name = "github.com/PuerkitoBio/goquery"
@@ -48,11 +49,11 @@
     "html",
     "html/atom"
   ]
-  revision = "22ae77b79946ea320088417e4d50825671d82d57"
+  revision = "d25186b37f34ebdbbea8f488ef055638dfab272d"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "8ae4e412ab0f6fc6fd93cde404ae44fb07165ae7b59a53bbb046b859089d6c2a"
+  inputs-digest = "65536d05138353f693aaa6a3a1054545f0c4d993aa7258568a0f0bd2c19bedb1"
   solver-name = "gps-cdcl"
   solver-version = 1
