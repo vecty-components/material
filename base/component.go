@@ -46,6 +46,14 @@ func (c *Component) ComponentType() ComponentType {
 	return c.Type
 }
 
+func (c *Component) Start(rootElem *js.Object) error {
+	return nil
+}
+
+func (c *Component) Stop() error {
+	return nil
+}
+
 // Start takes a component implementation (c) and initializes it with an
 // HTMLElement (rootElem). Upon success err will be nil. If err is non-nil, it
 // will contain any error thrown while calling the underlying MDC object's
@@ -79,7 +87,7 @@ func Start(c Componenter, rootElem *js.Object, state js.M) (err error) {
 	defer gojs.CatchException(&err)
 
 	if c.Component().MDCState.Basic {
-		return
+		return nil
 	}
 	if c.Component().MDCState.Started {
 		err = Stop(c)

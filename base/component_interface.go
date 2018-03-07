@@ -8,6 +8,12 @@ type Componenter interface {
 	Component() (c *Component)
 }
 
+type ComponentStartStopper interface {
+	Componenter
+	Start(rootElem *js.Object) error
+	Stop() error
+}
+
 // ComponentSetter is a base interface for every material component
 // implementation.
 type ComponentSetter interface {
