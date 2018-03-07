@@ -1,5 +1,5 @@
 package base
 
-type IDer interface {
-	ID() string
+type Propser interface {
+	Props() *Props
 }

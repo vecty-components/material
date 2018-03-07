@@ -1,10 +1,9 @@
 package formfield
 
 import (
+	mbase "agamigo.io/material/base"
 	"agamigo.io/material/formfield"
 	"agamigo.io/vecty-material/base"
-	"agamigo.io/vecty-material/checkbox"
-	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
@@ -12,81 +11,54 @@ import (
 
 // FF is a vecty-material formfield component.
 type FF struct {
-	*formfield.FF
 	vecty.Core
-	id      string
-	inputID string
-	classes vecty.ClassMap
-	basic   bool
-	started bool
-	element *vecty.HTML
-	*Config
+	*base.Base
+	*State
 }
 
-type Config struct {
-	Input    vecty.ComponentOrHTML
+type State struct {
+	*formfield.FF
+	inputID  string
+	Input    vecty.MarkupOrChild
 	Label    string
 	AlignEnd bool
 }
 
-func New() *FF {
+func New(p *base.Props, s *State) *FF {
 	c := &FF{}
-	return c.WithConfig(&Config{}).WithClass("")
-}
-
-func (c *FF) WithBasic() *FF {
-	if c.started {
-		err := c.Stop()
-		if err != nil {
-			print(err)
-		}
+	if s == nil {
+		s = &State{}
 	}
-	c.basic = true
-	return c
-}
-
-func (c *FF) WithID(id string) *FF {
-	c.id = id
-	return c
-}
-
-func (c *FF) ID() string {
-	return c.id
-}
-
-func (c *FF) WithClass(class string) *FF {
-	if c.classes == nil {
-		c.classes = make(vecty.ClassMap, 1)
+	if s.FF == nil {
+		s.FF = formfield.New()
 	}
-	if class != "" {
-		c.classes[class] = true
-	}
-	return c
-}
-
-func (c *FF) WithConfig(s *Config) *FF {
-	c.FF = formfield.New()
-	c.Config = s
+	c.State = s
+	c.Base = base.New(p, c)
 	return c
 }
 
 // Render implements the vecty.Component interface.
 func (c *FF) Render() vecty.ComponentOrHTML {
-	if c.Input != nil && c.inputID == "" {
-		switch t := c.Input.(type) {
-		case base.IDer:
-			c.inputID = t.ID()
+	if c.State.Input != nil {
+		switch t := c.State.Input.(type) {
+		case base.Propser:
+			c.inputID = t.Props().ID
+		}
+		switch t := c.State.Input.(type) {
+		case mbase.Componenter:
+			c.FF.Input = t.Component()
 		}
 	}
-	c.element = elem.Div(
+	return c.Base.Render(elem.Div(
 		vecty.Markup(
+			c.Props().Markup,
 			vecty.Class("mdc-form-field"),
-			prop.ID(c.ID()),
+			prop.ID(c.Props().ID),
 			vecty.MarkupIf(c.AlignEnd,
 				vecty.Class("mdc-form-field--align-end"),
 			),
 		),
-		c.Input,
+		c.State.Input,
 		elem.Label(
 			vecty.Markup(
 				vecty.MarkupIf(c.inputID != "",
@@ -95,41 +67,5 @@ func (c *FF) Render() vecty.ComponentOrHTML {
 			),
 			vecty.Text(c.Label),
 		),
-	)
-	return c.element
-}
-
-func (c *FF) Mount() {
-	if c.FF == nil {
-		c.FF = formfield.New()
-	}
-	if c.basic {
-		return
-	}
-	if c.element == nil {
-		panic("Element is nil during Mount().")
-	}
-	e := c.element.Node()
-	if e == nil || e == js.Undefined {
-		panic("Element is nil during Mount().")
-	}
-	err := c.Start(e)
-	if err != nil {
-		panic(err)
-	}
-	if c.Input != nil {
-		switch t := c.Input.(type) {
-		case *checkbox.CB:
-			c.SetInput(t.Component())
-		}
-	}
-	c.started = true
-}
-
-func (c *FF) Unmount() {
-	err := c.FF.Stop()
-	if err != nil {
-		panic(err)
-	}
-	c.started = false
+	))
 }

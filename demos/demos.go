@@ -48,10 +48,11 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 						vecty.Class("mdc-list--two-line"),
 					),
 				),
-				// &listItem{
-				// 	cssName:     "button",
-				// 	description: "Raised and flat buttons",
-				// },
+				&listItem{
+					cssName:     "button",
+					description: "Raised and flat buttons",
+					imgPath:     "https://material-components-web.appspot.com/images/ic_button_24px.svg",
+				},
 				// &listItem{
 				// 	cssName:     "card",
 				// 	description: "Various card layout styles",

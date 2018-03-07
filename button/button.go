@@ -2,6 +2,7 @@
 package button // import "agamigo.io/vecty-material/button"
 
 import (
+	"agamigo.io/vecty-material/base"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -11,6 +12,11 @@ import (
 // B is a vecty-material button component.
 type B struct {
 	vecty.Core
+	*base.Base
+	*State
+}
+
+type State struct {
 	Label        vecty.ComponentOrHTML
 	ClickHandler func(*vecty.Event)
 	Disabled     bool
@@ -19,25 +25,32 @@ type B struct {
 	Stroked      bool
 	Dense        bool
 	Compact      bool
-	Classes      vecty.ClassMap
 	Icon         string
 	IconClass    string
 	Href         string
 }
 
+func New(p *base.Props, s *State) *B {
+	c := &B{}
+	if s == nil {
+		s = &State{}
+	}
+	c.State = s
+	c.Base = base.New(p, nil)
+	return c
+}
+
 // Render implements the vecty.Component interface.
 func (c *B) Render() vecty.ComponentOrHTML {
-	return elem.Button(
+	return c.Base.Render(elem.Button(
 		vecty.Markup(
+			c.Props().Markup,
 			vecty.Class("mdc-button"),
-			c.Classes,
 			prop.Type(prop.TypeButton),
 			vecty.MarkupIf(c.ClickHandler != nil,
 				event.Click(c.ClickHandler),
 			),
-			vecty.MarkupIf(c.Disabled,
-				vecty.Property("disabled", true),
-			),
+			vecty.Property("disabled", c.Disabled),
 			vecty.MarkupIf(c.Raised,
 				vecty.Class("mdc-button--raised"),
 			),
@@ -61,10 +74,13 @@ func (c *B) Render() vecty.ComponentOrHTML {
 					vecty.MarkupIf(c.IconClass != "",
 						vecty.Class(c.IconClass),
 					),
+					vecty.MarkupIf(c.IconClass != "",
+						vecty.Class("material-icon"),
+					),
 				),
 				vecty.Text(c.Icon),
 			),
 		),
-		c.Label,
-	)
+		base.RenderStoredChild(c.Label),
+	))
 }
