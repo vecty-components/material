@@ -14,6 +14,8 @@ func Example() {
 	c := dialog.New()
 	printName(c)
 	printState(c)
+	c.Open = true
+	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a dialog.
 	js.Global.Get("document").Get("body").Set("innerHTML",
@@ -28,15 +30,9 @@ func Example() {
 	}
 
 	printState(c)
-	err = c.Open()
-	if err != nil {
-		log.Fatalf("Unable to open dialog: %v", err)
-	}
+	c.Open = false
 	printState(c)
-	err = c.Close()
-	if err != nil {
-		log.Fatalf("Unable to close dialog: %v", err)
-	}
+	c.Open = true
 	printState(c)
 
 	err = c.Stop()
@@ -44,21 +40,28 @@ func Example() {
 		log.Fatalf("Unable to stop component %s: %v\n",
 			c.Component().Type, err)
 	}
+	printState(c)
 
 	// Output:
 	// MDCDialog
 	//
-	// [Go] IsOpen: false
-	// [JS] IsOpen: undefined
+	// [Go] Open: false
+	// [JS] Open: undefined
 	//
-	// [Go] IsOpen: false
-	// [JS] IsOpen: false
+	// [Go] Open: true
+	// [JS] Open: true
 	//
-	// [Go] IsOpen: true
-	// [JS] IsOpen: true
+	// [Go] Open: true
+	// [JS] Open: true
 	//
-	// [Go] IsOpen: false
-	// [JS] IsOpen: false
+	// [Go] Open: false
+	// [JS] Open: false
+	//
+	// [Go] Open: true
+	// [JS] Open: true
+	//
+	// [Go] Open: true
+	// [JS] Open: true
 }
 
 func printName(c *dialog.D) {
@@ -68,8 +71,8 @@ func printName(c *dialog.D) {
 func printState(c *dialog.D) {
 	fmt.Println()
 	mdcObj := c.Component()
-	fmt.Printf("[Go] IsOpen: %v\n", c.IsOpen)
-	fmt.Printf("[JS] IsOpen: %v\n", mdcObj.Get("open"))
+	fmt.Printf("[Go] Open: %v\n", c.Open)
+	fmt.Printf("[JS] Open: %v\n", mdcObj.Get("open"))
 }
 
 func init() {

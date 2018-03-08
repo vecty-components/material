@@ -11,8 +11,10 @@ import (
 
 // D is a material dialog component.
 type D struct {
-	mdc    *base.Component
-	IsOpen bool `js:"open"`
+	mdc *base.Component
+
+	// Open opens and closes the dialog component.
+	Open bool `js:"open"`
 }
 
 // New returns a new component.
@@ -25,9 +27,19 @@ func New() *D {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *D) Start(rootElem *js.Object) error {
-	return base.Start(c, rootElem, js.M{
-		"checked": c.IsOpen,
-	})
+	open := c.Open
+	err := base.Start(c, rootElem, js.M{})
+	if err != nil {
+		return err
+	}
+	err = c.afterStart()
+	if err != nil {
+		return err
+	}
+	if open {
+		c.Open = true
+	}
+	return err
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
@@ -49,17 +61,18 @@ func (c *D) Component() *base.Component {
 	return c.mdc.Component()
 }
 
-// Open shows the dialog. If the dialog is already open then Open is a no-op.
-func (c *D) Open() error {
+// setOpen shows the dialog. If the dialog is already open then setOpen is a
+// no-op.
+func (c *D) setOpen() error {
 	var err error
 	defer gojs.CatchException(&err)
 	c.Component().Call("show")
 	return err
 }
 
-// Close removes the dialog from view. If the dialog is already closed then
-// Close is a no-op.
-func (c *D) Close() error {
+// setClose removes the dialog from view. If the dialog is already closed then
+// setClose is a no-op.
+func (c *D) setClose() error {
 	var err error
 	defer gojs.CatchException(&err)
 	c.Component().Call("close")
