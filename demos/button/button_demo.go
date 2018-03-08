@@ -26,7 +26,7 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 		vecty.Markup(vecty.Class("mdc-typography")),
 		&common.ToolbarHeader{Title: "Buttons"},
 		elem.Main(
-			vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust")),
+			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
 			elem.Section(
 				vecty.Markup(vecty.Class("hero")),
 				c.newBtn(nil,
@@ -93,15 +93,6 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, noRipple bool,
 			),
 			c.newBtn(&base.Props{NoRipple: noRipple},
 				&button.State{
-					Label:      vecty.Text("Compact"),
-					Compact:    true,
-					Raised:     s.Raised,
-					Unelevated: s.Unelevated,
-					Stroked:    s.Stroked,
-				},
-			),
-			c.newBtn(&base.Props{NoRipple: noRipple},
-				&button.State{
 					Label:      vecty.Text("Dense"),
 					Dense:      true,
 					Raised:     s.Raised,
@@ -112,9 +103,9 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, noRipple bool,
 			c.newBtn(
 				&base.Props{
 					NoRipple: noRipple,
-					Markup: vecty.Markup(
+					Markup: []vecty.Applyer{
 						vecty.Class("secondary-text-button"),
-					),
+					},
 				},
 				&button.State{
 					Label:      vecty.Text("Secondary"),
@@ -180,8 +171,9 @@ func (c *buttonDemoView) renderBtnFieldSets(heading string,
 			elem.Div(
 				c.newBtn(
 					&base.Props{
-						Markup: vecty.Markup(
-							vecty.Class("big-round-corner-button")),
+						Markup: []vecty.Applyer{
+							vecty.Class("big-round-corner-button"),
+						},
 						NoRipple: noRipple,
 					},
 					&button.State{
@@ -191,8 +183,9 @@ func (c *buttonDemoView) renderBtnFieldSets(heading string,
 				),
 				c.newBtn(
 					&base.Props{
-						Markup: vecty.Markup(
-							vecty.Class("thick-stroke-button")),
+						Markup: []vecty.Applyer{
+							vecty.Class("thick-stroke-button"),
+						},
 						NoRipple: noRipple,
 					},
 					&button.State{

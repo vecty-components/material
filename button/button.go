@@ -24,7 +24,6 @@ type State struct {
 	Unelevated   bool
 	Stroked      bool
 	Dense        bool
-	Compact      bool
 	Icon         string
 	IconClass    string
 	Href         string
@@ -44,7 +43,7 @@ func New(p *base.Props, s *State) *B {
 func (c *B) Render() vecty.ComponentOrHTML {
 	return c.Base.Render(elem.Button(
 		vecty.Markup(
-			c.Props().Markup,
+			vecty.Markup(c.Props().Markup...),
 			vecty.Class("mdc-button"),
 			prop.Type(prop.TypeButton),
 			vecty.MarkupIf(c.ClickHandler != nil,
@@ -62,9 +61,6 @@ func (c *B) Render() vecty.ComponentOrHTML {
 			),
 			vecty.MarkupIf(c.Dense,
 				vecty.Class("mdc-button--dense"),
-			),
-			vecty.MarkupIf(c.Compact,
-				vecty.Class("mdc-button--compact"),
 			),
 		),
 		vecty.If(c.Icon != "",
