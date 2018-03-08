@@ -61,10 +61,10 @@ func main() {
 			c.Checked = true
 			c.Indeterminate = true
 		case BASIC_CUSTOM_ALL_ID, JS_CUSTOM_ALL_ID:
-			c.Props().Markup = append(c.Props().Markup,
+			c.Props.Markup = append(c.Props.Markup,
 				vecty.Class("demo-checkbox--custom-all"))
 		case BASIC_CUSTOM_SOME_ID, JS_CUSTOM_SOME_ID:
-			c.Props().Markup = append(c.Props().Markup,
+			c.Props.Markup = append(c.Props.Markup,
 				vecty.Class("demo-checkbox--custom-stroke-and-fill"))
 		}
 	}

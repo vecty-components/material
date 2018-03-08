@@ -11,7 +11,6 @@ import (
 
 // FF is a vecty-material formfield component.
 type FF struct {
-	vecty.Core
 	*base.Base
 	*State
 }
@@ -41,8 +40,8 @@ func New(p *base.Props, s *State) *FF {
 func (c *FF) Render() vecty.ComponentOrHTML {
 	if c.State.Input != nil {
 		switch t := c.State.Input.(type) {
-		case base.Propser:
-			c.inputID = t.Props().ID
+		case *base.Base:
+			c.inputID = t.ID
 		}
 		switch t := c.State.Input.(type) {
 		case mbase.Componenter:
@@ -51,9 +50,9 @@ func (c *FF) Render() vecty.ComponentOrHTML {
 	}
 	return c.Base.Render(elem.Div(
 		vecty.Markup(
-			vecty.Markup(c.Props().Markup...),
+			vecty.Markup(c.Props.Markup...),
 			vecty.Class("mdc-form-field"),
-			prop.ID(c.Props().ID),
+			prop.ID(c.Props.ID),
 			vecty.MarkupIf(c.AlignEnd,
 				vecty.Class("mdc-form-field--align-end"),
 			),

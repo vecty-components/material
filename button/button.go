@@ -11,7 +11,6 @@ import (
 
 // B is a vecty-material button component.
 type B struct {
-	vecty.Core
 	*base.Base
 	*State
 }
@@ -43,7 +42,7 @@ func New(p *base.Props, s *State) *B {
 func (c *B) Render() vecty.ComponentOrHTML {
 	return c.Base.Render(elem.Button(
 		vecty.Markup(
-			vecty.Markup(c.Props().Markup...),
+			vecty.Markup(c.Props.Markup...),
 			vecty.Class("mdc-button"),
 			prop.Type(prop.TypeButton),
 			vecty.MarkupIf(c.ClickHandler != nil,

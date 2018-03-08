@@ -11,7 +11,6 @@ import (
 
 // CB is a vecty-material checkbox component.
 type CB struct {
-	vecty.Core
 	*base.Base
 	*State
 }
@@ -42,7 +41,7 @@ func New(p *base.Props, s *State) *CB {
 func (c *CB) Render() vecty.ComponentOrHTML {
 	return c.Base.Render(elem.Div(
 		vecty.Markup(
-			vecty.Markup(c.Props().Markup...),
+			vecty.Markup(c.Props.Markup...),
 			vecty.Class("mdc-checkbox"),
 			vecty.MarkupIf(c.Disabled,
 				vecty.Class("mdc-checkbox--disabled"),
@@ -54,8 +53,8 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 					event.Change(c.ChangeHandler),
 				),
 				vecty.Class("mdc-checkbox__native-control"),
-				vecty.MarkupIf(c.Props().ID != "",
-					prop.ID(c.Props().ID),
+				vecty.MarkupIf(c.Props.ID != "",
+					prop.ID(c.Props.ID),
 				),
 				prop.Type(prop.TypeCheckbox),
 				prop.Checked(c.CB.Checked),

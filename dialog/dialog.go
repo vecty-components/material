@@ -14,7 +14,6 @@ import (
 // D is a material dialog component. It should only be created using the New
 // function.
 type D struct {
-	vecty.Core
 	*base.Base
 	*State
 }
@@ -53,15 +52,15 @@ func (c *D) Render() vecty.ComponentOrHTML {
 		cancelButton = button.New(nil, nil)
 	}
 	cancelButton.Label = vecty.Text("Cancel")
-	cancelButton.Props().Markup = append(cancelButton.Props().Markup,
+	cancelButton.Props.Markup = append(cancelButton.Props.Markup,
 		vecty.Class("mdc-dialog__footer__button"),
 		vecty.Class("mdc-dialog__footer__button--cancel"),
 	)
 	if c.CancelHandler != nil {
-		cancelButton.Props().Markup = append(cancelButton.Props().Markup,
+		cancelButton.Props.Markup = append(cancelButton.Props.Markup,
 			event.Click(c.CancelHandler))
 	} else {
-		cancelButton.Props().Markup = append(cancelButton.Props().Markup,
+		cancelButton.Props.Markup = append(cancelButton.Props.Markup,
 			event.Click(func(e *vecty.Event) {
 				c.Open = false
 				vecty.Rerender(c)
@@ -73,15 +72,15 @@ func (c *D) Render() vecty.ComponentOrHTML {
 		acceptButton = button.New(nil, nil)
 	}
 	acceptButton.Label = vecty.Text("Accept")
-	acceptButton.Props().Markup = append(acceptButton.Props().Markup,
+	acceptButton.Props.Markup = append(acceptButton.Props.Markup,
 		vecty.Class("mdc-dialog__footer__button"),
 		vecty.Class("mdc-dialog__footer__button--accept"),
 	)
 	if c.AcceptHandler != nil {
-		acceptButton.Props().Markup = append(acceptButton.Props().Markup,
+		acceptButton.Props.Markup = append(acceptButton.Props.Markup,
 			event.Click(c.AcceptHandler))
 	} else {
-		acceptButton.Props().Markup = append(acceptButton.Props().Markup,
+		acceptButton.Props.Markup = append(acceptButton.Props.Markup,
 			event.Click(func(e *vecty.Event) {
 				c.Open = false
 				vecty.Rerender(c)
@@ -90,8 +89,8 @@ func (c *D) Render() vecty.ComponentOrHTML {
 
 	return c.Base.Render(elem.Aside(
 		vecty.Markup(
-			vecty.Markup(c.Props().Markup...),
-			vecty.MarkupIf(c.Props().ID != "", prop.ID(c.Props().ID)),
+			vecty.Markup(c.Props.Markup...),
+			vecty.MarkupIf(c.Props.ID != "", prop.ID(c.Props.ID)),
 			vecty.Class("mdc-dialog"),
 			vecty.MarkupIf(c.Role == "", vecty.Attribute("role", "dialog")),
 			vecty.MarkupIf(c.Role != "", vecty.Attribute("role", c.Role)),
@@ -111,7 +110,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 				elem.Heading2(
 					vecty.Markup(
 						vecty.Class("mdc-dialog__header__title"),
-						vecty.MarkupIf(c.Props().ID != "",
+						vecty.MarkupIf(c.Props.ID != "",
 							prop.ID(c.labelID())),
 					),
 					vecty.Text(c.Header),
@@ -145,10 +144,10 @@ func (c *D) Render() vecty.ComponentOrHTML {
 }
 
 func (c *D) labelID() string {
-	if c.Props().ID == "" {
+	if c.Props.ID == "" {
 		return ""
 	}
-	return c.Props().ID + "-label"
+	return c.Props.ID + "-label"
 }
 
 func (c *D) ariaLabelledBy() vecty.Applyer {
@@ -159,10 +158,10 @@ func (c *D) ariaLabelledBy() vecty.Applyer {
 }
 
 func (c *D) descriptionID() string {
-	if c.Props().ID == "" {
+	if c.Props.ID == "" {
 		return ""
 	}
-	return c.Props().ID + "-description"
+	return c.Props.ID + "-description"
 }
 
 func (c *D) ariaDescribedBy() vecty.Applyer {
@@ -173,8 +172,8 @@ func (c *D) ariaDescribedBy() vecty.Applyer {
 }
 
 func (c *D) headerID() string {
-	if c.Props().ID == "" {
+	if c.Props.ID == "" {
 		return ""
 	}
-	return c.Props().ID + "-header"
+	return c.Props.ID + "-header"
 }

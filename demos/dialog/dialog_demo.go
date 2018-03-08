@@ -149,7 +149,7 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 								event.Change(func(e *vecty.Event) {
 									checked := e.Target.Get("checked").Bool()
 									for _, v := range c.dialogs {
-										el := v.Props().Element.Node()
+										el := v.Props.Element.Node()
 										if checked {
 											el.Call("setAttribute",
 												"dir", "rtl")
