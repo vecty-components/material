@@ -61,10 +61,10 @@ func main() {
 			c.Checked = true
 			c.Indeterminate = true
 		case BASIC_CUSTOM_ALL_ID, JS_CUSTOM_ALL_ID:
-			c.Props().WithMarkup(
+			c.Props().Markup = append(c.Props().Markup,
 				vecty.Class("demo-checkbox--custom-all"))
 		case BASIC_CUSTOM_SOME_ID, JS_CUSTOM_SOME_ID:
-			c.Props().WithMarkup(
+			c.Props().Markup = append(c.Props().Markup,
 				vecty.Class("demo-checkbox--custom-stroke-and-fill"))
 		}
 	}
@@ -259,11 +259,13 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 }
 
 func makeButton(h func(*vecty.Event), l vecty.List, class string) *button.B {
+	var applyer vecty.Applyer
+	if class != "" {
+		applyer = vecty.Class(class)
+	}
 	return button.New(
 		&base.Props{
-			Markup: vecty.Markup(
-				vecty.MarkupIf(class != "", vecty.Class(class)),
-			),
+			Markup: []vecty.Applyer{applyer},
 		},
 		&button.State{
 			Label:        l,

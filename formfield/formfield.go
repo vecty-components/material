@@ -19,7 +19,7 @@ type FF struct {
 type State struct {
 	*formfield.FF
 	inputID  string
-	Input    vecty.MarkupOrChild
+	Input    vecty.ComponentOrHTML
 	Label    string
 	AlignEnd bool
 }
@@ -51,7 +51,7 @@ func (c *FF) Render() vecty.ComponentOrHTML {
 	}
 	return c.Base.Render(elem.Div(
 		vecty.Markup(
-			c.Props().Markup,
+			vecty.Markup(c.Props().Markup...),
 			vecty.Class("mdc-form-field"),
 			prop.ID(c.Props().ID),
 			vecty.MarkupIf(c.AlignEnd,

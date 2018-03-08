@@ -42,7 +42,7 @@ func New(p *base.Props, s *State) *CB {
 func (c *CB) Render() vecty.ComponentOrHTML {
 	return c.Base.Render(elem.Div(
 		vecty.Markup(
-			c.Props().Markup,
+			vecty.Markup(c.Props().Markup...),
 			vecty.Class("mdc-checkbox"),
 			vecty.MarkupIf(c.Disabled,
 				vecty.Class("mdc-checkbox--disabled"),
