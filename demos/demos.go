@@ -51,7 +51,8 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 				&listItem{
 					cssName:     "button",
 					description: "Raised and flat buttons",
-					imgPath:     "https://material-components-web.appspot.com/images/ic_button_24px.svg",
+					imgPath: "https://material-components-web.appspot.com/" +
+						"images/ic_button_24px.svg",
 				},
 				// &listItem{
 				// 	cssName:     "card",
@@ -59,18 +60,21 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 				// },
 				&listItem{
 					cssName:     "checkbox",
-					imgPath:     "https://material-components-web.appspot.com/images/ic_selection_control_24px.svg",
 					description: "Multi-selection controls",
+					imgPath: "https://material-components-web.appspot.com/" +
+						"images/ic_selection_control_24px.svg",
 				},
 				// &listItem{
 				// 	cssName:     "chips",
 				// 	imgPath:     "/images/ic_chips_24dp.svg",
 				// 	description: "Chips for actions, selection, and input ",
 				// },
-				// &listItem{
-				// 	cssName:     "dialog",
-				// 	description: "Secondary text",
-				// },
+				&listItem{
+					cssName:     "dialog",
+					description: "Secondary text",
+					imgPath: "https://material-components-web.appspot.com/" +
+						"images/ic_dialog_24px.svg",
+				},
 				// &listItem{
 				// 	cssName:     "drawer",
 				// 	imgPath:     "/images/ic_side_navigation_24px.svg",
