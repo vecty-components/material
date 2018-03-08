@@ -120,7 +120,6 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 							&button.State{
 								Label:   vecty.Text("Toggle RTL"),
 								Stroked: true,
-								Compact: true,
 								ClickHandler: func(e *vecty.Event) {
 									ff := e.Target.Get("parentElement")
 									ff = ff.Get("parentElement")
@@ -142,7 +141,6 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 									),
 								},
 								Stroked: true,
-								Compact: true,
 								ClickHandler: func(e *vecty.Event) {
 									c.defaultFF.AlignEnd = !c.defaultFF.AlignEnd
 									vecty.Rerender(c.defaultFF)
@@ -271,7 +269,6 @@ func makeButton(h func(*vecty.Event), l vecty.List, class string) *button.B {
 			Label:        l,
 			ClickHandler: h,
 			Stroked:      true,
-			Compact:      true,
 		},
 	)
 }
