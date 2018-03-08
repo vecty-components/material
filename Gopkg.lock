@@ -17,7 +17,7 @@
     "formfield",
     "ripple"
   ]
-  revision = "5e5824dea4f989b937cfe2bff58fbce379b25c53"
+  revision = "ff25d743a16d860818cb3434eaa16f2e8de777d2"
 
 [[projects]]
   name = "github.com/PuerkitoBio/goquery"
@@ -49,7 +49,7 @@
     "html",
     "html/atom"
   ]
-  revision = "d25186b37f34ebdbbea8f488ef055638dfab272d"
+  revision = "d0aafc73d5cdc42264b0af071c261abac580695e"
 
 [solve-meta]
   analyzer-name = "dep"
