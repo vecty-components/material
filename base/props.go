@@ -9,22 +9,8 @@ import (
 type Props struct {
 	mdc      mbase.ComponentStartStopper
 	ID       string
-	Markup   vecty.MarkupList
+	Markup   []vecty.Applyer
 	Element  *vecty.HTML
 	NoRipple bool
 	ripple   *ripple.R
-}
-
-func NewProps() *Props {
-	return &Props{}
-}
-
-func (p *Props) WithID(id string) *Props {
-	p.ID = id
-	return p
-}
-
-func (p *Props) WithMarkup(m ...vecty.Applyer) *Props {
-	p.Markup = vecty.Markup(m...)
-	return p
 }
