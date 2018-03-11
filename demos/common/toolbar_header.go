@@ -8,6 +8,7 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
+	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
 )
 
@@ -64,6 +65,7 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 				vecty.Class("mdc-toolbar__menu-icon"),
 				vecty.Class("material-icons"),
 				vecty.Class("demo-menu"),
+				event.Click(c.MenuHandler),
 			),
 			vecty.Text("menu"),
 		)
