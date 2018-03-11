@@ -24,7 +24,10 @@ func main() {
 func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		vecty.Markup(vecty.Class("mdc-typography")),
-		&common.ToolbarHeader{Title: "Buttons"},
+		&common.ToolbarHeader{
+			Title:      "Buttons",
+			Navigation: common.NavBack,
+		},
 		elem.Main(
 			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
 			elem.Section(
@@ -65,14 +68,14 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 						),
 					},
 				),
-				c.renderBtnFieldSets("Ripple Enabled", false),
-				c.renderBtnFieldSets("CSS Only", true),
+				c.renderBtnFieldSets("Ripple Enabled", true),
+				c.renderBtnFieldSets("CSS Only", false),
 			),
 		),
 	)
 }
 
-func (c *buttonDemoView) renderBtnFieldSet(title string, noRipple bool,
+func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 	s *button.State) vecty.ComponentOrHTML {
 	if s == nil {
 		s = &button.State{}
@@ -83,7 +86,7 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, noRipple bool,
 			vecty.Text(title),
 		),
 		elem.Div(
-			c.newBtn(&base.Props{NoRipple: noRipple},
+			c.newBtn(&base.Props{Ripple: Ripple},
 				&button.State{
 					Label:      vecty.Text("Baseline"),
 					Raised:     s.Raised,
@@ -91,7 +94,7 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, noRipple bool,
 					Stroked:    s.Stroked,
 				},
 			),
-			c.newBtn(&base.Props{NoRipple: noRipple},
+			c.newBtn(&base.Props{Ripple: Ripple},
 				&button.State{
 					Label:      vecty.Text("Dense"),
 					Dense:      true,
@@ -102,7 +105,7 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, noRipple bool,
 			),
 			c.newBtn(
 				&base.Props{
-					NoRipple: noRipple,
+					Ripple: Ripple,
 					Markup: []vecty.Applyer{
 						vecty.Class("secondary-text-button"),
 					},
@@ -114,7 +117,7 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, noRipple bool,
 					Stroked:    s.Stroked,
 				},
 			),
-			c.newBtn(&base.Props{NoRipple: noRipple},
+			c.newBtn(&base.Props{Ripple: Ripple},
 				&button.State{
 					Label: vecty.List{
 						elem.Italic(
@@ -131,7 +134,7 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, noRipple bool,
 					Stroked:    s.Stroked,
 				},
 			),
-			c.newBtn(&base.Props{NoRipple: noRipple},
+			c.newBtn(&base.Props{Ripple: Ripple},
 				&button.State{
 					Label:      vecty.Text("Link"),
 					Href:       "javascript:void(0)",
@@ -145,20 +148,20 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, noRipple bool,
 }
 
 func (c *buttonDemoView) renderBtnFieldSets(heading string,
-	noRipple bool) vecty.ComponentOrHTML {
+	Ripple bool) vecty.ComponentOrHTML {
 	return vecty.List{
 		elem.Heading1(
 			vecty.Markup(vecty.Class("mdc-typography--display2")),
 			vecty.Text(heading),
 		),
-		c.renderBtnFieldSet("Text Button", noRipple, nil),
-		c.renderBtnFieldSet("Raised Button", noRipple,
+		c.renderBtnFieldSet("Text Button", Ripple, nil),
+		c.renderBtnFieldSet("Raised Button", Ripple,
 			&button.State{Raised: true},
 		),
-		c.renderBtnFieldSet("Unelevated Button (Experimental)", noRipple,
+		c.renderBtnFieldSet("Unelevated Button (Experimental)", Ripple,
 			&button.State{Unelevated: true},
 		),
-		c.renderBtnFieldSet("Stroked Button", noRipple,
+		c.renderBtnFieldSet("Stroked Button", Ripple,
 			&button.State{Stroked: true},
 		),
 		elem.FieldSet(
@@ -174,7 +177,7 @@ func (c *buttonDemoView) renderBtnFieldSets(heading string,
 						Markup: []vecty.Applyer{
 							vecty.Class("big-round-corner-button"),
 						},
-						NoRipple: noRipple,
+						Ripple: Ripple,
 					},
 					&button.State{
 						Unelevated: true,
@@ -186,7 +189,7 @@ func (c *buttonDemoView) renderBtnFieldSets(heading string,
 						Markup: []vecty.Applyer{
 							vecty.Class("thick-stroke-button"),
 						},
-						NoRipple: noRipple,
+						Ripple: Ripple,
 					},
 					&button.State{
 						Stroked: true,

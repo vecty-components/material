@@ -7,10 +7,10 @@ import (
 )
 
 type Props struct {
-	mdc      mbase.ComponentStartStopper
-	ID       string
-	Markup   []vecty.Applyer
-	Element  *vecty.HTML
-	NoRipple bool
-	ripple   *ripple.R
+	mdc     mbase.ComponentStartStopper
+	ID      string
+	Markup  []vecty.Applyer
+	Element *vecty.HTML
+	Ripple  bool
+	ripple  *ripple.R
 }

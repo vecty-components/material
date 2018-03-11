@@ -28,18 +28,17 @@ func (b *Base) Render(h *vecty.HTML) vecty.ComponentOrHTML {
 func (b *Base) Mount() {
 	var isRippler bool
 	if b.Props.mdc == nil {
-		if b.Props.NoRipple {
+		if !b.Props.Ripple {
 			return
 		}
 		b.Props.mdc = ripple.New()
 		isRippler = true
 	}
-	// e := js.Global.Get("document").Call("querySelector", "
 	err := b.Props.mdc.Start(b.Props.Element.Node())
 	if err != nil {
 		panic(err)
 	}
-	if isRippler || b.Props.NoRipple ||
+	if isRippler || !b.Props.Ripple ||
 		b.Props.mdc.Component().MDCState.Basic {
 		return
 	}

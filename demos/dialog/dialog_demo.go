@@ -36,7 +36,6 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 						ID: "mdc-dialog-hero",
 						Markup: []vecty.Applyer{
 							vecty.Class("catalog-dialog-demo")},
-						NoRipple: true,
 					},
 					&dialog.State{
 						Header: "Are you happy?",
@@ -53,8 +52,7 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 				vecty.Markup(vecty.Class("demo-body")),
 				c.newDemoDialog(
 					&base.Props{
-						ID:       "mdc-dialog-default",
-						NoRipple: true,
+						ID: "mdc-dialog-default",
 					},
 					&dialog.State{
 						Header: "Use Google's location service?",
@@ -66,8 +64,7 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 				),
 				c.newDemoDialog(
 					&base.Props{
-						ID:       "mdc-dialog-colored-footer-button",
-						NoRipple: true,
+						ID: "mdc-dialog-colored-footer-button",
 					},
 					&dialog.State{
 						Header: "Use Google's location service?",
@@ -79,8 +76,7 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 				),
 				c.newDemoDialog(
 					&base.Props{
-						ID:       "mdc-dialog-with-list",
-						NoRipple: true,
+						ID: "mdc-dialog-with-list",
 					},
 					&dialog.State{
 						Header:     "Choose a Ringtone",
