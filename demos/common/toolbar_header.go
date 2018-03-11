@@ -4,7 +4,6 @@ import (
 	"path"
 
 	"agamigo.io/vecty-material/base"
-	"agamigo.io/vecty-material/button"
 	"agamigo.io/vecty-material/toolbar"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
@@ -60,17 +59,13 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 			),
 		)
 	case NavMenu:
-		toolbarNav = button.New(
-			&base.Props{
-				Markup: []vecty.Applyer{
-					vecty.Class("demo-menu"),
-					vecty.Class("mdc-toolbar__menu-icon"),
-				},
-			},
-			&button.State{
-				Icon:         "menu",
-				ClickHandler: c.MenuHandler,
-			},
+		toolbarNav = elem.Button(
+			vecty.Markup(
+				vecty.Class("mdc-toolbar__menu-icon"),
+				vecty.Class("material-icons"),
+				vecty.Class("demo-menu"),
+			),
+			vecty.Text("menu"),
 		)
 	case NavNone:
 		toolbarNav = nil

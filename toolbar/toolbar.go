@@ -93,6 +93,8 @@ func Title(title string, p *base.Props) *vecty.HTML {
 	return elem.Span(
 		vecty.Markup(
 			vecty.Class("mdc-toolbar__title"),
+			vecty.Markup(p.Markup...),
+			vecty.MarkupIf(p.ID != "", prop.ID(p.ID)),
 		),
 		vecty.Text(title),
 	)
