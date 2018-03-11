@@ -26,7 +26,10 @@ func main() {
 func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		vecty.Markup(vecty.Class("mdc-typography")),
-		&common.ToolbarHeader{Title: "Dialog"},
+		&common.ToolbarHeader{
+			Title:      "Dialog",
+			Navigation: common.NavBack,
+		},
 		elem.Main(
 			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
 			elem.Section(

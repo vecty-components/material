@@ -34,7 +34,10 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
 		),
-		&common.ToolbarHeader{Title: "Material Components Catalog"},
+		&common.ToolbarHeader{
+			Title:      "Material Components Catalog",
+			Navigation: common.NavRoot,
+		},
 		elem.Main(
 			elem.Navigation(
 				vecty.Markup(

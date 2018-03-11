@@ -83,7 +83,10 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
 		),
-		&common.ToolbarHeader{Title: "Checkbox"},
+		&common.ToolbarHeader{
+			Title:      "Checkbox",
+			Navigation: common.NavBack,
+		},
 		elem.Main(
 			elem.Div(
 				vecty.Markup(

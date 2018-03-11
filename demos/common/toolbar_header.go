@@ -3,22 +3,37 @@ package common
 import (
 	"path"
 
+	"agamigo.io/vecty-material/base"
+	"agamigo.io/vecty-material/button"
+	"agamigo.io/vecty-material/toolbar"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
 )
 
+type NavType int
+
+const (
+	NavBack NavType = iota
+	NavRoot
+	NavMenu
+	NavNone
+)
+
 type ToolbarHeader struct {
 	vecty.Core
-	Title string
+	Title       string
+	Navigation  NavType
+	NoFixed     bool
+	MenuHandler func(e *vecty.Event)
 }
 
 func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 	pathname := js.Global.Get("window").Get("location").Get("pathname").String()
-	basepath := path.Base(pathname)
-	var toolbarNav *vecty.HTML
-	if basepath == "/" || basepath == "." || basepath == "demos" {
+	var toolbarNav vecty.ComponentOrHTML
+	switch c.Navigation {
+	case NavRoot:
 		toolbarNav = elem.Span(
 			vecty.Markup(
 				vecty.Class("catalog-logo"),
@@ -30,7 +45,7 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 				),
 			),
 		)
-	} else {
+	case NavBack:
 		toolbarNav = elem.Anchor(
 			vecty.Markup(
 				prop.Href(path.Clean(pathname+"/..")),
@@ -40,35 +55,43 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 			elem.Italic(
 				vecty.Markup(
 					vecty.Class("material-icons"),
+					vecty.UnsafeHTML("&#xE5C4;"),
 				),
-				// vecty.Text("&#xE5C4;"),
-				vecty.Text("arrow_back"),
 			),
 		)
+	case NavMenu:
+		toolbarNav = button.New(
+			&base.Props{
+				Markup: []vecty.Applyer{
+					vecty.Class("demo-menu"),
+					vecty.Class("mdc-toolbar__menu-icon"),
+				},
+			},
+			&button.State{
+				Icon:         "menu",
+				ClickHandler: c.MenuHandler,
+			},
+		)
+	case NavNone:
+		toolbarNav = nil
 	}
-	return elem.Header(
-		vecty.Markup(
-			vecty.Class("mdc-toolbar"),
-			vecty.Class("mdc-toolbar--fixed"),
-		),
-		elem.Div(
-			vecty.Markup(
-				vecty.Class("mdc-toolbar__row"),
-			),
-			elem.Section(
-				vecty.Markup(
-					vecty.Class("mdc-toolbar__section"),
-					vecty.Class("mdc-toolbar__section--align-start"),
-				),
+	return toolbar.New(
+		&base.Props{
+			Markup: []vecty.Applyer{
+				vecty.MarkupIf(c.NoFixed, vecty.Class("mdc-elevation--z4")),
+			},
+		},
+		&toolbar.State{
+			Fixed: !c.NoFixed,
+			SectionStart: vecty.List{
 				toolbarNav,
-				elem.Span(
-					vecty.Markup(
-						vecty.Class("mdc-toolbar__title"),
-						vecty.Class("catalog-title"),
-					),
-					vecty.Text(c.Title),
+				toolbar.Title(
+					c.Title,
+					&base.Props{
+						Markup: []vecty.Applyer{vecty.Class("catalog-title")},
+					},
 				),
-			),
-		),
+			},
+		},
 	)
 }
