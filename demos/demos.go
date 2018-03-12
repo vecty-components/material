@@ -78,11 +78,12 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					imgPath: "https://material-components-web.appspot.com/" +
 						"images/ic_dialog_24px.svg",
 				},
-				// &listItem{
-				// 	cssName:     "drawer",
-				// 	imgPath:     "/images/ic_side_navigation_24px.svg",
-				// 	description: "Various drawer styles",
-				// },
+				&listItem{
+					cssName:     "drawer",
+					description: "Various drawer styles",
+					imgPath: "https://material-components-web.appspot.com/" +
+						"images/ic_side_navigation_24px.svg",
+				},
 				// &listItem{
 				// 	cssName:     "elevation",
 				// 	imgPath:     "/images/ic_shadow_24px.svg",
