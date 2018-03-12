@@ -15,7 +15,11 @@
     "checkbox",
     "dialog",
     "formfield",
-    "ripple"
+    "persistentdrawer",
+    "radio",
+    "ripple",
+    "temporarydrawer",
+    "toolbar"
   ]
   revision = "ff25d743a16d860818cb3434eaa16f2e8de777d2"
 
@@ -49,11 +53,11 @@
     "html",
     "html/atom"
   ]
-  revision = "d0aafc73d5cdc42264b0af071c261abac580695e"
+  revision = "ae89d30ce0c63142b652837da33d782e2b0a9b25"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "65536d05138353f693aaa6a3a1054545f0c4d993aa7258568a0f0bd2c19bedb1"
+  inputs-digest = "04a2bedebfe39abafe0c647b95f5a6cf96f8e24eabef722f3d3fa0d92c9ca019"
   solver-name = "gps-cdcl"
   solver-version = 1
