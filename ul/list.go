@@ -5,6 +5,7 @@ import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
+	"github.com/gopherjs/vecty/prop"
 )
 
 // L is a vecty-material list component.
@@ -31,14 +32,17 @@ type Item struct {
 }
 
 type ItemState struct {
-	Primary      string
-	Secondary    string
-	Graphic      vecty.ComponentOrHTML
-	Meta         vecty.ComponentOrHTML
-	Selected     bool
-	Activated    bool
-	ClickHandler func(i *Item, e *vecty.Event)
-	divider      bool
+	Primary       string
+	Secondary     string
+	Graphic       vecty.ComponentOrHTML
+	GraphicMarkup []vecty.Applyer
+	Meta          vecty.ComponentOrHTML
+	MetaMarkup    []vecty.Applyer
+	Selected      bool
+	Activated     bool
+	ClickHandler  func(i *Item, e *vecty.Event)
+	Href          string
+	divider       bool
 }
 
 // Group is a vecty-material list-group component.
@@ -121,7 +125,11 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 			),
 		)
 	}
-	return c.Base.Render(elem.ListItem(
+	tag := "li"
+	if c.Href != "" {
+		tag = "a"
+	}
+	return c.Base.Render(vecty.Tag(tag,
 		vecty.Markup(
 			vecty.Markup(c.Props.Markup...),
 			vecty.Class("mdc-list-item"),
@@ -132,11 +140,14 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(c.ClickHandler != nil,
 				event.Click(c.wrapClickHandler()),
 			),
+			vecty.MarkupIf(c.Href != "", prop.Href(c.Href)),
 		),
 		vecty.If(c.Graphic != nil, elem.Span(
 			vecty.Markup(
 				vecty.Class("mdc-list-item__graphic"),
 				vecty.Attribute("role", "presentation"),
+				vecty.MarkupIf(c.GraphicMarkup != nil,
+					c.GraphicMarkup...),
 			),
 			c.Graphic,
 		)),
@@ -153,6 +164,8 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 			vecty.Markup(
 				vecty.Class("mdc-list-item__meta"),
 				vecty.Attribute("role", "presentation"),
+				vecty.MarkupIf(c.MetaMarkup != nil,
+					c.MetaMarkup...),
 			),
 			c.Meta,
 		)),
