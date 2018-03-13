@@ -51,46 +51,63 @@ type S struct {
 func New() *S {
 	c := &S{}
 	c.Component()
-	c.DismissOnAction = false
-	c.Message = ""
-	c.Timeout = 2750
-	c.ActionHandler = nil
-	c.ActionText = ""
-	c.MultiLine = false
-	c.ActionOnBottom = false
 	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *S) Start(rootElem *js.Object) error {
-	return base.Start(c, rootElem, js.M{
-		"dismissOnAction": c.DismissOnAction,
-		"message":         c.Message,
-		"timeout":         c.Timeout,
-		"actionHandler":   c.ActionHandler,
-		"actionText":      c.ActionText,
-		"actionOnBottom":  c.ActionOnBottom,
-	})
+	return base.Start(c, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *S) Stop() error {
-	return base.Stop(c.Component())
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *S) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCSnackbar",
 				MDCCamelCaseName: "snackbar",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
+}
+
+// StateMap implements the base.StateMapper interface.
+func (c *S) StateMap() base.StateMap {
+	print()
+	sm := base.StateMap{
+		"dismissOnAction": c.DismissOnAction,
+		"message":         c.Message,
+		"timeout":         c.Timeout,
+		"actionHandler":   c.ActionHandler,
+		"actionText":      c.ActionText,
+		"actionOnBottom":  c.ActionOnBottom,
+	}
+	if c.Component().Object.Get("message").String() == "undefined" {
+		sm["message"] = js.InternalObject(c).Get("Message")
+	}
+	if c.Component().Object.Get("timeout").String() == "undefined" {
+		sm["timeout"] = 2750
+	}
+	if c.Component().Get("actionHandler").String() == "undefined" {
+		c.ActionHandler = nil
+		sm["actionHandler"] = nil
+	}
+	if c.Component().Object.Get("actionText").String() == "undefined" {
+		sm["actionText"] = js.InternalObject(c).Get("ActionText")
+	}
+	return sm
 }
 
 // Show displays the snackbar. If the configuration is invalid an error message

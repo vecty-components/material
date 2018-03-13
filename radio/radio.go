@@ -20,37 +20,43 @@ type R struct {
 func New() *R {
 	c := &R{}
 	c.Component()
-	c.Checked = false
-	c.Disabled = false
-	c.Value = ""
 	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *R) Start(rootElem *js.Object) error {
-	return base.Start(c, rootElem, js.M{
-		"checked":  c.Checked,
-		"disabled": c.Disabled,
-		"value":    c.Value,
-	})
+	return base.Start(c, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *R) Stop() error {
-	return base.Stop(c.mdc)
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *R) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCRadio",
 				MDCCamelCaseName: "radio",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
+}
+
+// StateMap implements the base.StateMapper interface.
+func (c *R) StateMap() base.StateMap {
+	return base.StateMap{
+		"checked":  c.Checked,
+		"disabled": c.Disabled,
+		"value":    js.InternalObject(c).Get("Value").String(),
+	}
 }

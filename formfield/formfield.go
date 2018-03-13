@@ -23,26 +23,35 @@ func New() *FF {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *FF) Start(rootElem *js.Object) error {
-	return base.Start(c, rootElem, js.M{
-		"input": c.Input,
-	})
+	return base.Start(c, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *FF) Stop() error {
-	return base.Stop(c.mdc)
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *FF) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCFormField",
 				MDCCamelCaseName: "formField",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
+}
+
+// StateMap implements the base.StateMapper interface.
+func (c *FF) StateMap() base.StateMap {
+	return base.StateMap{
+		"input": js.InternalObject(c).Get("Input"),
+	}
 }

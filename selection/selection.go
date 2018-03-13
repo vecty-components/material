@@ -19,40 +19,47 @@ type S struct {
 func New() *S {
 	c := &S{}
 	c.Component()
-	c.SelectedIndex = 0
-	c.Disabled = false
 	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *S) Start(rootElem *js.Object) error {
-	return base.Start(c, rootElem, js.M{
-		"selectedIndex": c.SelectedIndex,
-		"disabled":      c.Disabled,
-	})
+	return base.Start(c, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *S) Stop() error {
-	return base.Stop(c.Component())
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *S) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCSelect",
 				MDCCamelCaseName: "select",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
 }
 
-// Selected returns the id of the currently selected option. If no id is present
+// StateMap implements the base.StateMapper interface.
+func (c *S) StateMap() base.StateMap {
+	return base.StateMap{
+		"selectedIndex": c.SelectedIndex,
+		"disabled":      c.Disabled,
+	}
+}
+
+// SelectedString returns the id of the currently selected option. If no id is present
 // on the selected option, its textContent is used. Returns an empty string when
 // no option is selected.
 func (s *S) SelectedString() string {

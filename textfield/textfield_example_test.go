@@ -49,20 +49,20 @@ func Example() {
 	// Output:
 	// MDCTextField
 	//
-	// Disabled: false, Valid: false, Required: false
-	// Value: , HelperText: undefined
-	//
-	// Disabled: true, Valid: false, Required: false
-	// Value: longerpassword, HelperText: Must be at least 8 characters.
-	//
-	// Disabled: true, Valid: true, Required: true
-	// Value: longerpassword, HelperText: undefined
+	// Disabled: false, Valid: true, Required: false
+	// Value:, HelperText:
 	//
 	// Disabled: true, Valid: true, Required: false
-	// Value: longerpassword, HelperText: Must be at least 8 characters.
+	// Value:longerpassword, HelperText:Must be at least 8 characters.
 	//
 	// Disabled: true, Valid: true, Required: false
-	// Value: longerpassword, HelperText: Must be at least 8 characters.
+	// Value:longerpassword, HelperText:Must be at least 8 characters.
+	//
+	// Disabled: true, Valid: true, Required: false
+	// Value:longerpassword, HelperText:Must be at least 8 characters.
+	//
+	// Disabled: true, Valid: true, Required: false
+	// Value:longerpassword, HelperText:Must be at least 8 characters.
 }
 
 func printName(c *textfield.TF) {
@@ -73,7 +73,7 @@ func printState(c *textfield.TF) {
 	fmt.Println()
 	fmt.Printf("Disabled: %v, Valid: %v, Required: %v\n",
 		c.Disabled, c.Valid, c.Required)
-	fmt.Printf("Value: %v, HelperText: %v\n", c.Value, c.HelperText)
+	fmt.Printf("Value:%v, HelperText:%v\n", c.Value, c.HelperText)
 }
 
 func init() {

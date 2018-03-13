@@ -59,51 +59,60 @@ func New() *M {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *M) Start(rootElem *js.Object) error {
-	err := base.Start(c.Component(), rootElem, js.M{
-		"open":      c.Open,
-		"quickOpen": c.QuickOpen,
-		// "items":           c.Items(),
-		// "itemsContainer_": c.ItemsContainer(),
-	})
+	backup := c.StateMap()
+	err := base.Start(c.Component(), rootElem)
 	if err != nil {
 		return err
 	}
 	err = c.afterStart()
 	if err != nil {
 		// TODO: handle afterStart + stop error
-		_ = c.Stop()
+		c.Stop()
 		return err
 	}
+	c.Component().SetState(backup)
 	return nil
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *M) Stop() error {
-	return base.Stop(c.Component())
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *M) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCMenu",
 				MDCCamelCaseName: "menu",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
 }
 
+// StateMap implements the base.StateMapper interface.
+func (c *M) StateMap() base.StateMap {
+	return base.StateMap{
+		"open":      c.Open,
+		"quickOpen": c.QuickOpen,
+	}
+}
+
 // OpenFocus opens the menu with an item at index given initial focus.
-func (m *M) OpenFocus(index int) {
-	m.Component().Call("show", index)
+func (c *M) OpenFocus(index int) {
+	c.Component().Call("show", index)
 }
 
 // Items returns the HTMLLIElements that represent the menu's items.
-func (m *M) Items() []*js.Object {
-	return m.items
+func (c *M) Items() []*js.Object {
+	return c.items
 }
 
 // ItemsContainer is the HTMLUListElement that contains the menu's items

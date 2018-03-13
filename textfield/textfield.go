@@ -34,40 +34,54 @@ type TF struct {
 func New() *TF {
 	c := &TF{}
 	c.Component()
-	c.Value = ""
-	c.Disabled = false
-	// c.Valid = false
-	// c.Required = false
-	// c.HelperText = ""
 	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *TF) Start(rootElem *js.Object) error {
-	return base.Start(c, rootElem, js.M{
-		"value":    c.Value,
-		"disabled": c.Disabled,
-	})
+	return base.Start(c, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *TF) Stop() error {
-	return base.Stop(c.Component())
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *TF) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCTextField",
 				MDCCamelCaseName: "textField",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
+}
+
+// StateMap implements the base.StateMapper interface.
+func (c *TF) StateMap() base.StateMap {
+	sm := base.StateMap{
+		"value":      c.Value,
+		"disabled":   c.Disabled,
+		"valid":      c.Value,
+		"required":   c.Required,
+		"helperText": c.HelperText,
+	}
+	if c.Component().Object.Get("value").String() == "undefined" {
+		sm["value"] = js.InternalObject(c).Get("Value")
+	}
+	if c.Component().Object.Get("helperText").String() == "undefined" {
+		sm["helperText"] = js.InternalObject(c).Get("HelperText")
+	}
+	return sm
 }
 
 // Layout adjusts the dimensions and positions for all sub-elements.

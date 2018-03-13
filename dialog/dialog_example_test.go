@@ -46,7 +46,7 @@ func Example() {
 	// MDCDialog
 	//
 	// [Go] Open: false
-	// [JS] Open: undefined
+	// [JS] Open: false
 	//
 	// [Go] Open: true
 	// [JS] Open: true

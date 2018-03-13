@@ -61,7 +61,7 @@ func Example() {
 	// Output:
 	// MDCFormField
 	//
-	// Child Element: undefined
+	// Child Element: [object Object]
 	//
 	// Child Element: [object Object]
 }

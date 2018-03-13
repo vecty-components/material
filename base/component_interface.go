@@ -36,3 +36,7 @@ type ComponentTyper interface {
 type MDCClasser interface {
 	MDCClass() *js.Object
 }
+
+type StateMapper interface {
+	StateMap() StateMap
+}
