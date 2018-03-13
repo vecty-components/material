@@ -8,26 +8,14 @@ type Componenter interface {
 	Component() (c *Component)
 }
 
+// ComponentStartStopper is an interface that all material components implement.
+// It is not used within the material project, but is intended for use by its
+// consumers that embed a material component directly. Then frameworks/functions
+// etc. can accept any component.
 type ComponentStartStopper interface {
 	Componenter
 	Start(rootElem *js.Object) error
 	Stop() error
-}
-
-// ComponentSetter is a base interface for every material component
-// implementation.
-type ComponentSetter interface {
-	Componenter
-
-	// SetComponent should replace a component implementation's *js.Object
-	// variable that holds its MDC instance.
-	SetComponent(c *Component)
-}
-
-// ComponentTyper is one way to tell base.Start how to find the MDC library
-// needed for a component. For more control, implement MDCClasser.
-type ComponentTyper interface {
-	ComponentType() ComponentType
 }
 
 // MDCClasser is an interface that allows component users to specify the MDC
@@ -37,6 +25,8 @@ type MDCClasser interface {
 	MDCClass() *js.Object
 }
 
+// StateMapper is an interface that components implement in order to provide a
+// map of state values which can be used for backup/restore.
 type StateMapper interface {
 	StateMap() StateMap
 }
