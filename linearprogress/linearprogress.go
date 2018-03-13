@@ -23,53 +23,63 @@ type LP struct {
 func New() *LP {
 	c := &LP{}
 	c.Component()
-	c.Determinate = false
-	c.Reverse = false
-	c.Progress = 0.0
-	c.Buffer = 0.0
-	c.bufferCache = 0.0
 	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *LP) Start(rootElem *js.Object) error {
-	c.bufferCache = c.Buffer
-	err := base.Start(c, rootElem, js.M{
-		"determinate": c.Determinate,
-		"reverse":     c.Reverse,
-		"progress":    c.Progress,
-		"buffer":      c.Buffer,
-	})
+	backup := c.StateMap()
+	backup["buffer"] = c.Buffer
+	err := base.Start(c, rootElem)
 	if err != nil {
 		return err
 	}
 	err = c.afterStart()
 	if err != nil {
 		// TODO: handle afterStart + stop error
-		_ = c.Stop()
+		c.Stop()
 		return err
 	}
+	c.Component().SetState(backup)
 	return nil
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *LP) Stop() error {
-	return base.Stop(c.Component())
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *LP) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCLinearProgress",
 				MDCCamelCaseName: "linearProgress",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
+}
+
+// StateMap implements the base.StateMapper interface.
+func (c *LP) StateMap() base.StateMap {
+	sm := base.StateMap{
+		"determinate": c.Determinate,
+		"reverse":     c.Reverse,
+		"progress":    c.Progress,
+		"buffer":      c.bufferCache,
+	}
+	if c.Component().Object.Get("progress").String() == "undefined" {
+		sm["progress"] = js.InternalObject(c).Get("Progress")
+	}
+	return sm
 }
 
 // Open opens the linearProgress component.

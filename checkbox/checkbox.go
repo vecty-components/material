@@ -21,39 +21,44 @@ type CB struct {
 func New() *CB {
 	c := &CB{}
 	c.Component()
-	c.Checked = false
-	c.Indeterminate = false
-	c.Disabled = false
-	c.Value = ""
 	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *CB) Start(rootElem *js.Object) error {
-	return base.Start(c, rootElem, js.M{
-		"checked":       c.Checked,
-		"indeterminate": c.Indeterminate,
-		"disabled":      c.Disabled,
-		"value":         c.Value,
-	})
+	return base.Start(c, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *CB) Stop() error {
-	return base.Stop(c.Component())
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *CB) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCCheckbox",
 				MDCCamelCaseName: "checkbox",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
+}
+
+// StateMap implements the base.StateMapper interface.
+func (c *CB) StateMap() base.StateMap {
+	return base.StateMap{
+		"checked":       c.Checked,
+		"indeterminate": c.Indeterminate,
+		"disabled":      c.Disabled,
+		"value":         c.Value,
+	}
 }

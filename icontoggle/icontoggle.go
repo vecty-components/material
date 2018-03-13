@@ -25,29 +25,38 @@ func New() *IT {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *IT) Start(rootElem *js.Object) error {
-	return base.Start(c, rootElem, js.M{
-		"on":       c.On,
-		"disabled": c.Disabled,
-	})
+	return base.Start(c, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *IT) Stop() error {
-	return base.Stop(c.Component())
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *IT) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCIconToggle",
 				MDCCamelCaseName: "iconToggle",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
+}
+
+// StateMap implements the base.StateMapper interface.
+func (c *IT) StateMap() base.StateMap {
+	return base.StateMap{
+		"on":       c.On,
+		"disabled": c.Disabled,
+	}
 }
 
 // TODO: Wrap refreshToggleData

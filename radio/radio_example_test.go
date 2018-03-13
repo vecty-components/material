@@ -11,10 +11,10 @@ import (
 
 func Example() {
 	// Create a new instance of a material radio component.
-	c := &radio.R{}
+	c := radio.New()
 	printName(c)
 	printState(c)
-	c.Checked = false
+	c.Checked = true
 	c.Disabled = true
 	c.Value = "before Start()"
 	printState(c)
@@ -31,11 +31,11 @@ func Example() {
 			c.Component().Type, err)
 	}
 
+	c.Value = "after Start() 1"
 	printState(c)
-	c.Checked = true
+	c.Checked = false
 	c.Disabled = false
-	c.Value = "after Start()"
-	printState(c)
+	c.Value = "after Start() 2"
 
 	err = c.Stop()
 	if err != nil {
@@ -47,21 +47,14 @@ func Example() {
 
 	// Output:
 	// MDCRadio
-	//
-	// [Go] Checked: false, Disabled: false, Value: undefined
-	// [JS] Checked: undefined, Disabled: undefined, Value: undefined
-	//
-	// [Go] Checked: false, Disabled: true, Value: before Start()
-	// [JS] Checked: false, Disabled: true, Value: before Start()
-	//
-	// [Go] Checked: false, Disabled: true, Value: before Start()
-	// [JS] Checked: false, Disabled: true, Value: before Start()
-	//
-	// [Go] Checked: true, Disabled: false, Value: after Start()
-	// [JS] Checked: true, Disabled: false, Value: after Start()
-	//
-	// [Go] Checked: true, Disabled: false, Value: after Stop()
-	// [JS] Checked: true, Disabled: false, Value: after Stop()
+	// [Go] Checked: false, Disabled: false, Value:
+	// [JS] Checked: false, Disabled: false, Value:
+	// [Go] Checked: true, Disabled: true, Value:before Start()
+	// [JS] Checked: true, Disabled: true, Value:before Start()
+	// [Go] Checked: true, Disabled: true, Value:after Start() 1
+	// [JS] Checked: true, Disabled: true, Value:after Start() 1
+	// [Go] Checked: false, Disabled: false, Value:after Stop()
+	// [JS] Checked: false, Disabled: false, Value:after Stop()
 }
 
 func printName(c *radio.R) {
@@ -69,10 +62,9 @@ func printName(c *radio.R) {
 }
 
 func printState(c *radio.R) {
-	fmt.Println()
-	fmt.Printf("[Go] Checked: %v, Disabled: %v, Value: %v\n",
+	fmt.Printf("[Go] Checked: %v, Disabled: %v, Value:%v\n",
 		c.Checked, c.Disabled, c.Value)
-	fmt.Printf("[JS] Checked: %v, Disabled: %v, Value: %v\n",
+	fmt.Printf("[JS] Checked: %v, Disabled: %v, Value:%v\n",
 		c.Component().Get("checked"), c.Component().Get("disabled"),
 		c.Component().Get("value"))
 }

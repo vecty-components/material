@@ -44,7 +44,7 @@ func Example() {
 	// MDCIconToggle
 	//
 	// [Go] On: false, Disabled: false
-	// [JS] On: undefined, Disabled: undefined
+	// [JS] On: false, Disabled: false
 	//
 	// [Go] On: true, Disabled: true
 	// [JS] On: true, Disabled: true
