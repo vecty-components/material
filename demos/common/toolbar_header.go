@@ -4,6 +4,7 @@ import (
 	"path"
 
 	"agamigo.io/vecty-material/base"
+	"agamigo.io/vecty-material/icon"
 	"agamigo.io/vecty-material/toolbar"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
@@ -52,12 +53,7 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 				vecty.Class("catalog-back"),
 				vecty.Class("mdc-toolbar__menu-icon"),
 			),
-			elem.Italic(
-				vecty.Markup(
-					vecty.Class("material-icons"),
-					vecty.UnsafeHTML("&#xE5C4;"),
-				),
-			),
+			icon.New(nil, &icon.State{Name: "&#xE5C4;"}),
 		)
 	case NavMenu:
 		toolbarNav = elem.Button(

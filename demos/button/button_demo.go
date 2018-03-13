@@ -6,6 +6,7 @@ import (
 	"agamigo.io/vecty-material/checkbox"
 	"agamigo.io/vecty-material/demos/common"
 	"agamigo.io/vecty-material/formfield"
+	"agamigo.io/vecty-material/icon"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 )
@@ -120,12 +121,15 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 			c.newBtn(&base.Props{Ripple: Ripple},
 				&button.State{
 					Label: vecty.List{
-						elem.Italic(
-							vecty.Markup(
-								vecty.Class("material-icons"),
-								vecty.Class("mdc-button__icon"),
-							),
-							vecty.Text("favorite"),
+						icon.New(
+							&base.Props{
+								Markup: []vecty.Applyer{
+									vecty.Class("mdc-button__icon"),
+								},
+							},
+							&icon.State{
+								Name: "favorite",
+							},
 						),
 						vecty.Text("Icon"),
 					},
