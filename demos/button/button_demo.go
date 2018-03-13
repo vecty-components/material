@@ -51,9 +51,7 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 					&formfield.State{
 						Label: "Disable buttons (excluding links)",
 						Input: checkbox.New(
-							&base.Props{
-								ID: "toggle-disabled",
-							},
+							&base.Props{ID: "toggle-disabled"},
 							&checkbox.State{
 								ChangeHandler: func(e *vecty.Event) {
 									checked := e.Target.Get("checked").Bool()
@@ -120,19 +118,12 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 			),
 			c.newBtn(&base.Props{Ripple: Ripple},
 				&button.State{
-					Label: vecty.List{
-						icon.New(
-							&base.Props{
-								Markup: []vecty.Applyer{
-									vecty.Class("mdc-button__icon"),
-								},
-							},
-							&icon.State{
-								Name: "favorite",
-							},
-						),
-						vecty.Text("Icon"),
-					},
+					Label: vecty.Text("Icon"),
+					Icon: icon.New(nil,
+						&icon.State{
+							Name: "favorite",
+						},
+					),
 					Raised:     s.Raised,
 					Unelevated: s.Unelevated,
 					Stroked:    s.Stroked,

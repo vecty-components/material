@@ -17,15 +17,14 @@ type B struct {
 
 type State struct {
 	Label        vecty.ComponentOrHTML
-	ClickHandler func(*vecty.Event)
+	Icon         vecty.ComponentOrHTML
 	Disabled     bool
 	Raised       bool
 	Unelevated   bool
 	Stroked      bool
 	Dense        bool
-	Icon         string
-	IconClass    string
 	Href         string
+	ClickHandler func(*vecty.Event)
 }
 
 func New(p *base.Props, s *State) *B {
@@ -40,6 +39,19 @@ func New(p *base.Props, s *State) *B {
 
 // Render implements the vecty.Component interface.
 func (c *B) Render() vecty.ComponentOrHTML {
+	var ico *vecty.HTML
+	switch t := c.Icon.(type) {
+	case nil:
+		ico = nil
+	case vecty.Component:
+		ico = t.Render().(*vecty.HTML)
+	case *vecty.HTML:
+		ico = t
+	}
+	if ico != nil {
+		vecty.Class("mdc-button__icon").Apply(ico)
+	}
+
 	return c.Base.Render(elem.Button(
 		vecty.Markup(
 			vecty.Markup(c.Props.Markup...),
@@ -62,20 +74,7 @@ func (c *B) Render() vecty.ComponentOrHTML {
 				vecty.Class("mdc-button--dense"),
 			),
 		),
-		vecty.If(c.Icon != "",
-			elem.Italic(
-				vecty.Markup(
-					vecty.Class("mdc-button__icon"),
-					vecty.MarkupIf(c.IconClass != "",
-						vecty.Class(c.IconClass),
-					),
-					vecty.MarkupIf(c.IconClass != "",
-						vecty.Class("material-icon"),
-					),
-				),
-				vecty.Text(c.Icon),
-			),
-		),
-		base.RenderStoredChild(c.Label),
+		vecty.If(ico != nil, ico),
+		vecty.If(c.Label != nil, base.RenderStoredChild(c.Label)),
 	))
 }
