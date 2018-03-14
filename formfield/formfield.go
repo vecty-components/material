@@ -51,8 +51,9 @@ func (c *FF) Render() vecty.ComponentOrHTML {
 	return c.Base.Render(elem.Div(
 		vecty.Markup(
 			vecty.Markup(c.Props.Markup...),
+			vecty.MarkupIf(c.Props.ID != "",
+				prop.ID(c.Props.ID)),
 			vecty.Class("mdc-form-field"),
-			prop.ID(c.Props.ID),
 			vecty.MarkupIf(c.AlignEnd,
 				vecty.Class("mdc-form-field--align-end"),
 			),
