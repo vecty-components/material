@@ -27,8 +27,8 @@ func New() *D {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *D) Start(rootElem *js.Object) error {
-	open := c.Open
-	err := base.Start(c, rootElem, js.M{})
+	backup := c.stateMap()
+	err := base.Start(c, rootElem)
 	if err != nil {
 		return err
 	}
@@ -36,29 +36,43 @@ func (c *D) Start(rootElem *js.Object) error {
 	if err != nil {
 		return err
 	}
-	if open {
+	if backup["open"].(bool) == true {
 		c.Open = true
 	}
+	// c.Component().SetState(backup)
 	return err
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *D) Stop() error {
-	return base.Stop(c.Component())
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *D) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCDialog",
 				MDCCamelCaseName: "dialog",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.stateMap())
 	}
 	return c.mdc.Component()
+}
+
+// stateMap does not implement the base.StateMapper interface, but it does the
+// same thing as StateMap(). This method is private because we cannot restore
+// state until after afterStart() is called.
+func (c *D) stateMap() base.StateMap {
+	return base.StateMap{
+		"open": c.Open,
+	}
 }
 
 // setOpen shows the dialog. If the dialog is already open then setOpen is a

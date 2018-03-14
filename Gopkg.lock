@@ -21,7 +21,7 @@
     "temporarydrawer",
     "toolbar"
   ]
-  revision = "ff25d743a16d860818cb3434eaa16f2e8de777d2"
+  revision = "7d4544a09ddffbc5d1478393402c13d6716cccea"
 
 [[projects]]
   name = "github.com/PuerkitoBio/goquery"
@@ -53,7 +53,7 @@
     "html",
     "html/atom"
   ]
-  revision = "ae89d30ce0c63142b652837da33d782e2b0a9b25"
+  revision = "e0c57d8f86c17f0724497efcb3bc617e82834821"
 
 [solve-meta]
   analyzer-name = "dep"

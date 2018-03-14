@@ -23,27 +23,33 @@ func New() *T {
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *T) Start(rootElem *js.Object) error {
-	return base.Start(c, rootElem, js.M{})
+	return base.Start(c, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *T) Stop() error {
-	return base.Stop(c.Component())
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *T) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCTextField",
 				MDCCamelCaseName: "textField",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
 }
 
-// TODO: Handle events?
-// - change
+// StateMap implements the base.StateMapper interface.
+func (c *T) StateMap() base.StateMap {
+	return base.StateMap{}
+}

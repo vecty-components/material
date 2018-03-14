@@ -17,37 +17,42 @@ type TD struct {
 func New() *TD {
 	c := &TD{}
 	c.Component()
-	c.Open = false
 	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
 func (c *TD) Start(rootElem *js.Object) error {
-	return base.Start(c, rootElem, js.M{
-		"open": c.Open,
-	})
+	return base.Start(c, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
 func (c *TD) Stop() error {
-	return base.Stop(c.Component())
+	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
 func (c *TD) Component() *base.Component {
-	if c.mdc == nil {
+	switch {
+	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
 				MDCClassName:     "MDCTemporaryDrawer",
 				MDCCamelCaseName: "drawer",
 			},
 		}
+		fallthrough
+	case c.mdc.Object == nil:
+		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
 }
 
-// TODO: Custom events
-// - MDCTemporaryDrawer:open
-// - MDCTemporaryDrawer:close
+// StateMap implements the base.StateMapper interface.
+func (c *TD) StateMap() base.StateMap {
+	sm := base.StateMap{
+		"open": c.Open,
+	}
+	return sm
+}

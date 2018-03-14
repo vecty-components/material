@@ -24,6 +24,8 @@ type MDCState struct {
 	RootElement *js.Object
 }
 
+type StateMap map[string]interface{}
+
 // Component implements the base.Componenter interface.
 func (c *Component) Component() *Component {
 	if c.Object == nil || c.Object == js.Undefined {
@@ -52,6 +54,17 @@ func (c *Component) Start(rootElem *js.Object) error {
 
 func (c *Component) Stop() error {
 	return nil
+}
+
+func (c *Component) SetState(sm StateMap) *Component {
+	if sm != nil {
+		for k, v := range sm {
+			if v != nil {
+				c.Component().Set(k, v)
+			}
+		}
+	}
+	return c
 }
 
 // Start takes a component implementation (c) and initializes it with an
@@ -83,8 +96,14 @@ func (c *Component) Stop() error {
 // the MDC component class.
 //
 // See: https://material.io/components/web/docs/framework-integration/
-func Start(c Componenter, rootElem *js.Object, state js.M) (err error) {
+func Start(c Componenter, rootElem *js.Object) (err error) {
 	defer gojs.CatchException(&err)
+
+	backup := StateMap{}
+	if sm, ok := c.(StateMapper); ok {
+		backup = sm.StateMap()
+		defer c.Component().SetState(backup)
+	}
 
 	if c.Component().MDCState.Basic {
 		return nil
@@ -117,15 +136,6 @@ func Start(c Componenter, rootElem *js.Object, state js.M) (err error) {
 	c.Component().Object = newMDCClassObj.New(rootElem)
 	c.Component().MDCState.RootElement = rootElem
 	c.Component().MDCState.Started = true
-
-	// Restore the component state
-	if state != nil {
-		for k, v := range state {
-			if v != nil {
-				c.Component().Set(k, v)
-			}
-		}
-	}
 
 	return err
 }
