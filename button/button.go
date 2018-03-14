@@ -55,6 +55,8 @@ func (c *B) Render() vecty.ComponentOrHTML {
 	return c.Base.Render(elem.Button(
 		vecty.Markup(
 			vecty.Markup(c.Props.Markup...),
+			vecty.MarkupIf(c.Props.ID != "",
+				prop.ID(c.Props.ID)),
 			vecty.Class("mdc-button"),
 			prop.Type(prop.TypeButton),
 			vecty.MarkupIf(c.ClickHandler != nil,
