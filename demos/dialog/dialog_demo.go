@@ -44,10 +44,8 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 						Header: "Are you happy?",
 						Body: vecty.Text("Please check the left and right side " +
 							"of this element for fun."),
-						Open:          true,
-						NoBackdrop:    true,
-						CancelHandler: func(e *vecty.Event) {},
-						AcceptHandler: func(e *vecty.Event) {},
+						Open:       true,
+						NoBackdrop: true,
 					},
 				),
 			),
@@ -63,6 +61,12 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 							"location. This means sending anonymous location " +
 							"data to Google, even when no apps are running."),
 						Role: "alertdialog",
+						CancelHandler: func(e *vecty.Event) {
+							c.dialogs["mdc-dialog-default"].Open = false
+						},
+						AcceptHandler: func(e *vecty.Event) {
+							c.dialogs["mdc-dialog-default"].Open = false
+						},
 					},
 				),
 				c.newDemoDialog(
@@ -75,6 +79,12 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 							"location. This means sending anonymous location " +
 							"data to Google, even when no apps are running."),
 						Role: "alertdialog",
+						CancelHandler: func(e *vecty.Event) {
+							c.dialogs["mdc-dialog-colored-footer-buttons"].Open = false
+						},
+						AcceptHandler: func(e *vecty.Event) {
+							c.dialogs["mdc-dialog-colored-footer-buttons"].Open = false
+						},
 					},
 				),
 				c.newDemoDialog(
@@ -98,6 +108,12 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 							"Marimba",
 							"Schwifty",
 						),
+						CancelHandler: func(e *vecty.Event) {
+							c.dialogs["mdc-dialog-with-list"].Open = false
+						},
+						AcceptHandler: func(e *vecty.Event) {
+							c.dialogs["mdc-dialog-with-list"].Open = false
+						},
 					},
 				),
 			),

@@ -64,9 +64,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 	} else {
 		cancelButton.Props.Markup = append(cancelButton.Props.Markup,
 			event.Click(func(e *vecty.Event) {
-				c.Open = false
-				vecty.Rerender(c)
-			}))
+			}).StopPropagation())
 	}
 
 	acceptButton := c.AcceptBtn
@@ -84,9 +82,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 	} else {
 		acceptButton.Props.Markup = append(acceptButton.Props.Markup,
 			event.Click(func(e *vecty.Event) {
-				c.Open = false
-				vecty.Rerender(c)
-			}))
+			}).StopPropagation())
 	}
 
 	return c.Base.Render(elem.Aside(
