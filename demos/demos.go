@@ -2,7 +2,6 @@ package main
 
 import (
 	"path"
-	"strings"
 
 	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/demos/common"
@@ -331,27 +330,6 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 	)
 }
 
-// Render implements the vecty.Component interface.
-func (c *listItem) Render() vecty.ComponentOrHTML {
-	pathname := js.Global.Get("window").Get("location").Get("pathname").String()
-	return elem.Anchor(
-		vecty.Markup(
-			vecty.Attribute("role", "listitem"),
-			vecty.Class("mdc-list-item"),
-			prop.Href(path.Clean(pathname+"/"+c.cssName)),
-		),
-		elem.Span(
-			vecty.Text(c.title()),
-			elem.Span(
-				vecty.Markup(
-					vecty.Class("mdc-list-item__secondary-text"),
-				),
-				vecty.Text(c.description),
-			),
-		),
-	)
-}
-
 func renderGraphic(
 	filename string) vecty.ComponentOrHTML {
 	return elem.Image(
@@ -365,17 +343,4 @@ func renderGraphic(
 func makeHref(cName string) string {
 	pathname := js.Global.Get("window").Get("location").Get("pathname").String()
 	return path.Clean(pathname + "/" + cName)
-}
-
-func (c *listItem) title() string {
-	words := strings.Split(c.cssName, "-")
-	var t string
-	for i, v := range words {
-		if i == 0 {
-			t = strings.Title(v)
-			continue
-		}
-		t = t + " " + v
-	}
-	return t
 }
