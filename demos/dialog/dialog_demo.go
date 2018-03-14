@@ -67,7 +67,7 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 				),
 				c.newDemoDialog(
 					&base.Props{
-						ID: "mdc-dialog-colored-footer-button",
+						ID: "mdc-dialog-colored-footer-buttons",
 					},
 					&dialog.State{
 						Header: "Use Google's location service?",
@@ -101,67 +101,67 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 					},
 				),
 			),
-			elem.Div(
+			elem.Section(
 				vecty.Markup(vecty.Class("example")),
-			),
-			button.New(
-				&base.Props{ID: "default-dialog-activation"},
-				&button.State{
-					Label:  vecty.Text("Show Dialog"),
-					Raised: true,
-					ClickHandler: func(e *vecty.Event) {
-						c.dialogs["mdc-dialog-default"].Open = true
-						vecty.Rerender(c.dialogs["mdc-dialog-default"])
-					},
-				},
-			),
-			button.New(
-				&base.Props{ID: "colored-footer-button-dialog-activation"},
-				&button.State{
-					Label:  vecty.Text("Show Colored Footer Button Dialog"),
-					Raised: true,
-					ClickHandler: func(e *vecty.Event) {
-						c.dialogs["mdc-dialog-colored-footer-button"].Open = true
-						vecty.Rerender(
-							c.dialogs["mdc-dialog-colored-footer-button"])
-					},
-				},
-			),
-			button.New(
-				&base.Props{ID: "dialog-with-list-activation"},
-				&button.State{
-					Label:  vecty.Text("Show Scrolling Dialog"),
-					Raised: true,
-					ClickHandler: func(e *vecty.Event) {
-						c.dialogs["mdc-dialog-with-list"].Open = true
-						vecty.Rerender(c.dialogs["mdc-dialog-with-list"])
-					},
-				},
-			),
-			formfield.New(nil,
-				&formfield.State{
-					Label: "Toggle RTL",
-					Input: checkbox.New(
-						&base.Props{
-							ID: "toggle-rtl",
-							Markup: []vecty.Applyer{
-								event.Change(func(e *vecty.Event) {
-									checked := e.Target.Get("checked").Bool()
-									for _, v := range c.dialogs {
-										el := v.Props.Element.Node()
-										if checked {
-											el.Call("setAttribute",
-												"dir", "rtl")
-											return
-										}
-										el.Call("removeAttribute", "dir")
-									}
-								}),
-							},
+				button.New(
+					&base.Props{ID: "default-dialog-activation"},
+					&button.State{
+						Label:  vecty.Text("Show Dialog"),
+						Raised: true,
+						ClickHandler: func(e *vecty.Event) {
+							c.dialogs["mdc-dialog-default"].Open = true
+							vecty.Rerender(c.dialogs["mdc-dialog-default"])
 						},
-						nil,
-					),
-				},
+					},
+				),
+				button.New(
+					&base.Props{ID: "colored-footer-button-dialog-activation"},
+					&button.State{
+						Label:  vecty.Text("Show Colored Footer Button Dialog"),
+						Raised: true,
+						ClickHandler: func(e *vecty.Event) {
+							c.dialogs["mdc-dialog-colored-footer-buttons"].Open = true
+							vecty.Rerender(
+								c.dialogs["mdc-dialog-colored-footer-buttons"])
+						},
+					},
+				),
+				button.New(
+					&base.Props{ID: "dialog-with-list-activation"},
+					&button.State{
+						Label:  vecty.Text("Show Scrolling Dialog"),
+						Raised: true,
+						ClickHandler: func(e *vecty.Event) {
+							c.dialogs["mdc-dialog-with-list"].Open = true
+							vecty.Rerender(c.dialogs["mdc-dialog-with-list"])
+						},
+					},
+				),
+				formfield.New(nil,
+					&formfield.State{
+						Label: "Toggle RTL",
+						Input: checkbox.New(
+							&base.Props{
+								ID: "toggle-rtl",
+								Markup: []vecty.Applyer{
+									event.Change(func(e *vecty.Event) {
+										checked := e.Target.Get("checked").Bool()
+										for _, v := range c.dialogs {
+											el := v.Props.Element.Node()
+											if checked {
+												el.Call("setAttribute",
+													"dir", "rtl")
+												return
+											}
+											el.Call("removeAttribute", "dir")
+										}
+									}),
+								},
+							},
+							nil,
+						),
+					},
+				),
 			),
 		),
 	)
