@@ -36,7 +36,10 @@ func (c *D) Start(rootElem *js.Object) error {
 	if err != nil {
 		return err
 	}
-	c.Component().SetState(backup)
+	if backup["open"].(bool) == true {
+		c.Open = true
+	}
+	// c.Component().SetState(backup)
 	return err
 }
 
