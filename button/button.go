@@ -24,7 +24,7 @@ type State struct {
 	Stroked      bool
 	Dense        bool
 	Href         string
-	ClickHandler func(*vecty.Event)
+	ClickHandler func(this *B, e *vecty.Event)
 }
 
 func New(p *base.Props, s *State) *B {
@@ -60,7 +60,7 @@ func (c *B) Render() vecty.ComponentOrHTML {
 			vecty.Class("mdc-button"),
 			prop.Type(prop.TypeButton),
 			vecty.MarkupIf(c.ClickHandler != nil,
-				event.Click(c.ClickHandler),
+				event.Click(c.wrapClickHandler()),
 			),
 			vecty.Property("disabled", c.Disabled),
 			vecty.MarkupIf(c.Raised,
@@ -79,4 +79,10 @@ func (c *B) Render() vecty.ComponentOrHTML {
 		vecty.If(ico != nil, ico),
 		vecty.If(c.Label != nil, base.RenderStoredChild(c.Label)),
 	))
+}
+
+func (c *B) wrapClickHandler() func(e *vecty.Event) {
+	return func(e *vecty.Event) {
+		c.ClickHandler(c, e)
+	}
 }

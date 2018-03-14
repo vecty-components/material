@@ -18,7 +18,7 @@ type R struct {
 
 type State struct {
 	*radio.R
-	ChangeHandler func(*vecty.Event)
+	ChangeHandler func(this *R, e *vecty.Event)
 	Name          string
 	Checked       bool   `js:"checked"`
 	Disabled      bool   `js:"disabled"`
@@ -54,7 +54,7 @@ func (c *R) Render() vecty.ComponentOrHTML {
 		elem.Input(
 			vecty.Markup(
 				vecty.MarkupIf(c.ChangeHandler != nil,
-					event.Change(c.ChangeHandler),
+					event.Change(c.wrapChangeHandler()),
 				),
 				vecty.Class("mdc-radio__native-control"),
 				vecty.MarkupIf(c.Props.ID != "",
@@ -75,4 +75,10 @@ func (c *R) Render() vecty.ComponentOrHTML {
 			elem.Div(vecty.Markup(vecty.Class("mdc-radio__inner-circle"))),
 		),
 	))
+}
+
+func (c *R) wrapChangeHandler() func(e *vecty.Event) {
+	return func(e *vecty.Event) {
+		c.ChangeHandler(c, e)
+	}
 }

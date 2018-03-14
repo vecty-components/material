@@ -19,7 +19,7 @@ type State struct {
 	Dense          bool
 	Avatar         bool
 	NonInteractive bool
-	ClickHandler   func(l *L, i *Item, e *vecty.Event)
+	ClickHandler   func(thisL *L, thisI *Item, e *vecty.Event)
 	GroupSubheader vecty.ComponentOrHTML
 	divider        bool
 	groupSubheader bool

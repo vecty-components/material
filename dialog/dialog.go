@@ -28,8 +28,8 @@ type State struct {
 	Scrollable    bool
 	AcceptBtn     *button.B
 	CancelBtn     *button.B
-	AcceptHandler func(*vecty.Event)
-	CancelHandler func(*vecty.Event)
+	AcceptHandler func(this *D, e *vecty.Event)
+	CancelHandler func(this *D, e *vecty.Event)
 }
 
 func New(p *base.Props, s *State) (c *D) {
@@ -60,7 +60,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 	)
 	if c.CancelHandler != nil {
 		cancelButton.Props.Markup = append(cancelButton.Props.Markup,
-			event.Click(c.CancelHandler))
+			event.Click(c.wrapCancelHandler()))
 	} else {
 		cancelButton.Props.Markup = append(cancelButton.Props.Markup,
 			event.Click(func(e *vecty.Event) {
@@ -78,7 +78,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 	)
 	if c.AcceptHandler != nil {
 		acceptButton.Props.Markup = append(acceptButton.Props.Markup,
-			event.Click(c.AcceptHandler))
+			event.Click(c.wrapAcceptHandler()))
 	} else {
 		acceptButton.Props.Markup = append(acceptButton.Props.Markup,
 			event.Click(func(e *vecty.Event) {
@@ -174,4 +174,16 @@ func (c *D) headerID() string {
 		return ""
 	}
 	return c.Props.ID + "-header"
+}
+
+func (c *D) wrapCancelHandler() func(e *vecty.Event) {
+	return func(e *vecty.Event) {
+		c.CancelHandler(c, e)
+	}
+}
+
+func (c *D) wrapAcceptHandler() func(e *vecty.Event) {
+	return func(e *vecty.Event) {
+		c.AcceptHandler(c, e)
+	}
 }

@@ -17,7 +17,7 @@ type CB struct {
 
 type State struct {
 	*checkbox.CB
-	ChangeHandler func(*vecty.Event)
+	ChangeHandler func(this *CB, e *vecty.Event)
 	Checked       bool   `js:"checked"`
 	Indeterminate bool   `js:"indeterminate"`
 	Disabled      bool   `js:"disabled"`
@@ -50,7 +50,7 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 		elem.Input(
 			vecty.Markup(
 				vecty.MarkupIf(c.ChangeHandler != nil,
-					event.Change(c.ChangeHandler),
+					event.Change(c.wrapChangeHandler()),
 				),
 				vecty.Class("mdc-checkbox__native-control"),
 				vecty.MarkupIf(c.Props.ID != "",
@@ -84,4 +84,10 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 			),
 		),
 	))
+}
+
+func (c *CB) wrapChangeHandler() func(e *vecty.Event) {
+	return func(e *vecty.Event) {
+		c.ChangeHandler(c, e)
+	}
 }

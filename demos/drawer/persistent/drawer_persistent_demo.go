@@ -86,7 +86,6 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 				Navigation: common.NavMenu,
 				MenuHandler: func(e *vecty.Event) {
 					c.drawer.Open = !c.drawer.Open
-					js.Global.Set("drawer", c.drawer.Open)
 				},
 				NoFixed: true,
 			},
@@ -109,7 +108,8 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 							&radio.State{
 								Name:    "theme",
 								Checked: true,
-								ChangeHandler: func(e *vecty.Event) {
+								ChangeHandler: func(thisR *radio.R,
+									e *vecty.Event) {
 									d := js.Global.Get("window").Get("document")
 									dd := d.Call("querySelector", ".demo-drawer")
 									dd.Get("classList").Call("remove",
@@ -128,7 +128,8 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 							},
 							&radio.State{
 								Name: "theme",
-								ChangeHandler: func(e *vecty.Event) {
+								ChangeHandler: func(thisR *radio.R,
+									e *vecty.Event) {
 									d := js.Global.Get("window").Get("document")
 									dd := d.Call("querySelector", ".demo-drawer")
 									dd.Get("classList").Call("remove",
@@ -147,7 +148,8 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 							},
 							&radio.State{
 								Name: "theme",
-								ChangeHandler: func(e *vecty.Event) {
+								ChangeHandler: func(thisR *radio.R,
+									e *vecty.Event) {
 									d := js.Global.Get("window").Get("document")
 									dd := d.Call("querySelector", ".demo-drawer")
 									dd.Get("classList").Call("remove",
@@ -170,7 +172,8 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 							Label:   vecty.Text("Toggle RTL"),
 							Stroked: true,
 							Dense:   true,
-							ClickHandler: func(e *vecty.Event) {
+							ClickHandler: func(thisB *button.B,
+								e *vecty.Event) {
 								b := c.body.Node()
 								if b.Call("getAttribute",
 									"dir").String() == "rtl" {

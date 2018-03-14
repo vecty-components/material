@@ -123,7 +123,8 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 							&button.State{
 								Label:   vecty.Text("Toggle RTL"),
 								Stroked: true,
-								ClickHandler: func(e *vecty.Event) {
+								ClickHandler: func(thisB *button.B,
+									e *vecty.Event) {
 									ff := e.Target.Get("parentElement")
 									ff = ff.Get("parentElement")
 									dir := ff.Call("hasAttribute", "dir").Bool()
@@ -144,7 +145,8 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 									),
 								},
 								Stroked: true,
-								ClickHandler: func(e *vecty.Event) {
+								ClickHandler: func(thisB *button.B,
+									e *vecty.Event) {
 									c.defaultFF.AlignEnd = !c.defaultFF.AlignEnd
 									vecty.Rerender(c.defaultFF)
 								},
@@ -259,7 +261,7 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func makeButton(h func(*vecty.Event), l vecty.List, class string) *button.B {
+func makeButton(h func(*button.B, *vecty.Event), l vecty.List, class string) *button.B {
 	var applyer vecty.Applyer
 	if class != "" {
 		applyer = vecty.Class(class)
@@ -278,7 +280,7 @@ func makeButton(h func(*vecty.Event), l vecty.List, class string) *button.B {
 
 func makeIndeterminateButton(cb *checkbox.CB) *button.B {
 	return makeButton(
-		func(e *vecty.Event) {
+		func(thisB *button.B, e *vecty.Event) {
 			cb.Indeterminate = !cb.Indeterminate
 		},
 		vecty.List{vecty.Text("Toggle "),
@@ -292,7 +294,7 @@ func makeIndeterminateButton(cb *checkbox.CB) *button.B {
 
 func makeDisabledButton(cb *checkbox.CB) *button.B {
 	return makeButton(
-		func(e *vecty.Event) {
+		func(thisB *button.B, e *vecty.Event) {
 			cb.Disabled = !cb.Disabled
 		},
 		vecty.List{

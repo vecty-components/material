@@ -53,7 +53,8 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 						Input: checkbox.New(
 							&base.Props{ID: "toggle-disabled"},
 							&checkbox.State{
-								ChangeHandler: func(e *vecty.Event) {
+								ChangeHandler: func(thisCB *checkbox.CB,
+									e *vecty.Event) {
 									checked := e.Target.Get("checked").Bool()
 									for _, b := range c.buttons {
 										if b.Href != "" {

@@ -61,11 +61,11 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 							"location. This means sending anonymous location " +
 							"data to Google, even when no apps are running."),
 						Role: "alertdialog",
-						CancelHandler: func(e *vecty.Event) {
-							c.dialogs["mdc-dialog-default"].Open = false
+						CancelHandler: func(thisD *dialog.D, e *vecty.Event) {
+							thisD.Open = false
 						},
-						AcceptHandler: func(e *vecty.Event) {
-							c.dialogs["mdc-dialog-default"].Open = false
+						AcceptHandler: func(thisD *dialog.D, e *vecty.Event) {
+							thisD.Open = false
 						},
 					},
 				),
@@ -79,11 +79,11 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 							"location. This means sending anonymous location " +
 							"data to Google, even when no apps are running."),
 						Role: "alertdialog",
-						CancelHandler: func(e *vecty.Event) {
-							c.dialogs["mdc-dialog-colored-footer-buttons"].Open = false
+						CancelHandler: func(thisD *dialog.D, e *vecty.Event) {
+							thisD.Open = false
 						},
-						AcceptHandler: func(e *vecty.Event) {
-							c.dialogs["mdc-dialog-colored-footer-buttons"].Open = false
+						AcceptHandler: func(thisD *dialog.D, e *vecty.Event) {
+							thisD.Open = false
 						},
 					},
 				),
@@ -108,11 +108,11 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 							"Marimba",
 							"Schwifty",
 						),
-						CancelHandler: func(e *vecty.Event) {
-							c.dialogs["mdc-dialog-with-list"].Open = false
+						CancelHandler: func(thisD *dialog.D, e *vecty.Event) {
+							thisD.Open = false
 						},
-						AcceptHandler: func(e *vecty.Event) {
-							c.dialogs["mdc-dialog-with-list"].Open = false
+						AcceptHandler: func(thisD *dialog.D, e *vecty.Event) {
+							thisD.Open = false
 						},
 					},
 				),
@@ -124,9 +124,8 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 					&button.State{
 						Label:  vecty.Text("Show Dialog"),
 						Raised: true,
-						ClickHandler: func(e *vecty.Event) {
+						ClickHandler: func(thisB *button.B, e *vecty.Event) {
 							c.dialogs["mdc-dialog-default"].Open = true
-							vecty.Rerender(c.dialogs["mdc-dialog-default"])
 						},
 					},
 				),
@@ -135,10 +134,8 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 					&button.State{
 						Label:  vecty.Text("Show Colored Footer Button Dialog"),
 						Raised: true,
-						ClickHandler: func(e *vecty.Event) {
+						ClickHandler: func(thisB *button.B, e *vecty.Event) {
 							c.dialogs["mdc-dialog-colored-footer-buttons"].Open = true
-							vecty.Rerender(
-								c.dialogs["mdc-dialog-colored-footer-buttons"])
 						},
 					},
 				),
@@ -147,9 +144,8 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 					&button.State{
 						Label:  vecty.Text("Show Scrolling Dialog"),
 						Raised: true,
-						ClickHandler: func(e *vecty.Event) {
+						ClickHandler: func(thisB *button.B, e *vecty.Event) {
 							c.dialogs["mdc-dialog-with-list"].Open = true
-							vecty.Rerender(c.dialogs["mdc-dialog-with-list"])
 						},
 					},
 				),
