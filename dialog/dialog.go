@@ -5,14 +5,14 @@ import (
 	"agamigo.io/material/dialog"
 	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/button"
+	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
 )
 
-// D is a material dialog component. It should only be created using the New
-// function.
+// D is a material dialog component.
 type D struct {
 	*base.Base
 	*State
@@ -23,7 +23,7 @@ type State struct {
 	Header        string
 	Body          vecty.ComponentOrHTML
 	Role          string
-	Open          bool
+	Open          bool `js:"open"`
 	NoBackdrop    bool
 	Scrollable    bool
 	AcceptBtn     *button.B
@@ -33,6 +33,7 @@ type State struct {
 }
 
 func New(p *base.Props, s *State) (c *D) {
+	open := js.InternalObject(s).Get("Open").Bool()
 	c = &D{}
 	if s == nil {
 		s = &State{}
@@ -42,6 +43,7 @@ func New(p *base.Props, s *State) (c *D) {
 		c.D = dialog.New()
 	}
 	c.Base = base.New(p, c)
+	c.Open = open
 	return c
 }
 
