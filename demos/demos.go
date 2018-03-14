@@ -17,13 +17,6 @@ type demosCatalogView struct {
 	vecty.Core
 }
 
-type listItem struct {
-	vecty.Core
-	cssName     string
-	imgPath     string
-	description string
-}
-
 func main() {
 	dcv := &demosCatalogView{}
 	vecty.RenderBody(dcv)
