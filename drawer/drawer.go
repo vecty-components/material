@@ -104,26 +104,28 @@ func (c *D) renderDrawer() vecty.List {
 	if c.ToolbarSpacer != nil {
 		var h *vecty.HTML
 		var ok bool
-		if h, ok := c.ToolbarSpacer.(*vecty.HTML); ok {
+		h, ok = c.ToolbarSpacer.(*vecty.HTML)
+		if h != nil && ok {
 			vecty.Class("mdc-drawer__toolbar-spacer").Apply(h)
+			elements = append(elements, elem.Div(
+				vecty.Markup(vecty.Class("mdc-drawer__toolbar-spacer")),
+				vecty.If(ok, h),
+				vecty.If(!ok, c.ToolbarSpacer),
+			))
 		}
-		elements = append(elements, elem.Div(
-			vecty.Markup(vecty.Class("mdc-drawer__toolbar-spacer")),
-			vecty.If(ok, h),
-			vecty.If(!ok, c.ToolbarSpacer),
-		))
 	}
 	if c.Header != nil {
 		var h *vecty.HTML
 		var ok bool
-		if h, ok := c.Header.(*vecty.HTML); ok {
+		h, ok = c.Header.(*vecty.HTML)
+		if h != nil && ok {
 			vecty.Class("mdc-drawer__header-content").Apply(h)
+			elements = append(elements, elem.Header(
+				vecty.Markup(vecty.Class("mdc-drawer__header")),
+				vecty.If(ok, h),
+				vecty.If(!ok, c.Header),
+			))
 		}
-		elements = append(elements, elem.Header(
-			vecty.Markup(vecty.Class("mdc-drawer__header")),
-			vecty.If(ok, h),
-			vecty.If(!ok, c.Header),
-		))
 	}
 	if c.Content != nil {
 		elements = append(elements, elem.Navigation(
