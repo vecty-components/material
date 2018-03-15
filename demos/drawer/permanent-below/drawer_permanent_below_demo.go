@@ -6,9 +6,7 @@ import (
 	"agamigo.io/vecty-material/demos/common"
 	"agamigo.io/vecty-material/drawer"
 	"agamigo.io/vecty-material/formfield"
-	"agamigo.io/vecty-material/icon"
 	"agamigo.io/vecty-material/radio"
-	"agamigo.io/vecty-material/ul"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -53,50 +51,7 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 				vecty.Class("demo-content"),
 				vecty.Class("mdc-toolbar-fixed-adjust"),
 			),
-			drawer.New(
-				&base.Props{
-					ID: "demo-drawer",
-					Markup: []vecty.Applyer{
-						vecty.Class("demo-drawer"),
-					},
-				},
-				&drawer.State{
-					Type: drawer.Permanent,
-					Content: ul.NewGroup(nil,
-						&ul.GroupState{Lists: []*ul.L{
-							ul.New(nil,
-								&ul.State{Items: []*ul.Item{
-									iconListItem("inbox", "Inbox"),
-									iconListItem("star", "Star"),
-									iconListItem("send", "Sent Mail"),
-									iconListItem("drafts", "Drafts")},
-									ClickHandler: func(l *ul.L, i *ul.Item,
-										e *vecty.Event) {
-										for _, v := range l.Items {
-											switch {
-											case i == v:
-												i.Activated = true
-												vecty.Rerender(i)
-											default:
-												v.Activated = false
-												vecty.Rerender(v)
-											}
-										}
-									},
-								},
-							),
-							ul.ListDivider(),
-							ul.New(nil,
-								&ul.State{Items: []*ul.Item{
-									iconListItem("email", "All Mail"),
-									iconListItem("delete", "Trash"),
-									iconListItem("report", "Spam"),
-								}},
-							),
-						}},
-					),
-				},
-			),
+			common.NewDemoDrawer(drawer.Permanent),
 			elem.Main(vecty.Markup(vecty.Class("demo-main")),
 				elem.Heading1(
 					vecty.Markup(vecty.Class("mdc-typography--display1")),
@@ -232,30 +187,4 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 		),
 	)
 	return c.body
-}
-
-func iconListItem(ico, text string) *ul.Item {
-	var selected bool
-	if ico == "inbox" {
-		selected = true
-	}
-	return ul.NewItem(
-		&base.Props{
-			Markup: []vecty.Applyer{
-				vecty.Class("demo-drawer-list-item"),
-			},
-		},
-		&ul.ItemState{
-			Selected: selected,
-			Graphic: vecty.List{
-				icon.New(
-					&base.Props{Markup: []vecty.Applyer{
-						vecty.Attribute("aria-hidden", "true"),
-					}},
-					&icon.State{Name: ico},
-				),
-			},
-			Primary: text,
-		},
-	)
 }

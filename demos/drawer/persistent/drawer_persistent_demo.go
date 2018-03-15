@@ -26,51 +26,7 @@ func main() {
 }
 
 func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
-	c.drawer = drawer.New(
-		&base.Props{
-			ID: "demo-drawer",
-			Markup: []vecty.Applyer{
-				vecty.Class("demo-drawer"),
-			},
-		},
-		&drawer.State{
-			Type:          drawer.Persistent,
-			ToolbarSpacer: elem.Div(),
-			Content: ul.NewGroup(nil,
-				&ul.GroupState{Lists: []*ul.L{
-					ul.New(nil,
-						&ul.State{Items: []*ul.Item{
-							iconListItem("inbox", "Inbox"),
-							iconListItem("star", "Star"),
-							iconListItem("send", "Sent Mail"),
-							iconListItem("drafts", "Drafts")},
-							ClickHandler: func(l *ul.L, i *ul.Item,
-								e *vecty.Event) {
-								for _, v := range l.Items {
-									switch {
-									case i == v:
-										i.Activated = true
-										vecty.Rerender(i)
-									default:
-										v.Activated = false
-										vecty.Rerender(v)
-									}
-								}
-							},
-						},
-					),
-					ul.ListDivider(),
-					ul.New(nil,
-						&ul.State{Items: []*ul.Item{
-							iconListItem("email", "All Mail"),
-							iconListItem("delete", "Trash"),
-							iconListItem("report", "Spam"),
-						}},
-					),
-				}},
-			),
-		},
-	)
+	c.drawer = common.NewDemoDrawer(drawer.Persistent)
 	c.body = elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
