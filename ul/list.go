@@ -20,9 +20,8 @@ type State struct {
 	Avatar         bool
 	NonInteractive bool
 	ClickHandler   func(thisL *L, thisI *Item, e *vecty.Event)
-	GroupSubheader vecty.ComponentOrHTML
+	GroupSubheader string
 	divider        bool
-	groupSubheader bool
 }
 
 // Item is a vecty-material list-item component.
@@ -191,10 +190,6 @@ func ItemDivider() *Item {
 	return NewItem(nil, &ItemState{divider: true})
 }
 
-func GroupSubheader(text string) *L {
-	return New(nil, &State{groupSubheader: true})
-}
-
 func (c *L) itemList() vecty.List {
 	items := make(vecty.List, len(c.Items))
 	for i, item := range c.Items {
@@ -211,8 +206,12 @@ func (c *L) itemList() vecty.List {
 func (c *Group) listList() vecty.List {
 	lists := make(vecty.List, len(c.Lists)*2)
 	for _, list := range c.Lists {
-		if list.GroupSubheader != nil {
-			lists = append(lists, list.GroupSubheader)
+		if list.GroupSubheader != "" {
+			lists = append(lists,
+				elem.Heading3(vecty.Markup(
+					vecty.Class("mdc-list-group__subheader")),
+					vecty.Text(list.GroupSubheader)),
+			)
 		}
 		lists = append(lists, list)
 	}
