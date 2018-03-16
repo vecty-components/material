@@ -31,8 +31,8 @@ type Item struct {
 }
 
 type ItemState struct {
-	Primary       string
-	Secondary     string
+	Primary       vecty.ComponentOrHTML
+	Secondary     vecty.ComponentOrHTML
 	Graphic       vecty.ComponentOrHTML
 	GraphicMarkup []vecty.Applyer
 	Meta          vecty.ComponentOrHTML
@@ -93,7 +93,7 @@ func (c *L) Render() vecty.ComponentOrHTML {
 	}
 	twoLine := false
 	for _, li := range c.Items {
-		if li.Secondary != "" {
+		if li.Secondary != nil {
 			twoLine = true
 		}
 	}
@@ -150,14 +150,14 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 			),
 			c.Graphic,
 		)),
-		vecty.If(c.Primary != "",
+		vecty.If(c.Primary != nil && c.Secondary == nil, c.Primary),
+		vecty.If(c.Secondary != nil,
 			elem.Span(vecty.Markup(vecty.Class("mdc-list-item__text")),
-				vecty.Text(c.Primary),
-				vecty.If(c.Secondary != "", elem.Span(
-					vecty.Markup(vecty.Class("mdc-list-item__secondary-text")),
-					vecty.Text(c.Secondary),
+				vecty.If(c.Primary != nil, c.Primary),
+				elem.Span(vecty.Markup(
+					vecty.Class("mdc-list-item__secondary-text")),
+					c.Secondary,
 				)),
-			),
 		),
 		vecty.If(c.Meta != nil, elem.Span(
 			vecty.Markup(
