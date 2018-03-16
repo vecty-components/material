@@ -209,9 +209,12 @@ func (c *L) itemList() vecty.List {
 }
 
 func (c *Group) listList() vecty.List {
-	lists := make(vecty.List, len(c.Lists))
-	for i, list := range c.Lists {
-		lists[i] = list
+	lists := make(vecty.List, len(c.Lists)*2)
+	for _, list := range c.Lists {
+		if list.GroupSubheader != nil {
+			lists = append(lists, list.GroupSubheader)
+		}
+		lists = append(lists, list)
 	}
 	return lists
 }
