@@ -9,6 +9,7 @@ import (
 	"agamigo.io/vecty-material/formfield"
 	"agamigo.io/vecty-material/icon"
 	"agamigo.io/vecty-material/ul"
+	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -70,7 +71,24 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 				formfield.New(nil,
 					&formfield.State{
 						Label: "Toggle RTL",
-						Input: checkbox.New(&base.Props{ID: "toggle-rtl"}, nil),
+						Input: checkbox.New(
+							&base.Props{ID: "toggle-rtl"},
+							&checkbox.State{
+								ChangeHandler: func(thisCB *checkbox.CB,
+									e *vecty.Event) {
+									w := js.Global.Get("window")
+									d := w.Get("document")
+									dw := d.Call("getElementById",
+										"demo-wrapper")
+									if dw.Call("getAttribute",
+										"dir").String() == "rtl" {
+										dw.Call("setAttribute", "dir", "ltr")
+										return
+									}
+									dw.Call("setAttribute", "dir", "rtl")
+								},
+							},
+						),
 					},
 				),
 			),
