@@ -50,49 +50,11 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 		},
 		elem.Main(
 			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
-			elem.Section(
-				vecty.Markup(vecty.Class("hero")),
-				ul.New(
-					&base.Props{Markup: []vecty.Applyer{
-						vecty.Class("demo-list"),
-						vecty.Class("demo-list--with-avatars")}},
-					&ul.State{
-						Avatar: true,
-						Items: []*ul.Item{
-							ul.NewItem(nil,
-								&ul.ItemState{
-									Graphic: icon.New(nil, &icon.State{
-										Name: "folder"}),
-									Primary:   vecty.Text("Photos"),
-									Secondary: vecty.Text("Jan 9, 2014"),
-									Meta: icon.New(nil, &icon.State{
-										Name: "info"}),
-								},
-							),
-							ul.NewItem(nil,
-								&ul.ItemState{
-									Graphic: icon.New(nil, &icon.State{
-										Name: "folder"}),
-									Primary:   vecty.Text("Recipes"),
-									Secondary: vecty.Text("Jan 17, 2014"),
-									Meta: icon.New(nil, &icon.State{
-										Name: "info"}),
-								},
-							),
-							ul.NewItem(nil,
-								&ul.ItemState{
-									Graphic: icon.New(nil, &icon.State{
-										Name: "folder"}),
-									Primary:   vecty.Text("Work"),
-									Secondary: vecty.Text("Jan 28, 2014"),
-									Meta: icon.New(nil, &icon.State{
-										Name: "info"}),
-								},
-							),
-						},
-					},
-				),
-			),
+			&demoSection{
+				heading: "hero",
+				lists: []*demoList{
+					&demoList{heading: "hero"}},
+			},
 			elem.Section(
 				vecty.Markup(vecty.Class("preamble", "mdc-typography--body1")),
 				elem.Aside(elem.Paragraph(
@@ -140,38 +102,17 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 						&demoList{heading: "Graphic"},
 						&demoList{heading: "Graphic (dense)"},
 						&demoList{heading: "Graphic Example - Icon with Text"},
-						&demoList{heading: "Leading Checkbox",
-							markup: []vecty.Applyer{
-								prop.ID("leading-checkbox-list")}},
-						&demoList{heading: "Avatar List",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
-						&demoList{heading: "Avatar List (dense)",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
-						&demoList{heading: "Example - Avatar with Text",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--with-avatars")}},
+						&demoList{heading: "Leading Checkbox"},
+						&demoList{heading: "Avatar List"},
+						&demoList{heading: "Avatar List (dense)"},
+						&demoList{heading: "Example - Avatar with Text"},
 						&demoList{heading: "Metadata"},
 						&demoList{heading: "Metadata (Dense)"},
-						&demoList{heading: "Trailing Checkbox",
-							markup: []vecty.Applyer{
-								prop.ID("trailing-checkbox-list")}},
-						&demoList{heading: "Avatar + Metadata",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
-						&demoList{heading: "Avatar + Metadata (Dense)",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
+						&demoList{heading: "Trailing Checkbox"},
+						&demoList{heading: "Avatar + Metadata"},
+						&demoList{heading: "Avatar + Metadata (Dense)"},
 						&demoList{heading: "Example - Avatar with Text " +
-							"and Icon",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--avatar-and-meta-icon"),
-								vecty.Class("demo-list--with-avatars")}},
+							"and Icon"},
 					},
 				},
 				&demoSection{
@@ -179,41 +120,22 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 					lists: []*demoList{
 						&demoList{heading: "Text-Only"},
 						&demoList{heading: "Text-Only (Dense)"},
-						&demoList{heading: "Graphic",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders")}},
-						&demoList{heading: "Graphic (Dense)",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders")}},
-						&demoList{heading: "Avatar List",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
-						&demoList{heading: "Avatar List (dense)",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
+						&demoList{heading: "Graphic"},
+						&demoList{heading: "Graphic (Dense)"},
+						&demoList{heading: "Avatar List"},
+						&demoList{heading: "Avatar List (dense)"},
 						&demoList{heading: "Metadata"},
 						&demoList{heading: "Metadata (Dense)"},
 						&demoList{heading: "Example - Two-line Avatar + " +
-							"Text + Icon",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
-						&demoList{heading: "Lists w/ Ellipsis",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
+							"Text + Icon"},
+						&demoList{heading: "Lists w/ Ellipsis"},
 					},
 				},
 				&demoSection{
 					heading: "List Dividers",
 					lists: []*demoList{
 						&demoList{heading: "Full-Width Dividers"},
-						&demoList{heading: "Inset Dividers",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
+						&demoList{heading: "Inset Dividers"},
 					},
 				},
 				&demoSection{
@@ -229,14 +151,8 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 					lists: []*demoList{
 						&demoList{heading: "List 1"},
 						&demoList{heading: "List 2"},
-						&demoList{heading: "Folders",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
-						&demoList{heading: "Files",
-							markup: []vecty.Applyer{
-								vecty.Class("demo-list--icon-placeholders"),
-								vecty.Class("demo-list--with-avatars")}},
+						&demoList{heading: "Folders"},
+						&demoList{heading: "Files"},
 					},
 				},
 				&demoSection{
@@ -248,148 +164,6 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 			),
 		),
 	)
-	// elem.Section(
-	// 	elem.Heading2(vecty.Text("Single-Line List")),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Text only, non-interactive (no states)")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeNonInteractive),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Text only (dense)")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeTextOnly, TypeDense),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Graphic")),
-	// 		elem.Aside(elem.Paragraph(elem.Emphasis(vecty.Text(
-	// 			"Note: The grey background is styled using "+
-	// 				"demo placeholder styles")))),
-	// 		c.newDemoList(TypeH2SingleLine, TypeGraphic),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Graphic (dense)")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeGraphic, TypeDense),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Graphic Example - Icon with Text")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeExample,
-	// 			TypeIconWText),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Leading Checkbox")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeLeadingCheckbox),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Avatar List")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeAvatarList),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Avatar List (dense)")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeAvatarList,
-	// 			TypeDense),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Example - Avatar with Text")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeAvatarListWText),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Metadata")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeMetadata),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Metadata (Dense)")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeMetadata, TypeDense),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Trailing Checkbox")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeTrailingCheckbox),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Avatar + Metadata")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeAvatarMetadata),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Avatar + Metadata (Dense)")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeAvatarMetadata,
-	// 			TypeDense),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Example - Avatar with Text and Icon")),
-	// 		c.newDemoList(TypeH2SingleLine, TypeAvatarListWTextWIcon),
-	// 	),
-	// ),
-	// elem.Section(
-	// 	elem.Heading2(vecty.Text("Two-Line List")),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Text only")),
-	// 		c.newDemoList(TypeH2TwoLine, TypeTextOnly),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Text only (Dense)")),
-	// 		c.newDemoList(TypeH2TwoLine, TypeTextOnly, TypeDense),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Graphic")),
-	// 		c.newDemoList(TypeH2TwoLine, TypeGraphic),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Graphic (dense)")),
-	// 		c.newDemoList(TypeH2TwoLine, TypeGraphic, TypeDense),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Avatar List")),
-	// 		c.newDemoList(TypeH2TwoLine, TypeAvatarList),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Avatar List (dense)")),
-	// 		c.newDemoList(TypeH2TwoLine, TypeAvatarList, TypeDense),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Metadata")),
-	// 		c.newDemoList(TypeH2TwoLine, TypeMetadata),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Metadata (Dense)")),
-	// 		c.newDemoList(TypeH2TwoLine, TypeMetadata, TypeDense),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Example - Two-line Avatar + Text + Icon")),
-	// 		c.newDemoList(TypeH2TwoLine, TypeAvatarListWTextWIcon),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Lists w/ Ellipsis")),
-	// 		c.newDemoList(TypeH2TwoLine, TypeEllipsis),
-	// 	),
-	// ),
-	// elem.Section(
-	// 	elem.Heading2(vecty.Text("List Dividers")),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Inset Dividers")),
-	// 		c.newDemoList(TypeH2ListDividers, TypeInsetDividers),
-	// 	),
-	// ),
-	// elem.Section(
-	// 	elem.Heading2(vecty.Text("List Groups")),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Basic Usage")),
-	// 		c.newDemoList(TypeH2ListGroups, TypeBasicGroup),
-	// 	),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Example - Two-Line Lists, "+
-	// 			"Avatars, Metadata, Inset Dividers")),
-	// 		c.newDemoList(TypeH2ListGroups, TypeAvatarMetadata),
-	// 	),
-	// ),
-	// elem.Section(
-	// 	elem.Heading2(vecty.Text("Interactive Lists "+
-	// 		"(with ink ripple)")),
-	// 	elem.Section(elem.Heading3(
-	// 		vecty.Text("Inset Dividers")),
-	// 		c.newDemoList(TypeH2Interactive),
-	// 	),
-	// ),
-	// ),
-	// ),
-	// )
 }
 
 func (c *demoSection) Render() vecty.ComponentOrHTML {
@@ -399,7 +173,6 @@ func (c *demoSection) Render() vecty.ComponentOrHTML {
 		if len(c.groups)*2 != len(c.lists) {
 			panic("There should be two lists per list group.")
 		}
-		lists = make(vecty.List, len(c.groups)*2)
 		for i, group := range c.groups {
 			lists = append(lists, elem.Heading3(vecty.Text(c.groupHeadings[i])))
 			c.groups[i].Lists = append(group.Lists, c.lists[i*2].make(h))
@@ -407,11 +180,22 @@ func (c *demoSection) Render() vecty.ComponentOrHTML {
 			lists = append(lists, c.groups[i])
 		}
 	} else {
-		lists = make(vecty.List, len(c.lists)*2)
 		for _, list := range c.lists {
-			lists = append(lists, elem.Heading3(vecty.Text(list.heading)))
+			if h != "hero" {
+				lists = append(lists, elem.Heading3(vecty.Text(list.heading)))
+			}
+			if h == "Single-Line List" && list.heading == "Graphic" {
+				lists = append(lists, elem.Aside(elem.Paragraph(elem.Emphasis(
+					vecty.Text("Note: The grey background is styled "+
+						"using demo placeholder styles")))))
+			}
 			lists = append(lists, list.make(h))
 		}
+	}
+	if c.heading == "hero" {
+		return elem.Section(vecty.Markup(
+			vecty.Class("hero")),
+			lists)
 	}
 	return elem.Section(
 		elem.Heading2(vecty.Text(c.heading)),
@@ -510,12 +294,14 @@ func (c *demoList) make(section string) *ul.L {
 		makeAvatarWTextItems(newL)
 		withAvatars(newL)
 		withMetaIcons(newL)
+		newL.Markup = append(newL.Markup,
+			vecty.Class("demo-list--avatar-and-meta-icon"))
 	case "Lists w/ Ellipsis":
 		makeFoldersItems(newL)
 		withAvatars(newL)
 		withIconPlaceholders(newL)
 		withEllipsis(newL)
-	case "Folders", "Example - Two-line Avatar + Text + Icon":
+	case "hero", "Folders", "Example - Two-line Avatar + Text + Icon":
 		makeFoldersItems(newL)
 		withAvatars(newL)
 		withIconPlaceholders(newL)
@@ -527,8 +313,11 @@ func (c *demoList) make(section string) *ul.L {
 		makeDividerItems(newL)
 	case "Inset Dividers":
 		makeDividerItems(newL)
+		newL.Items[3] = ul.ItemDividerInset()
 		withAvatars(newL)
 		withIconPlaceholders(newL)
+	case "List 1", "List 2":
+		makeSingleLineItems(newL)
 	case "Example - Interactive List":
 		makeGraphicExampleItems(newL, true)
 	}
