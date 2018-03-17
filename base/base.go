@@ -27,7 +27,7 @@ func (b *Base) Render(h *vecty.HTML) vecty.ComponentOrHTML {
 
 func (b *Base) Mount() {
 	var isRippler bool
-	if b.Props.mdc == nil {
+	if b.Props.mdc == nil || b.mdc.Component().Basic {
 		if !b.Props.Ripple {
 			return
 		}
