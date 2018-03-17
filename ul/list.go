@@ -107,6 +107,27 @@ func (c *L) Render() vecty.ComponentOrHTML {
 	))
 }
 
+// Copy implements the vecty.Copier interface
+func (c *L) Copy() vecty.Component {
+	newL := New(
+		&base.Props{
+			ID:     c.ID,
+			Ripple: c.Ripple,
+			Markup: make([]vecty.Applyer, len(c.Markup)),
+		},
+		&State{
+			Avatar:         c.Avatar,
+			Dense:          c.Dense,
+			GroupSubheader: c.GroupSubheader,
+			NonInteractive: c.NonInteractive,
+			ClickHandler:   c.ClickHandler,
+			Items:          make([]vecty.ComponentOrHTML, len(c.Items)),
+		},
+	)
+	copy(newL.Markup, c.Markup)
+	return newL
+}
+
 // Render implements the vecty.Component interface.
 func (c *Item) Render() vecty.ComponentOrHTML {
 	tag := "li"
@@ -152,6 +173,29 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 		),
 		meta,
 	))
+}
+
+// Copy implements the vecty.Copier interface
+func (c *Item) Copy() vecty.Component {
+	newI := NewItem(
+		&base.Props{
+			ID:     c.ID,
+			Ripple: c.Ripple,
+			Markup: make([]vecty.Applyer, len(c.Markup)),
+		},
+		&ItemState{
+			Primary:      c.Primary,
+			Secondary:    c.Secondary,
+			Graphic:      c.Graphic,
+			Meta:         c.Meta,
+			Selected:     c.Selected,
+			Activated:    c.Activated,
+			Href:         c.Href,
+			ClickHandler: c.ClickHandler,
+		},
+	)
+	copy(newI.Markup, c.Markup)
+	return newI
 }
 
 // Render implements the vecty.Component interface.
