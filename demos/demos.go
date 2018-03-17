@@ -155,14 +155,14 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					// 		Graphic:   renderGraphic("ic_menu_24px.svg"),
 					// 	},
 					// ),
-					// ul.NewItem(nil,
-					// 	&ul.ItemState{
-					// 		Primary:   vecty.Text("Radio buttons"),
-					// 		Secondary: vecty.Text("Single selection controls"),
-					// 		Href:      makeHref("radio"),
-					// 		Graphic:   renderGraphic("ic_radio_button_24px.svg"),
-					// 	},
-					// ),
+					ul.NewItem(nil,
+						&ul.ItemState{
+							Primary:   vecty.Text("Radio buttons"),
+							Secondary: vecty.Text("Single selection controls"),
+							Href:      makeHref("radio"),
+							Graphic:   renderGraphic("ic_radio_button_24px.svg"),
+						},
+					),
 					// ul.NewItem(nil,
 					// 	&ul.ItemState{
 					// 		Primary:   vecty.Text("Ripple"),
