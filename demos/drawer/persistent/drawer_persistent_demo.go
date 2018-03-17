@@ -6,9 +6,7 @@ import (
 	"agamigo.io/vecty-material/demos/common"
 	"agamigo.io/vecty-material/drawer"
 	"agamigo.io/vecty-material/formfield"
-	"agamigo.io/vecty-material/icon"
 	"agamigo.io/vecty-material/radio"
-	"agamigo.io/vecty-material/ul"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -145,30 +143,4 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 		),
 	)
 	return c.body
-}
-
-func iconListItem(ico, text string) *ul.Item {
-	var selected bool
-	if ico == "inbox" {
-		selected = true
-	}
-	return ul.NewItem(
-		&base.Props{
-			Markup: []vecty.Applyer{
-				vecty.Class("demo-drawer-list-item"),
-			},
-		},
-		&ul.ItemState{
-			Selected: selected,
-			Graphic: vecty.List{
-				icon.New(
-					&base.Props{Markup: []vecty.Applyer{
-						vecty.Attribute("aria-hidden", "true"),
-					}},
-					&icon.State{Name: ico},
-				),
-			},
-			Primary: text,
-		},
-	)
 }

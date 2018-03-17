@@ -92,7 +92,7 @@ func iconListItem(ico, text string) *ul.Item {
 					&icon.State{Name: ico},
 				),
 			},
-			Primary: text,
+			Primary: vecty.Text(text),
 		},
 	)
 }

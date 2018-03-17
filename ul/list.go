@@ -2,6 +2,7 @@ package ul
 
 import (
 	"agamigo.io/vecty-material/base"
+	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -31,17 +32,15 @@ type Item struct {
 }
 
 type ItemState struct {
-	Primary       vecty.ComponentOrHTML
-	Secondary     vecty.ComponentOrHTML
-	Graphic       vecty.ComponentOrHTML
-	GraphicMarkup []vecty.Applyer
-	Meta          vecty.ComponentOrHTML
-	MetaMarkup    []vecty.Applyer
-	Selected      bool
-	Activated     bool
-	ClickHandler  func(i *Item, e *vecty.Event)
-	Href          string
-	divider       bool
+	Primary      vecty.ComponentOrHTML
+	Secondary    vecty.ComponentOrHTML
+	Graphic      vecty.ComponentOrHTML
+	Meta         vecty.ComponentOrHTML
+	Selected     bool
+	Activated    bool
+	ClickHandler func(i *Item, e *vecty.Event)
+	Href         string
+	divider      bool
 }
 
 // Group is a vecty-material list-group component.
@@ -128,6 +127,20 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 	if c.Href != "" {
 		tag = "a"
 	}
+	graphic := setupGraphicOrMeta(c.Graphic)
+	if graphic != nil {
+		if g, ok := graphic.(*vecty.HTML); ok {
+			vecty.Class("mdc-list-item__graphic").Apply(g)
+			vecty.Attribute("role", "presentation").Apply(g)
+		}
+	}
+	meta := setupGraphicOrMeta(c.Meta)
+	if meta != nil {
+		if g, ok := meta.(*vecty.HTML); ok {
+			vecty.Class("mdc-list-item__meta").Apply(g)
+			vecty.Attribute("role", "presentation").Apply(g)
+		}
+	}
 	return c.Base.Render(vecty.Tag(tag,
 		vecty.Markup(
 			vecty.Markup(c.Props.Markup...),
@@ -141,15 +154,7 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 			),
 			vecty.MarkupIf(c.Href != "", prop.Href(c.Href)),
 		),
-		vecty.If(c.Graphic != nil, elem.Span(
-			vecty.Markup(
-				vecty.Class("mdc-list-item__graphic"),
-				vecty.Attribute("role", "presentation"),
-				vecty.MarkupIf(c.GraphicMarkup != nil,
-					c.GraphicMarkup...),
-			),
-			c.Graphic,
-		)),
+		graphic,
 		vecty.If(c.Primary != nil && c.Secondary == nil, c.Primary),
 		vecty.If(c.Secondary != nil,
 			elem.Span(vecty.Markup(vecty.Class("mdc-list-item__text")),
@@ -159,15 +164,7 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 					c.Secondary,
 				)),
 		),
-		vecty.If(c.Meta != nil, elem.Span(
-			vecty.Markup(
-				vecty.Class("mdc-list-item__meta"),
-				vecty.Attribute("role", "presentation"),
-				vecty.MarkupIf(c.MetaMarkup != nil,
-					c.MetaMarkup...),
-			),
-			c.Meta,
-		)),
+		meta,
 	))
 }
 
@@ -228,4 +225,21 @@ func (c *Item) wrapClickHandler() func(e *vecty.Event) {
 	return func(e *vecty.Event) {
 		c.ClickHandler(c, e)
 	}
+}
+
+func setupGraphicOrMeta(c vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	var graphic vecty.ComponentOrHTML
+	if c != nil {
+		graphic = c
+		switch t := c.(type) {
+		case vecty.Component:
+			if h, ok := t.Render().(*vecty.HTML); ok {
+				graphic = h
+			}
+		}
+		if js.InternalObject(graphic).Get("tag").String() != "img" {
+			graphic = elem.Span(graphic)
+		}
+	}
+	return graphic
 }
