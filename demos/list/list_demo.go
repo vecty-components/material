@@ -343,14 +343,14 @@ func (c *demoList) make(section string) *ul.L {
 }
 
 func makeSingleLineItems(l *ul.L) {
-	l.Items = []*ul.Item{
+	l.Items = []vecty.ComponentOrHTML{
 		ul.NewItem(nil, &ul.ItemState{Primary: vecty.Text("Single-line item")}),
 		ul.NewItem(nil, &ul.ItemState{Primary: vecty.Text("Single-line item")}),
 		ul.NewItem(nil, &ul.ItemState{Primary: vecty.Text("Single-line item")}),
 	}
 }
 func makeTwoLineItems(l *ul.L) {
-	l.Items = []*ul.Item{
+	l.Items = []vecty.ComponentOrHTML{
 		ul.NewItem(nil, &ul.ItemState{
 			Primary:   vecty.Text("Two-line item"),
 			Secondary: vecty.Text("Secondary text")}),
@@ -364,7 +364,7 @@ func makeTwoLineItems(l *ul.L) {
 }
 
 func makeFoldersItems(l *ul.L) {
-	l.Items = []*ul.Item{
+	l.Items = []vecty.ComponentOrHTML{
 		ul.NewItem(nil, &ul.ItemState{
 			Graphic:   icon.New(nil, &icon.State{Name: "folder"}),
 			Primary:   vecty.Text("Photos"),
@@ -387,7 +387,7 @@ func makeFoldersItems(l *ul.L) {
 }
 
 func makeFilesItems(l *ul.L) {
-	l.Items = []*ul.Item{
+	l.Items = []vecty.ComponentOrHTML{
 		ul.NewItem(nil, &ul.ItemState{
 			Graphic: icon.New(nil, &icon.State{
 				Name: "insert_drive_file"}),
@@ -406,7 +406,7 @@ func makeFilesItems(l *ul.L) {
 }
 
 func makeDividerItems(l *ul.L) {
-	l.Items = []*ul.Item{
+	l.Items = []vecty.ComponentOrHTML{
 		ul.NewItem(nil, &ul.ItemState{
 			Primary: vecty.Text("Single-line item - section 1")}),
 		ul.NewItem(nil, &ul.ItemState{
@@ -422,7 +422,7 @@ func makeDividerItems(l *ul.L) {
 }
 
 func makeGraphicExampleItems(l *ul.L, interactive bool) {
-	l.Items = []*ul.Item{
+	l.Items = []vecty.ComponentOrHTML{
 		ul.NewItem(nil, &ul.ItemState{
 			Graphic: icon.New(nil, &icon.State{Name: "network_wifi"}),
 			Primary: vecty.Text("Wi-Fi"),
@@ -437,11 +437,13 @@ func makeGraphicExampleItems(l *ul.L, interactive bool) {
 		}),
 	}
 	if interactive {
-		for _, item := range l.Items {
-			item.Href = "#"
-			item.Props.Markup = append(item.Props.Markup,
-				event.Click(nil).PreventDefault())
-			item.Ripple = true
+		for _, cItem := range l.Items {
+			if item, ok := cItem.(*ul.Item); ok {
+				item.Href = "#"
+				item.Props.Markup = append(item.Props.Markup,
+					event.Click(nil).PreventDefault())
+				item.Ripple = true
+			}
 		}
 	}
 }
@@ -452,7 +454,7 @@ func makeCheckboxItems(l *ul.L, isLeading bool) {
 		checkbox.New(&base.Props{ID: "leading-checkbox-boysenberries"}, nil),
 		checkbox.New(&base.Props{ID: "leading-checkbox-strawberries"}, nil),
 	}
-	l.Items = []*ul.Item{
+	l.Items = []vecty.ComponentOrHTML{
 		ul.NewItem(nil, &ul.ItemState{
 			Primary: elem.Label(vecty.Markup(
 				prop.For("leading-checkbox-blueberries")),
@@ -469,31 +471,33 @@ func makeCheckboxItems(l *ul.L, isLeading bool) {
 				vecty.Text("Strawberries")),
 		}),
 	}
-	for i, item := range l.Items {
-		item.Markup = append(item.Markup,
-			vecty.Class("checkbox-list-ripple-surface"))
-		item.Ripple = true
-		if isLeading {
-			item.Graphic = cbs[i]
-		} else {
-			item.Meta = cbs[i]
-		}
-		cb := cbs[i]
-		item.ClickHandler = func(it *ul.Item, e *vecty.Event) {
-			// TODO: Figure out why we have to update the native input
-			// directly
-			if e.Target.Get("tagName").String() == "LI" {
-				cb.Checked = !cb.Checked
-				cbEl := e.Target.Call("querySelector",
-					".mdc-checkbox__native-control")
-				cbEl.Set("checked", cb.Checked)
+	for i, cItem := range l.Items {
+		if item, ok := cItem.(*ul.Item); ok {
+			item.Markup = append(item.Markup,
+				vecty.Class("checkbox-list-ripple-surface"))
+			item.Ripple = true
+			if isLeading {
+				item.Graphic = cbs[i]
+			} else {
+				item.Meta = cbs[i]
+			}
+			cb := cbs[i]
+			item.ClickHandler = func(it *ul.Item, e *vecty.Event) {
+				// TODO: Figure out why we have to update the native input
+				// directly
+				if e.Target.Get("tagName").String() == "LI" {
+					cb.Checked = !cb.Checked
+					cbEl := e.Target.Call("querySelector",
+						".mdc-checkbox__native-control")
+					cbEl.Set("checked", cb.Checked)
+				}
 			}
 		}
 	}
 }
 
 func makeAvatarWTextItems(l *ul.L) {
-	l.Items = []*ul.Item{
+	l.Items = []vecty.ComponentOrHTML{
 		ul.NewItem(nil,
 			&ul.ItemState{
 				Graphic: elem.Image(vecty.Markup(
@@ -534,30 +538,36 @@ func withAvatars(l *ul.L) {
 
 func withIconPlaceholders(l *ul.L) {
 	l.Markup = append(l.Markup, vecty.Class("demo-list--icon-placeholders"))
-	for _, item := range l.Items {
-		if item.Graphic == nil {
-			item.Graphic = elem.Span()
+	for _, cItem := range l.Items {
+		if item, ok := cItem.(*ul.Item); ok {
+			if item.Graphic == nil {
+				item.Graphic = elem.Span()
+			}
 		}
 	}
 }
 
 func withMetadata(l *ul.L) {
-	for i, item := range l.Items {
-		item.Meta = vecty.Text("$" + strconv.Itoa(i+1) + "0.00")
+	for i, cItem := range l.Items {
+		if item, ok := cItem.(*ul.Item); ok {
+			item.Meta = vecty.Text("$" + strconv.Itoa(i+1) + "0.00")
+		}
 	}
 }
 
 func withMetaIcons(l *ul.L) {
-	newItems := make([]*ul.Item, len(l.Items))
-	for i, item := range l.Items {
-		// Add icon to metadata
-		iName := "favorite_border"
-		if i == len(l.Items)-1 {
-			iName = "favorite"
+	newItems := make([]vecty.ComponentOrHTML, len(l.Items))
+	for i, cItem := range l.Items {
+		if item, ok := cItem.(*ul.Item); ok {
+			// Add icon to metadata
+			iName := "favorite_border"
+			if i == len(l.Items)-1 {
+				iName = "favorite"
+			}
+			item.Meta = icon.New(nil, &icon.State{Name: iName})
+			// Reverse the Items order
+			newItems[len(l.Items)-i-1] = item
 		}
-		item.Meta = icon.New(nil, &icon.State{Name: iName})
-		// Reverse the Items order
-		newItems[len(l.Items)-i-1] = item
 	}
 	l.Items = newItems
 }
@@ -567,14 +577,17 @@ func withEllipsis(l *ul.L) {
 		print(len(l.Items))
 		panic("Expected 3 items for Ellipsis example.")
 	}
-	for _, item := range l.Items {
-		item.Meta = icon.New(nil, &icon.State{Name: "folder"})
+	for _, cItem := range l.Items {
+		if item, ok := cItem.(*ul.Item); ok {
+			item.Meta = icon.New(nil, &icon.State{Name: "folder"})
+		}
 	}
-	l.Items[0].Secondary = vecty.Text("This is some secondary text")
-	l.Items[1].Primary = vecty.Text("Photos of my best photography using my " +
-		"finely tuned skills and eye")
-	l.Items[1].Secondary = vecty.Text("This is some secondary text")
-	l.Items[2].Primary = vecty.Text("Work Photos")
-	l.Items[2].Secondary = vecty.Text("This is a description of work photos from " +
-		"the years 2018 to present time while I was a barista")
+	l.Items[0].(*ul.Item).Secondary = vecty.Text("This is some secondary text")
+	l.Items[1].(*ul.Item).Primary = vecty.Text(
+		"Photos of my best photography using my finely tuned skills and eye")
+	l.Items[1].(*ul.Item).Secondary = vecty.Text("This is some secondary text")
+	l.Items[2].(*ul.Item).Primary = vecty.Text("Work Photos")
+	l.Items[2].(*ul.Item).Secondary = vecty.Text(
+		"This is a description of work photos from the years 2018 to " +
+			"present time while I was a barista")
 }

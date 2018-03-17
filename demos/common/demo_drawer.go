@@ -35,9 +35,9 @@ func NewDemoDrawer(dType drawer.Type) *drawer.D {
 			Header:        header,
 			ToolbarSpacer: toolbarSpacer,
 			Content: ul.NewGroup(nil,
-				&ul.GroupState{Lists: []*ul.L{
+				&ul.GroupState{Lists: []vecty.ComponentOrHTML{
 					ul.New(nil,
-						&ul.State{Items: []*ul.Item{
+						&ul.State{Items: []vecty.ComponentOrHTML{
 							iconListItem("inbox", "Inbox"),
 							iconListItem("star", "Star"),
 							iconListItem("send", "Sent Mail"),
@@ -45,13 +45,15 @@ func NewDemoDrawer(dType drawer.Type) *drawer.D {
 							ClickHandler: func(l *ul.L, i *ul.Item,
 								e *vecty.Event) {
 								for _, v := range l.Items {
-									switch {
-									case i == v:
-										i.Activated = true
-										vecty.Rerender(i)
-									default:
-										v.Activated = false
-										vecty.Rerender(v)
+									if ulItem, ok := v.(*ul.Item); ok {
+										switch {
+										case i == ulItem:
+											i.Activated = true
+											vecty.Rerender(i)
+										default:
+											ulItem.Activated = false
+											vecty.Rerender(ulItem)
+										}
 									}
 								}
 							},
@@ -59,7 +61,7 @@ func NewDemoDrawer(dType drawer.Type) *drawer.D {
 					),
 					ul.ListDivider(),
 					ul.New(nil,
-						&ul.State{Items: []*ul.Item{
+						&ul.State{Items: []vecty.ComponentOrHTML{
 							iconListItem("email", "All Mail"),
 							iconListItem("delete", "Trash"),
 							iconListItem("report", "Spam"),

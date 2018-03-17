@@ -40,7 +40,7 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 						vecty.Class("demo-catalog-list"),
 					},
 				},
-				&ul.State{Items: []*ul.Item{
+				&ul.State{Items: []vecty.ComponentOrHTML{
 					ul.NewItem(nil,
 						&ul.ItemState{
 							Primary:   vecty.Text("Button"),
@@ -147,14 +147,14 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 							Graphic:   renderGraphic("ic_list_24px.svg"),
 						},
 					),
-					// ul.NewItem(nil,
-					// 	&ul.ItemState{
-					// 		Primary:   vecty.Text("Menu"),
-					// 		Secondary: vecty.Text("Pop over menus"),
-					// 		Href:      makeHref("menu"),
-					// 		Graphic:   renderGraphic("ic_menu_24px.svg"),
-					// 	},
-					// ),
+					ul.NewItem(nil,
+						&ul.ItemState{
+							Primary:   vecty.Text("Menu"),
+							Secondary: vecty.Text("Pop over menus"),
+							Href:      makeHref("menu"),
+							Graphic:   renderGraphic("ic_menu_24px.svg"),
+						},
+					),
 					ul.NewItem(nil,
 						&ul.ItemState{
 							Primary:   vecty.Text("Radio buttons"),

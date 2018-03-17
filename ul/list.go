@@ -16,14 +16,12 @@ type L struct {
 }
 
 type State struct {
-	Items          []*Item
+	Items          []vecty.ComponentOrHTML
 	Dense          bool
 	Avatar         bool
 	NonInteractive bool
 	ClickHandler   func(thisL *L, thisI *Item, e *vecty.Event)
 	GroupSubheader string
-	divider        bool
-	insetDivider   bool
 }
 
 // Item is a vecty-material list-item component.
@@ -41,8 +39,6 @@ type ItemState struct {
 	Activated    bool
 	ClickHandler func(i *Item, e *vecty.Event)
 	Href         string
-	divider      bool
-	insetDivider bool
 }
 
 // Group is a vecty-material list-group component.
@@ -52,7 +48,7 @@ type Group struct {
 }
 
 type GroupState struct {
-	Lists []*L
+	Lists []vecty.ComponentOrHTML
 }
 
 func New(p *base.Props, s *State) *L {
@@ -87,18 +83,10 @@ func NewGroup(p *base.Props, s *GroupState) *Group {
 
 // Render implements the vecty.Component interface.
 func (c *L) Render() vecty.ComponentOrHTML {
-	if c.divider {
-		dM := []vecty.Applyer{
-			vecty.Class("mdc-list-divider")}
-		if c.insetDivider {
-			dM = append(dM, vecty.Class("mdc-list-divider--inset"))
-		}
-		return c.Base.Render(elem.HorizontalRule(
-			vecty.Markup(dM...)))
-	}
 	twoLine := false
 	for _, li := range c.Items {
-		if li.Secondary != nil {
+		lItem, ok := li.(*Item)
+		if ok && lItem.Secondary != nil {
 			twoLine = true
 		}
 	}
@@ -121,16 +109,6 @@ func (c *L) Render() vecty.ComponentOrHTML {
 
 // Render implements the vecty.Component interface.
 func (c *Item) Render() vecty.ComponentOrHTML {
-	if c.divider {
-		dM := []vecty.Applyer{
-			vecty.Class("mdc-list-divider"),
-			vecty.Attribute("role", "separator"),
-		}
-		if c.insetDivider {
-			dM = append(dM, vecty.Class("mdc-list-divider--inset"))
-		}
-		return elem.ListItem(vecty.Markup(dM...))
-	}
 	tag := "li"
 	if c.Href != "" {
 		tag = "a"
@@ -187,33 +165,40 @@ func (c *Group) Render() vecty.ComponentOrHTML {
 	))
 }
 
-func ListDivider() *L {
-	return New(nil, &State{divider: true})
+func ListDivider() *vecty.HTML {
+	return elem.HorizontalRule(
+		vecty.Markup(vecty.Class("mdc-list-divider")),
+	)
 }
 
-func ListDividerInset() *L {
+func ListDividerInset() *vecty.HTML {
 	d := ListDivider()
-	d.insetDivider = true
+	vecty.Class("mdc-list-divider--inset").Apply(d)
 	return d
 }
 
-func ItemDivider() *Item {
-	return NewItem(nil, &ItemState{divider: true})
+func ItemDivider() *vecty.HTML {
+	return elem.ListItem(vecty.Markup(
+		vecty.Class("mdc-list-divider"),
+		vecty.Attribute("role", "separator"),
+	))
 }
 
-func ItemDividerInset() *Item {
+func ItemDividerInset() *vecty.HTML {
 	d := ItemDivider()
-	d.insetDivider = true
+	vecty.Class("mdc-list-divider--inset").Apply(d)
 	return d
 }
 
 func (c *L) itemList() vecty.List {
 	items := make(vecty.List, len(c.Items))
 	for i, item := range c.Items {
-		switch {
-		case item.ClickHandler != nil:
-		case c.ClickHandler != nil:
-			item.ClickHandler = c.wrapClickHandler()
+		if lItem, ok := item.(*Item); ok {
+			switch {
+			case lItem.ClickHandler != nil:
+			case c.ClickHandler != nil:
+				lItem.ClickHandler = c.wrapClickHandler()
+			}
 		}
 		items[i] = item
 	}
@@ -222,15 +207,17 @@ func (c *L) itemList() vecty.List {
 
 func (c *Group) listList() vecty.List {
 	lists := make(vecty.List, len(c.Lists)*2)
-	for _, list := range c.Lists {
-		if list.GroupSubheader != "" {
-			lists = append(lists,
-				elem.Heading3(vecty.Markup(
-					vecty.Class("mdc-list-group__subheader")),
-					vecty.Text(list.GroupSubheader)),
-			)
+	for _, cList := range c.Lists {
+		if list, ok := cList.(*L); ok {
+			if list.GroupSubheader != "" {
+				lists = append(lists,
+					elem.Heading3(vecty.Markup(
+						vecty.Class("mdc-list-group__subheader")),
+						vecty.Text(list.GroupSubheader)),
+				)
+			}
+			lists = append(lists, list)
 		}
-		lists = append(lists, list)
 	}
 	return lists
 }
