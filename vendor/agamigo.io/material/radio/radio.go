@@ -54,9 +54,12 @@ func (c *R) Component() *base.Component {
 
 // StateMap implements the base.StateMapper interface.
 func (c *R) StateMap() base.StateMap {
+	if c.Value == "undefined" {
+		c.Value = ""
+	}
 	return base.StateMap{
 		"checked":  c.Checked,
 		"disabled": c.Disabled,
-		"value":    js.InternalObject(c).Get("Value").String(),
+		"value":    c.Value,
 	}
 }
