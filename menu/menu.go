@@ -148,6 +148,5 @@ func (c *M) dividerCountBefore(itemIndex int) int {
 			count++
 		}
 	}
-	print(count)
 	return count
 }
