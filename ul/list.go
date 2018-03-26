@@ -16,7 +16,7 @@ type L struct {
 }
 
 type State struct {
-	Items          []vecty.ComponentOrHTML
+	Items          []vecty.ComponentOrHTML `vecty:"prop"`
 	Dense          bool
 	Avatar         bool
 	NonInteractive bool
@@ -51,6 +51,10 @@ type GroupState struct {
 	Lists []vecty.ComponentOrHTML
 }
 
+type divider struct {
+	vecty.Core
+}
+
 func New(p *base.Props, s *State) *L {
 	c := &L{}
 	if s == nil {
@@ -83,49 +87,35 @@ func NewGroup(p *base.Props, s *GroupState) *Group {
 
 // Render implements the vecty.Component interface.
 func (c *L) Render() vecty.ComponentOrHTML {
+	items := make([]vecty.MarkupOrChild, len(c.Items))
 	twoLine := false
-	for _, li := range c.Items {
-		lItem, ok := li.(*Item)
-		if ok && lItem.Secondary != nil {
-			twoLine = true
+	for i, li := range c.Items {
+		switch t := li.(type) {
+		case *Item:
+			if t.Secondary != nil {
+				twoLine = true
+			}
+			items[i] = t
+		case *vecty.HTML:
+			items[i] = base.RenderStoredChild(t)
+		default:
+			items[i] = li
 		}
 	}
-	return c.Base.Render(elem.UnorderedList(
-		vecty.Markup(
-			vecty.Markup(c.Props.Markup...),
-			vecty.Class("mdc-list"),
-			vecty.MarkupIf(twoLine,
-				vecty.Class("mdc-list--two-line")),
-			vecty.MarkupIf(c.Dense,
-				vecty.Class("mdc-list--dense")),
-			vecty.MarkupIf(c.Avatar,
-				vecty.Class("mdc-list--avatar-list")),
-			vecty.MarkupIf(c.NonInteractive,
-				vecty.Class("mdc-list--non-interactive")),
-		),
-		c.itemList(),
-	))
-}
-
-// Copy implements the vecty.Copier interface
-func (c *L) Copy() vecty.Component {
-	newL := New(
-		&base.Props{
-			ID:     c.ID,
-			Ripple: c.Ripple,
-			Markup: make([]vecty.Applyer, len(c.Markup)),
-		},
-		&State{
-			Avatar:         c.Avatar,
-			Dense:          c.Dense,
-			GroupSubheader: c.GroupSubheader,
-			NonInteractive: c.NonInteractive,
-			ClickHandler:   c.ClickHandler,
-			Items:          make([]vecty.ComponentOrHTML, len(c.Items)),
-		},
-	)
-	copy(newL.Markup, c.Markup)
-	return newL
+	h := elem.UnorderedList(items...)
+	vecty.Markup(
+		vecty.Markup(c.Props.Markup...),
+		vecty.Class("mdc-list"),
+		vecty.MarkupIf(twoLine,
+			vecty.Class("mdc-list--two-line")),
+		vecty.MarkupIf(c.Dense,
+			vecty.Class("mdc-list--dense")),
+		vecty.MarkupIf(c.Avatar,
+			vecty.Class("mdc-list--avatar-list")),
+		vecty.MarkupIf(c.NonInteractive,
+			vecty.Class("mdc-list--non-interactive")),
+	).Apply(h)
+	return h
 }
 
 // Render implements the vecty.Component interface.
@@ -148,6 +138,18 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 			vecty.Attribute("role", "presentation").Apply(g)
 		}
 	}
+	var text vecty.ComponentOrHTML
+	switch {
+	case c.Secondary != nil:
+		text = elem.Span(vecty.Markup(vecty.Class("mdc-list-item__text")),
+			c.Primary,
+			elem.Span(vecty.Markup(
+				vecty.Class("mdc-list-item__secondary-text")),
+				c.Secondary,
+			))
+	default:
+		text = c.Primary
+	}
 	return c.Base.Render(vecty.Tag(tag,
 		vecty.Markup(
 			vecty.Markup(c.Props.Markup...),
@@ -162,40 +164,9 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(c.Href != "", prop.Href(c.Href)),
 		),
 		graphic,
-		vecty.If(c.Primary != nil && c.Secondary == nil, c.Primary),
-		vecty.If(c.Secondary != nil,
-			elem.Span(vecty.Markup(vecty.Class("mdc-list-item__text")),
-				vecty.If(c.Primary != nil, c.Primary),
-				elem.Span(vecty.Markup(
-					vecty.Class("mdc-list-item__secondary-text")),
-					c.Secondary,
-				)),
-		),
+		base.RenderStoredChild(text),
 		meta,
 	))
-}
-
-// Copy implements the vecty.Copier interface
-func (c *Item) Copy() vecty.Component {
-	newI := NewItem(
-		&base.Props{
-			ID:     c.ID,
-			Ripple: c.Ripple,
-			Markup: make([]vecty.Applyer, len(c.Markup)),
-		},
-		&ItemState{
-			Primary:      c.Primary,
-			Secondary:    c.Secondary,
-			Graphic:      c.Graphic,
-			Meta:         c.Meta,
-			Selected:     c.Selected,
-			Activated:    c.Activated,
-			Href:         c.Href,
-			ClickHandler: c.ClickHandler,
-		},
-	)
-	copy(newI.Markup, c.Markup)
-	return newI
 }
 
 // Render implements the vecty.Component interface.
@@ -209,44 +180,44 @@ func (c *Group) Render() vecty.ComponentOrHTML {
 	))
 }
 
-func ListDivider() *vecty.HTML {
-	return elem.HorizontalRule(
-		vecty.Markup(vecty.Class("mdc-list-divider")),
+func ListDivider() vecty.ComponentOrHTML {
+	d := elem.HorizontalRule(
+		vecty.Markup(
+			vecty.Class("mdc-list-divider"),
+		),
 	)
+	return base.RenderStoredChild(d)
 }
 
-func ListDividerInset() *vecty.HTML {
-	d := ListDivider()
-	vecty.Class("mdc-list-divider--inset").Apply(d)
-	return d
+func ListDividerInset() vecty.ComponentOrHTML {
+	d := elem.HorizontalRule(
+		vecty.Markup(
+			vecty.Class("mdc-list-divider"),
+			vecty.Class("mdc-list-divider--inset"),
+		),
+	)
+	return base.RenderStoredChild(d)
 }
 
-func ItemDivider() *vecty.HTML {
-	return elem.ListItem(vecty.Markup(
-		vecty.Class("mdc-list-divider"),
-		vecty.Attribute("role", "separator"),
-	))
+func ItemDivider() vecty.ComponentOrHTML {
+	d := elem.ListItem(
+		vecty.Markup(
+			vecty.Class("mdc-list-divider"),
+			vecty.Attribute("role", "separator"),
+		),
+	)
+	return base.RenderStoredChild(d)
 }
 
-func ItemDividerInset() *vecty.HTML {
-	d := ItemDivider()
-	vecty.Class("mdc-list-divider--inset").Apply(d)
-	return d
-}
-
-func (c *L) itemList() vecty.List {
-	items := make(vecty.List, len(c.Items))
-	for i, item := range c.Items {
-		if lItem, ok := item.(*Item); ok {
-			switch {
-			case lItem.ClickHandler != nil:
-			case c.ClickHandler != nil:
-				lItem.ClickHandler = c.wrapClickHandler()
-			}
-		}
-		items[i] = item
-	}
-	return items
+func ItemDividerInset() vecty.ComponentOrHTML {
+	d := elem.ListItem(
+		vecty.Markup(
+			vecty.Class("mdc-list-divider"),
+			vecty.Class("mdc-list-divider--inset"),
+			vecty.Attribute("role", "separator"),
+		),
+	)
+	return base.RenderStoredChild(d)
 }
 
 func (c *Group) listList() vecty.List {
