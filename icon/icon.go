@@ -43,7 +43,7 @@ func (c *I) Render() vecty.ComponentOrHTML {
 		sizeClass = "md-" + sizeClass
 	}
 	isIconCode := false
-	if string([]byte(c.Name)[0]) == "&" {
+	if c.Name != "" && string([]byte(c.Name)[0]) == "&" {
 		isIconCode = true
 	}
 	return c.Base.Render(elem.Italic(
