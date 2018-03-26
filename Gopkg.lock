@@ -15,6 +15,7 @@
     "checkbox",
     "dialog",
     "formfield",
+    "icontoggle",
     "menu",
     "persistentdrawer",
     "radio",
@@ -59,6 +60,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "9032b19ecdebb3194240bb1b6f2d7d803a1b23a84b41b57ffed7c6869a432b37"
+  inputs-digest = "f2d788fb87f489c314ce92e67a5fee64cddb91e21b4856981d58dc7429d5ce8d"
   solver-name = "gps-cdcl"
   solver-version = 1

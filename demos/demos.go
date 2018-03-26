@@ -115,14 +115,14 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					// 		Graphic:   renderGraphic("ic_card_24px.svg"),
 					// 	},
 					// ),
-					// ul.NewItem(nil,
-					// 	&ul.ItemState{
-					// 		Primary:   vecty.Text("Icon toggle"),
-					// 		Secondary: vecty.Text("Toggling icon states"),
-					// 		Href:      makeHref("icon"),
-					// 		Graphic:   renderGraphic("ic_component_24px.svg"),
-					// 	},
-					// ),
+					ul.NewItem(nil,
+						&ul.ItemState{
+							Primary:   vecty.Text("Icon toggle"),
+							Secondary: vecty.Text("Toggling icon states"),
+							Href:      makeHref("icontoggle"),
+							Graphic:   renderGraphic("ic_component_24px.svg"),
+						},
+					),
 					// ul.NewItem(nil,
 					// 	&ul.ItemState{
 					// 		Primary:   vecty.Text("Layout grid"),
