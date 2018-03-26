@@ -86,5 +86,5 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 				),
 			},
 		},
-	)
+	).Render()
 }
