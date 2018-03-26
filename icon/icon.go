@@ -20,7 +20,7 @@ type State struct {
 	SizePX        int
 	Inactive      bool
 	Dark          bool
-	ClassOverride string
+	ClassOverride []string
 }
 
 func New(p *base.Props, s *State) *I {
@@ -49,11 +49,11 @@ func (c *I) Render() vecty.ComponentOrHTML {
 	return c.Base.Render(elem.Italic(
 		vecty.Markup(
 			vecty.Markup(c.Props.Markup...),
-			vecty.MarkupIf(c.ClassOverride == "",
+			vecty.MarkupIf(c.ClassOverride == nil,
 				vecty.Class("material-icons"),
 			),
-			vecty.MarkupIf(c.ClassOverride != "",
-				vecty.Class(c.ClassOverride),
+			vecty.MarkupIf(c.ClassOverride != nil,
+				vecty.Class(c.ClassOverride...),
 			),
 			vecty.MarkupIf(c.Inactive,
 				vecty.Class("md-inactive"),
