@@ -38,12 +38,15 @@ func New(p *base.Props, s *State) *FF {
 
 // Render implements the vecty.Component interface.
 func (c *FF) Render() vecty.ComponentOrHTML {
-	if c.State.Input != nil {
-		switch t := c.State.Input.(type) {
+	input := c.Input
+	if c.Input != nil {
+		switch t := c.Input.(type) {
 		case *base.Base:
 			c.inputID = t.ID
+		case *vecty.HTML:
+			input = base.RenderStoredChild(c.Input)
 		}
-		switch t := c.State.Input.(type) {
+		switch t := c.Input.(type) {
 		case mbase.Componenter:
 			c.FF.Input = t.Component()
 		}
@@ -58,7 +61,7 @@ func (c *FF) Render() vecty.ComponentOrHTML {
 				vecty.Class("mdc-form-field--align-end"),
 			),
 		),
-		c.State.Input,
+		input,
 		elem.Label(
 			vecty.Markup(
 				vecty.MarkupIf(c.inputID != "",
