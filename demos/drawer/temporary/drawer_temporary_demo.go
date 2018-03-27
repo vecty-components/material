@@ -4,6 +4,7 @@ import (
 	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/button"
 	"agamigo.io/vecty-material/demos/common"
+	dcommon "agamigo.io/vecty-material/demos/drawer/common"
 	"agamigo.io/vecty-material/drawer"
 	"agamigo.io/vecty-material/formfield"
 	"agamigo.io/vecty-material/radio"
@@ -24,7 +25,7 @@ func main() {
 }
 
 func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
-	c.drawer = common.NewDemoDrawer(drawer.Temporary)
+	c.drawer = dcommon.NewDemoDrawer(drawer.Temporary)
 	c.body = elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),

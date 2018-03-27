@@ -4,6 +4,7 @@ import (
 	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/button"
 	"agamigo.io/vecty-material/demos/common"
+	dcommon "agamigo.io/vecty-material/demos/drawer/common"
 	"agamigo.io/vecty-material/drawer"
 	"agamigo.io/vecty-material/formfield"
 	"agamigo.io/vecty-material/radio"
@@ -51,7 +52,7 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 				vecty.Class("demo-content"),
 				vecty.Class("mdc-toolbar-fixed-adjust"),
 			),
-			common.NewDemoDrawer(drawer.Permanent),
+			dcommon.NewDemoDrawer(drawer.Permanent),
 			elem.Main(vecty.Markup(vecty.Class("demo-main")),
 				elem.Heading1(
 					vecty.Markup(vecty.Class("mdc-typography--display1")),
