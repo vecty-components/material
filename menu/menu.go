@@ -2,6 +2,7 @@ package menu
 
 import (
 	"agamigo.io/material/menu"
+	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/ul"
 	"github.com/gopherjs/gopherjs/js"
@@ -12,12 +13,14 @@ import (
 
 // M is a vecty-material menu component.
 type M struct {
-	*base.Base
-	*State
-}
-
-type State struct {
 	*menu.M
+	vecty.Core
+	ID          string
+	Markup      []vecty.Applyer
+	rootElement *vecty.HTML
+	Ripple      bool
+	Basic       bool
+	ripple      *ripple.R
 
 	// Open is the visible state of the menu component.
 	Open bool `js:"open"`
@@ -27,34 +30,24 @@ type State struct {
 	QuickOpen bool `js:"quickOpen"`
 
 	// List is a HTMLUListElement containing the menu's items.
-	List vecty.ComponentOrHTML `vecty:"prop"`
+	List vecty.ComponentOrHTML
 
 	// Set AnchorElement to embed the menu component inside an HTMLElement from
 	// which the element will be anchored.
 	AnchorElement vecty.ComponentOrHTML
 
-	// Define SelectHandler to handle "MDCMenu:selected" events. item is the
+	// Define OnSelect to handle "MDCMenu:selected" events. item is the
 	// menu item that was selected.
-	SelectHandler func(index int, item vecty.ComponentOrHTML, e *vecty.Event)
-}
+	OnSelect func(index int, item vecty.ComponentOrHTML, e *vecty.Event)
 
-func New(p *base.Props, s *State) *M {
-	open := js.InternalObject(s).Get("Open").Bool()
-	c := &M{}
-	if s == nil {
-		s = &State{}
-	}
-	if s.M == nil {
-		s.M = menu.New()
-	}
-	c.State = s
-	c.Base = base.New(p, c)
-	c.Open = open
-	return c
+	// Define OnCancel to handle "MDCMenu:selected" events. item is the
+	// menu item that was selected.
+	OnCancel func(e *vecty.Event)
 }
 
 // Render implements the vecty.Component interface.
 func (c *M) Render() vecty.ComponentOrHTML {
+	c.init()
 	switch t := c.List.(type) {
 	case *ul.L:
 		t.Markup = append(t.Markup,
@@ -75,47 +68,83 @@ func (c *M) Render() vecty.ComponentOrHTML {
 	case *vecty.HTML:
 		vecty.Class("mdc-menu__items").Apply(t)
 		vecty.Attribute("role", "menu").Apply(t)
-		if !c.Open {
-			vecty.Attribute("aria-hidden", "true").Apply(t)
+		if c.Open {
+			vecty.Attribute("aria-hidden", "false").Apply(t)
 		}
 	}
 
 	menuMarkup := vecty.Markup(
-		vecty.MarkupIf(c.Props.ID != "", prop.ID(c.Props.ID)),
+		vecty.MarkupIf(c.ID != "", prop.ID(c.ID)),
 		vecty.Class("mdc-menu"),
-		vecty.MarkupIf(c.Open, vecty.Class("mdc-menu--open")),
+		vecty.MarkupIf(c.Open && c.rootElement == nil,
+			vecty.Class("mdc-menu--open"),
+		),
 		vecty.Style("position", "absolute"),
 		vecty.Attribute("tabindex", -1),
-		vecty.MarkupIf(c.SelectHandler != nil,
-			&vecty.EventListener{
-				Name:     "MDCMenu:selected",
-				Listener: c.wrapSelectHandler(),
-			},
-		),
+		&vecty.EventListener{
+			Name:     "MDCMenu:selected",
+			Listener: c.onSelect,
+		},
+		&vecty.EventListener{
+			Name:     "MDCMenu:cancel",
+			Listener: c.onCancel,
+		},
 	)
 
 	if c.AnchorElement != nil {
+		c.rootElement = elem.Div(
+			menuMarkup,
+			c.List,
+		)
 		return elem.Div(
 			vecty.Markup(
 				vecty.Class("mdc-menu-anchor"),
-				vecty.Markup(c.Props.Markup...),
+				vecty.Markup(c.Markup...),
 			),
 			c.AnchorElement,
-			c.Base.Render(elem.Div(
-				menuMarkup,
-				c.List,
-			)),
+			c.rootElement,
 		)
 	}
-	return c.Base.Render(elem.Div(
+	c.rootElement = elem.Div(
 		menuMarkup,
-		vecty.Markup(vecty.Markup(c.Props.Markup...)),
+		vecty.Markup(vecty.Markup(c.Markup...)),
 		c.List,
-	))
+	)
+	return c.rootElement
 }
 
-func (c *M) wrapSelectHandler() func(e *vecty.Event) {
-	return func(e *vecty.Event) {
+func (c *M) MDCRoot() *base.Base {
+	return &base.Base{
+		MDC:       c,
+		ID:        c.ID,
+		Element:   c.rootElement,
+		HasRipple: c.Ripple,
+		Basic:     c.Basic,
+		RippleC:   c.ripple,
+	}
+}
+
+func (c *M) Mount() {
+	c.MDCRoot().Mount()
+}
+
+func (c *M) Unmount() {
+	c.MDCRoot().Unmount()
+}
+
+func (c *M) init() {
+	if c.M == nil {
+		// TODO: Make initial values work in material package
+		open := js.InternalObject(c).Get("Open").Bool()
+		quickOpen := js.InternalObject(c).Get("QuickOpen").Bool()
+		c.M = menu.New()
+		c.Open = open
+		c.QuickOpen = quickOpen
+	}
+}
+
+func (c *M) onSelect(e *vecty.Event) {
+	if c.OnSelect != nil {
 		var item vecty.ComponentOrHTML
 		i := e.Get("detail").Get("index").Int()
 		i = i + c.dividerCountBefore(i)
@@ -125,12 +154,19 @@ func (c *M) wrapSelectHandler() func(e *vecty.Event) {
 		case vecty.List:
 			item = t[i]
 		}
-		c.SelectHandler(i, item, e)
+		c.OnSelect(i, item, e)
 	}
 }
 
-// dividerCountBefore returns the number valid items in the list before itemIndex,
-// non-inclusive. Dividers in the List slice do not count as valid items.
+func (c *M) onCancel(e *vecty.Event) {
+	if c.OnCancel != nil {
+		c.OnCancel(e)
+	}
+}
+
+// TODO: Figure out how to use or replicate MDC behavior
+// dividerCountBefore returns the number non-valid items (dividers) in the list
+// before itemIndex, non-inclusive.
 func (c *M) dividerCountBefore(itemIndex int) int {
 	count := 0
 	var items []vecty.ComponentOrHTML

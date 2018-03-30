@@ -1,8 +1,8 @@
 package formfield
 
 import (
-	mbase "agamigo.io/material/base"
 	"agamigo.io/material/formfield"
+	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -11,51 +11,36 @@ import (
 
 // FF is a vecty-material formfield component.
 type FF struct {
-	*base.Base
-	*State
-}
-
-type State struct {
 	*formfield.FF
-	inputID  string
-	Input    vecty.ComponentOrHTML
-	Label    string
-	AlignEnd bool
-}
-
-func New(p *base.Props, s *State) *FF {
-	c := &FF{}
-	if s == nil {
-		s = &State{}
-	}
-	if s.FF == nil {
-		s.FF = formfield.New()
-	}
-	c.State = s
-	c.Base = base.New(p, c)
-	return c
+	vecty.Core
+	ID          string
+	Markup      []vecty.Applyer
+	rootElement *vecty.HTML
+	Ripple      bool
+	ripple      *ripple.R
+	inputID     string
+	Input       vecty.ComponentOrHTML
+	Label       string
+	AlignEnd    bool
 }
 
 // Render implements the vecty.Component interface.
 func (c *FF) Render() vecty.ComponentOrHTML {
+	c.init()
 	input := c.Input
 	if c.Input != nil {
 		switch t := c.Input.(type) {
-		case *base.Base:
-			c.inputID = t.ID
+		case base.MDCRooter:
+			c.inputID = t.MDCRoot().ID
 		case *vecty.HTML:
 			input = base.RenderStoredChild(c.Input)
 		}
-		switch t := c.Input.(type) {
-		case mbase.Componenter:
-			c.FF.Input = t.Component()
-		}
 	}
-	return c.Base.Render(elem.Div(
+	c.rootElement = elem.Div(
 		vecty.Markup(
-			vecty.Markup(c.Props.Markup...),
-			vecty.MarkupIf(c.Props.ID != "",
-				prop.ID(c.Props.ID)),
+			vecty.Markup(c.Markup...),
+			vecty.MarkupIf(c.ID != "",
+				prop.ID(c.ID)),
 			vecty.Class("mdc-form-field"),
 			vecty.MarkupIf(c.AlignEnd,
 				vecty.Class("mdc-form-field--align-end"),
@@ -70,5 +55,31 @@ func (c *FF) Render() vecty.ComponentOrHTML {
 			),
 			vecty.Text(c.Label),
 		),
-	))
+	)
+	return c.rootElement
+}
+
+func (c *FF) MDCRoot() *base.Base {
+	return &base.Base{
+		MDC:       c,
+		ID:        c.ID,
+		Element:   c.rootElement,
+		HasRipple: c.Ripple,
+		RippleC:   c.ripple,
+	}
+}
+
+func (c *FF) Mount() {
+	c.MDCRoot().Mount()
+}
+
+func (c *FF) Unmount() {
+	c.MDCRoot().Unmount()
+}
+
+func (c *FF) init() {
+	if c.FF == nil {
+		c.FF = formfield.New()
+	}
+	c.FF.Input = c.Input
 }

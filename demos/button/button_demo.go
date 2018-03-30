@@ -1,7 +1,6 @@
 package main
 
 import (
-	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/button"
 	"agamigo.io/vecty-material/checkbox"
 	"agamigo.io/vecty-material/demos/common"
@@ -33,12 +32,8 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
 			elem.Section(
 				vecty.Markup(vecty.Class("hero")),
-				c.newBtn(nil,
-					&button.State{Label: vecty.Text("Flat")},
-				),
-				c.newBtn(nil,
-					&button.State{Label: vecty.Text("Raised"), Raised: true},
-				),
+				c.newBtn(&button.B{Label: vecty.Text("Flat")}),
+				c.newBtn(&button.B{Label: vecty.Text("Raised"), Raised: true}),
 				elem.Small(
 					vecty.Markup(vecty.Class("note")),
 					vecty.Text(`Note: "secondary" was previously called `+
@@ -47,38 +42,34 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 			),
 			elem.Section(
 				vecty.Markup(vecty.Class("demo-wrapper")),
-				formfield.New(nil,
-					&formfield.State{
-						Label: "Disable buttons (excluding links)",
-						Input: checkbox.New(
-							&base.Props{ID: "toggle-disabled"},
-							&checkbox.State{
-								ChangeHandler: func(thisCB *checkbox.CB,
-									e *vecty.Event) {
-									checked := e.Target.Get("checked").Bool()
-									for _, b := range c.buttons {
-										if b.Href != "" {
-											continue
-										}
-										b.Disabled = checked
-										vecty.Rerender(b)
-									}
-								},
-							},
-						),
+				&formfield.FF{
+					Label: "Disable buttons (excluding links)",
+					Input: &checkbox.CB{
+						ID: "toggle-disabled",
+						OnChange: func(thisCB *checkbox.CB,
+							e *vecty.Event) {
+							checked := e.Target.Get("checked").Bool()
+							for _, b := range c.buttons {
+								if b.Href != "" {
+									continue
+								}
+								b.Disabled = checked
+								vecty.Rerender(b)
+							}
+						},
 					},
-				),
-				c.renderBtnFieldSets("Ripple Enabled", true),
-				c.renderBtnFieldSets("CSS Only", false),
+				},
 			),
 		),
+		c.renderBtnFieldSets("Ripple Enabled", true),
+		c.renderBtnFieldSets("CSS Only", false),
 	)
 }
 
 func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
-	s *button.State) vecty.ComponentOrHTML {
-	if s == nil {
-		s = &button.State{}
+	b *button.B) vecty.ComponentOrHTML {
+	if b == nil {
+		b = &button.B{}
 	}
 	return elem.FieldSet(
 		elem.Legend(
@@ -86,57 +77,57 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 			vecty.Text(title),
 		),
 		elem.Div(
-			c.newBtn(&base.Props{Ripple: Ripple},
-				&button.State{
+			c.newBtn(
+				&button.B{
 					Label:      vecty.Text("Baseline"),
-					Raised:     s.Raised,
-					Unelevated: s.Unelevated,
-					Stroked:    s.Stroked,
-				},
-			),
-			c.newBtn(&base.Props{Ripple: Ripple},
-				&button.State{
-					Label:      vecty.Text("Dense"),
-					Dense:      true,
-					Raised:     s.Raised,
-					Unelevated: s.Unelevated,
-					Stroked:    s.Stroked,
+					Raised:     b.Raised,
+					Unelevated: b.Unelevated,
+					Stroked:    b.Stroked,
+					Ripple:     Ripple,
 				},
 			),
 			c.newBtn(
-				&base.Props{
+				&button.B{
+					Label:      vecty.Text("Dense"),
+					Dense:      true,
+					Raised:     b.Raised,
+					Unelevated: b.Unelevated,
+					Stroked:    b.Stroked,
+					Ripple:     Ripple,
+				},
+			),
+			c.newBtn(
+				&button.B{
 					Ripple: Ripple,
 					Markup: []vecty.Applyer{
 						vecty.Class("secondary-text-button"),
 					},
-				},
-				&button.State{
 					Label:      vecty.Text("Secondary"),
-					Raised:     s.Raised,
-					Unelevated: s.Unelevated,
-					Stroked:    s.Stroked,
+					Raised:     b.Raised,
+					Unelevated: b.Unelevated,
+					Stroked:    b.Stroked,
 				},
 			),
-			c.newBtn(&base.Props{Ripple: Ripple},
-				&button.State{
+			c.newBtn(
+				&button.B{
 					Label: vecty.Text("Icon"),
-					Icon: icon.New(nil,
-						&icon.State{
-							Name: "favorite",
-						},
-					),
-					Raised:     s.Raised,
-					Unelevated: s.Unelevated,
-					Stroked:    s.Stroked,
+					Icon: &icon.I{
+						Name: "favorite",
+					},
+					Raised:     b.Raised,
+					Unelevated: b.Unelevated,
+					Stroked:    b.Stroked,
+					Ripple:     Ripple,
 				},
 			),
-			c.newBtn(&base.Props{Ripple: Ripple},
-				&button.State{
+			c.newBtn(
+				&button.B{
 					Label:      vecty.Text("Link"),
 					Href:       "javascript:void(0)",
-					Raised:     s.Raised,
-					Unelevated: s.Unelevated,
-					Stroked:    s.Stroked,
+					Raised:     b.Raised,
+					Unelevated: b.Unelevated,
+					Stroked:    b.Stroked,
+					Ripple:     Ripple,
 				},
 			),
 		),
@@ -152,13 +143,13 @@ func (c *buttonDemoView) renderBtnFieldSets(heading string,
 		),
 		c.renderBtnFieldSet("Text Button", Ripple, nil),
 		c.renderBtnFieldSet("Raised Button", Ripple,
-			&button.State{Raised: true},
+			&button.B{Raised: true},
 		),
 		c.renderBtnFieldSet("Unelevated Button (Experimental)", Ripple,
-			&button.State{Unelevated: true},
+			&button.B{Unelevated: true},
 		),
 		c.renderBtnFieldSet("Stroked Button", Ripple,
-			&button.State{Stroked: true},
+			&button.B{Stroked: true},
 		),
 		elem.FieldSet(
 			elem.Legend(
@@ -169,25 +160,21 @@ func (c *buttonDemoView) renderBtnFieldSets(heading string,
 			),
 			elem.Div(
 				c.newBtn(
-					&base.Props{
+					&button.B{
 						Markup: []vecty.Applyer{
 							vecty.Class("big-round-corner-button"),
 						},
-						Ripple: Ripple,
-					},
-					&button.State{
+						Ripple:     Ripple,
 						Unelevated: true,
 						Label:      vecty.Text("Corner Radius"),
 					},
 				),
 				c.newBtn(
-					&base.Props{
+					&button.B{
 						Markup: []vecty.Applyer{
 							vecty.Class("thick-stroke-button"),
 						},
-						Ripple: Ripple,
-					},
-					&button.State{
+						Ripple:  Ripple,
 						Stroked: true,
 						Label:   vecty.Text("Thick Stroke Width"),
 					},
@@ -198,7 +185,8 @@ func (c *buttonDemoView) renderBtnFieldSets(heading string,
 }
 
 // Wraps button.New() and keeps track of created buttons
-func (c *buttonDemoView) newBtn(p *base.Props, s *button.State) *button.B {
-	c.buttons = append(c.buttons, button.New(p, s))
-	return c.buttons[len(c.buttons)-1]
+func (c *buttonDemoView) newBtn(b *button.B) *button.B {
+	c.buttons = append(c.buttons, b)
+	// return c.buttons[len(c.buttons)-1]
+	return b
 }

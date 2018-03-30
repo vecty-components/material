@@ -1,6 +1,7 @@
 package toolbar
 
 import (
+	"agamigo.io/material/ripple"
 	"agamigo.io/material/toolbar"
 	"agamigo.io/vecty-material/base"
 	"github.com/gopherjs/vecty"
@@ -10,33 +11,22 @@ import (
 
 // T is a vecty-material toolbar component.
 type T struct {
-	*base.Base
-	*State
-}
-
-type State struct {
 	*toolbar.T
+	vecty.Core
+	ID            string
+	Markup        []vecty.Applyer
+	rootElement   *vecty.HTML
+	Ripple        bool
+	ripple        *ripple.R
 	SectionStart  vecty.List
 	SectionCenter vecty.List
 	SectionEnd    vecty.List
 	Fixed         bool
 }
 
-func New(p *base.Props, s *State) *T {
-	c := &T{}
-	if s == nil {
-		s = &State{}
-	}
-	if s.T == nil {
-		s.T = toolbar.New()
-	}
-	c.State = s
-	c.Base = base.New(p, nil)
-	return c
-}
-
 // Render implements the vecty.Component interface.
 func (c *T) Render() vecty.ComponentOrHTML {
+	c.init()
 	var start, center, end vecty.List
 	if c.SectionStart != nil {
 		start = make(vecty.List, len(c.SectionStart))
@@ -70,10 +60,10 @@ func (c *T) Render() vecty.ComponentOrHTML {
 			)
 		}
 	}
-	return elem.Header(
+	c.rootElement = elem.Header(
 		vecty.Markup(
-			vecty.Markup(c.Props.Markup...),
-			vecty.MarkupIf(c.Props.ID != "", prop.ID(c.Props.ID)),
+			vecty.MarkupIf(c.Markup != nil, c.Markup...),
+			vecty.MarkupIf(c.ID != "", prop.ID(c.ID)),
 			vecty.Class("mdc-toolbar"),
 			vecty.MarkupIf(c.Fixed, vecty.Class("mdc-toolbar--fixed"))),
 		elem.Div(vecty.Markup(vecty.Class("mdc-toolbar__row")),
@@ -87,14 +77,38 @@ func (c *T) Render() vecty.ComponentOrHTML {
 			end,
 		),
 	)
+	return c.rootElement
 }
 
-func Title(title string, p *base.Props) *vecty.HTML {
+func (c *T) MDCRoot() *base.Base {
+	return &base.Base{
+		MDC:       c,
+		ID:        c.ID,
+		Element:   c.rootElement,
+		HasRipple: c.Ripple,
+		RippleC:   c.ripple,
+	}
+}
+
+func (c *T) Mount() {
+	c.MDCRoot().Mount()
+}
+
+func (c *T) Unmount() {
+	c.MDCRoot().Unmount()
+}
+
+func (c *T) init() {
+	if c.T == nil {
+		c.T = toolbar.New()
+	}
+}
+
+func Title(title string, mUp []vecty.Applyer) *vecty.HTML {
 	return elem.Span(
 		vecty.Markup(
 			vecty.Class("mdc-toolbar__title"),
-			vecty.Markup(p.Markup...),
-			vecty.MarkupIf(p.ID != "", prop.ID(p.ID)),
+			vecty.Markup(mUp...),
 		),
 		vecty.Text(title),
 	)

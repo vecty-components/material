@@ -1,7 +1,6 @@
 package main
 
 import (
-	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/button"
 	"agamigo.io/vecty-material/demos/common"
 	dcommon "agamigo.io/vecty-material/demos/drawer/common"
@@ -41,6 +40,7 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 				Navigation: common.NavMenu,
 				MenuHandler: func(e *vecty.Event) {
 					c.drawer.Open = !c.drawer.Open
+					vecty.Rerender(c.drawer)
 				},
 				NoFixed: true,
 			},
@@ -54,16 +54,14 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 						"close the drawer."),
 				),
 				elem.Div(vecty.Markup(prop.ID("demo-radio-buttons")),
-					formfield.New(nil, &formfield.State{
+					&formfield.FF{
 						Label: "Default",
-						Input: vecty.List{radio.New(
-							&base.Props{
-								ID: "theme-radio-default",
-							},
-							&radio.State{
+						Input: vecty.List{
+							&radio.R{
+								ID:      "theme-radio-default",
 								Name:    "theme",
 								Checked: true,
-								ChangeHandler: func(thisR *radio.R,
+								OnChange: func(thisR *radio.R,
 									e *vecty.Event) {
 									d := js.Global.Get("window").Get("document")
 									dd := d.Call("querySelector", ".demo-drawer")
@@ -73,17 +71,15 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 										"demo-drawer--custom")
 								},
 							},
-						)}},
-					),
-					formfield.New(nil, &formfield.State{
+						},
+					},
+					&formfield.FF{
 						Label: "Custom Theme",
-						Input: vecty.List{radio.New(
-							&base.Props{
-								ID: "theme-radio-custom",
-							},
-							&radio.State{
+						Input: vecty.List{
+							&radio.R{
+								ID:   "theme-radio-custom",
 								Name: "theme",
-								ChangeHandler: func(thisR *radio.R,
+								OnChange: func(thisR *radio.R,
 									e *vecty.Event) {
 									d := js.Global.Get("window").Get("document")
 									dd := d.Call("querySelector", ".demo-drawer")
@@ -93,17 +89,15 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 										"demo-drawer--custom")
 								},
 							},
-						)}},
-					),
-					formfield.New(nil, &formfield.State{
+						},
+					},
+					&formfield.FF{
 						Label: "Accessible Theme",
-						Input: vecty.List{radio.New(
-							&base.Props{
-								ID: "theme-radio-accessible",
-							},
-							&radio.State{
+						Input: vecty.List{
+							&radio.R{
+								ID:   "theme-radio-accessible",
 								Name: "theme",
-								ChangeHandler: func(thisR *radio.R,
+								OnChange: func(thisR *radio.R,
 									e *vecty.Event) {
 									d := js.Global.Get("window").Get("document")
 									dd := d.Call("querySelector", ".demo-drawer")
@@ -113,32 +107,28 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 										"demo-drawer--accessible")
 								},
 							},
-						)}},
-					),
+						},
+					},
 				),
 				elem.Div(vecty.Markup(vecty.Class("extra-content-wrapper")),
-					button.New(
-						&base.Props{
-							Markup: []vecty.Applyer{vecty.Class(
-								"demo-toolbar-example-heading__rtl-toggle-button"),
-							},
+					&button.B{
+						Markup: []vecty.Applyer{vecty.Class(
+							"demo-toolbar-example-heading__rtl-toggle-button"),
 						},
-						&button.State{
-							Label:   vecty.Text("Toggle RTL"),
-							Stroked: true,
-							Dense:   true,
-							ClickHandler: func(thisB *button.B,
-								e *vecty.Event) {
-								b := c.body.Node()
-								if b.Call("getAttribute",
-									"dir").String() == "rtl" {
-									b.Call("setAttribute", "dir", "ltr")
-									return
-								}
-								b.Call("setAttribute", "dir", "rtl")
-							},
+						Label:   vecty.Text("Toggle RTL"),
+						Stroked: true,
+						Dense:   true,
+						OnClick: func(thisB *button.B,
+							e *vecty.Event) {
+							b := c.body.Node()
+							if b.Call("getAttribute",
+								"dir").String() == "rtl" {
+								b.Call("setAttribute", "dir", "ltr")
+								return
+							}
+							b.Call("setAttribute", "dir", "rtl")
 						},
-					),
+					},
 				),
 			),
 		),

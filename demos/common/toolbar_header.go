@@ -3,7 +3,6 @@ package common
 import (
 	"path"
 
-	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/icon"
 	"agamigo.io/vecty-material/toolbar"
 	"github.com/gopherjs/gopherjs/js"
@@ -53,7 +52,7 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 				vecty.Class("catalog-back"),
 				vecty.Class("mdc-toolbar__menu-icon"),
 			),
-			icon.New(nil, &icon.State{Name: "&#xE5C4;"}),
+			&icon.I{Name: "&#xE5C4;"},
 		)
 	case NavMenu:
 		toolbarNav = elem.Button(
@@ -68,23 +67,18 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 	case NavNone:
 		toolbarNav = nil
 	}
-	return toolbar.New(
-		&base.Props{
-			Markup: []vecty.Applyer{
-				vecty.MarkupIf(c.NoFixed, vecty.Class("mdc-elevation--z4")),
-			},
+	t := &toolbar.T{
+		Markup: []vecty.Applyer{
+			vecty.MarkupIf(c.NoFixed, vecty.Class("mdc-elevation--z4")),
 		},
-		&toolbar.State{
-			Fixed: !c.NoFixed,
-			SectionStart: vecty.List{
-				toolbarNav,
-				toolbar.Title(
-					c.Title,
-					&base.Props{
-						Markup: []vecty.Applyer{vecty.Class("catalog-title")},
-					},
-				),
-			},
+		Fixed: !c.NoFixed,
+		SectionStart: vecty.List{
+			toolbarNav,
+			toolbar.Title(
+				c.Title,
+				[]vecty.Applyer{vecty.Class("catalog-title")},
+			),
 		},
-	).Render()
+	}
+	return t.Render()
 }

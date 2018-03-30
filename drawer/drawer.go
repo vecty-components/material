@@ -3,9 +3,9 @@ package drawer
 import (
 	mbase "agamigo.io/material/base"
 	"agamigo.io/material/persistentdrawer"
+	"agamigo.io/material/ripple"
 	"agamigo.io/material/temporarydrawer"
 	"agamigo.io/vecty-material/base"
-	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 )
@@ -20,15 +20,16 @@ const (
 
 // D is a vecty-material drawer component.
 type D struct {
-	*base.Base
-	*State
-}
-
-type State struct {
-	object *js.Object
-	mbase.ComponentStartStopper
+	D mbase.ComponentStartStopper
+	vecty.Core
+	ID          string
+	Markup      []vecty.Applyer
+	rootElement *vecty.HTML
+	Ripple      bool
+	Basic       bool
+	ripple      *ripple.R
 	Type
-	Open          bool `js:"open"`
+	Open          bool
 	BelowToolbar  bool
 	Toolbar       vecty.ComponentOrHTML
 	Header        vecty.ComponentOrHTML
@@ -36,47 +37,15 @@ type State struct {
 	Content       vecty.ComponentOrHTML
 }
 
-func New(p *base.Props, s *State) *D {
-	c := &D{}
-	if s == nil {
-		s = &State{}
-	}
-	switch {
-	case s.ComponentStartStopper != nil || s.Type == Permanent:
-		break
-	case s.Type == Temporary:
-		s.ComponentStartStopper = temporarydrawer.New()
-		s.object = s.ComponentStartStopper.Component().Object
-	case s.Type == Persistent:
-		s.ComponentStartStopper = persistentdrawer.New()
-		s.object = s.ComponentStartStopper.Component().Object
-	}
-	c.State = s
-	if c.Type == Permanent {
-		c.Base = base.New(p, nil)
-	} else {
-		c.Base = base.New(p, c)
-	}
-	return c
-}
-
-func (c *D) Mount() {
-	c.Base.Mount()
-	if c.Type == Permanent {
-		return
-	}
-	c.object = c.Component().Object
-}
-
 // Render implements the vecty.Component interface.
 func (c *D) Render() vecty.ComponentOrHTML {
+	c.init()
 	markup := vecty.Markup(
-		vecty.Markup(c.Props.Markup...),
+		vecty.Markup(c.Markup...),
 		vecty.Class("mdc-drawer"))
-	var element *vecty.HTML
 	switch c.Type {
 	case Temporary:
-		element = elem.Aside(
+		c.rootElement = elem.Aside(
 			vecty.Markup(markup,
 				vecty.Class("mdc-drawer--temporary"),
 				vecty.MarkupIf(c.Open, vecty.Class("mdc-drawer--open"))),
@@ -84,7 +53,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 				vecty.Markup(vecty.Class("mdc-drawer__drawer")),
 				c.renderDrawer()))
 	case Persistent:
-		element = elem.Aside(
+		c.rootElement = elem.Aside(
 			vecty.Markup(markup,
 				vecty.Class("mdc-drawer--persistent"),
 				vecty.MarkupIf(c.Open, vecty.Class("mdc-drawer--open"))),
@@ -92,11 +61,11 @@ func (c *D) Render() vecty.ComponentOrHTML {
 				vecty.Markup(vecty.Class("mdc-drawer__drawer")),
 				c.renderDrawer()))
 	default: // Permanent
-		element = elem.Navigation(
+		c.rootElement = elem.Navigation(
 			vecty.Markup(markup, vecty.Class("mdc-drawer--permanent")),
 			c.renderDrawer())
 	}
-	return c.Base.Render(element)
+	return c.rootElement
 }
 
 func (c *D) renderDrawer() vecty.List {
@@ -125,6 +94,7 @@ func (c *D) renderDrawer() vecty.List {
 				vecty.If(ok, h),
 				vecty.If(!ok, c.Header),
 			))
+			c.Header = base.RenderStoredChild(h)
 		}
 	}
 	if c.Content != nil {
@@ -134,4 +104,41 @@ func (c *D) renderDrawer() vecty.List {
 		))
 	}
 	return elements
+}
+
+func (c *D) MDCRoot() *base.Base {
+	b := &base.Base{
+		ID:        c.ID,
+		Element:   c.rootElement,
+		HasRipple: c.Ripple,
+		Basic:     c.Basic,
+		RippleC:   c.ripple,
+	}
+	if c.Type != Permanent {
+		b.MDC = c.D
+	}
+	return b
+}
+
+func (c *D) Mount() {
+	c.MDCRoot().Mount()
+}
+
+func (c *D) Unmount() {
+	c.MDCRoot().Unmount()
+}
+
+func (c *D) init() {
+	switch {
+	case c.D == nil && c.Type == Temporary:
+		c.D = temporarydrawer.New()
+	case c.D == nil && c.Type == Persistent:
+		c.D = persistentdrawer.New()
+	}
+	switch t := c.D.(type) {
+	case *temporarydrawer.TD:
+		t.Open = c.Open
+	case *persistentdrawer.PD:
+		t.Open = c.Open
+	}
 }

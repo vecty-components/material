@@ -2,8 +2,8 @@ package radio
 
 import (
 	"agamigo.io/material/radio"
+	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
-	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -12,40 +12,27 @@ import (
 
 // R is a vecty-material radio component.
 type R struct {
-	*base.Base
-	*State
-}
-
-type State struct {
 	*radio.R
-	ChangeHandler func(this *R, e *vecty.Event)
-	Name          string
-	Checked       bool   `js:"checked"`
-	Disabled      bool   `js:"disabled"`
-	Value         string `js:"value"`
-}
-
-func New(p *base.Props, s *State) *R {
-	c := &R{}
-	if s == nil {
-		s = &State{}
-	}
-	if s.R == nil {
-		s.R = radio.New()
-	}
-	c.State = s
-	c.Base = base.New(p, c)
-	c.Checked = js.InternalObject(s).Get("Checked").Bool()
-	c.Disabled = js.InternalObject(s).Get("Disabled").Bool()
-	c.Value = js.InternalObject(s).Get("Value").String()
-	return c
+	vecty.Core
+	ID          string
+	Markup      []vecty.Applyer
+	rootElement *vecty.HTML
+	Ripple      bool
+	Basic       bool
+	ripple      *ripple.R
+	OnChange    func(this *R, e *vecty.Event)
+	Name        string
+	Checked     bool
+	Disabled    bool
+	Value       string
 }
 
 // Render implements the vecty.Component interface.
 func (c *R) Render() vecty.ComponentOrHTML {
-	return c.Base.Render(elem.Div(
+	c.init()
+	c.rootElement = elem.Div(
 		vecty.Markup(
-			vecty.Markup(c.Props.Markup...),
+			vecty.Markup(c.Markup...),
 			vecty.Class("mdc-radio"),
 			vecty.MarkupIf(c.Disabled,
 				vecty.Class("mdc-radio--disabled"),
@@ -53,12 +40,10 @@ func (c *R) Render() vecty.ComponentOrHTML {
 		),
 		elem.Input(
 			vecty.Markup(
-				vecty.MarkupIf(c.ChangeHandler != nil,
-					event.Change(c.wrapChangeHandler()),
-				),
+				event.Change(c.onChange),
 				vecty.Class("mdc-radio__native-control"),
-				vecty.MarkupIf(c.Props.ID != "",
-					prop.ID(c.Props.ID),
+				vecty.MarkupIf(c.ID != "",
+					prop.ID(c.ID),
 				),
 				prop.Type(prop.TypeRadio),
 				prop.Checked(c.Checked),
@@ -74,11 +59,46 @@ func (c *R) Render() vecty.ComponentOrHTML {
 			elem.Div(vecty.Markup(vecty.Class("mdc-radio__outer-circle"))),
 			elem.Div(vecty.Markup(vecty.Class("mdc-radio__inner-circle"))),
 		),
-	))
+	)
+	return c.rootElement
 }
 
-func (c *R) wrapChangeHandler() func(e *vecty.Event) {
-	return func(e *vecty.Event) {
-		c.ChangeHandler(c, e)
+func (c *R) MDCRoot() *base.Base {
+	return &base.Base{
+		MDC:       c,
+		ID:        c.ID,
+		Element:   c.rootElement,
+		HasRipple: c.Ripple,
+		Basic:     c.Basic,
+		RippleC:   c.ripple,
+	}
+}
+
+func (c *R) Mount() {
+	c.MDCRoot().Mount()
+}
+
+func (c *R) Unmount() {
+	c.MDCRoot().Unmount()
+}
+
+func (c *R) init() {
+	switch {
+	case c.R == nil:
+		c.R = radio.New()
+		fallthrough
+	case c.rootElement == nil:
+		c.R.Checked = c.Checked
+		c.R.Disabled = c.Disabled
+		c.R.Value = c.Value
+	}
+}
+
+func (c *R) onChange(e *vecty.Event) {
+	c.Checked = c.R.Checked
+	c.Disabled = c.R.Disabled
+	c.Value = c.R.Value
+	if c.OnChange != nil {
+		c.OnChange(c, e)
 	}
 }

@@ -3,9 +3,9 @@ package dialog // import "agamigo.io/vecty-material/dialog"
 
 import (
 	"agamigo.io/material/dialog"
+	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/button"
-	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -14,81 +14,69 @@ import (
 
 // D is a material dialog component.
 type D struct {
-	*base.Base
-	*State
-}
-
-type State struct {
 	*dialog.D
-	Header        string
-	Body          vecty.ComponentOrHTML
-	Role          string
-	Open          bool `js:"open"`
-	NoBackdrop    bool
-	Scrollable    bool
-	AcceptBtn     *button.B
-	CancelBtn     *button.B
-	AcceptHandler func(this *D, e *vecty.Event)
-	CancelHandler func(this *D, e *vecty.Event)
-}
-
-func New(p *base.Props, s *State) (c *D) {
-	open := js.InternalObject(s).Get("Open").Bool()
-	c = &D{}
-	if s == nil {
-		s = &State{}
-	}
-	c.State = s
-	if c.D == nil {
-		c.D = dialog.New()
-	}
-	c.Base = base.New(p, c)
-	c.Open = open
-	return c
+	vecty.Core
+	ID          string
+	Markup      []vecty.Applyer
+	rootElement *vecty.HTML
+	Ripple      bool
+	Basic       bool
+	ripple      *ripple.R
+	Header      string
+	Body        vecty.ComponentOrHTML
+	Role        string
+	Open        bool
+	NoBackdrop  bool
+	Scrollable  bool
+	AcceptBtn   *button.B
+	CancelBtn   *button.B
+	OnAccept    func(this *D, e *vecty.Event)
+	OnCancel    func(this *D, e *vecty.Event)
 }
 
 // Render implements the vecty.Component interface.
 func (c *D) Render() vecty.ComponentOrHTML {
+	c.init()
 	cancelButton := c.CancelBtn
 	if cancelButton == nil {
-		cancelButton = button.New(nil, nil)
+		cancelButton = &button.B{}
 	}
 	cancelButton.Label = vecty.Text("Cancel")
-	cancelButton.Props.Markup = append(cancelButton.Props.Markup,
+	cancelButton.Markup = append(cancelButton.Markup,
 		vecty.Class("mdc-dialog__footer__button"),
 		vecty.Class("mdc-dialog__footer__button--cancel"),
 	)
-	if c.CancelHandler != nil {
-		cancelButton.Props.Markup = append(cancelButton.Props.Markup,
+	if c.OnCancel != nil {
+		cancelButton.Markup = append(cancelButton.Markup,
 			event.Click(c.wrapCancelHandler()))
 	} else {
-		cancelButton.Props.Markup = append(cancelButton.Props.Markup,
+		cancelButton.Markup = append(cancelButton.Markup,
 			event.Click(func(e *vecty.Event) {
 			}).StopPropagation())
 	}
 
 	acceptButton := c.AcceptBtn
 	if acceptButton == nil {
-		acceptButton = button.New(nil, nil)
+		acceptButton = &button.B{}
 	}
 	acceptButton.Label = vecty.Text("Accept")
-	acceptButton.Props.Markup = append(acceptButton.Props.Markup,
+	acceptButton.Markup = append(acceptButton.Markup,
 		vecty.Class("mdc-dialog__footer__button"),
 		vecty.Class("mdc-dialog__footer__button--accept"),
 	)
-	if c.AcceptHandler != nil {
-		acceptButton.Props.Markup = append(acceptButton.Props.Markup,
+	if c.OnAccept != nil {
+		acceptButton.Markup = append(acceptButton.Markup,
 			event.Click(c.wrapAcceptHandler()))
 	} else {
-		acceptButton.Props.Markup = append(acceptButton.Props.Markup,
+		acceptButton.Markup = append(acceptButton.Markup,
 			event.Click(func(e *vecty.Event) {
 			}).StopPropagation())
 	}
 
-	return c.Base.Render(elem.Aside(
+	c.rootElement = elem.Aside(
 		vecty.Markup(
-			vecty.Markup(c.Props.Markup...),
-			vecty.MarkupIf(c.Props.ID != "", prop.ID(c.Props.ID)),
+			vecty.Markup(c.Markup...),
+			vecty.MarkupIf(c.ID != "", prop.ID(c.ID)),
 			vecty.Class("mdc-dialog"),
 			vecty.MarkupIf(c.Role == "", vecty.Attribute("role", "dialog")),
 			vecty.MarkupIf(c.Role != "", vecty.Attribute("role", c.Role)),
@@ -108,7 +96,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 				elem.Heading2(
 					vecty.Markup(
 						vecty.Class("mdc-dialog__header__title"),
-						vecty.MarkupIf(c.Props.ID != "",
+						vecty.MarkupIf(c.ID != "",
 							prop.ID(c.labelID())),
 					),
 					vecty.Text(c.Header),
@@ -138,14 +126,41 @@ func (c *D) Render() vecty.ComponentOrHTML {
 				),
 			),
 		),
-	))
+	)
+	return c.rootElement
+}
+
+func (c *D) MDCRoot() *base.Base {
+	return &base.Base{
+		MDC:       c,
+		ID:        c.ID,
+		Element:   c.rootElement,
+		HasRipple: c.Ripple,
+		Basic:     c.Basic,
+		RippleC:   c.ripple,
+	}
+}
+
+func (c *D) Mount() {
+	c.MDCRoot().Mount()
+}
+
+func (c *D) Unmount() {
+	c.MDCRoot().Unmount()
+}
+
+func (c *D) init() {
+	if c.D == nil {
+		c.D = dialog.New()
+	}
+	c.D.Open = c.Open
 }
 
 func (c *D) labelID() string {
-	if c.Props.ID == "" {
+	if c.ID == "" {
 		return ""
 	}
-	return c.Props.ID + "-label"
+	return c.ID + "-label"
 }
 
 func (c *D) ariaLabelledBy() vecty.Applyer {
@@ -156,10 +171,10 @@ func (c *D) ariaLabelledBy() vecty.Applyer {
 }
 
 func (c *D) descriptionID() string {
-	if c.Props.ID == "" {
+	if c.ID == "" {
 		return ""
 	}
-	return c.Props.ID + "-description"
+	return c.ID + "-description"
 }
 
 func (c *D) ariaDescribedBy() vecty.Applyer {
@@ -170,20 +185,20 @@ func (c *D) ariaDescribedBy() vecty.Applyer {
 }
 
 func (c *D) headerID() string {
-	if c.Props.ID == "" {
+	if c.ID == "" {
 		return ""
 	}
-	return c.Props.ID + "-header"
+	return c.ID + "-header"
 }
 
 func (c *D) wrapCancelHandler() func(e *vecty.Event) {
 	return func(e *vecty.Event) {
-		c.CancelHandler(c, e)
+		c.OnCancel(c, e)
 	}
 }
 
 func (c *D) wrapAcceptHandler() func(e *vecty.Event) {
 	return func(e *vecty.Event) {
-		c.AcceptHandler(c, e)
+		c.OnAccept(c, e)
 	}
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"path"
 
-	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/demos/common"
 	"agamigo.io/vecty-material/ul"
 	"github.com/gopherjs/gopherjs/js"
@@ -34,38 +33,30 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 		},
 		elem.Main(elem.Navigation(
 			vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust")),
-			ul.New(
-				&base.Props{
-					Markup: []vecty.Applyer{
-						vecty.Class("demo-catalog-list"),
-					},
+			&ul.L{
+				Markup: []vecty.Applyer{
+					vecty.Class("demo-catalog-list"),
 				},
-				&ul.State{Items: []vecty.ComponentOrHTML{
-					ul.NewItem(nil,
-						&ul.ItemState{
-							Primary:   vecty.Text("Button"),
-							Secondary: vecty.Text("Raised and flat buttons"),
-							Href:      makeHref("button"),
-							Graphic:   renderGraphic("ic_button_24px.svg"),
-						},
-					),
-					// ul.NewItem(nil,
-					// 	&ul.ItemState{
-					// 		Primary:   vecty.Text("Card"),
-					// 		Secondary: vecty.Text("Various card layout styles"),
-					// 		Href:      makeHref("card"),
-					// 		Graphic:   renderGraphic(""),
-					// 	},
-					// ),
-					ul.NewItem(nil,
-						&ul.ItemState{
-							Primary:   vecty.Text("Checkbox"),
-							Secondary: vecty.Text("Multi-selection controls"),
-							Href:      makeHref("checkbox"),
-							Graphic: renderGraphic(
-								"ic_selection_control_24px.svg"),
-						},
-					),
+				Items: []vecty.ComponentOrHTML{
+					&ul.Item{
+						Primary:   vecty.Text("Button"),
+						Secondary: vecty.Text("Raised and flat buttons"),
+						Href:      makeHref("button"),
+						Graphic:   renderGraphic("ic_button_24px.svg"),
+					},
+					&ul.Item{
+						Primary:   vecty.Text("Card"),
+						Secondary: vecty.Text("Various card layout styles"),
+						Href:      makeHref("card"),
+						Graphic:   renderGraphic("ic_card_24px.svg"),
+					},
+					&ul.Item{
+						Primary:   vecty.Text("Checkbox"),
+						Secondary: vecty.Text("Multi-selection controls"),
+						Href:      makeHref("checkbox"),
+						Graphic: renderGraphic(
+							"ic_selection_control_24px.svg"),
+					},
 					// ul.NewItem(nil,
 					// 	&ul.ItemState{
 					// 		Primary:   vecty.Text("Chips"),
@@ -74,23 +65,19 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					// 		Graphic:   renderGraphic("ic_chips_24dp.svg"),
 					// 	},
 					// ),
-					ul.NewItem(nil,
-						&ul.ItemState{
-							Primary:   vecty.Text("Dialog"),
-							Secondary: vecty.Text("Secondary text"),
-							Href:      makeHref("dialog"),
-							Graphic:   renderGraphic("ic_dialog_24px.svg"),
-						},
-					),
-					ul.NewItem(nil,
-						&ul.ItemState{
-							Primary:   vecty.Text("Drawer"),
-							Secondary: vecty.Text("Various drawer styles"),
-							Href:      makeHref("drawer"),
-							Graphic: renderGraphic(
-								"ic_side_navigation_24px.svg"),
-						},
-					),
+					&ul.Item{
+						Primary:   vecty.Text("Dialog"),
+						Secondary: vecty.Text("Secondary text"),
+						Href:      makeHref("dialog"),
+						Graphic:   renderGraphic("ic_dialog_24px.svg"),
+					},
+					&ul.Item{
+						Primary:   vecty.Text("Drawer"),
+						Secondary: vecty.Text("Various drawer styles"),
+						Href:      makeHref("drawer"),
+						Graphic: renderGraphic(
+							"ic_side_navigation_24px.svg"),
+					},
 					// ul.NewItem(nil,
 					// 	&ul.ItemState{
 					// 		Primary:   vecty.Text("Elevation"),
@@ -115,14 +102,12 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					// 		Graphic:   renderGraphic("ic_card_24px.svg"),
 					// 	},
 					// ),
-					ul.NewItem(nil,
-						&ul.ItemState{
-							Primary:   vecty.Text("Icon toggle"),
-							Secondary: vecty.Text("Toggling icon states"),
-							Href:      makeHref("icontoggle"),
-							Graphic:   renderGraphic("ic_component_24px.svg"),
-						},
-					),
+					&ul.Item{
+						Primary:   vecty.Text("Icon toggle"),
+						Secondary: vecty.Text("Toggling icon states"),
+						Href:      makeHref("icontoggle"),
+						Graphic:   renderGraphic("ic_component_24px.svg"),
+					},
 					// ul.NewItem(nil,
 					// 	&ul.ItemState{
 					// 		Primary:   vecty.Text("Layout grid"),
@@ -139,30 +124,24 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					// 		Graphic:   renderGraphic("ic_progress_activity.svg"),
 					// 	},
 					// ),
-					ul.NewItem(nil,
-						&ul.ItemState{
-							Primary:   vecty.Text("List"),
-							Secondary: vecty.Text("Item layouts in lists"),
-							Href:      makeHref("list"),
-							Graphic:   renderGraphic("ic_list_24px.svg"),
-						},
-					),
-					ul.NewItem(nil,
-						&ul.ItemState{
-							Primary:   vecty.Text("Menu"),
-							Secondary: vecty.Text("Pop over menus"),
-							Href:      makeHref("menu"),
-							Graphic:   renderGraphic("ic_menu_24px.svg"),
-						},
-					),
-					ul.NewItem(nil,
-						&ul.ItemState{
-							Primary:   vecty.Text("Radio buttons"),
-							Secondary: vecty.Text("Single selection controls"),
-							Href:      makeHref("radio"),
-							Graphic:   renderGraphic("ic_radio_button_24px.svg"),
-						},
-					),
+					&ul.Item{
+						Primary:   vecty.Text("List"),
+						Secondary: vecty.Text("Item layouts in lists"),
+						Href:      makeHref("list"),
+						Graphic:   renderGraphic("ic_list_24px.svg"),
+					},
+					&ul.Item{
+						Primary:   vecty.Text("Menu"),
+						Secondary: vecty.Text("Pop over menus"),
+						Href:      makeHref("menu"),
+						Graphic:   renderGraphic("ic_menu_24px.svg"),
+					},
+					&ul.Item{
+						Primary:   vecty.Text("Radio buttons"),
+						Secondary: vecty.Text("Single selection controls"),
+						Href:      makeHref("radio"),
+						Graphic:   renderGraphic("ic_radio_button_24px.svg"),
+					},
 					// ul.NewItem(nil,
 					// 	&ul.ItemState{
 					// 		Primary:   vecty.Text("Ripple"),
@@ -244,7 +223,7 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					// 	},
 					// ),
 				}},
-			))),
+		)),
 	)
 }
 

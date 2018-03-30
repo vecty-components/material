@@ -15,12 +15,18 @@ type icontoggleDemoView struct {
 	favStatus bool `vecty:"prop"`
 }
 
+type favorite struct {
+	vecty.Core
+	status string
+}
+
 func main() {
 	vecty.RenderBody(&icontoggleDemoView{})
 }
 
 // Render implements the vecty.Component interface.
 func (c *icontoggleDemoView) Render() vecty.ComponentOrHTML {
+	favStatus := &favorite{status: "no"}
 	return elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
@@ -35,16 +41,16 @@ func (c *icontoggleDemoView) Render() vecty.ComponentOrHTML {
 				vecty.Markup(vecty.Class("hero")),
 				elem.Div(
 					vecty.Markup(vecty.Class("demo-wrapper")),
-					icontoggle.New(nil, &icontoggle.State{
+					&icontoggle.IT{
 						OffLabel: "Add to Favorites",
-						OffIcon: icon.New(nil, &icon.State{
+						OffIcon: &icon.I{
 							Name: "favorite_border",
-						}),
+						},
 						OnLabel: "Remove From Favorites",
-						OnIcon: icon.New(nil, &icon.State{
+						OnIcon: &icon.I{
 							Name: "favorite",
-						}),
-					}),
+						},
+					},
 				),
 			),
 			elem.Section(
@@ -54,46 +60,44 @@ func (c *icontoggleDemoView) Render() vecty.ComponentOrHTML {
 					elem.Heading2(vecty.Text("Using Material Icons")),
 					elem.Div(
 						vecty.Markup(vecty.Class("demo-wrapper")),
-						icontoggle.New(nil, &icontoggle.State{
+						&icontoggle.IT{
 							OffLabel: "Add to Favorites",
-							OffIcon: icon.New(nil, &icon.State{
+							OffIcon: &icon.I{
 								Name: "favorite_border",
-							}),
+							},
 							OnLabel: "Remove From Favorites",
-							OnIcon: icon.New(nil, &icon.State{
+							OnIcon: &icon.I{
 								Name: "favorite",
-							}),
+							},
 							ChangeHandler: func(it *icontoggle.IT,
 								e *vecty.Event) {
-								c.favStatus = it.On
-								vecty.Rerender(c)
+								if it.On {
+									favStatus.status = "yes"
+								} else {
+									favStatus.status = "no"
+								}
+								vecty.Rerender(favStatus)
 							},
-						}),
+						},
 					),
-					elem.Paragraph(
-						vecty.Text("Favorited? "),
-						elem.Span(
-							vecty.If(c.favStatus, vecty.Text("yes")),
-							vecty.If(!c.favStatus, vecty.Text("no")),
-						),
-					),
+					favStatus,
 				),
 				elem.Div(
 					vecty.Markup(vecty.Class("toggle-example")),
 					elem.Heading2(vecty.Text("Using Font Awesome")),
 					elem.Div(
 						vecty.Markup(vecty.Class("demo-wrapper")),
-						icontoggle.New(nil, &icontoggle.State{
+						&icontoggle.IT{
 							On:       true,
 							OffLabel: "Star this item",
-							OffIcon: icon.New(nil, &icon.State{
+							OffIcon: &icon.I{
 								ClassOverride: []string{"fa", "fa-star-o"},
-							}),
+							},
 							OnLabel: "Unstar this item",
-							OnIcon: icon.New(nil, &icon.State{
+							OnIcon: &icon.I{
 								ClassOverride: []string{"fa", "fa-star"},
-							}),
-						}),
+							},
+						},
 					),
 				),
 				elem.Div(
@@ -101,17 +105,17 @@ func (c *icontoggleDemoView) Render() vecty.ComponentOrHTML {
 					elem.Heading2(vecty.Text("Disabled Icons")),
 					elem.Div(
 						vecty.Markup(vecty.Class("demo-wrapper")),
-						icontoggle.New(nil, &icontoggle.State{
+						&icontoggle.IT{
 							Disabled: true,
 							OffLabel: "Add to Favorites",
-							OffIcon: icon.New(nil, &icon.State{
+							OffIcon: &icon.I{
 								Name: "favorite_border",
-							}),
+							},
 							OnLabel: "Remove From Favorites",
-							OnIcon: icon.New(nil, &icon.State{
+							OnIcon: &icon.I{
 								Name: "favorite",
-							}),
-						}),
+							},
+						},
 					),
 				),
 				elem.Div(
@@ -124,16 +128,16 @@ func (c *icontoggleDemoView) Render() vecty.ComponentOrHTML {
 								vecty.Class("demo-color-combo"),
 							),
 							elem.Div(
-								icontoggle.New(nil, &icontoggle.State{
+								&icontoggle.IT{
 									OffLabel: "Add to Favorites",
-									OffIcon: icon.New(nil, &icon.State{
+									OffIcon: &icon.I{
 										Name: "favorite_border",
-									}),
+									},
 									OnLabel: "Remove From Favorites",
-									OnIcon: icon.New(nil, &icon.State{
+									OnIcon: &icon.I{
 										Name: "favorite",
-									}),
-								}),
+									},
+								},
 							),
 							elem.Div(vecty.Markup(
 								vecty.Class(
@@ -150,16 +154,16 @@ func (c *icontoggleDemoView) Render() vecty.ComponentOrHTML {
 								vecty.Markup(
 									vecty.Class("mdc-theme--primary"),
 								),
-								icontoggle.New(nil, &icontoggle.State{
+								&icontoggle.IT{
 									OffLabel: "Add to Favorites",
-									OffIcon: icon.New(nil, &icon.State{
+									OffIcon: &icon.I{
 										Name: "favorite_border",
-									}),
+									},
 									OnLabel: "Remove From Favorites",
-									OnIcon: icon.New(nil, &icon.State{
+									OnIcon: &icon.I{
 										Name: "favorite",
-									}),
-								}),
+									},
+								},
 							),
 							elem.Div(
 								vecty.Text("Dark icon on background"),
@@ -174,16 +178,16 @@ func (c *icontoggleDemoView) Render() vecty.ComponentOrHTML {
 								vecty.Markup(
 									vecty.Class("mdc-theme--primary"),
 								),
-								icontoggle.New(nil, &icontoggle.State{
+								&icontoggle.IT{
 									OffLabel: "Add to Favorites",
-									OffIcon: icon.New(nil, &icon.State{
+									OffIcon: &icon.I{
 										Name: "favorite_border",
-									}),
+									},
 									OnLabel: "Remove From Favorites",
-									OnIcon: icon.New(nil, &icon.State{
+									OnIcon: &icon.I{
 										Name: "favorite",
-									}),
-								}),
+									},
+								},
 							),
 							elem.Div(
 								vecty.Text("Custom color"),
@@ -192,6 +196,15 @@ func (c *icontoggleDemoView) Render() vecty.ComponentOrHTML {
 					),
 				),
 			),
+		),
+	)
+}
+
+func (c *favorite) Render() vecty.ComponentOrHTML {
+	return elem.Paragraph(
+		vecty.Text("Favorited? "),
+		elem.Span(
+			vecty.Text(c.status),
 		),
 	)
 }

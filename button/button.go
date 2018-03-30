@@ -2,6 +2,7 @@
 package button // import "agamigo.io/vecty-material/button"
 
 import (
+	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -11,30 +12,21 @@ import (
 
 // B is a vecty-material button component.
 type B struct {
-	*base.Base
-	*State
-}
-
-type State struct {
-	Label        vecty.ComponentOrHTML
-	Icon         vecty.ComponentOrHTML
-	Disabled     bool
-	Raised       bool
-	Unelevated   bool
-	Stroked      bool
-	Dense        bool
-	Href         string
-	ClickHandler func(this *B, e *vecty.Event)
-}
-
-func New(p *base.Props, s *State) *B {
-	c := &B{}
-	if s == nil {
-		s = &State{}
-	}
-	c.State = s
-	c.Base = base.New(p, nil)
-	return c
+	vecty.Core
+	ID          string
+	Markup      []vecty.Applyer
+	rootElement *vecty.HTML
+	Ripple      bool
+	ripple      *ripple.R
+	Label       vecty.ComponentOrHTML
+	Icon        vecty.ComponentOrHTML
+	Disabled    bool
+	Raised      bool
+	Unelevated  bool
+	Stroked     bool
+	Dense       bool
+	Href        string
+	OnClick     func(this *B, e *vecty.Event)
 }
 
 // Render implements the vecty.Component interface.
@@ -52,15 +44,15 @@ func (c *B) Render() vecty.ComponentOrHTML {
 		vecty.Class("mdc-button__icon").Apply(ico)
 	}
 
-	return c.Base.Render(elem.Button(
+	c.rootElement = elem.Button(
 		vecty.Markup(
-			vecty.Markup(c.Props.Markup...),
-			vecty.MarkupIf(c.Props.ID != "",
-				prop.ID(c.Props.ID)),
+			vecty.Markup(c.Markup...),
+			vecty.MarkupIf(c.ID != "",
+				prop.ID(c.ID)),
 			vecty.Class("mdc-button"),
 			prop.Type(prop.TypeButton),
-			vecty.MarkupIf(c.ClickHandler != nil,
-				event.Click(c.wrapClickHandler()),
+			vecty.MarkupIf(c.OnClick != nil,
+				event.Click(c.wrapOnClick()),
 			),
 			vecty.Property("disabled", c.Disabled),
 			vecty.MarkupIf(c.Raised,
@@ -78,11 +70,30 @@ func (c *B) Render() vecty.ComponentOrHTML {
 		),
 		vecty.If(ico != nil, ico),
 		vecty.If(c.Label != nil, base.RenderStoredChild(c.Label)),
-	))
+	)
+	return c.rootElement
 }
 
-func (c *B) wrapClickHandler() func(e *vecty.Event) {
+func (c *B) MDCRoot() *base.Base {
+	return &base.Base{
+		MDC:       nil,
+		ID:        c.ID,
+		Element:   c.rootElement,
+		HasRipple: c.Ripple,
+		RippleC:   c.ripple,
+	}
+}
+
+func (c *B) Mount() {
+	c.MDCRoot().Mount()
+}
+
+func (c *B) Unmount() {
+	c.MDCRoot().Unmount()
+}
+
+func (c *B) wrapOnClick() func(e *vecty.Event) {
 	return func(e *vecty.Event) {
-		c.ClickHandler(c, e)
+		c.OnClick(c, e)
 	}
 }

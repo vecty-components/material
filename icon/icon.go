@@ -1,6 +1,7 @@
 package icon
 
 import (
+	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
@@ -11,26 +12,17 @@ type Size string
 
 // I is a vecty-material icon component.
 type I struct {
-	*base.Base
-	*State
-}
-
-type State struct {
+	vecty.Core
+	ID            string
+	Markup        []vecty.Applyer
+	rootElement   *vecty.HTML
+	HasRipple     bool
+	rippleC       *ripple.R
 	Name          string
 	SizePX        int
 	Inactive      bool
 	Dark          bool
 	ClassOverride []string
-}
-
-func New(p *base.Props, s *State) *I {
-	c := &I{}
-	if s == nil {
-		s = &State{}
-	}
-	c.State = s
-	c.Base = base.New(p, nil)
-	return c
 }
 
 // Render implements the vecty.Component interface.
@@ -46,9 +38,9 @@ func (c *I) Render() vecty.ComponentOrHTML {
 	if c.Name != "" && string([]byte(c.Name)[0]) == "&" {
 		isIconCode = true
 	}
-	return c.Base.Render(elem.Italic(
+	c.rootElement = elem.Italic(
 		vecty.Markup(
-			vecty.Markup(c.Props.Markup...),
+			vecty.Markup(c.Markup...),
 			vecty.MarkupIf(c.ClassOverride == nil,
 				vecty.Class("material-icons"),
 			),
@@ -69,5 +61,23 @@ func (c *I) Render() vecty.ComponentOrHTML {
 			),
 		),
 		vecty.If(!isIconCode, vecty.Text(c.Name)),
-	))
+	)
+	return c.rootElement
+}
+
+func (c *I) MDCRoot() *base.Base {
+	return &base.Base{
+		ID:        c.ID,
+		Element:   c.rootElement,
+		HasRipple: c.HasRipple,
+		RippleC:   c.rippleC,
+	}
+}
+
+func (c *I) Mount() {
+	c.MDCRoot().Mount()
+}
+
+func (c *I) Unmount() {
+	c.MDCRoot().Unmount()
 }

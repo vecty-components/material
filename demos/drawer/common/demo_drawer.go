@@ -10,7 +10,8 @@ import (
 )
 
 func NewDemoDrawer(dType drawer.Type) *drawer.D {
-	var toolbarSpacer, header *vecty.HTML
+	var toolbarSpacer *vecty.HTML
+	var header vecty.ComponentOrHTML
 	switch dType {
 	case drawer.Temporary:
 		header = elem.Div(
@@ -18,59 +19,52 @@ func NewDemoDrawer(dType drawer.Type) *drawer.D {
 				vecty.Class("mdc-theme--text-primary-on-primary"),
 				vecty.Class("mdc-theme--primary-bg"),
 			),
-			vecty.Text("Header here"),
+			base.RenderStoredChild(vecty.Text("Header here")),
 		)
 	case drawer.Persistent:
 		toolbarSpacer = elem.Div()
 	}
-	return drawer.New(
-		&base.Props{
-			ID: "demo-drawer",
-			Markup: []vecty.Applyer{
-				vecty.Class("demo-drawer"),
-			},
+	return &drawer.D{
+		ID: "demo-drawer",
+		Markup: []vecty.Applyer{
+			vecty.Class("demo-drawer"),
 		},
-		&drawer.State{
-			Type:          dType,
-			Header:        header,
-			ToolbarSpacer: toolbarSpacer,
-			Content: ul.NewGroup(nil,
-				&ul.GroupState{Lists: []vecty.ComponentOrHTML{
-					ul.New(nil,
-						&ul.State{Items: []vecty.ComponentOrHTML{
-							iconListItem("inbox", "Inbox"),
-							iconListItem("star", "Star"),
-							iconListItem("send", "Sent Mail"),
-							iconListItem("drafts", "Drafts")},
-							ClickHandler: func(l *ul.L, i *ul.Item,
-								e *vecty.Event) {
-								for _, v := range l.Items {
-									if ulItem, ok := v.(*ul.Item); ok {
-										switch {
-										case i == ulItem:
-											i.Activated = true
-											vecty.Rerender(i)
-										default:
-											ulItem.Activated = false
-											vecty.Rerender(ulItem)
-										}
-									}
+		Type:          dType,
+		Header:        header,
+		ToolbarSpacer: base.RenderStoredChild(toolbarSpacer),
+		Content: &ul.Group{
+			Lists: []vecty.ComponentOrHTML{
+				&ul.L{
+					Items: []vecty.ComponentOrHTML{
+						iconListItem("inbox", "Inbox"),
+						iconListItem("star", "Star"),
+						iconListItem("send", "Sent Mail"),
+						iconListItem("drafts", "Drafts")},
+					OnClick: func(l *ul.L, i *ul.Item,
+						e *vecty.Event) {
+						for _, v := range l.Items {
+							if ulItem, ok := v.(*ul.Item); ok {
+								switch {
+								case i == ulItem:
+									i.Activated = true
+									vecty.Rerender(i)
+								default:
+									ulItem.Activated = false
+									vecty.Rerender(ulItem)
 								}
-							},
-						},
-					),
-					ul.ListDivider(),
-					ul.New(nil,
-						&ul.State{Items: []vecty.ComponentOrHTML{
-							iconListItem("email", "All Mail"),
-							iconListItem("delete", "Trash"),
-							iconListItem("report", "Spam"),
-						}},
-					),
-				}},
-			),
-		},
-	)
+							}
+						}
+					},
+				},
+				ul.ListDivider(),
+				&ul.L{
+					Items: []vecty.ComponentOrHTML{
+						iconListItem("email", "All Mail"),
+						iconListItem("delete", "Trash"),
+						iconListItem("report", "Spam"),
+					}},
+			}},
+	}
 }
 
 func iconListItem(ico, text string) *ul.Item {
@@ -78,23 +72,19 @@ func iconListItem(ico, text string) *ul.Item {
 	if ico == "inbox" {
 		selected = true
 	}
-	return ul.NewItem(
-		&base.Props{
-			Markup: []vecty.Applyer{
-				vecty.Class("demo-drawer-list-item"),
+	return &ul.Item{
+		Markup: []vecty.Applyer{
+			vecty.Class("demo-drawer-list-item"),
+		},
+		Selected: selected,
+		Graphic: vecty.List{
+			&icon.I{
+				Markup: []vecty.Applyer{
+					vecty.Attribute("aria-hidden", "true"),
+				},
+				Name: ico,
 			},
 		},
-		&ul.ItemState{
-			Selected: selected,
-			Graphic: vecty.List{
-				icon.New(
-					&base.Props{Markup: []vecty.Applyer{
-						vecty.Attribute("aria-hidden", "true"),
-					}},
-					&icon.State{Name: ico},
-				),
-			},
-			Primary: vecty.Text(text),
-		},
-	)
+		Primary: vecty.Text(text),
+	}
 }

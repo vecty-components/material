@@ -1,8 +1,9 @@
 package main
 
 import (
+	"strconv"
+
 	mmenu "agamigo.io/material/menu"
-	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/button"
 	"agamigo.io/vecty-material/checkbox"
 	"agamigo.io/vecty-material/demos/common"
@@ -23,87 +24,71 @@ type MenuDemoView struct {
 	RememberSelected                               bool
 	SelectedIndex                                  int
 	menuItems, menuItemsLarge, menuItemsExtraLarge []vecty.ComponentOrHTML
+	demoM                                          *menu.M
+}
+
+type lastSelectedItem struct {
+	vecty.Core
+	name  string
+	index int
 }
 
 func main() {
 	mdv := &MenuDemoView{}
 	mdv.menuItems = []vecty.ComponentOrHTML{
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Back")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Forward")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Reload")}),
+		&ul.Item{Primary: vecty.Text("Back")},
+		&ul.Item{Primary: vecty.Text("Forward")},
+		&ul.Item{Primary: vecty.Text("Reload")},
 		ul.ItemDivider(),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Save as...")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Help")}),
+		&ul.Item{Primary: vecty.Text("Save as...")},
+		&ul.Item{Primary: vecty.Text("Help")},
 	}
 	mdv.menuItemsLarge = append(mdv.menuItems,
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Settings")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Feedback")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Options...")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Item 1")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Item 2")}),
+		&ul.Item{Primary: vecty.Text("Settings")},
+		&ul.Item{Primary: vecty.Text("Feedback")},
+		&ul.Item{Primary: vecty.Text("Options...")},
+		&ul.Item{Primary: vecty.Text("Item 1")},
+		&ul.Item{Primary: vecty.Text("Item 2")},
 	)
 	mdv.menuItemsExtraLarge = append(mdv.menuItemsLarge,
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Item 3")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Item 4")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Item 5")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Item 6")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Item 7")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Item 8")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Item 9")}),
+		&ul.Item{Primary: vecty.Text("Item 3")},
+		&ul.Item{Primary: vecty.Text("Item 4")},
+		&ul.Item{Primary: vecty.Text("Item 5")},
+		&ul.Item{Primary: vecty.Text("Item 6")},
+		&ul.Item{Primary: vecty.Text("Item 7")},
+		&ul.Item{Primary: vecty.Text("Item 8")},
+		&ul.Item{Primary: vecty.Text("Item 9")},
 	)
 	vecty.RenderBody(mdv)
 }
 
 // Render implements the vecty.Component interface.
 func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
-	heroM := menu.New(nil, &menu.State{
-		Open: true,
-		List: ul.New(nil, &ul.State{Items: []vecty.ComponentOrHTML{
-			ul.NewItem(nil, &ul.ItemState{
-				Primary: vecty.Text("Back")}),
-			ul.NewItem(nil, &ul.ItemState{
-				Primary: vecty.Text("Forward")}),
-			ul.NewItem(nil, &ul.ItemState{
-				Primary: vecty.Text("Reload")}),
+	heroM := &menu.M{
+		Open:  true,
+		Basic: true,
+		List: &ul.L{Items: []vecty.ComponentOrHTML{
+			&ul.Item{Primary: vecty.Text("Back")},
+			&ul.Item{Primary: vecty.Text("Forward")},
+			&ul.Item{Primary: vecty.Text("Reload")},
 			ul.ItemDivider(),
-			ul.NewItem(nil, &ul.ItemState{
-				Primary: vecty.Text("Help & Feedback")}),
-			ul.NewItem(nil, &ul.ItemState{
-				Primary: vecty.Text("Settings")}),
-		}}),
-	})
+			&ul.Item{Primary: vecty.Text("Help & Feedback")},
+			&ul.Item{Primary: vecty.Text("Settings")},
+		}},
+	}
 
-	demoM := menu.New(
-		&base.Props{
-			ID: "demo-menu",
-			Markup: []vecty.Applyer{
-				vecty.Style("top", "0"),
-				vecty.Style("left", "0"),
-			},
+	lsiStatus := &lastSelectedItem{}
+
+	demoM := &menu.M{
+		ID: "demo-menu",
+		Markup: []vecty.Applyer{
+			vecty.Style("top", "0"),
+			vecty.Style("left", "0"),
 		},
-		&menu.State{
-			List: ul.New(nil, nil),
-		},
-	)
+		List: &ul.L{},
+	}
 	demoM.List.(*ul.L).Items = c.menuItems
-	demoM.SelectHandler = func(index int, item vecty.ComponentOrHTML,
+	demoM.OnSelect = func(index int, item vecty.ComponentOrHTML,
 		e *vecty.Event) {
 		c.SelectedIndex = index
 		for _, lItem := range demoM.List.(*ul.L).Items {
@@ -114,36 +99,40 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 		if ulItem, ok := item.(*ul.Item); ok && c.RememberSelected {
 			ulItem.Selected = true
 		}
-		vecty.Rerender(c)
+		sItem := c.menuItemsExtraLarge[index].(*ul.Item)
+		lsiStatus.name = js.InternalObject(sItem.Primary).Get("text").String()
+		lsiStatus.index = index
+		vecty.Rerender(lsiStatus)
+		vecty.Rerender(demoM)
 	}
 	menuBtnClasses := vecty.ClassMap{"demo-button--normal": true}
-	menuBtn := button.New(
-		&base.Props{
-			ID: "menu-button",
-			Markup: []vecty.Applyer{
-				vecty.Class("demo-button"),
-				menuBtnClasses,
-			}},
-		&button.State{
-			Raised: true,
-			Label: vecty.List{
-				vecty.Text("Show"),
-				elem.Span(vecty.Markup(
-					vecty.Class("demo-button__normal-text")),
-					vecty.Text(" Menu"),
-				),
-				elem.Span(vecty.Markup(
-					vecty.Class("demo-button__long-text")),
-					vecty.Text(" From Here Now!"),
-				)},
-			ClickHandler: func(thisB *button.B, e *vecty.Event) {
-				demoM.Open = !demoM.Open
-			},
-		})
+	menuBtn := &button.B{
+		ID: "menu-button",
+		Markup: []vecty.Applyer{
+			vecty.Class("demo-button"),
+			menuBtnClasses,
+		},
+		Raised: true,
+		Label: vecty.List{
+			vecty.Text("Show"),
+			elem.Span(vecty.Markup(
+				vecty.Class("demo-button__normal-text")),
+				vecty.Text(" Menu"),
+			),
+			elem.Span(vecty.Markup(
+				vecty.Class("demo-button__long-text")),
+				vecty.Text(" From Here Now!"),
+			)},
+		OnClick: func(thisB *button.B, e *vecty.Event) {
+			demoM.Open = !demoM.Open
+			vecty.Rerender(demoM)
+		},
+	}
 	demoM.AnchorElement = menuBtn
 	btnPositionFunc := func(thisR *radio.R, e *vecty.Event) {
 		if thisR.Checked {
-			s := demoM.Element.Node().Get("parentNode").Get("style")
+			s := demoM.MDCRoot().MDC.Component().RootElement.Get(
+				"parentNode").Get("style")
 			s.Call("removeProperty", "top")
 			s.Call("removeProperty", "right")
 			s.Call("removeProperty", "bottom")
@@ -201,6 +190,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 			m.Right = val
 		}
 		demoM.SetAnchorMargins(m)
+		vecty.Rerender(c)
 	}
 
 	rtlFunc := func(thisCB *checkbox.CB, e *vecty.Event) {
@@ -211,6 +201,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 			return
 		}
 		dw.Call("removeAttribute", "dir")
+		vecty.Rerender(demoM)
 	}
 
 	rememberCBFunc := func(thisCB *checkbox.CB, e *vecty.Event) {
@@ -252,9 +243,6 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 		}
 	}
 
-	sItem := c.menuItemsExtraLarge[c.SelectedIndex].(*ul.Item)
-	sItemText := js.InternalObject(sItem.Primary).Get("text").String()
-
 	return elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
@@ -267,7 +255,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
 			elem.Section(
 				vecty.Markup(vecty.Class("hero")),
-				heroM.Render(),
+				heroM,
 			),
 			elem.Div(vecty.Markup(vecty.Class("demo-content")),
 				elem.Div(vecty.Markup(prop.ID("demo-wrapper")),
@@ -281,71 +269,65 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 							),
 							vecty.Text("Button Position"),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label: "Top left",
-									Input: radio.New(nil,
-										&radio.State{
-											Name:          "position",
-											Value:         "top left",
-											Checked:       true,
-											ChangeHandler: btnPositionFunc,
-										}),
-								}),
+									Input: &radio.R{
+										Name:     "position",
+										Value:    "top left",
+										Checked:  true,
+										OnChange: btnPositionFunc,
+									},
+								},
 							),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label: "Top right",
-									Input: radio.New(nil,
-										&radio.State{
-											Name:          "position",
-											Value:         "top right",
-											ChangeHandler: btnPositionFunc,
-										}),
-								}),
+									Input: &radio.R{
+										Name:     "position",
+										Value:    "top right",
+										OnChange: btnPositionFunc,
+									},
+								},
 							),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label: "Middle left",
-									Input: radio.New(nil,
-										&radio.State{
-											Name:          "position",
-											Value:         "middle left",
-											ChangeHandler: btnPositionFunc,
-										}),
-								}),
+									Input: &radio.R{
+										Name:     "position",
+										Value:    "middle left",
+										OnChange: btnPositionFunc,
+									},
+								},
 							),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label: "Middle right",
-									Input: radio.New(nil,
-										&radio.State{
-											Name:          "position",
-											Value:         "middle right",
-											ChangeHandler: btnPositionFunc,
-										}),
-								}),
+									Input: &radio.R{
+										Name:     "position",
+										Value:    "middle right",
+										OnChange: btnPositionFunc,
+									},
+								},
 							),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label: "Bottom left",
-									Input: radio.New(nil,
-										&radio.State{
-											Name:          "position",
-											Value:         "bottom left",
-											ChangeHandler: btnPositionFunc,
-										}),
-								}),
+									Input: &radio.R{
+										Name:     "position",
+										Value:    "bottom left",
+										OnChange: btnPositionFunc,
+									},
+								},
 							),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label: "Bottom right",
-									Input: radio.New(nil,
-										&radio.State{
-											Name:          "position",
-											Value:         "bottom right",
-											ChangeHandler: btnPositionFunc,
-										}),
-								}),
+									Input: &radio.R{
+										Name:     "position",
+										Value:    "bottom right",
+										OnChange: btnPositionFunc,
+									},
+								},
 							),
 						),
 						elem.Div(
@@ -354,45 +336,45 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 							),
 							vecty.Text("Default Menu Position"),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label: "Top start",
-									Input: radio.New(nil, &radio.State{
-										Name:          "menu-position",
-										Value:         "top start",
-										Checked:       true,
-										ChangeHandler: menuPositionFunc,
-									}),
-								}),
+									Input: &radio.R{
+										Name:     "menu-position",
+										Value:    "top start",
+										Checked:  true,
+										OnChange: menuPositionFunc,
+									},
+								},
 							),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label: "Top end",
-									Input: radio.New(nil, &radio.State{
-										Name:          "menu-position",
-										Value:         "top end",
-										ChangeHandler: menuPositionFunc,
-									}),
-								}),
+									Input: &radio.R{
+										Name:     "menu-position",
+										Value:    "top end",
+										OnChange: menuPositionFunc,
+									},
+								},
 							),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label: "Bottom start",
-									Input: radio.New(nil, &radio.State{
-										Name:          "menu-position",
-										Value:         "bottom start",
-										ChangeHandler: menuPositionFunc,
-									}),
-								}),
+									Input: &radio.R{
+										Name:     "menu-position",
+										Value:    "bottom start",
+										OnChange: menuPositionFunc,
+									},
+								},
 							),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label: "Bottom end",
-									Input: radio.New(nil, &radio.State{
-										Name:          "menu-position",
-										Value:         "bottom end",
-										ChangeHandler: menuPositionFunc,
-									}),
-								}),
+									Input: &radio.R{
+										Name:     "menu-position",
+										Value:    "bottom end",
+										OnChange: menuPositionFunc,
+									},
+								},
 							),
 						),
 						elem.Paragraph(elem.Div(vecty.Markup(
@@ -400,7 +382,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 							vecty.Class("margin-inputs")),
 							vecty.Text("Anchor Margins:"),
 							elem.Div(
-								formfield.New(nil, &formfield.State{
+								&formfield.FF{
 									Label:    "T: ",
 									AlignEnd: true,
 									Input: elem.Input(vecty.Markup(
@@ -411,8 +393,8 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 										vecty.Property("max-length", 3),
 										event.Change(menuMarginFunc),
 									)),
-								}),
-								formfield.New(nil, &formfield.State{
+								},
+								&formfield.FF{
 									Label:    "B: ",
 									AlignEnd: true,
 									Input: elem.Input(vecty.Markup(
@@ -422,8 +404,8 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 										vecty.Property("size", 3),
 										event.Change(menuMarginFunc),
 									)),
-								}),
-								formfield.New(nil, &formfield.State{
+								},
+								&formfield.FF{
 									Label:    "L: ",
 									AlignEnd: true,
 									Input: elem.Input(vecty.Markup(
@@ -433,8 +415,8 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 										vecty.Property("size", 3),
 										event.Change(menuMarginFunc),
 									)),
-								}),
-								formfield.New(nil, &formfield.State{
+								},
+								&formfield.FF{
 									Label:    "R: ",
 									AlignEnd: true,
 									Input: elem.Input(vecty.Markup(
@@ -444,33 +426,27 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 										vecty.Property("size", 3),
 										event.Change(menuMarginFunc),
 									)),
-								}),
+								},
 							),
 						)),
-						elem.Div(formfield.New(nil, &formfield.State{
+						elem.Div(&formfield.FF{
 							Label: "RTL",
-							Input: checkbox.New(nil,
-								&checkbox.State{
-									ChangeHandler: rtlFunc,
-								},
-							),
-						})),
-						elem.Div(formfield.New(nil, &formfield.State{
+							Input: &checkbox.CB{
+								OnChange: rtlFunc,
+							},
+						}),
+						elem.Div(&formfield.FF{
 							Label: "Remember Selected Item",
-							Input: checkbox.New(nil,
-								&checkbox.State{
-									ChangeHandler: rememberCBFunc,
-								},
-							),
-						})),
-						elem.Div(formfield.New(nil, &formfield.State{
+							Input: &checkbox.CB{
+								OnChange: rememberCBFunc,
+							},
+						}),
+						elem.Div(&formfield.FF{
 							Label: "Disable Open Animation",
-							Input: checkbox.New(nil,
-								&checkbox.State{
-									ChangeHandler: disableOpenAnimFunc,
-								},
-							),
-						})),
+							Input: &checkbox.CB{
+								OnChange: disableOpenAnimFunc,
+							},
+						}),
 						elem.Paragraph(
 							elem.Div(
 								vecty.Markup(
@@ -478,84 +454,91 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 								),
 								vecty.Text("Menu Sizes:"),
 								elem.Div(
-									formfield.New(nil, &formfield.State{
+									&formfield.FF{
 										Label: "Regular menu",
-										Input: radio.New(nil, &radio.State{
-											Name:          "menu-length",
-											Value:         "small",
-											Checked:       true,
-											ChangeHandler: menuSizeFunc,
-										}),
-									}),
+										Input: &radio.R{
+											Name:     "menu-length",
+											Value:    "small",
+											Checked:  true,
+											OnChange: menuSizeFunc,
+										},
+									},
 								),
 								elem.Div(
-									formfield.New(nil, &formfield.State{
+									&formfield.FF{
 										Label: "Large menu",
-										Input: radio.New(nil, &radio.State{
-											Name:          "menu-length",
-											Value:         "large",
-											ChangeHandler: menuSizeFunc,
-										}),
-									}),
+										Input: &radio.R{
+											Name:     "menu-length",
+											Value:    "large",
+											OnChange: menuSizeFunc,
+										},
+									},
 								),
 								elem.Div(
-									formfield.New(nil, &formfield.State{
+									&formfield.FF{
 										Label: "Extra tall menu",
-										Input: radio.New(nil, &radio.State{
-											Name:          "menu-length",
-											Value:         "tall",
-											ChangeHandler: menuSizeFunc,
-										}),
-									}),
+										Input: &radio.R{
+											Name:     "menu-length",
+											Value:    "tall",
+											OnChange: menuSizeFunc,
+										},
+									},
 								),
 							),
 							elem.Div(vecty.Markup(
 								vecty.Class("right-column-controls")),
 								vecty.Text("Anchor Widths"),
 								elem.Div(
-									formfield.New(nil, &formfield.State{
+									&formfield.FF{
 										Label: "Small button",
-										Input: radio.New(nil, &radio.State{
-											Name:          "anchor-width",
-											Value:         "tiny",
-											ChangeHandler: btnWidthFunc,
-										}),
-									}),
+										Input: &radio.R{
+											Name:     "anchor-width",
+											Value:    "tiny",
+											OnChange: btnWidthFunc,
+										},
+									},
 								),
 								elem.Div(
-									formfield.New(nil, &formfield.State{
+									&formfield.FF{
 										Label: "Comparable to menu",
-										Input: radio.New(nil, &radio.State{
-											Name:          "anchor-width",
-											Value:         "regular",
-											Checked:       true,
-											ChangeHandler: btnWidthFunc,
-										}),
-									}),
+										Input: &radio.R{
+											Name:     "anchor-width",
+											Value:    "regular",
+											Checked:  true,
+											OnChange: btnWidthFunc,
+										},
+									},
 								),
 								elem.Div(
-									formfield.New(nil, &formfield.State{
+									&formfield.FF{
 										Label: "Wider than menu",
-										Input: radio.New(nil, &radio.State{
-											Name:          "anchor-width",
-											Value:         "wide",
-											ChangeHandler: btnWidthFunc,
-										}),
-									}),
+										Input: &radio.R{
+											Name:     "anchor-width",
+											Value:    "wide",
+											OnChange: btnWidthFunc,
+										},
+									},
 								),
 							),
 							elem.HorizontalRule(),
-							elem.Div(elem.Span(
-								vecty.Text("Last Selected item: "),
-								elem.Emphasis(vecty.Markup(
-									prop.ID("last-selected")),
-									vecty.Text(sItemText),
-								),
-							)),
+							lsiStatus,
 						),
 					),
 				),
 			),
 		),
 	)
+}
+
+func (c *lastSelectedItem) Render() vecty.ComponentOrHTML {
+	return elem.Div(elem.Span(
+		vecty.Text("Last Selected item: "),
+		elem.Emphasis(vecty.Markup(
+			prop.ID("last-selected")),
+			vecty.If(c.name == "", vecty.Text("<none selected>")),
+			vecty.If(c.name != "",
+				vecty.Text("\""+c.name+"\" at index "+strconv.Itoa(c.index)),
+			),
+		),
+	))
 }

@@ -2,6 +2,7 @@ package checkbox
 
 import (
 	"agamigo.io/material/checkbox"
+	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
@@ -11,37 +12,27 @@ import (
 
 // CB is a vecty-material checkbox component.
 type CB struct {
-	*base.Base
-	*State
-}
-
-type State struct {
 	*checkbox.CB
-	ChangeHandler func(this *CB, e *vecty.Event)
-	Checked       bool   `js:"checked"`
-	Indeterminate bool   `js:"indeterminate"`
-	Disabled      bool   `js:"disabled"`
-	Value         string `js:"value"`
-}
-
-func New(p *base.Props, s *State) *CB {
-	c := &CB{}
-	if s == nil {
-		s = &State{}
-	}
-	if s.CB == nil {
-		s.CB = checkbox.New()
-	}
-	c.State = s
-	c.Base = base.New(p, c)
-	return c
+	vecty.Core
+	ID            string
+	Markup        []vecty.Applyer
+	rootElement   *vecty.HTML
+	Ripple        bool
+	Basic         bool
+	ripple        *ripple.R
+	OnChange      func(this *CB, e *vecty.Event)
+	Checked       bool
+	Indeterminate bool
+	Disabled      bool
+	Value         string
 }
 
 // Render implements the vecty.Component interface.
 func (c *CB) Render() vecty.ComponentOrHTML {
-	return c.Base.Render(elem.Div(
+	c.init()
+	c.rootElement = elem.Div(
 		vecty.Markup(
-			vecty.Markup(c.Props.Markup...),
+			vecty.MarkupIf(c.Markup != nil, vecty.Markup(c.Markup...)),
 			vecty.Class("mdc-checkbox"),
 			vecty.MarkupIf(c.Disabled,
 				vecty.Class("mdc-checkbox--disabled"),
@@ -49,12 +40,10 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 		),
 		elem.Input(
 			vecty.Markup(
-				vecty.MarkupIf(c.ChangeHandler != nil,
-					event.Change(c.wrapChangeHandler()),
-				),
+				event.Change(c.onChange),
 				vecty.Class("mdc-checkbox__native-control"),
-				vecty.MarkupIf(c.Props.ID != "",
-					prop.ID(c.Props.ID)),
+				vecty.MarkupIf(c.ID != "",
+					prop.ID(c.ID)),
 				prop.Type(prop.TypeCheckbox),
 				prop.Checked(c.CB.Checked),
 				vecty.MarkupIf(c.Value != "",
@@ -83,11 +72,48 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 				),
 			),
 		),
-	))
+	)
+	return c.rootElement
 }
 
-func (c *CB) wrapChangeHandler() func(e *vecty.Event) {
-	return func(e *vecty.Event) {
-		c.ChangeHandler(c, e)
+func (c *CB) MDCRoot() *base.Base {
+	return &base.Base{
+		MDC:       c,
+		ID:        c.ID,
+		Element:   c.rootElement,
+		HasRipple: c.Ripple,
+		Basic:     c.Basic,
+		RippleC:   c.ripple,
+	}
+}
+
+func (c *CB) Mount() {
+	c.MDCRoot().Mount()
+}
+
+func (c *CB) Unmount() {
+	c.MDCRoot().Unmount()
+}
+
+func (c *CB) init() {
+	switch {
+	case c.CB == nil:
+		c.CB = checkbox.New()
+		fallthrough
+	case c.rootElement == nil:
+		c.CB.Checked = c.Checked
+		c.CB.Indeterminate = c.Indeterminate
+		c.CB.Disabled = c.Disabled
+		c.CB.Value = c.Value
+	}
+}
+
+func (c *CB) onChange(e *vecty.Event) {
+	c.Checked = c.CB.Checked
+	c.Indeterminate = c.CB.Indeterminate
+	c.Disabled = c.CB.Disabled
+	c.Value = c.CB.Value
+	if c.OnChange != nil {
+		c.OnChange(c, e)
 	}
 }

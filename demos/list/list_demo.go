@@ -3,7 +3,6 @@ package main
 import (
 	"strconv"
 
-	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/checkbox"
 	"agamigo.io/vecty-material/demos/common"
 	"agamigo.io/vecty-material/formfield"
@@ -68,37 +67,38 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 						"has the list take up as much width as possible "+
 						"(since it's a block element)."),
 				)),
-				formfield.New(nil,
-					&formfield.State{
-						Label: "Toggle RTL",
-						Input: checkbox.New(
-							&base.Props{ID: "toggle-rtl"},
-							&checkbox.State{
-								ChangeHandler: func(thisCB *checkbox.CB,
-									e *vecty.Event) {
-									w := js.Global.Get("window")
-									d := w.Get("document")
-									dw := d.Call("getElementById",
-										"demo-wrapper")
-									if dw.Call("getAttribute",
-										"dir").String() == "rtl" {
-										dw.Call("setAttribute", "dir", "ltr")
-										return
-									}
-									dw.Call("setAttribute", "dir", "rtl")
-								},
-							},
-						),
+
+				&formfield.FF{
+					Label: "Toggle RTL",
+					Input: &checkbox.CB{
+
+						ID: "toggle-rtl",
+						OnChange: func(thisCB *checkbox.CB,
+							e *vecty.Event) {
+							w := js.Global.Get("window")
+							d := w.Get("document")
+							dw := d.Call("getElementById",
+								"demo-wrapper")
+							if dw.Call("getAttribute",
+								"dir").String() == "rtl" {
+								dw.Call("setAttribute", "dir", "ltr")
+								return
+							}
+							dw.Call("setAttribute", "dir", "rtl")
+						},
 					},
-				),
+				},
 			),
 			elem.Div(vecty.Markup(prop.ID("demo-wrapper")),
 				&demoSection{
 					heading: "Custom Colors",
 					groups: []*ul.Group{
-						ul.NewGroup(&base.Props{Markup: []vecty.Applyer{
-							vecty.Class("demo-list-group--custom")}},
-							nil)},
+						&ul.Group{
+							Markup: []vecty.Applyer{
+								vecty.Class("demo-list-group--custom"),
+							},
+						},
+					},
 					groupHeadings: []string{
 						"Example - Two-Line Lists, Avatars, " +
 							"Metadata, Inset Dividers"},
@@ -159,8 +159,9 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 				&demoSection{
 					heading: "List Groups",
 					groups: []*ul.Group{
-						ul.NewGroup(nil, nil),
-						ul.NewGroup(nil, nil)},
+						&ul.Group{},
+						&ul.Group{},
+					},
 					groupHeadings: []string{
 						"Basic Usage",
 						"Example - Two-Line Lists, Avatars, Metadata, " +
@@ -222,9 +223,9 @@ func (c *demoSection) Render() vecty.ComponentOrHTML {
 }
 
 func (c *demoList) make(section string) *ul.L {
-	newL := ul.New(&base.Props{
-		Markup: []vecty.Applyer{vecty.Class("demo-list")}},
-		nil)
+	newL := &ul.L{
+		Markup: []vecty.Applyer{vecty.Class("demo-list")},
+	}
 	newL.Markup = append(newL.Markup, c.markup...)
 	newL.GroupSubheader = c.heading
 	switch c.heading {
@@ -344,104 +345,105 @@ func (c *demoList) make(section string) *ul.L {
 
 func makeSingleLineItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
-		ul.NewItem(nil, &ul.ItemState{Primary: vecty.Text("Single-line item")}),
-		ul.NewItem(nil, &ul.ItemState{Primary: vecty.Text("Single-line item")}),
-		ul.NewItem(nil, &ul.ItemState{Primary: vecty.Text("Single-line item")}),
+		&ul.Item{Primary: vecty.Text("Single-line item")},
+		&ul.Item{Primary: vecty.Text("Single-line item")},
+		&ul.Item{Primary: vecty.Text("Single-line item")},
 	}
 }
 func makeTwoLineItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
-		ul.NewItem(nil, &ul.ItemState{
+		&ul.Item{
 			Primary:   vecty.Text("Two-line item"),
-			Secondary: vecty.Text("Secondary text")}),
-		ul.NewItem(nil, &ul.ItemState{
+			Secondary: vecty.Text("Secondary text")},
+		&ul.Item{
 			Primary:   vecty.Text("Two-line item"),
-			Secondary: vecty.Text("Secondary text")}),
-		ul.NewItem(nil, &ul.ItemState{
+			Secondary: vecty.Text("Secondary text")},
+		&ul.Item{
 			Primary:   vecty.Text("Two-line item"),
-			Secondary: vecty.Text("Secondary text")}),
+			Secondary: vecty.Text("Secondary text")},
 	}
 }
 
 func makeFoldersItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
-		ul.NewItem(nil, &ul.ItemState{
-			Graphic:   icon.New(nil, &icon.State{Name: "folder"}),
+		&ul.Item{
+			Graphic:   &icon.I{Name: "folder"},
 			Primary:   vecty.Text("Photos"),
 			Secondary: vecty.Text("Jan 9, 2014"),
-			Meta:      icon.New(nil, &icon.State{Name: "info"}),
-		}),
-		ul.NewItem(nil, &ul.ItemState{
-			Graphic:   icon.New(nil, &icon.State{Name: "folder"}),
+			Meta:      &icon.I{Name: "info"},
+		},
+		&ul.Item{
+			Graphic:   &icon.I{Name: "folder"},
 			Primary:   vecty.Text("Recipes"),
 			Secondary: vecty.Text("Jan 17, 2014"),
-			Meta:      icon.New(nil, &icon.State{Name: "info"}),
-		}),
-		ul.NewItem(nil, &ul.ItemState{
-			Graphic:   icon.New(nil, &icon.State{Name: "folder"}),
+			Meta:      &icon.I{Name: "info"},
+		},
+		&ul.Item{
+			Graphic:   &icon.I{Name: "folder"},
 			Primary:   vecty.Text("Work"),
 			Secondary: vecty.Text("Jan 28, 2014"),
-			Meta:      icon.New(nil, &icon.State{Name: "info"}),
-		}),
+			Meta:      &icon.I{Name: "info"},
+		},
 	}
 }
 
 func makeFilesItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
-		ul.NewItem(nil, &ul.ItemState{
-			Graphic: icon.New(nil, &icon.State{
-				Name: "insert_drive_file"}),
+		&ul.Item{
+			Graphic: &icon.I{
+				Name: "insert_drive_file"},
 			Primary:   vecty.Text("Vacation Itinerary"),
 			Secondary: vecty.Text("Jan 10, 2014"),
-			Meta:      icon.New(nil, &icon.State{Name: "info"}),
-		}),
-		ul.NewItem(nil, &ul.ItemState{
-			Graphic: icon.New(nil, &icon.State{
-				Name: "insert_drive_file"}),
+			Meta:      &icon.I{Name: "info"},
+		},
+		&ul.Item{
+			Graphic: &icon.I{
+				Name: "insert_drive_file"},
 			Primary:   vecty.Text("Kitchen Remodel"),
 			Secondary: vecty.Text("Jan 20, 2014"),
-			Meta:      icon.New(nil, &icon.State{Name: "info"}),
-		}),
+			Meta:      &icon.I{Name: "info"},
+		},
 	}
 }
 
 func makeDividerItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Single-line item - section 1")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Single-line item - section 1")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Single-line item - section 1")}),
+		&ul.Item{
+			Primary: vecty.Text("Single-line item - section 1")},
+		&ul.Item{
+			Primary: vecty.Text("Single-line item - section 1")},
+		&ul.Item{
+			Primary: vecty.Text("Single-line item - section 1")},
 		ul.ItemDivider(),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Single-line item - section 2")}),
-		ul.NewItem(nil, &ul.ItemState{
-			Primary: vecty.Text("Single-line item - section 2")}),
+		&ul.Item{
+			Primary: vecty.Text("Single-line item - section 2")},
+		&ul.Item{
+			Primary: vecty.Text("Single-line item - section 2")},
 	}
 }
 
 func makeGraphicExampleItems(l *ul.L, interactive bool) {
 	l.Items = []vecty.ComponentOrHTML{
-		ul.NewItem(nil, &ul.ItemState{
-			Graphic: icon.New(nil, &icon.State{Name: "network_wifi"}),
+		&ul.Item{
+			Graphic: &icon.I{Name: "network_wifi"},
 			Primary: vecty.Text("Wi-Fi"),
-		}),
-		ul.NewItem(nil, &ul.ItemState{
-			Graphic: icon.New(nil, &icon.State{Name: "bluetooth"}),
+		},
+		&ul.Item{
+			Graphic: &icon.I{Name: "bluetooth"},
 			Primary: vecty.Text("Bluetooth"),
-		}),
-		ul.NewItem(nil, &ul.ItemState{
-			Graphic: icon.New(nil, &icon.State{Name: "data_usage"}),
+		},
+		&ul.Item{
+			Graphic: &icon.I{Name: "data_usage"},
 			Primary: vecty.Text("Data Usage"),
-		}),
+		},
 	}
 	if interactive {
 		for _, cItem := range l.Items {
 			if item, ok := cItem.(*ul.Item); ok {
 				item.Href = "#"
-				item.Props.Markup = append(item.Props.Markup,
-					event.Click(nil).PreventDefault())
+				item.Markup = append(item.Markup,
+					event.Click(nil).PreventDefault(),
+				)
 				item.Ripple = true
 			}
 		}
@@ -450,26 +452,26 @@ func makeGraphicExampleItems(l *ul.L, interactive bool) {
 
 func makeCheckboxItems(l *ul.L, isLeading bool) {
 	cbs := []*checkbox.CB{
-		checkbox.New(&base.Props{ID: "leading-checkbox-blueberries"}, nil),
-		checkbox.New(&base.Props{ID: "leading-checkbox-boysenberries"}, nil),
-		checkbox.New(&base.Props{ID: "leading-checkbox-strawberries"}, nil),
+		&checkbox.CB{ID: "leading-checkbox-blueberries"},
+		&checkbox.CB{ID: "leading-checkbox-boysenberries"},
+		&checkbox.CB{ID: "leading-checkbox-strawberries"},
 	}
 	l.Items = []vecty.ComponentOrHTML{
-		ul.NewItem(nil, &ul.ItemState{
+		&ul.Item{
 			Primary: elem.Label(vecty.Markup(
 				prop.For("leading-checkbox-blueberries")),
 				vecty.Text("Blueberries")),
-		}),
-		ul.NewItem(nil, &ul.ItemState{
+		},
+		&ul.Item{
 			Primary: elem.Label(vecty.Markup(
 				prop.For("leading-checkbox-boysenberries")),
 				vecty.Text("Boysenberries")),
-		}),
-		ul.NewItem(nil, &ul.ItemState{
+		},
+		&ul.Item{
 			Primary: elem.Label(vecty.Markup(
 				prop.For("leading-checkbox-strawberries")),
 				vecty.Text("Strawberries")),
-		}),
+		},
 	}
 	for i, cItem := range l.Items {
 		if item, ok := cItem.(*ul.Item); ok {
@@ -482,7 +484,7 @@ func makeCheckboxItems(l *ul.L, isLeading bool) {
 				item.Meta = cbs[i]
 			}
 			cb := cbs[i]
-			item.ClickHandler = func(it *ul.Item, e *vecty.Event) {
+			item.OnClick = func(it *ul.Item, e *vecty.Event) {
 				// TODO: Figure out why we have to update the native input
 				// directly
 				if e.Target.Get("tagName").String() == "LI" {
@@ -498,36 +500,30 @@ func makeCheckboxItems(l *ul.L, isLeading bool) {
 
 func makeAvatarWTextItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
-		ul.NewItem(nil,
-			&ul.ItemState{
-				Graphic: elem.Image(vecty.Markup(
-					prop.Src(MDCImagesURL+"animal1.svg"),
-					vecty.Property("width", 56),
-					vecty.Property("height", 56),
-					vecty.Property("alt", "Panda"))),
-				Primary: vecty.Text("Panda"),
-			},
-		),
-		ul.NewItem(nil,
-			&ul.ItemState{
-				Graphic: elem.Image(vecty.Markup(
-					prop.Src(MDCImagesURL+"animal2.svg"),
-					vecty.Property("width", 56),
-					vecty.Property("height", 56),
-					vecty.Property("alt", "Sloth"))),
-				Primary: vecty.Text("Sloth"),
-			},
-		),
-		ul.NewItem(nil,
-			&ul.ItemState{
-				Graphic: elem.Image(vecty.Markup(
-					prop.Src(MDCImagesURL+"animal3.svg"),
-					vecty.Property("width", 56),
-					vecty.Property("height", 56),
-					vecty.Property("alt", "Brown Bear"))),
-				Primary: vecty.Text("Brown Bear"),
-			},
-		),
+		&ul.Item{
+			Graphic: elem.Image(vecty.Markup(
+				prop.Src(MDCImagesURL+"animal1.svg"),
+				vecty.Property("width", 56),
+				vecty.Property("height", 56),
+				vecty.Property("alt", "Panda"))),
+			Primary: vecty.Text("Panda"),
+		},
+		&ul.Item{
+			Graphic: elem.Image(vecty.Markup(
+				prop.Src(MDCImagesURL+"animal2.svg"),
+				vecty.Property("width", 56),
+				vecty.Property("height", 56),
+				vecty.Property("alt", "Sloth"))),
+			Primary: vecty.Text("Sloth"),
+		},
+		&ul.Item{
+			Graphic: elem.Image(vecty.Markup(
+				prop.Src(MDCImagesURL+"animal3.svg"),
+				vecty.Property("width", 56),
+				vecty.Property("height", 56),
+				vecty.Property("alt", "Brown Bear"))),
+			Primary: vecty.Text("Brown Bear"),
+		},
 	}
 }
 
@@ -564,7 +560,7 @@ func withMetaIcons(l *ul.L) {
 			if i == len(l.Items)-1 {
 				iName = "favorite"
 			}
-			item.Meta = icon.New(nil, &icon.State{Name: iName})
+			item.Meta = &icon.I{Name: iName}
 			// Reverse the Items order
 			newItems[len(l.Items)-i-1] = item
 		}
@@ -579,7 +575,7 @@ func withEllipsis(l *ul.L) {
 	}
 	for _, cItem := range l.Items {
 		if item, ok := cItem.(*ul.Item); ok {
-			item.Meta = icon.New(nil, &icon.State{Name: "folder"})
+			item.Meta = &icon.I{Name: "folder"}
 		}
 	}
 	l.Items[0].(*ul.Item).Secondary = vecty.Text("This is some secondary text")

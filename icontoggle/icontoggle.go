@@ -2,6 +2,7 @@ package icontoggle
 
 import (
 	"agamigo.io/material/icontoggle"
+	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/icon"
 	"github.com/gopherjs/vecty"
@@ -10,12 +11,14 @@ import (
 
 // IT is a vecty-material icontoggle component.
 type IT struct {
-	*base.Base
-	*State
-}
-
-type State struct {
 	*icontoggle.IT
+	vecty.Core
+	ID            string
+	Markup        []vecty.Applyer
+	rootElement   *vecty.HTML
+	Ripple        bool
+	Basic         bool
+	ripple        *ripple.R
 	ChangeHandler func(thisIT *IT, e *vecty.Event)
 	On            bool
 	Disabled      bool
@@ -26,21 +29,9 @@ type State struct {
 	OffLabel      string
 }
 
-func New(p *base.Props, s *State) *IT {
-	c := &IT{}
-	if s == nil {
-		s = &State{}
-	}
-	if s.IT == nil {
-		s.IT = icontoggle.New()
-	}
-	c.State = s
-	c.Base = base.New(p, c)
-	return c
-}
-
 // Render implements the vecty.Component interface.
 func (c *IT) Render() vecty.ComponentOrHTML {
+	c.init()
 	if c.OffIcon == nil || c.OnIcon == nil {
 		panic("OnIcon and/or OffIcon missing in icontoggle.")
 	}
@@ -72,9 +63,9 @@ func (c *IT) Render() vecty.ComponentOrHTML {
 	itElement.Markup = append(itElement.Markup,
 		vecty.Attribute("aria-hidden", "true"),
 	)
-	return c.Base.Render(elem.Span(
+	c.rootElement = elem.Span(
 		vecty.Markup(
-			vecty.Markup(c.Props.Markup...),
+			vecty.Markup(c.Markup...),
 			vecty.Class("mdc-icon-toggle"),
 			vecty.Attribute("role", "button"),
 			vecty.Attribute("aria-pressed", c.On),
@@ -106,7 +97,33 @@ func (c *IT) Render() vecty.ComponentOrHTML {
 		),
 		vecty.If(!c.On, c.OffIcon),
 		vecty.If(c.On, c.OnIcon),
-	))
+	)
+	return c.rootElement
+}
+
+func (c *IT) MDCRoot() *base.Base {
+	return &base.Base{
+		MDC:       c,
+		ID:        c.ID,
+		Element:   c.rootElement,
+		HasRipple: c.Ripple,
+		Basic:     c.Basic,
+		RippleC:   c.ripple,
+	}
+}
+
+func (c *IT) Mount() {
+	c.MDCRoot().Mount()
+}
+
+func (c *IT) Unmount() {
+	c.MDCRoot().Unmount()
+}
+
+func (c *IT) init() {
+	if c.IT == nil {
+		c.IT = icontoggle.New()
+	}
 }
 
 func (c *IT) wrapChangeHandler() func(e *vecty.Event) {
