@@ -1,6 +1,7 @@
 package main
 
 import (
+	"agamigo.io/vecty-material/base/applyer"
 	"agamigo.io/vecty-material/button"
 	"agamigo.io/vecty-material/checkbox"
 	"agamigo.io/vecty-material/demos/common"
@@ -26,7 +27,7 @@ const (
 // checkboxDemoView is our demo page component.
 type checkboxDemoView struct {
 	vecty.Core
-	checkboxes map[string]*checkbox.CB `vecty:"prop"`
+	checkboxes map[string]*checkbox.CB
 	defaultFF  *formfield.FF
 }
 
@@ -46,12 +47,15 @@ func main() {
 		},
 	}
 	for id, _ := range cdv.checkboxes {
-		cdv.checkboxes[id] = &checkbox.CB{ID: id}
+		cdv.checkboxes[id] = &checkbox.CB{
+			Input: vecty.Markup(prop.ID(id)),
+		}
 		c := cdv.checkboxes[id]
+		var applyers []vecty.Applyer
 		switch id {
 		case BASIC_ID, BASIC_DISABLED_ID, BASIC_INDETERMINATE_ID,
 			BASIC_CUSTOM_ALL_ID, BASIC_CUSTOM_SOME_ID:
-			c.Basic = true
+			applyers = append(applyers, applyer.CSSOnly())
 		}
 		switch id {
 		case BASIC_DISABLED_ID:
@@ -60,12 +64,14 @@ func main() {
 			c.Checked = true
 			c.Indeterminate = true
 		case BASIC_CUSTOM_ALL_ID, JS_CUSTOM_ALL_ID:
-			c.Markup = append(c.Markup,
+			applyers = append(applyers,
 				vecty.Class("demo-checkbox--custom-all"))
+
 		case BASIC_CUSTOM_SOME_ID, JS_CUSTOM_SOME_ID:
-			c.Markup = append(c.Markup,
+			applyers = append(applyers,
 				vecty.Class("demo-checkbox--custom-stroke-and-fill"))
 		}
+		c.Root = vecty.Markup(applyers...)
 	}
 	cdv.defaultFF = &formfield.FF{
 		Label: "Default checkbox",
@@ -119,8 +125,7 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 						&button.B{
 							Label:   vecty.Text("Toggle RTL"),
 							Stroked: true,
-							OnClick: func(thisB *button.B,
-								e *vecty.Event) {
+							OnClick: func(thisB *button.B, e *vecty.Event) {
 								ff := e.Target.Get("parentElement")
 								ff = ff.Get("parentElement")
 								dir := ff.Call("hasAttribute", "dir").Bool()
@@ -244,7 +249,7 @@ func makeButton(h func(*button.B, *vecty.Event), l vecty.List, class string) *bu
 		applyer = vecty.Class(class)
 	}
 	return &button.B{
-		Markup:  []vecty.Applyer{applyer},
+		Root:    vecty.Markup(applyer),
 		Label:   l,
 		OnClick: h,
 		Stroked: true,

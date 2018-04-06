@@ -34,9 +34,9 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 		elem.Main(elem.Navigation(
 			vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust")),
 			&ul.L{
-				Markup: []vecty.Applyer{
+				Root: vecty.Markup(
 					vecty.Class("demo-catalog-list"),
-				},
+				),
 				Items: []vecty.ComponentOrHTML{
 					&ul.Item{
 						Primary:   vecty.Text("Button"),

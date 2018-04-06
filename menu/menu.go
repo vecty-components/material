@@ -2,25 +2,20 @@ package menu
 
 import (
 	"agamigo.io/material/menu"
-	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/ul"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/prop"
 )
 
 // M is a vecty-material menu component.
 type M struct {
 	*menu.M
+	*base.MDCRoot
 	vecty.Core
-	ID          string
-	Markup      []vecty.Applyer
-	rootElement *vecty.HTML
-	Ripple      bool
-	Basic       bool
-	ripple      *ripple.R
+	Root       vecty.MarkupOrChild
+	menuAnchor *vecty.HTML
 
 	// Open is the visible state of the menu component.
 	Open bool `js:"open"`
@@ -47,36 +42,87 @@ type M struct {
 
 // Render implements the vecty.Component interface.
 func (c *M) Render() vecty.ComponentOrHTML {
-	c.init()
+	rootMarkup := base.MarkupOnly(c.Root)
+	if c.Root != nil && rootMarkup == nil {
+		// User supplied root element.
+		return elem.Div(c.Root)
+	}
+
+	// TODO: Make initial values work in material package
+	open := js.InternalObject(c).Get("Open").Bool()
+
+	listMarkup := []vecty.Applyer{
+		vecty.Class("mdc-menu__items"),
+		vecty.Attribute("role", "menu"),
+	}
+	if !open {
+		listMarkup = append(listMarkup, vecty.Attribute("aria-hidden", "true"))
+	}
 	switch t := c.List.(type) {
 	case *ul.L:
-		t.Markup = append(t.Markup,
-			vecty.Class("mdc-menu__items"),
-			vecty.Attribute("role", "menu"),
-		)
-		if !c.Open {
-			t.Markup = append(t.Markup, vecty.Attribute("aria-hidden", "true"))
+		if mu := base.MarkupOnly(t.Root); mu != nil {
+			listMarkup = append(listMarkup, mu)
 		}
+		t.Root = vecty.Markup(listMarkup...)
 		for _, item := range t.Items {
 			if i, ok := item.(*ul.Item); ok {
-				i.Markup = append(i.Markup,
+				itemMarkup := []vecty.Applyer{
 					vecty.Attribute("role", "menuitem"),
 					vecty.Attribute("tabindex", 0),
-				)
+				}
+				if mu := base.MarkupOnly(i.Root); mu != nil {
+					itemMarkup = append(itemMarkup, mu)
+				}
+				i.Root = vecty.Markup(itemMarkup...)
 			}
 		}
 	case *vecty.HTML:
 		vecty.Class("mdc-menu__items").Apply(t)
 		vecty.Attribute("role", "menu").Apply(t)
-		if c.Open {
+		if open {
 			vecty.Attribute("aria-hidden", "false").Apply(t)
 		}
 	}
 
-	menuMarkup := vecty.Markup(
-		vecty.MarkupIf(c.ID != "", prop.ID(c.ID)),
+	menuElement := elem.Div(
+		vecty.Markup(
+			c,
+			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+		),
+		c.List,
+	)
+
+	if c.AnchorElement != nil {
+		c.menuAnchor = elem.Div(
+			vecty.Markup(
+				vecty.Class("mdc-menu-anchor"),
+			),
+			c.AnchorElement,
+			menuElement,
+		)
+		return c.menuAnchor
+	}
+	return menuElement
+}
+
+func (c *M) Apply(h *vecty.HTML) {
+	switch {
+	case c.MDCRoot == nil:
+		c.MDCRoot = &base.MDCRoot{}
+		fallthrough
+	case c.M == nil, c.MDCRoot.MDC == nil:
+		// TODO: Make initial values work in material package
+		open := js.InternalObject(c).Get("Open").Bool()
+		quickOpen := js.InternalObject(c).Get("QuickOpen").Bool()
+		c.M = menu.New()
+		c.MDCRoot.MDC = c.M
+		c.Open = open
+		c.QuickOpen = quickOpen
+	}
+
+	vecty.Markup(
 		vecty.Class("mdc-menu"),
-		vecty.MarkupIf(c.Open && c.rootElement == nil,
+		vecty.MarkupIf(c.Open,
 			vecty.Class("mdc-menu--open"),
 		),
 		vecty.Style("position", "absolute"),
@@ -89,58 +135,13 @@ func (c *M) Render() vecty.ComponentOrHTML {
 			Name:     "MDCMenu:cancel",
 			Listener: c.onCancel,
 		},
-	)
+	).Apply(h)
 
-	if c.AnchorElement != nil {
-		c.rootElement = elem.Div(
-			menuMarkup,
-			c.List,
-		)
-		return elem.Div(
-			vecty.Markup(
-				vecty.Class("mdc-menu-anchor"),
-				vecty.Markup(c.Markup...),
-			),
-			c.AnchorElement,
-			c.rootElement,
-		)
+	if c.menuAnchor != nil {
+		c.MDCRoot.Element = c.menuAnchor
+		return
 	}
-	c.rootElement = elem.Div(
-		menuMarkup,
-		vecty.Markup(vecty.Markup(c.Markup...)),
-		c.List,
-	)
-	return c.rootElement
-}
-
-func (c *M) MDCRoot() *base.Base {
-	return &base.Base{
-		MDC:       c,
-		ID:        c.ID,
-		Element:   c.rootElement,
-		HasRipple: c.Ripple,
-		Basic:     c.Basic,
-		RippleC:   c.ripple,
-	}
-}
-
-func (c *M) Mount() {
-	c.MDCRoot().Mount()
-}
-
-func (c *M) Unmount() {
-	c.MDCRoot().Unmount()
-}
-
-func (c *M) init() {
-	if c.M == nil {
-		// TODO: Make initial values work in material package
-		open := js.InternalObject(c).Get("Open").Bool()
-		quickOpen := js.InternalObject(c).Get("QuickOpen").Bool()
-		c.M = menu.New()
-		c.Open = open
-		c.QuickOpen = quickOpen
-	}
+	c.MDCRoot.Element = h
 }
 
 func (c *M) onSelect(e *vecty.Event) {

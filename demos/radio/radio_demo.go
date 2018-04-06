@@ -1,11 +1,13 @@
 package main
 
 import (
+	"agamigo.io/vecty-material/base/applyer"
 	"agamigo.io/vecty-material/demos/common"
 	"agamigo.io/vecty-material/formfield"
 	"agamigo.io/vecty-material/radio"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
+	"github.com/gopherjs/vecty/prop"
 )
 
 // radioDemoView is our demo page component.
@@ -21,26 +23,45 @@ func main() {
 func (c *radioDemoView) Render() vecty.ComponentOrHTML {
 	basicRadios := []*radio.R{
 		&radio.R{
-
-			ID:   "ex1-default-radio1",
-			Name: "ex1-default", Checked: true},
+			Root: vecty.Markup(
+				applyer.CSSOnly(),
+			),
+			Input: vecty.Markup(
+				prop.ID("ex1-default-radio1"),
+			),
+			Name:    "ex1-default",
+			Checked: true,
+		},
 		&radio.R{
-
-			ID:   "ex1-default-radio2",
-			Name: "ex1-default"},
+			Root: vecty.Markup(
+				applyer.CSSOnly(),
+			),
+			Input: vecty.Markup(
+				prop.ID("ex1-default-radio2"),
+			),
+			Name: "ex1-default",
+		},
 		&radio.R{
-
-			ID:     "ex1-custom-radio1",
-			Markup: []vecty.Applyer{vecty.Class("demo-radio--custom")},
-			Name:   "ex1-custom", Checked: true},
+			Root: vecty.Markup(
+				vecty.Class("demo-radio--custom"),
+				applyer.CSSOnly(),
+			),
+			Input: vecty.Markup(
+				prop.ID("ex1-custom-radio1"),
+			),
+			Name:    "ex1-custom",
+			Checked: true,
+		},
 		&radio.R{
-
-			ID:     "ex1-custom-radio2",
-			Markup: []vecty.Applyer{vecty.Class("demo-radio--custom")},
-			Name:   "ex1-custom"},
-	}
-	for _, r := range basicRadios {
-		r.Basic = true
+			Root: vecty.Markup(
+				vecty.Class("demo-radio--custom"),
+				applyer.CSSOnly(),
+			),
+			Input: vecty.Markup(
+				prop.ID("ex1-custom-radio2"),
+			),
+			Name: "ex1-custom",
+		},
 	}
 
 	return elem.Body(
@@ -65,8 +86,9 @@ func (c *radioDemoView) Render() vecty.ComponentOrHTML {
 					&formfield.FF{
 						Label: "Default Radio 1",
 						Input: &radio.R{
-							ID: "ex0-default-radio1",
-
+							Input: vecty.Markup(
+								prop.ID("ex0-default-radio1"),
+							),
 							Name:    "ex0-default",
 							Checked: true,
 						},
@@ -74,7 +96,9 @@ func (c *radioDemoView) Render() vecty.ComponentOrHTML {
 					&formfield.FF{
 						Label: "Default Radio 2",
 						Input: &radio.R{
-							ID:   "ex0-default-radio2",
+							Input: vecty.Markup(
+								prop.ID("ex0-default-radio2"),
+							),
 							Name: "ex0-default"},
 					},
 				),
@@ -82,11 +106,12 @@ func (c *radioDemoView) Render() vecty.ComponentOrHTML {
 					&formfield.FF{
 						Label: "Custom Radio 1",
 						Input: &radio.R{
-
-							ID: "ex0-custom-radio1",
-							Markup: []vecty.Applyer{
-								vecty.Class("demo-radio--custom")},
-
+							Root: vecty.Markup(
+								vecty.Class("demo-radio--custom"),
+							),
+							Input: vecty.Markup(
+								prop.ID("ex0-custom-radio1"),
+							),
 							Name:    "ex0-custom",
 							Checked: true,
 						},
@@ -94,11 +119,12 @@ func (c *radioDemoView) Render() vecty.ComponentOrHTML {
 					&formfield.FF{
 						Label: "Custom Radio 2",
 						Input: &radio.R{
-
-							ID: "ex0-custom-radio2",
-							Markup: []vecty.Applyer{
+							Root: vecty.Markup(
 								vecty.Class("demo-radio--custom"),
-							},
+							),
+							Input: vecty.Markup(
+								prop.ID("ex0-custom-radio2"),
+							),
 							Name: "ex0-custom",
 						},
 					},
@@ -135,8 +161,9 @@ func (c *radioDemoView) Render() vecty.ComponentOrHTML {
 					&formfield.FF{
 						Label: "Disabled Radio 1",
 						Input: &radio.R{
-							ID: "ex4a-radio1",
-
+							Input: vecty.Markup(
+								prop.ID("ex4a-radio1"),
+							),
 							Name:     "ex4a",
 							Checked:  true,
 							Disabled: true,
@@ -145,8 +172,9 @@ func (c *radioDemoView) Render() vecty.ComponentOrHTML {
 					&formfield.FF{
 						Label: "Disabled Radio 2",
 						Input: &radio.R{
-							ID: "ex4a-radio2",
-
+							Input: vecty.Markup(
+								prop.ID("ex4a-radio2"),
+							),
 							Name:     "ex4a",
 							Disabled: true,
 						},

@@ -68,9 +68,12 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 		toolbarNav = nil
 	}
 	t := &toolbar.T{
-		Markup: []vecty.Applyer{
-			vecty.MarkupIf(c.NoFixed, vecty.Class("mdc-elevation--z4")),
-		},
+		Root: vecty.Markup(
+			vecty.MarkupIf(
+				c.NoFixed,
+				vecty.Class("mdc-elevation--z4"),
+			),
+		),
 		Fixed: !c.NoFixed,
 		SectionStart: vecty.List{
 			toolbarNav,

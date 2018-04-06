@@ -2,66 +2,53 @@ package base
 
 import (
 	"agamigo.io/material/base"
-	"agamigo.io/material/ripple"
+	"agamigo.io/vecty-material/base/applyer"
 	"github.com/gopherjs/vecty"
 )
 
 type MDCRooter interface {
-	MDCRoot() *Base
+	MDCRoot() *MDCRoot
 }
 
-type Base struct {
-	MDC       base.ComponentStartStopper
-	ID        string
-	Basic     bool
-	Element   *vecty.HTML
-	HasRipple bool
-	RippleC   *ripple.R
+type MDCRoot struct {
+	MDC     base.ComponentStartStopper
+	Element *vecty.HTML
 }
 
-func (b *Base) Mount() {
-	var isRippler bool
-	if b.MDC == nil || b.Basic {
-		if !b.HasRipple {
-			return
-		}
-		b.MDC = ripple.New()
-		isRippler = true
+func (b *MDCRoot) Mount() {
+	applyer.StartRipple(b.Element)
+	switch {
+	case b.MDC == nil:
+		fallthrough
+	case applyer.IsCSSOnly(b.Element):
+		return
 	}
 	err := b.MDC.Start(b.Element.Node())
 	if err != nil {
 		panic(err)
 	}
-	if isRippler || !b.HasRipple || b.Basic {
-		return
-	}
-	if b.RippleC != nil {
-		print("Warning: Stopping lingering Rippler. " +
-			"Use Stop() to stop vecty-material components..")
-		err = b.RippleC.Stop()
-		if err != nil {
-			print(err)
-		}
-		b.RippleC = nil
-	}
-	b.RippleC = ripple.New()
-	err = b.RippleC.Start(b.Element.Node())
-	if err != nil {
-		print(err)
-	}
 }
 
-func (b *Base) Unmount() {
-	if b.RippleC != nil {
-		err := b.RippleC.Stop()
-		if err != nil {
-			print(err)
-		}
-	}
+func (b *MDCRoot) Unmount() {
 	if b.MDC != nil {
 		err := b.MDC.Stop()
 		if err != nil {
 			panic(err)
 		}
 	}
+}
+
+// MarkupOnly returns the vecty.MarkupList contained in moc, or nil if none is
+// found. It also returns nil if moc is a vecty.List that contains one or more
+// vecty.ComponentOrHTML.  If nil is returned, it is then safe to assert the
+// type of moc as a vecty.ComponentOrHTML.
+func MarkupOnly(moc vecty.MarkupOrChild) *vecty.MarkupList {
+	// TODO: handle vecty.List
+	switch t := moc.(type) {
+	case vecty.ComponentOrHTML:
+		return nil
+	case vecty.MarkupList:
+		return &t
+	}
+	return nil
 }

@@ -65,7 +65,9 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 						Label: "Default",
 						Input: vecty.List{
 							&radio.R{
-								ID:      "theme-radio-default",
+								Root: vecty.Markup(
+									prop.ID("theme-radio-default"),
+								),
 								Name:    "theme",
 								Checked: true,
 								OnChange: func(thisR *radio.R,
@@ -84,7 +86,9 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 						Label: "Custom Theme",
 						Input: vecty.List{
 							&radio.R{
-								ID:   "theme-radio-custom",
+								Root: vecty.Markup(
+									prop.ID("theme-radio-custom"),
+								),
 								Name: "theme",
 								OnChange: func(thisR *radio.R,
 									e *vecty.Event) {
@@ -102,7 +106,9 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 						Label: "Accessible Theme",
 						Input: vecty.List{
 							&radio.R{
-								ID:   "theme-radio-accessible",
+								Root: vecty.Markup(
+									prop.ID("theme-radio-accessible"),
+								),
 								Name: "theme",
 								OnChange: func(thisR *radio.R,
 									e *vecty.Event) {
@@ -119,9 +125,9 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 				),
 				elem.Div(vecty.Markup(vecty.Class("extra-content-wrapper")),
 					&button.B{
-						Markup: []vecty.Applyer{vecty.Class(
+						Root: vecty.Markup(vecty.Class(
 							"demo-toolbar-example-heading__rtl-toggle-button"),
-						},
+						),
 						Label:   vecty.Text("Toggle RTL"),
 						Stroked: true,
 						Dense:   true,
@@ -139,7 +145,9 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 				),
 				elem.Div(vecty.Markup(vecty.Class("extra-content-wrapper")),
 					&button.B{
-						ID:      "toggle-wide",
+						Root: vecty.Markup(
+							prop.ID("toggle-wide"),
+						),
 						Label:   vecty.Text("Toggle extra-wide content"),
 						Stroked: true,
 						Dense:   true,
@@ -157,7 +165,9 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 				),
 				elem.Div(vecty.Markup(vecty.Class("extra-content-wrapper")),
 					&button.B{
-						ID:      "toggle-tall",
+						Root: vecty.Markup(
+							prop.ID("toggle-tall"),
+						),
 						Label:   vecty.Text("Toggle extra-tall content"),
 						Stroked: true,
 						Dense:   true,

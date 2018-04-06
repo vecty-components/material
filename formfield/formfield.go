@@ -2,8 +2,8 @@ package formfield
 
 import (
 	"agamigo.io/material/formfield"
-	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
+	"agamigo.io/vecty-material/base/applyer"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
@@ -11,75 +11,53 @@ import (
 
 // FF is a vecty-material formfield component.
 type FF struct {
-	*formfield.FF
+	*base.MDCRoot
 	vecty.Core
-	ID          string
-	Markup      []vecty.Applyer
-	rootElement *vecty.HTML
-	Ripple      bool
-	ripple      *ripple.R
-	inputID     string
-	Input       vecty.ComponentOrHTML
-	Label       string
-	AlignEnd    bool
+	Root     vecty.MarkupOrChild
+	Input    vecty.ComponentOrHTML
+	Label    string
+	AlignEnd bool
 }
 
 // Render implements the vecty.Component interface.
 func (c *FF) Render() vecty.ComponentOrHTML {
-	c.init()
-	input := c.Input
-	if c.Input != nil {
-		switch t := c.Input.(type) {
-		case base.MDCRooter:
-			c.inputID = t.MDCRoot().ID
-		case *vecty.HTML:
-			input = base.RenderStoredChild(c.Input)
-		}
+	rootMarkup := base.MarkupOnly(c.Root)
+	if c.Root != nil && rootMarkup == nil {
+		// User supplied root element.
+		return elem.Div(c.Root)
 	}
-	c.rootElement = elem.Div(
+
+	inputID := applyer.FindID(c.Input)
+	return elem.Div(
 		vecty.Markup(
-			vecty.Markup(c.Markup...),
-			vecty.MarkupIf(c.ID != "",
-				prop.ID(c.ID)),
-			vecty.Class("mdc-form-field"),
-			vecty.MarkupIf(c.AlignEnd,
-				vecty.Class("mdc-form-field--align-end"),
-			),
+			c,
+			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
 		),
-		input,
+		c.Input,
 		elem.Label(
 			vecty.Markup(
-				vecty.MarkupIf(c.inputID != "",
-					prop.For(c.inputID),
+				vecty.MarkupIf(inputID != "",
+					prop.For(inputID),
 				),
 			),
 			vecty.Text(c.Label),
 		),
 	)
-	return c.rootElement
 }
 
-func (c *FF) MDCRoot() *base.Base {
-	return &base.Base{
-		MDC:       c,
-		ID:        c.ID,
-		Element:   c.rootElement,
-		HasRipple: c.Ripple,
-		RippleC:   c.ripple,
+func (c *FF) Apply(h *vecty.HTML) {
+	switch {
+	case c.MDCRoot == nil:
+		c.MDCRoot = &base.MDCRoot{}
+		fallthrough
+	case c.MDCRoot.MDC == nil:
+		c.MDCRoot.MDC = formfield.New()
 	}
-}
-
-func (c *FF) Mount() {
-	c.MDCRoot().Mount()
-}
-
-func (c *FF) Unmount() {
-	c.MDCRoot().Unmount()
-}
-
-func (c *FF) init() {
-	if c.FF == nil {
-		c.FF = formfield.New()
-	}
-	c.FF.Input = c.Input
+	vecty.Markup(
+		vecty.Class("mdc-form-field"),
+		vecty.MarkupIf(c.AlignEnd,
+			vecty.Class("mdc-form-field--align-end"),
+		),
+	).Apply(h)
+	c.MDCRoot.Element = h
 }

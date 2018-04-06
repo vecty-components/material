@@ -1,6 +1,7 @@
 package main
 
 import (
+	"agamigo.io/vecty-material/base/applyer"
 	"agamigo.io/vecty-material/button"
 	"agamigo.io/vecty-material/checkbox"
 	"agamigo.io/vecty-material/demos/common"
@@ -8,7 +9,7 @@ import (
 	"agamigo.io/vecty-material/formfield"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/event"
+	"github.com/gopherjs/vecty/prop"
 )
 
 // dialogDemo is our main page component.
@@ -33,59 +34,52 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
 			elem.Section(
 				vecty.Markup(vecty.Class("hero")),
-				c.newDemoDialog(
+				c.newDemoDialog("mdc-dialog-hero",
 					&dialog.D{
-						ID: "mdc-dialog-hero",
-						Markup: []vecty.Applyer{
-							vecty.Class("catalog-dialog-demo")},
+						Root: vecty.Markup(
+							vecty.Class("catalog-dialog-demo"),
+							prop.ID("mdc-dialog-hero"),
+							applyer.CSSOnly(),
+						),
 						Header: "Are you happy?",
 						Body: vecty.Text("Please check the left and right side " +
 							"of this element for fun."),
 						Open:       true,
 						NoBackdrop: true,
-						Basic:      true,
 					},
 				),
 			),
 			elem.Div(
 				vecty.Markup(vecty.Class("demo-body")),
-				c.newDemoDialog(
+				c.newDemoDialog("mdc-dialog-default",
 					&dialog.D{
-						ID:     "mdc-dialog-default",
+						Root: vecty.Markup(
+							prop.ID("mdc-dialog-default"),
+						),
 						Header: "Use Google's location service?",
 						Body: vecty.Text("Let Google help apps determine " +
 							"location. This means sending anonymous location " +
 							"data to Google, even when no apps are running."),
 						Role: "alertdialog",
-						OnCancel: func(thisD *dialog.D, e *vecty.Event) {
-							thisD.Open = false
-							vecty.Rerender(thisD)
-						},
-						OnAccept: func(thisD *dialog.D, e *vecty.Event) {
-							thisD.Open = false
-							vecty.Rerender(thisD)
-						},
 					},
 				),
-				c.newDemoDialog(
+				c.newDemoDialog("mdc-dialog-colored-footer-buttons",
 					&dialog.D{
-						ID:     "mdc-dialog-colored-footer-buttons",
+						Root: vecty.Markup(
+							prop.ID("mdc-dialog-colored-footer-buttons"),
+						),
 						Header: "Use Google's location service?",
 						Body: vecty.Text("Let Google help apps determine " +
 							"location. This means sending anonymous location " +
 							"data to Google, even when no apps are running."),
 						Role: "alertdialog",
-						OnCancel: func(thisD *dialog.D, e *vecty.Event) {
-							thisD.Open = false
-						},
-						OnAccept: func(thisD *dialog.D, e *vecty.Event) {
-							thisD.Open = false
-						},
 					},
 				),
-				c.newDemoDialog(
+				c.newDemoDialog("mdc-dialog-with-list",
 					&dialog.D{
-						ID:         "mdc-dialog-with-list",
+						Root: vecty.Markup(
+							prop.ID("mdc-dialog-with-list"),
+						),
 						Header:     "Choose a Ringtone",
 						Role:       "alertdialog",
 						Scrollable: true,
@@ -102,62 +96,69 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 							"Marimba",
 							"Schwifty",
 						),
-						OnCancel: func(thisD *dialog.D, e *vecty.Event) {
-							thisD.Open = false
-						},
-						OnAccept: func(thisD *dialog.D, e *vecty.Event) {
-							thisD.Open = false
-						},
 					},
 				),
 			),
 			elem.Section(
 				vecty.Markup(vecty.Class("example")),
 				&button.B{
-					ID:     "default-dialog-activation",
+					Root: vecty.Markup(
+						prop.ID("default-dialog-activation"),
+					),
 					Label:  vecty.Text("Show Dialog"),
 					Raised: true,
 					OnClick: func(thisB *button.B, e *vecty.Event) {
-						c.dialogs["mdc-dialog-default"].Open = true
-						vecty.Rerender(c.dialogs["mdc-dialog-default"])
+						class := "mdc-dialog-default"
+						if _, ok := c.dialogs[class]; ok {
+							c.dialogs[class].Open = true
+							vecty.Rerender(c.dialogs[class])
+						}
 					},
 				},
 				&button.B{
-					ID:     "colored-footer-button-dialog-activation",
+					Root: vecty.Markup(
+						prop.ID("colored-footer-button-dialog-activation"),
+					),
 					Label:  vecty.Text("Show Colored Footer Button Dialog"),
 					Raised: true,
 					OnClick: func(thisB *button.B, e *vecty.Event) {
 						class := "mdc-dialog-colored-footer-buttons"
-						c.dialogs[class].Open = true
-						vecty.Rerender(c.dialogs[class])
+						if _, ok := c.dialogs[class]; ok {
+							c.dialogs[class].Open = true
+							vecty.Rerender(c.dialogs[class])
+						}
 					},
 				},
 				&button.B{
-					ID:     "dialog-with-list-activation",
+					Root: vecty.Markup(
+						prop.ID("dialog-with-list-activation"),
+					),
 					Label:  vecty.Text("Show Scrolling Dialog"),
 					Raised: true,
 					OnClick: func(thisB *button.B, e *vecty.Event) {
-						c.dialogs["mdc-dialog-with-list"].Open = true
-						vecty.Rerender(c.dialogs["mdc-dialog-with-list"])
+						class := "mdc-dialog-with-list"
+						if _, ok := c.dialogs[class]; ok {
+							c.dialogs[class].Open = true
+							vecty.Rerender(c.dialogs[class])
+						}
 					},
 				},
 				&formfield.FF{
 					Label: "Toggle RTL",
 					Input: &checkbox.CB{
-						ID: "toggle-rtl",
-						Markup: []vecty.Applyer{
-							event.Change(func(e *vecty.Event) {
-								checked := e.Target.Get("checked").Bool()
-								for _, v := range c.dialogs {
-									el := v.MDCRoot().Element.Node()
-									if checked {
-										el.Call("setAttribute",
-											"dir", "rtl")
-										return
-									}
-									el.Call("removeAttribute", "dir")
+						Root: vecty.Markup(
+							prop.ID("toggle-rtl"),
+						),
+						OnChange: func(thisCB *checkbox.CB, e *vecty.Event) {
+							for _, v := range c.dialogs {
+								el := v.MDCRoot.Element.Node()
+								if thisCB.Checked {
+									el.Call("setAttribute",
+										"dir", "rtl")
+									return
 								}
-							}),
+								el.Call("removeAttribute", "dir")
+							}
 						},
 					},
 				},
@@ -166,6 +167,7 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 	)
 }
 
+// TODO: Use ul (list) componenet
 func renderList(itemsText ...string) vecty.ComponentOrHTML {
 	items := make(vecty.List, len(itemsText))
 	for i, v := range itemsText {
@@ -180,10 +182,7 @@ func renderList(itemsText ...string) vecty.ComponentOrHTML {
 	)
 }
 
-func (c *dialogDemoView) newDemoDialog(d *dialog.D) *dialog.D {
-	if d.ID == "" {
-		panic("newDemoDialog got a Props with empty ID.")
-	}
-	c.dialogs[d.ID] = d
+func (c *dialogDemoView) newDemoDialog(id string, d *dialog.D) *dialog.D {
+	c.dialogs[id] = d
 	return d
 }

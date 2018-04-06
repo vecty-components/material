@@ -2,8 +2,8 @@ package checkbox
 
 import (
 	"agamigo.io/material/checkbox"
-	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
+	"agamigo.io/vecty-material/base/applyer"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -12,14 +12,11 @@ import (
 
 // CB is a vecty-material checkbox component.
 type CB struct {
-	*checkbox.CB
+	*base.MDCRoot
 	vecty.Core
-	ID            string
-	Markup        []vecty.Applyer
-	rootElement   *vecty.HTML
-	Ripple        bool
-	Basic         bool
-	ripple        *ripple.R
+	Root          vecty.MarkupOrChild
+	Input         vecty.MarkupOrChild
+	Background    vecty.MarkupOrChild
 	OnChange      func(this *CB, e *vecty.Event)
 	Checked       bool
 	Indeterminate bool
@@ -29,41 +26,30 @@ type CB struct {
 
 // Render implements the vecty.Component interface.
 func (c *CB) Render() vecty.ComponentOrHTML {
-	c.init()
-	c.rootElement = elem.Div(
-		vecty.Markup(
-			vecty.MarkupIf(c.Markup != nil, vecty.Markup(c.Markup...)),
-			vecty.Class("mdc-checkbox"),
-			vecty.MarkupIf(c.Disabled,
-				vecty.Class("mdc-checkbox--disabled"),
-			),
-		),
-		elem.Input(
+	rootMarkup := base.MarkupOnly(c.Root)
+	if c.Root != nil && rootMarkup == nil {
+		// User supplied root element.
+		return elem.Div(c.Root)
+	}
+
+	var bg vecty.ComponentOrHTML
+	bgMarkup := base.MarkupOnly(c.Background)
+	if c.Background != nil && bgMarkup == nil {
+		// User supplied background element.
+		bg = elem.Div(c.Background)
+	} else {
+		// Built-in background element.
+		bg = elem.Div(
 			vecty.Markup(
-				event.Change(c.onChange),
-				vecty.Class("mdc-checkbox__native-control"),
-				vecty.MarkupIf(c.ID != "",
-					prop.ID(c.ID)),
-				prop.Type(prop.TypeCheckbox),
-				prop.Checked(c.CB.Checked),
-				vecty.MarkupIf(c.Value != "",
-					prop.Value(c.Value),
-				),
-				vecty.Property("disabled", c.Disabled),
-				vecty.Property("indeterminate", c.Indeterminate),
-			),
-		),
-		elem.Div(
-			vecty.Markup(
+				vecty.MarkupIf(bgMarkup != nil, bgMarkup),
 				vecty.Class("mdc-checkbox__background"),
 				vecty.UnsafeHTML(
-					`<svg class="mdc-checkbox__checkmark"
-							viewBox="0 0 24 24">
-							<path class="mdc-checkbox__checkmark-path"
-								fill="none"
-								stroke="white"
-								d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-							</svg>`,
+					`<svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+						<path class="mdc-checkbox__checkmark-path"
+							fill="none"
+							stroke="white"
+							d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+					</svg>`,
 				),
 			),
 			elem.Div(
@@ -71,49 +57,80 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 					vecty.Class("mdc-checkbox__mixedmark"),
 				),
 			),
+		)
+
+	}
+
+	input, _ := c.NativeInput()
+
+	// Built-in root element
+	return elem.Div(
+		vecty.Markup(
+			c,
+			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
 		),
+		input,
+		bg,
 	)
-	return c.rootElement
 }
 
-func (c *CB) MDCRoot() *base.Base {
-	return &base.Base{
-		MDC:       c,
-		ID:        c.ID,
-		Element:   c.rootElement,
-		HasRipple: c.Ripple,
-		Basic:     c.Basic,
-		RippleC:   c.ripple,
-	}
-}
-
-func (c *CB) Mount() {
-	c.MDCRoot().Mount()
-}
-
-func (c *CB) Unmount() {
-	c.MDCRoot().Unmount()
-}
-
-func (c *CB) init() {
+func (c *CB) Apply(h *vecty.HTML) {
 	switch {
-	case c.CB == nil:
-		c.CB = checkbox.New()
+	case c.MDCRoot == nil:
+		c.MDCRoot = &base.MDCRoot{}
 		fallthrough
-	case c.rootElement == nil:
-		c.CB.Checked = c.Checked
-		c.CB.Indeterminate = c.Indeterminate
-		c.CB.Disabled = c.Disabled
-		c.CB.Value = c.Value
+	case c.MDCRoot.MDC == nil:
+		c.MDCRoot.MDC = checkbox.New()
+		if cb, ok := c.MDCRoot.MDC.(*checkbox.CB); ok {
+			cb.Checked = c.Checked
+			cb.Indeterminate = c.Indeterminate
+			cb.Disabled = c.Disabled
+			cb.Value = c.Value
+		}
 	}
+
+	vecty.Markup(
+		vecty.Class("mdc-checkbox"),
+		vecty.MarkupIf(c.Disabled, vecty.Class("mdc-checkbox--disabled")),
+	).Apply(h)
+	c.MDCRoot.Element = h
 }
 
 func (c *CB) onChange(e *vecty.Event) {
-	c.Checked = c.CB.Checked
-	c.Indeterminate = c.CB.Indeterminate
-	c.Disabled = c.CB.Disabled
-	c.Value = c.CB.Value
+	if cb, ok := c.MDCRoot.MDC.(*checkbox.CB); ok {
+		c.Checked = cb.Checked
+		c.Indeterminate = cb.Indeterminate
+		c.Disabled = cb.Disabled
+		c.Value = cb.Value
+	}
 	if c.OnChange != nil {
 		c.OnChange(c, e)
 	}
+}
+
+func (c *CB) NativeInput() (element *vecty.HTML, id string) {
+	niMarkup := base.MarkupOnly(c.Input)
+	if c.Input != nil && niMarkup == nil {
+		// User supplied input element.
+		element = elem.Input(c.Input)
+		id = applyer.FindID(element)
+		return
+	}
+
+	// Built-in input element.
+	element = elem.Input(
+		vecty.Markup(
+			vecty.MarkupIf(niMarkup != nil, niMarkup),
+			event.Change(c.onChange),
+			vecty.Class("mdc-checkbox__native-control"),
+			prop.Type(prop.TypeCheckbox),
+			vecty.MarkupIf(c.Value != "", prop.Value(c.Value)),
+			prop.Checked(c.Checked),
+			vecty.Property("disabled", c.Disabled),
+			vecty.Property("indeterminate", c.Indeterminate),
+		),
+		c.Input,
+	)
+	id = applyer.FindID(element)
+	return
 }

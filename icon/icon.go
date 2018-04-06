@@ -1,7 +1,6 @@
 package icon
 
 import (
-	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
@@ -12,12 +11,9 @@ type Size string
 
 // I is a vecty-material icon component.
 type I struct {
+	*base.MDCRoot
 	vecty.Core
-	ID            string
-	Markup        []vecty.Applyer
-	rootElement   *vecty.HTML
-	HasRipple     bool
-	rippleC       *ripple.R
+	Root          vecty.MarkupOrChild
 	Name          string
 	SizePX        int
 	Inactive      bool
@@ -27,57 +23,62 @@ type I struct {
 
 // Render implements the vecty.Component interface.
 func (c *I) Render() vecty.ComponentOrHTML {
-	sizeClass := js.InternalObject(c).Get("SizePX").String()
+	rootMarkup := base.MarkupOnly(c.Root)
+	if c.Root != nil && rootMarkup == nil {
+		// User supplied root element.
+		return elem.Div(c.Root)
+	}
+
+	_, isIconCode := c.iconDetails()
+
+	return elem.Italic(
+		vecty.Markup(
+			c,
+			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+		),
+		vecty.If(!isIconCode, vecty.Text(c.Name)),
+	)
+}
+
+func (c *I) Apply(h *vecty.HTML) {
+	sizeClass, isIconCode := c.iconDetails()
+	switch {
+	case c.MDCRoot == nil:
+		c.MDCRoot = &base.MDCRoot{}
+	}
+	c.MDCRoot.Element = h
+	vecty.Markup(
+		vecty.MarkupIf(c.ClassOverride == nil,
+			vecty.Class("material-icons"),
+		),
+		vecty.MarkupIf(c.ClassOverride != nil,
+			vecty.Class(c.ClassOverride...),
+		),
+		vecty.MarkupIf(c.Inactive,
+			vecty.Class("md-inactive"),
+		),
+		vecty.MarkupIf(c.Dark,
+			vecty.Class("md-dark"),
+		),
+		vecty.MarkupIf(sizeClass != "",
+			vecty.Class(sizeClass),
+		),
+		vecty.MarkupIf(isIconCode,
+			vecty.UnsafeHTML(c.Name),
+		),
+	).Apply(h)
+}
+
+func (c *I) iconDetails() (sizeClass string, isIconCode bool) {
+	sizeClass = js.InternalObject(c).Get("SizePX").String()
 	switch sizeClass {
 	case "undefined", "", "24":
 		sizeClass = ""
 	default:
 		sizeClass = "md-" + sizeClass
 	}
-	isIconCode := false
 	if c.Name != "" && string([]byte(c.Name)[0]) == "&" {
 		isIconCode = true
 	}
-	c.rootElement = elem.Italic(
-		vecty.Markup(
-			vecty.Markup(c.Markup...),
-			vecty.MarkupIf(c.ClassOverride == nil,
-				vecty.Class("material-icons"),
-			),
-			vecty.MarkupIf(c.ClassOverride != nil,
-				vecty.Class(c.ClassOverride...),
-			),
-			vecty.MarkupIf(c.Inactive,
-				vecty.Class("md-inactive"),
-			),
-			vecty.MarkupIf(c.Dark,
-				vecty.Class("md-dark"),
-			),
-			vecty.MarkupIf(sizeClass != "",
-				vecty.Class(sizeClass),
-			),
-			vecty.MarkupIf(isIconCode,
-				vecty.UnsafeHTML(c.Name),
-			),
-		),
-		vecty.If(!isIconCode, vecty.Text(c.Name)),
-	)
-	return c.rootElement
-}
-
-func (c *I) MDCRoot() *base.Base {
-	return &base.Base{
-		ID:        c.ID,
-		Element:   c.rootElement,
-		HasRipple: c.HasRipple,
-		RippleC:   c.rippleC,
-	}
-}
-
-func (c *I) Mount() {
-	c.MDCRoot().Mount()
-}
-
-func (c *I) Unmount() {
-	c.MDCRoot().Unmount()
+	return
 }

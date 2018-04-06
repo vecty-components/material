@@ -7,6 +7,7 @@ import (
 	"agamigo.io/vecty-material/ul"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
+	"github.com/gopherjs/vecty/prop"
 )
 
 func NewDemoDrawer(dType drawer.Type) *drawer.D {
@@ -25,10 +26,10 @@ func NewDemoDrawer(dType drawer.Type) *drawer.D {
 		toolbarSpacer = elem.Div()
 	}
 	return &drawer.D{
-		ID: "demo-drawer",
-		Markup: []vecty.Applyer{
+		Root: vecty.Markup(
 			vecty.Class("demo-drawer"),
-		},
+			prop.ID("demo-drawer"),
+		),
 		Type:          dType,
 		Header:        header,
 		ToolbarSpacer: base.RenderStoredChild(toolbarSpacer),
@@ -73,15 +74,15 @@ func iconListItem(ico, text string) *ul.Item {
 		selected = true
 	}
 	return &ul.Item{
-		Markup: []vecty.Applyer{
+		Root: vecty.Markup(
 			vecty.Class("demo-drawer-list-item"),
-		},
+		),
 		Selected: selected,
 		Graphic: vecty.List{
 			&icon.I{
-				Markup: []vecty.Applyer{
+				Root: vecty.Markup(
 					vecty.Attribute("aria-hidden", "true"),
-				},
+				),
 				Name: ico,
 			},
 		},

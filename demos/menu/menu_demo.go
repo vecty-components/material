@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	mmenu "agamigo.io/material/menu"
+	"agamigo.io/vecty-material/base/applyer"
 	"agamigo.io/vecty-material/button"
 	"agamigo.io/vecty-material/checkbox"
 	"agamigo.io/vecty-material/demos/common"
@@ -65,8 +66,10 @@ func main() {
 // Render implements the vecty.Component interface.
 func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 	heroM := &menu.M{
-		Open:  true,
-		Basic: true,
+		Open: true,
+		Root: vecty.Markup(
+			applyer.CSSOnly(),
+		),
 		List: &ul.L{Items: []vecty.ComponentOrHTML{
 			&ul.Item{Primary: vecty.Text("Back")},
 			&ul.Item{Primary: vecty.Text("Forward")},
@@ -80,11 +83,11 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 	lsiStatus := &lastSelectedItem{}
 
 	demoM := &menu.M{
-		ID: "demo-menu",
-		Markup: []vecty.Applyer{
+		Root: vecty.Markup(
+			prop.ID("demo-menu"),
 			vecty.Style("top", "0"),
 			vecty.Style("left", "0"),
-		},
+		),
 		List: &ul.L{},
 	}
 	demoM.List.(*ul.L).Items = c.menuItems
@@ -107,11 +110,11 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 	}
 	menuBtnClasses := vecty.ClassMap{"demo-button--normal": true}
 	menuBtn := &button.B{
-		ID: "menu-button",
-		Markup: []vecty.Applyer{
+		Root: vecty.Markup(
+			prop.ID("menu-button"),
 			vecty.Class("demo-button"),
 			menuBtnClasses,
-		},
+		),
 		Raised: true,
 		Label: vecty.List{
 			vecty.Text("Show"),
@@ -131,7 +134,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 	demoM.AnchorElement = menuBtn
 	btnPositionFunc := func(thisR *radio.R, e *vecty.Event) {
 		if thisR.Checked {
-			s := demoM.MDCRoot().MDC.Component().RootElement.Get(
+			s := demoM.MDCRoot.MDC.Component().RootElement.Get(
 				"parentNode").Get("style")
 			s.Call("removeProperty", "top")
 			s.Call("removeProperty", "right")

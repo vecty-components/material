@@ -1,7 +1,6 @@
 package ul
 
 import (
-	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
@@ -10,52 +9,45 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
+type nativeInputer interface {
+	NativeInput() (*vecty.HTML, string)
+}
+
 // L is a vecty-material list component.
 type L struct {
+	*base.MDCRoot
 	vecty.Core
-	ID             string
-	Markup         []vecty.Applyer
-	rootElement    *vecty.HTML
-	Ripple         bool
-	Basic          bool
-	ripple         *ripple.R
+	Root           vecty.MarkupOrChild
 	Items          []vecty.ComponentOrHTML
 	Dense          bool
 	Avatar         bool
 	NonInteractive bool
 	OnClick        func(thisL *L, thisI *Item, e *vecty.Event)
 	GroupSubheader string
+	twoLine        bool
 }
 
 // Item is a vecty-material list-item component.
 type Item struct {
+	*base.MDCRoot
 	vecty.Core
-	ID          string
-	Markup      []vecty.Applyer
-	rootElement *vecty.HTML
-	Ripple      bool
-	Basic       bool
-	ripple      *ripple.R
-	Primary     vecty.ComponentOrHTML
-	Secondary   vecty.ComponentOrHTML
-	Graphic     vecty.ComponentOrHTML
-	Meta        vecty.ComponentOrHTML
-	Selected    bool
-	Activated   bool
-	OnClick     func(i *Item, e *vecty.Event)
-	Href        string
+	Root      vecty.MarkupOrChild
+	Primary   vecty.ComponentOrHTML
+	Secondary vecty.ComponentOrHTML
+	Graphic   vecty.ComponentOrHTML
+	Meta      vecty.ComponentOrHTML
+	Selected  bool
+	Activated bool
+	OnClick   func(i *Item, e *vecty.Event)
+	Href      string
 }
 
 // Group is a vecty-material list-group component.
 type Group struct {
+	*base.MDCRoot
 	vecty.Core
-	ID          string
-	Markup      []vecty.Applyer
-	rootElement *vecty.HTML
-	Ripple      bool
-	Basic       bool
-	ripple      *ripple.R
-	Lists       []vecty.ComponentOrHTML
+	Root  vecty.MarkupOrChild
+	Lists []vecty.ComponentOrHTML
 }
 
 type divider struct {
@@ -64,13 +56,19 @@ type divider struct {
 
 // Render implements the vecty.Component interface.
 func (c *L) Render() vecty.ComponentOrHTML {
+	rootMarkup := base.MarkupOnly(c.Root)
+	if c.Root != nil && rootMarkup == nil {
+		// User supplied root element.
+		return elem.UnorderedList(c.Root)
+	}
+
 	items := make([]vecty.MarkupOrChild, len(c.Items))
-	twoLine := false
+	c.twoLine = false
 	for i, li := range c.Items {
 		switch t := li.(type) {
 		case *Item:
 			if t.Secondary != nil {
-				twoLine = true
+				c.twoLine = true
 			}
 			items[i] = t
 		case *vecty.HTML:
@@ -79,11 +77,24 @@ func (c *L) Render() vecty.ComponentOrHTML {
 			items[i] = li
 		}
 	}
-	h := elem.UnorderedList(items...)
+
+	root := elem.UnorderedList(items...)
 	vecty.Markup(
-		vecty.Markup(c.Markup...),
+		c,
+		vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+	).Apply(root)
+	return root
+}
+
+func (c *L) Apply(h *vecty.HTML) {
+	switch {
+	case c.MDCRoot == nil:
+		c.MDCRoot = &base.MDCRoot{}
+	}
+
+	vecty.Markup(
 		vecty.Class("mdc-list"),
-		vecty.MarkupIf(twoLine,
+		vecty.MarkupIf(c.twoLine,
 			vecty.Class("mdc-list--two-line")),
 		vecty.MarkupIf(c.Dense,
 			vecty.Class("mdc-list--dense")),
@@ -92,8 +103,7 @@ func (c *L) Render() vecty.ComponentOrHTML {
 		vecty.MarkupIf(c.NonInteractive,
 			vecty.Class("mdc-list--non-interactive")),
 	).Apply(h)
-	c.rootElement = h
-	return c.rootElement
+	c.MDCRoot.Element = h
 }
 
 // Render implements the vecty.Component interface.
@@ -102,6 +112,13 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 	if c.Href != "" {
 		tag = "a"
 	}
+
+	rootMarkup := base.MarkupOnly(c.Root)
+	if c.Root != nil && rootMarkup == nil {
+		// User supplied root element.
+		return vecty.Tag(tag, c.Root)
+	}
+
 	graphic := setupGraphicOrMeta(c.Graphic)
 	if graphic != nil {
 		if g, ok := graphic.(*vecty.HTML); ok {
@@ -109,6 +126,7 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 			vecty.Attribute("role", "presentation").Apply(g)
 		}
 	}
+
 	meta := setupGraphicOrMeta(c.Meta)
 	if meta != nil {
 		if g, ok := meta.(*vecty.HTML); ok {
@@ -116,6 +134,7 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 			vecty.Attribute("role", "presentation").Apply(g)
 		}
 	}
+
 	var text vecty.ComponentOrHTML
 	switch {
 	case c.Secondary != nil:
@@ -128,93 +147,65 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 	default:
 		text = c.Primary
 	}
-	c.rootElement = vecty.Tag(tag,
+
+	return vecty.Tag(tag,
 		vecty.Markup(
-			vecty.Markup(c.Markup...),
-			vecty.Class("mdc-list-item"),
-			vecty.MarkupIf(c.Selected,
-				vecty.Class("mdc-list-item--selected")),
-			vecty.MarkupIf(c.Activated,
-				vecty.Class("mdc-list-item--activated")),
-			vecty.MarkupIf(c.OnClick != nil,
-				event.Click(c.wrapOnClick()),
-			),
-			vecty.MarkupIf(c.Href != "", prop.Href(c.Href)),
+			c,
+			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
 		),
 		graphic,
 		base.RenderStoredChild(text),
 		meta,
 	)
-	return c.rootElement
+}
+
+func (c *Item) Apply(h *vecty.HTML) {
+	switch {
+	case c.MDCRoot == nil:
+		c.MDCRoot = &base.MDCRoot{}
+	}
+
+	vecty.Markup(
+		vecty.Class("mdc-list-item"),
+		vecty.MarkupIf(c.Selected,
+			vecty.Class("mdc-list-item--selected")),
+		vecty.MarkupIf(c.Activated,
+			vecty.Class("mdc-list-item--activated")),
+		vecty.MarkupIf(c.OnClick != nil,
+			event.Click(c.wrapOnClick()),
+		),
+		vecty.MarkupIf(c.Href != "", prop.Href(c.Href)),
+	).Apply(h)
+	c.MDCRoot.Element = h
 }
 
 // Render implements the vecty.Component interface.
 func (c *Group) Render() vecty.ComponentOrHTML {
-	c.rootElement = elem.Div(
+	rootMarkup := base.MarkupOnly(c.Root)
+	if c.Root != nil && rootMarkup == nil {
+		// User supplied root element.
+		return elem.Div(c.Root)
+	}
+
+	return elem.Div(
 		vecty.Markup(
-			vecty.Markup(c.Markup...),
-			vecty.Class("mdc-list-group"),
+			c,
+			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
 		),
 		c.listList(),
 	)
-	return c.rootElement
 }
 
-func (c *L) MDCRoot() *base.Base {
-	return &base.Base{
-		MDC:       nil,
-		ID:        c.ID,
-		Element:   c.rootElement,
-		HasRipple: c.Ripple,
-		Basic:     c.Basic,
-		RippleC:   c.ripple,
+func (c *Group) Apply(h *vecty.HTML) {
+	switch {
+	case c.MDCRoot == nil:
+		c.MDCRoot = &base.MDCRoot{}
 	}
-}
 
-func (c *Item) MDCRoot() *base.Base {
-	return &base.Base{
-		MDC:       nil,
-		ID:        c.ID,
-		Element:   c.rootElement,
-		HasRipple: c.Ripple,
-		Basic:     c.Basic,
-		RippleC:   c.ripple,
-	}
-}
-
-func (c *Group) MDCRoot() *base.Base {
-	return &base.Base{
-		MDC:       nil,
-		ID:        c.ID,
-		Element:   c.rootElement,
-		HasRipple: c.Ripple,
-		Basic:     c.Basic,
-		RippleC:   c.ripple,
-	}
-}
-
-func (c *L) Mount() {
-	c.MDCRoot().Mount()
-}
-
-func (c *Item) Mount() {
-	c.MDCRoot().Mount()
-}
-
-func (c *Group) Mount() {
-	c.MDCRoot().Mount()
-}
-
-func (c *L) Unmount() {
-	c.MDCRoot().Unmount()
-}
-
-func (c *Item) Unmount() {
-	c.MDCRoot().Unmount()
-}
-
-func (c *Group) Unmount() {
-	c.MDCRoot().Unmount()
+	vecty.Markup(
+		vecty.Class("mdc-list-group"),
+	).Apply(h)
+	c.MDCRoot.Element = h
 }
 
 func ListDivider() vecty.ComponentOrHTML {
@@ -290,12 +281,6 @@ func setupGraphicOrMeta(c vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	var graphic vecty.ComponentOrHTML
 	if c != nil {
 		graphic = c
-		switch t := c.(type) {
-		case vecty.Component:
-			if h, ok := t.Render().(*vecty.HTML); ok {
-				graphic = h
-			}
-		}
 		if js.InternalObject(graphic).Get("tag").String() != "img" {
 			graphic = elem.Span(graphic)
 		}

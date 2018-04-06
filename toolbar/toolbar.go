@@ -1,23 +1,17 @@
 package toolbar
 
 import (
-	"agamigo.io/material/ripple"
 	"agamigo.io/material/toolbar"
 	"agamigo.io/vecty-material/base"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/prop"
 )
 
 // T is a vecty-material toolbar component.
 type T struct {
-	*toolbar.T
+	*base.MDCRoot
 	vecty.Core
-	ID            string
-	Markup        []vecty.Applyer
-	rootElement   *vecty.HTML
-	Ripple        bool
-	ripple        *ripple.R
+	Root          vecty.MarkupOrChild
 	SectionStart  vecty.List
 	SectionCenter vecty.List
 	SectionEnd    vecty.List
@@ -26,82 +20,67 @@ type T struct {
 
 // Render implements the vecty.Component interface.
 func (c *T) Render() vecty.ComponentOrHTML {
-	c.init()
-	var start, center, end vecty.List
-	if c.SectionStart != nil {
-		start = make(vecty.List, len(c.SectionStart))
-		for i, v := range c.SectionStart {
-			start[i] = elem.Section(
-				vecty.Markup(
-					vecty.Class("mdc-toolbar__section"),
-					vecty.Class("mdc-toolbar__section--align-start")),
-				v,
-			)
-		}
+	rootMarkup := base.MarkupOnly(c.Root)
+	if c.Root != nil && rootMarkup == nil {
+		// User supplied root element.
+		return elem.Header(c.Root)
 	}
-	if c.SectionCenter != nil {
-		center = make(vecty.List, len(c.SectionCenter))
-		for i, v := range c.SectionCenter {
-			center[i] = elem.Section(
-				vecty.Markup(
-					vecty.Class("mdc-toolbar__section")),
-				v,
-			)
-		}
-	}
-	if c.SectionEnd != nil {
-		end = make(vecty.List, len(c.SectionEnd))
-		for i, v := range c.SectionEnd {
-			end[i] = elem.Section(
-				vecty.Markup(
-					vecty.Class("mdc-toolbar__section"),
-					vecty.Class("mdc-toolbar__section--align-end")),
-				v,
-			)
-		}
-	}
-	c.rootElement = elem.Header(
+
+	// Built in root element.
+	return elem.Header(
 		vecty.Markup(
-			vecty.MarkupIf(c.Markup != nil, c.Markup...),
-			vecty.MarkupIf(c.ID != "", prop.ID(c.ID)),
-			vecty.Class("mdc-toolbar"),
-			vecty.MarkupIf(c.Fixed, vecty.Class("mdc-toolbar--fixed"))),
-		elem.Div(vecty.Markup(vecty.Class("mdc-toolbar__row")),
-			vecty.If(c.SectionStart != nil, elem.Section(
-				vecty.Markup(
-					vecty.Class("mdc-toolbar__section"),
-					vecty.Class("mdc-toolbar__section--align-start")),
-				c.SectionStart,
-			)),
-			center,
-			end,
+			c,
+			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+		),
+		elem.Div(
+			vecty.Markup(
+				vecty.Class("mdc-toolbar__row"),
+			),
+			vecty.If(c.SectionStart != nil,
+				elem.Section(
+					vecty.Markup(
+						vecty.Class("mdc-toolbar__section"),
+						vecty.Class("mdc-toolbar__section--align-start"),
+					),
+					c.SectionStart,
+				),
+			),
+			vecty.If(c.SectionCenter != nil,
+				elem.Section(
+					vecty.Markup(
+						vecty.Class("mdc-toolbar__section"),
+					),
+					c.SectionCenter,
+				),
+			),
+			vecty.If(c.SectionEnd != nil,
+				elem.Section(
+					vecty.Markup(
+						vecty.Class("mdc-toolbar__section"),
+						vecty.Class("mdc-toolbar__section--align-end"),
+					),
+					c.SectionEnd,
+				),
+			),
 		),
 	)
-	return c.rootElement
 }
 
-func (c *T) MDCRoot() *base.Base {
-	return &base.Base{
-		MDC:       c,
-		ID:        c.ID,
-		Element:   c.rootElement,
-		HasRipple: c.Ripple,
-		RippleC:   c.ripple,
+func (c *T) Apply(h *vecty.HTML) {
+	switch {
+	case c.MDCRoot == nil:
+		c.MDCRoot = &base.MDCRoot{}
+		fallthrough
+	case c.MDCRoot.MDC == nil:
+		c.MDCRoot.MDC = toolbar.New()
 	}
-}
-
-func (c *T) Mount() {
-	c.MDCRoot().Mount()
-}
-
-func (c *T) Unmount() {
-	c.MDCRoot().Unmount()
-}
-
-func (c *T) init() {
-	if c.T == nil {
-		c.T = toolbar.New()
-	}
+	c.MDCRoot.Element = h
+	vecty.Markup(
+		vecty.Class("mdc-toolbar"),
+		vecty.MarkupIf(c.Fixed,
+			vecty.Class("mdc-toolbar--fixed"),
+		),
+	).Apply(h)
 }
 
 func Title(title string, mUp []vecty.Applyer) *vecty.HTML {

@@ -7,6 +7,7 @@ import (
 	"agamigo.io/vecty-material/demos/common"
 	"agamigo.io/vecty-material/formfield"
 	"agamigo.io/vecty-material/icon"
+	"agamigo.io/vecty-material/ripple"
 	"agamigo.io/vecty-material/ul"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/vecty"
@@ -71,8 +72,9 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 				&formfield.FF{
 					Label: "Toggle RTL",
 					Input: &checkbox.CB{
-
-						ID: "toggle-rtl",
+						Input: vecty.Markup(
+							prop.ID("toggle-rtl"),
+						),
 						OnChange: func(thisCB *checkbox.CB,
 							e *vecty.Event) {
 							w := js.Global.Get("window")
@@ -94,9 +96,9 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 					heading: "Custom Colors",
 					groups: []*ul.Group{
 						&ul.Group{
-							Markup: []vecty.Applyer{
+							Root: vecty.Markup(
 								vecty.Class("demo-list-group--custom"),
-							},
+							),
 						},
 					},
 					groupHeadings: []string{
@@ -223,134 +225,132 @@ func (c *demoSection) Render() vecty.ComponentOrHTML {
 }
 
 func (c *demoList) make(section string) *ul.L {
-	newL := &ul.L{
-		Markup: []vecty.Applyer{vecty.Class("demo-list")},
-	}
-	newL.Markup = append(newL.Markup, c.markup...)
+	c.markup = append(c.markup, vecty.Class("demo-list"))
+	newL := &ul.L{}
 	newL.GroupSubheader = c.heading
 	switch c.heading {
 	case "Text only, non-interactive (no states)":
-		makeSingleLineItems(newL)
+		c.makeSingleLineItems(newL)
 		newL.NonInteractive = true
 	case "Text-Only":
-		makeTwoLineItems(newL)
+		c.makeTwoLineItems(newL)
 	case "Text only (dense)":
-		makeSingleLineItems(newL)
+		c.makeSingleLineItems(newL)
 		newL.Dense = true
 	case "Text-Only (Dense)":
-		makeTwoLineItems(newL)
+		c.makeTwoLineItems(newL)
 		newL.Dense = true
 	case "Graphic":
 		if section == "Two-Line List" {
-			makeTwoLineItems(newL)
+			c.makeTwoLineItems(newL)
 		} else {
-			makeSingleLineItems(newL)
+			c.makeSingleLineItems(newL)
 		}
-		withIconPlaceholders(newL)
+		c.withIconPlaceholders(newL)
 	case "Graphic (dense)":
-		makeSingleLineItems(newL)
-		withIconPlaceholders(newL)
+		c.makeSingleLineItems(newL)
+		c.withIconPlaceholders(newL)
 		newL.Dense = true
 	case "Graphic (Dense)":
-		makeTwoLineItems(newL)
-		withIconPlaceholders(newL)
+		c.makeTwoLineItems(newL)
+		c.withIconPlaceholders(newL)
 		newL.Dense = true
 	case "Graphic Example - Icon with Text":
-		makeGraphicExampleItems(newL, false)
+		c.makeGraphicExampleItems(newL, false)
 	case "Leading Checkbox":
-		makeCheckboxItems(newL, true)
-		newL.ID = "leading-checkbox-list"
+		c.makeCheckboxItems(newL, true)
+		c.markup = append(c.markup, prop.ID("leading-checkbox-list"))
 	case "Trailing Checkbox":
-		makeCheckboxItems(newL, false)
-		newL.ID = "trailing-checkbox-list"
+		c.makeCheckboxItems(newL, false)
+		c.markup = append(c.markup, prop.ID("trailing-checkbox-list"))
 	case "Avatar List":
 		if section == "Two-Line List" {
-			makeTwoLineItems(newL)
+			c.makeTwoLineItems(newL)
 		} else {
-			makeSingleLineItems(newL)
+			c.makeSingleLineItems(newL)
 		}
-		withAvatars(newL)
-		withIconPlaceholders(newL)
+		c.withAvatars(newL)
+		c.withIconPlaceholders(newL)
 	case "Avatar List (dense)":
 		if section == "Two-Line List" {
-			makeTwoLineItems(newL)
+			c.makeTwoLineItems(newL)
 		} else {
-			makeSingleLineItems(newL)
+			c.makeSingleLineItems(newL)
 		}
-		withAvatars(newL)
-		withIconPlaceholders(newL)
+		c.withAvatars(newL)
+		c.withIconPlaceholders(newL)
 		newL.Dense = true
 	case "Example - Avatar with Text":
-		makeAvatarWTextItems(newL)
-		withAvatars(newL)
+		c.makeAvatarWTextItems(newL)
+		c.withAvatars(newL)
 	case "Metadata":
 		if section == "Two-Line List" {
-			makeTwoLineItems(newL)
+			c.makeTwoLineItems(newL)
 		} else {
-			makeSingleLineItems(newL)
+			c.makeSingleLineItems(newL)
 		}
-		withMetadata(newL)
+		c.withMetadata(newL)
 	case "Metadata (Dense)":
 		if section == "Two-Line List" {
-			makeTwoLineItems(newL)
+			c.makeTwoLineItems(newL)
 		} else {
-			makeSingleLineItems(newL)
+			c.makeSingleLineItems(newL)
 		}
-		withMetadata(newL)
+		c.withMetadata(newL)
 		newL.Dense = true
 	case "Avatar + Metadata":
-		makeSingleLineItems(newL)
-		withAvatars(newL)
-		withIconPlaceholders(newL)
-		withMetadata(newL)
+		c.makeSingleLineItems(newL)
+		c.withAvatars(newL)
+		c.withIconPlaceholders(newL)
+		c.withMetadata(newL)
 	case "Avatar + Metadata (Dense)":
-		makeSingleLineItems(newL)
-		withAvatars(newL)
-		withIconPlaceholders(newL)
-		withMetadata(newL)
+		c.makeSingleLineItems(newL)
+		c.withAvatars(newL)
+		c.withIconPlaceholders(newL)
+		c.withMetadata(newL)
 		newL.Dense = true
 	case "Example - Avatar with Text and Icon":
-		makeAvatarWTextItems(newL)
-		withAvatars(newL)
-		withMetaIcons(newL)
-		newL.Markup = append(newL.Markup,
-			vecty.Class("demo-list--avatar-and-meta-icon"))
+		c.makeAvatarWTextItems(newL)
+		c.withAvatars(newL)
+		c.withMetaIcons(newL)
+		c.markup = append(c.markup, vecty.Class("demo-list--avatar-and-meta-icon"))
 	case "Lists w/ Ellipsis":
-		makeFoldersItems(newL)
-		withAvatars(newL)
-		withIconPlaceholders(newL)
-		withEllipsis(newL)
+		c.makeFoldersItems(newL)
+		c.withAvatars(newL)
+		c.withIconPlaceholders(newL)
+		c.withEllipsis(newL)
 	case "hero", "Folders", "Example - Two-line Avatar + Text + Icon":
-		makeFoldersItems(newL)
-		withAvatars(newL)
-		withIconPlaceholders(newL)
+		c.makeFoldersItems(newL)
+		c.withAvatars(newL)
+		c.withIconPlaceholders(newL)
 	case "Files":
-		makeFilesItems(newL)
-		withAvatars(newL)
-		withIconPlaceholders(newL)
+		c.makeFilesItems(newL)
+		c.withAvatars(newL)
+		c.withIconPlaceholders(newL)
 	case "Full-Width Dividers":
-		makeDividerItems(newL)
+		c.makeDividerItems(newL)
 	case "Inset Dividers":
-		makeDividerItems(newL)
+		c.makeDividerItems(newL)
 		newL.Items[3] = ul.ItemDividerInset()
-		withAvatars(newL)
-		withIconPlaceholders(newL)
+		c.withAvatars(newL)
+		c.withIconPlaceholders(newL)
 	case "List 1", "List 2":
-		makeSingleLineItems(newL)
+		c.makeSingleLineItems(newL)
 	case "Example - Interactive List":
-		makeGraphicExampleItems(newL, true)
+		c.makeGraphicExampleItems(newL, true)
 	}
+	newL.Root = vecty.Markup(c.markup...)
 	return newL
 }
 
-func makeSingleLineItems(l *ul.L) {
+func (dl *demoList) makeSingleLineItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
 		&ul.Item{Primary: vecty.Text("Single-line item")},
 		&ul.Item{Primary: vecty.Text("Single-line item")},
 		&ul.Item{Primary: vecty.Text("Single-line item")},
 	}
 }
-func makeTwoLineItems(l *ul.L) {
+func (dl *demoList) makeTwoLineItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
 		&ul.Item{
 			Primary:   vecty.Text("Two-line item"),
@@ -364,7 +364,7 @@ func makeTwoLineItems(l *ul.L) {
 	}
 }
 
-func makeFoldersItems(l *ul.L) {
+func (dl *demoList) makeFoldersItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
 		&ul.Item{
 			Graphic:   &icon.I{Name: "folder"},
@@ -387,7 +387,7 @@ func makeFoldersItems(l *ul.L) {
 	}
 }
 
-func makeFilesItems(l *ul.L) {
+func (dl *demoList) makeFilesItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
 		&ul.Item{
 			Graphic: &icon.I{
@@ -406,7 +406,7 @@ func makeFilesItems(l *ul.L) {
 	}
 }
 
-func makeDividerItems(l *ul.L) {
+func (dl *demoList) makeDividerItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
 		&ul.Item{
 			Primary: vecty.Text("Single-line item - section 1")},
@@ -422,7 +422,7 @@ func makeDividerItems(l *ul.L) {
 	}
 }
 
-func makeGraphicExampleItems(l *ul.L, interactive bool) {
+func (dl *demoList) makeGraphicExampleItems(l *ul.L, interactive bool) {
 	l.Items = []vecty.ComponentOrHTML{
 		&ul.Item{
 			Graphic: &icon.I{Name: "network_wifi"},
@@ -441,20 +441,32 @@ func makeGraphicExampleItems(l *ul.L, interactive bool) {
 		for _, cItem := range l.Items {
 			if item, ok := cItem.(*ul.Item); ok {
 				item.Href = "#"
-				item.Markup = append(item.Markup,
+				item.Root = vecty.Markup(
 					event.Click(nil).PreventDefault(),
+					&ripple.R{},
 				)
-				item.Ripple = true
 			}
 		}
 	}
 }
 
-func makeCheckboxItems(l *ul.L, isLeading bool) {
+func (dl *demoList) makeCheckboxItems(l *ul.L, isLeading bool) {
 	cbs := []*checkbox.CB{
-		&checkbox.CB{ID: "leading-checkbox-blueberries"},
-		&checkbox.CB{ID: "leading-checkbox-boysenberries"},
-		&checkbox.CB{ID: "leading-checkbox-strawberries"},
+		&checkbox.CB{
+			Input: vecty.Markup(
+				prop.ID("leading-checkbox-blueberries"),
+			),
+		},
+		&checkbox.CB{
+			Input: vecty.Markup(
+				prop.ID("leading-checkbox-boysenberries"),
+			),
+		},
+		&checkbox.CB{
+			Input: vecty.Markup(
+				prop.ID("leading-checkbox-strawberries"),
+			),
+		},
 	}
 	l.Items = []vecty.ComponentOrHTML{
 		&ul.Item{
@@ -475,30 +487,32 @@ func makeCheckboxItems(l *ul.L, isLeading bool) {
 	}
 	for i, cItem := range l.Items {
 		if item, ok := cItem.(*ul.Item); ok {
-			item.Markup = append(item.Markup,
-				vecty.Class("checkbox-list-ripple-surface"))
-			item.Ripple = true
+			item.Root = vecty.Markup(
+				vecty.Class("checkbox-list-ripple-surface"),
+				&ripple.R{},
+			)
 			if isLeading {
 				item.Graphic = cbs[i]
 			} else {
 				item.Meta = cbs[i]
 			}
-			cb := cbs[i]
 			item.OnClick = func(it *ul.Item, e *vecty.Event) {
-				// TODO: Figure out why we have to update the native input
-				// directly
-				if e.Target.Get("tagName").String() == "LI" {
+				var cb *checkbox.CB
+				if isLeading {
+					cb = item.Graphic.(*checkbox.CB)
 					cb.Checked = !cb.Checked
-					cbEl := e.Target.Call("querySelector",
-						".mdc-checkbox__native-control")
-					cbEl.Set("checked", cb.Checked)
+					vecty.Rerender(cb)
+				} else {
+					cb = item.Meta.(*checkbox.CB)
+					cb.Checked = !cb.Checked
+					vecty.Rerender(cb)
 				}
 			}
 		}
 	}
 }
 
-func makeAvatarWTextItems(l *ul.L) {
+func (dl *demoList) makeAvatarWTextItems(l *ul.L) {
 	l.Items = []vecty.ComponentOrHTML{
 		&ul.Item{
 			Graphic: elem.Image(vecty.Markup(
@@ -527,13 +541,13 @@ func makeAvatarWTextItems(l *ul.L) {
 	}
 }
 
-func withAvatars(l *ul.L) {
-	l.Markup = append(l.Markup, vecty.Class("demo-list--with-avatars"))
+func (dl *demoList) withAvatars(l *ul.L) {
+	dl.markup = append(dl.markup, vecty.Class("demo-list--with-avatars"))
 	l.Avatar = true
 }
 
-func withIconPlaceholders(l *ul.L) {
-	l.Markup = append(l.Markup, vecty.Class("demo-list--icon-placeholders"))
+func (dl *demoList) withIconPlaceholders(l *ul.L) {
+	dl.markup = append(dl.markup, vecty.Class("demo-list--icon-placeholders"))
 	for _, cItem := range l.Items {
 		if item, ok := cItem.(*ul.Item); ok {
 			if item.Graphic == nil {
@@ -543,7 +557,7 @@ func withIconPlaceholders(l *ul.L) {
 	}
 }
 
-func withMetadata(l *ul.L) {
+func (dl *demoList) withMetadata(l *ul.L) {
 	for i, cItem := range l.Items {
 		if item, ok := cItem.(*ul.Item); ok {
 			item.Meta = vecty.Text("$" + strconv.Itoa(i+1) + "0.00")
@@ -551,7 +565,7 @@ func withMetadata(l *ul.L) {
 	}
 }
 
-func withMetaIcons(l *ul.L) {
+func (dl *demoList) withMetaIcons(l *ul.L) {
 	newItems := make([]vecty.ComponentOrHTML, len(l.Items))
 	for i, cItem := range l.Items {
 		if item, ok := cItem.(*ul.Item); ok {
@@ -568,7 +582,7 @@ func withMetaIcons(l *ul.L) {
 	l.Items = newItems
 }
 
-func withEllipsis(l *ul.L) {
+func (dl *demoList) withEllipsis(l *ul.L) {
 	if len(l.Items) != 3 {
 		print(len(l.Items))
 		panic("Expected 3 items for Ellipsis example.")

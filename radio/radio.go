@@ -2,8 +2,8 @@ package radio
 
 import (
 	"agamigo.io/material/radio"
-	"agamigo.io/material/ripple"
 	"agamigo.io/vecty-material/base"
+	"agamigo.io/vecty-material/base/applyer"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -12,93 +12,98 @@ import (
 
 // R is a vecty-material radio component.
 type R struct {
-	*radio.R
+	*base.MDCRoot
 	vecty.Core
-	ID          string
-	Markup      []vecty.Applyer
-	rootElement *vecty.HTML
-	Ripple      bool
-	Basic       bool
-	ripple      *ripple.R
-	OnChange    func(this *R, e *vecty.Event)
-	Name        string
-	Checked     bool
-	Disabled    bool
-	Value       string
+	Root     vecty.MarkupOrChild
+	Input    vecty.MarkupOrChild
+	OnChange func(this *R, e *vecty.Event)
+	Name     string
+	Checked  bool
+	Disabled bool
+	Value    string
 }
 
 // Render implements the vecty.Component interface.
 func (c *R) Render() vecty.ComponentOrHTML {
-	c.init()
-	c.rootElement = elem.Div(
+	rootMarkup := base.MarkupOnly(c.Root)
+	if c.Root != nil && rootMarkup == nil {
+		// User supplied root element.
+		return elem.Div(c.Root)
+	}
+
+	input, _ := c.NativeInput()
+
+	// Built-in root element.
+	return elem.Div(
 		vecty.Markup(
-			vecty.Markup(c.Markup...),
-			vecty.Class("mdc-radio"),
-			vecty.MarkupIf(c.Disabled,
-				vecty.Class("mdc-radio--disabled"),
-			),
+			c,
+			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
 		),
-		elem.Input(
-			vecty.Markup(
-				event.Change(c.onChange),
-				vecty.Class("mdc-radio__native-control"),
-				vecty.MarkupIf(c.ID != "",
-					prop.ID(c.ID),
-				),
-				prop.Type(prop.TypeRadio),
-				prop.Checked(c.Checked),
-				vecty.MarkupIf(c.Value != "",
-					prop.Value(c.Value),
-				),
-				vecty.MarkupIf(c.Name != "", vecty.Property("name", c.Name)),
-				vecty.Property("disabled", c.Disabled),
-			),
-		),
+		input,
 		elem.Div(
 			vecty.Markup(vecty.Class("mdc-radio__background")),
 			elem.Div(vecty.Markup(vecty.Class("mdc-radio__outer-circle"))),
 			elem.Div(vecty.Markup(vecty.Class("mdc-radio__inner-circle"))),
 		),
 	)
-	return c.rootElement
 }
 
-func (c *R) MDCRoot() *base.Base {
-	return &base.Base{
-		MDC:       c,
-		ID:        c.ID,
-		Element:   c.rootElement,
-		HasRipple: c.Ripple,
-		Basic:     c.Basic,
-		RippleC:   c.ripple,
-	}
-}
-
-func (c *R) Mount() {
-	c.MDCRoot().Mount()
-}
-
-func (c *R) Unmount() {
-	c.MDCRoot().Unmount()
-}
-
-func (c *R) init() {
+func (c *R) Apply(h *vecty.HTML) {
 	switch {
-	case c.R == nil:
-		c.R = radio.New()
+	case c.MDCRoot == nil:
+		c.MDCRoot = &base.MDCRoot{}
 		fallthrough
-	case c.rootElement == nil:
-		c.R.Checked = c.Checked
-		c.R.Disabled = c.Disabled
-		c.R.Value = c.Value
+	case c.MDCRoot.MDC == nil:
+		c.MDCRoot.MDC = radio.New()
+		if r, ok := c.MDCRoot.MDC.(*radio.R); ok {
+			r.Checked = c.Checked
+			r.Disabled = c.Disabled
+			r.Value = c.Value
+		}
 	}
+
+	vecty.Markup(
+		vecty.Class("mdc-radio"),
+		vecty.MarkupIf(c.Disabled,
+			vecty.Class("mdc-radio--disabled"),
+		),
+	).Apply(h)
+	c.MDCRoot.Element = h
 }
 
 func (c *R) onChange(e *vecty.Event) {
-	c.Checked = c.R.Checked
-	c.Disabled = c.R.Disabled
-	c.Value = c.R.Value
+	if r, ok := c.MDCRoot.MDC.(*radio.R); ok {
+		c.Checked = r.Checked
+		c.Disabled = r.Disabled
+		c.Value = r.Value
+	}
 	if c.OnChange != nil {
 		c.OnChange(c, e)
 	}
+}
+
+func (c *R) NativeInput() (element *vecty.HTML, id string) {
+	niMarkup := base.MarkupOnly(c.Input)
+	if c.Input != nil && niMarkup == nil {
+		// User supplied input element.
+		element = elem.Input(c.Input)
+		id = applyer.FindID(element)
+		return
+	}
+
+	// Built-in input element.
+	element = elem.Input(
+		vecty.Markup(
+			vecty.MarkupIf(niMarkup != nil, niMarkup),
+			event.Change(c.onChange),
+			vecty.Class("mdc-radio__native-control"),
+			prop.Type(prop.TypeRadio),
+			prop.Checked(c.Checked),
+			vecty.MarkupIf(c.Value != "", prop.Value(c.Value)),
+			vecty.MarkupIf(c.Name != "", vecty.Property("name", c.Name)),
+			vecty.Property("disabled", c.Disabled),
+		),
+	)
+	id = applyer.FindID(element)
+	return
 }

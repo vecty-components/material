@@ -6,8 +6,10 @@ import (
 	"agamigo.io/vecty-material/demos/common"
 	"agamigo.io/vecty-material/formfield"
 	"agamigo.io/vecty-material/icon"
+	"agamigo.io/vecty-material/ripple"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
+	"github.com/gopherjs/vecty/prop"
 )
 
 // buttonDemo is our main page component.
@@ -45,7 +47,9 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 				&formfield.FF{
 					Label: "Disable buttons (excluding links)",
 					Input: &checkbox.CB{
-						ID: "toggle-disabled",
+						Input: vecty.Markup(
+							prop.ID("toggle-disabled"),
+						),
 						OnChange: func(thisCB *checkbox.CB,
 							e *vecty.Event) {
 							checked := e.Target.Get("checked").Bool()
@@ -66,6 +70,13 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 	)
 }
 
+func r(applyRipple bool) (a vecty.Applyer) {
+	if applyRipple {
+		a = &ripple.R{}
+	}
+	return
+}
+
 func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 	b *button.B) vecty.ComponentOrHTML {
 	if b == nil {
@@ -83,7 +94,9 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 					Raised:     b.Raised,
 					Unelevated: b.Unelevated,
 					Stroked:    b.Stroked,
-					Ripple:     Ripple,
+					Root: vecty.Markup(
+						r(Ripple),
+					),
 				},
 			),
 			c.newBtn(
@@ -93,15 +106,17 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 					Raised:     b.Raised,
 					Unelevated: b.Unelevated,
 					Stroked:    b.Stroked,
-					Ripple:     Ripple,
+					Root: vecty.Markup(
+						r(Ripple),
+					),
 				},
 			),
 			c.newBtn(
 				&button.B{
-					Ripple: Ripple,
-					Markup: []vecty.Applyer{
+					Root: vecty.Markup(
 						vecty.Class("secondary-text-button"),
-					},
+						r(Ripple),
+					),
 					Label:      vecty.Text("Secondary"),
 					Raised:     b.Raised,
 					Unelevated: b.Unelevated,
@@ -117,7 +132,9 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 					Raised:     b.Raised,
 					Unelevated: b.Unelevated,
 					Stroked:    b.Stroked,
-					Ripple:     Ripple,
+					Root: vecty.Markup(
+						r(Ripple),
+					),
 				},
 			),
 			c.newBtn(
@@ -127,7 +144,9 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 					Raised:     b.Raised,
 					Unelevated: b.Unelevated,
 					Stroked:    b.Stroked,
-					Ripple:     Ripple,
+					Root: vecty.Markup(
+						r(Ripple),
+					),
 				},
 			),
 		),
@@ -161,20 +180,20 @@ func (c *buttonDemoView) renderBtnFieldSets(heading string,
 			elem.Div(
 				c.newBtn(
 					&button.B{
-						Markup: []vecty.Applyer{
+						Root: vecty.Markup(
 							vecty.Class("big-round-corner-button"),
-						},
-						Ripple:     Ripple,
+							r(Ripple),
+						),
 						Unelevated: true,
 						Label:      vecty.Text("Corner Radius"),
 					},
 				),
 				c.newBtn(
 					&button.B{
-						Markup: []vecty.Applyer{
+						Root: vecty.Markup(
 							vecty.Class("thick-stroke-button"),
-						},
-						Ripple:  Ripple,
+							r(Ripple),
+						),
 						Stroked: true,
 						Label:   vecty.Text("Thick Stroke Width"),
 					},
@@ -187,6 +206,5 @@ func (c *buttonDemoView) renderBtnFieldSets(heading string,
 // Wraps button.New() and keeps track of created buttons
 func (c *buttonDemoView) newBtn(b *button.B) *button.B {
 	c.buttons = append(c.buttons, b)
-	// return c.buttons[len(c.buttons)-1]
 	return b
 }
