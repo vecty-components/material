@@ -14,8 +14,13 @@ type R struct {
 
 func (c *R) Apply(h *vecty.HTML) {
 	c.R = ripple.New()
-	vecty.Property("vecty-material-ripple", c.Start).Apply(h)
 	c.Root = h
+	// start := func() error {
+	// 	return c.R.Start(c.Root.Node())
+	// }
+	// vecty.Property("vecty-material-ripple", js.InternalObject(start)).Apply(h)
+	// vecty.Property("vecty-material-ripple", &start).Apply(h)
+	vecty.Property("vecty-material-ripple", c).Apply(h)
 }
 
 func (c *R) Start() error {

@@ -52,7 +52,7 @@ func StartRipple(h *vecty.HTML) {
 	if p == nil {
 		return
 	}
-	p.Invoke()
+	p.Get("Start").Invoke()
 }
 
 func findProp(key string, h *vecty.HTML) *js.Object {
