@@ -151,7 +151,7 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 						),
 						OnChange: func(thisCB *checkbox.CB, e *vecty.Event) {
 							for _, v := range c.dialogs {
-								el := v.MDCRoot.Element.Node()
+								el := v.MDC.RootElement.Node()
 								if thisCB.Checked {
 									el.Call("setAttribute",
 										"dir", "rtl")

@@ -9,7 +9,7 @@ import (
 
 // T is a vecty-material toolbar component.
 type T struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root          vecty.MarkupOrChild
 	SectionStart  vecty.List
@@ -68,13 +68,13 @@ func (c *T) Render() vecty.ComponentOrHTML {
 
 func (c *T) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 		fallthrough
-	case c.MDCRoot.MDC == nil:
-		c.MDCRoot.MDC = toolbar.New()
+	case c.MDC.Component == nil:
+		c.MDC.Component = toolbar.New()
 	}
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 	vecty.Markup(
 		vecty.Class("mdc-toolbar"),
 		vecty.MarkupIf(c.Fixed,

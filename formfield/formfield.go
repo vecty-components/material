@@ -11,7 +11,7 @@ import (
 
 // FF is a vecty-material formfield component.
 type FF struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root     vecty.MarkupOrChild
 	Input    vecty.ComponentOrHTML
@@ -47,11 +47,11 @@ func (c *FF) Render() vecty.ComponentOrHTML {
 
 func (c *FF) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 		fallthrough
-	case c.MDCRoot.MDC == nil:
-		c.MDCRoot.MDC = formfield.New()
+	case c.MDC.Component == nil:
+		c.MDC.Component = formfield.New()
 	}
 	vecty.Markup(
 		vecty.Class("mdc-form-field"),
@@ -59,5 +59,5 @@ func (c *FF) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-form-field--align-end"),
 		),
 	).Apply(h)
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 }

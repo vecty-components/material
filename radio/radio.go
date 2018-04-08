@@ -12,7 +12,7 @@ import (
 
 // R is a vecty-material radio component.
 type R struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root     vecty.MarkupOrChild
 	Input    vecty.MarkupOrChild
@@ -50,12 +50,12 @@ func (c *R) Render() vecty.ComponentOrHTML {
 
 func (c *R) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 		fallthrough
-	case c.MDCRoot.MDC == nil:
-		c.MDCRoot.MDC = radio.New()
-		if r, ok := c.MDCRoot.MDC.(*radio.R); ok {
+	case c.MDC.Component == nil:
+		c.MDC.Component = radio.New()
+		if r, ok := c.MDC.Component.(*radio.R); ok {
 			r.Checked = c.Checked
 			r.Disabled = c.Disabled
 			r.Value = c.Value
@@ -68,11 +68,11 @@ func (c *R) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-radio--disabled"),
 		),
 	).Apply(h)
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 }
 
 func (c *R) onChange(e *vecty.Event) {
-	if r, ok := c.MDCRoot.MDC.(*radio.R); ok {
+	if r, ok := c.MDC.Component.(*radio.R); ok {
 		c.Checked = r.Checked
 		c.Disabled = r.Disabled
 		c.Value = r.Value

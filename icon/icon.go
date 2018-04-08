@@ -11,7 +11,7 @@ type Size string
 
 // I is a vecty-material icon component.
 type I struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root          vecty.MarkupOrChild
 	Name          string
@@ -43,10 +43,10 @@ func (c *I) Render() vecty.ComponentOrHTML {
 func (c *I) Apply(h *vecty.HTML) {
 	sizeClass, isIconCode := c.iconDetails()
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 	}
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 	vecty.Markup(
 		vecty.MarkupIf(c.ClassOverride == nil,
 			vecty.Class("material-icons"),

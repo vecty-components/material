@@ -70,11 +70,10 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func r(applyRipple bool) (a vecty.Applyer) {
-	if applyRipple {
-		a = &ripple.R{}
-	}
-	return
+func r(applyRipple bool) vecty.Applyer {
+	return vecty.MarkupIf(applyRipple,
+		&ripple.R{},
+	)
 }
 
 func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,

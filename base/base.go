@@ -6,32 +6,28 @@ import (
 	"github.com/gopherjs/vecty"
 )
 
-type MDCRooter interface {
-	MDCRoot() *MDCRoot
+type MDC struct {
+	Component   base.ComponentStartStopper
+	RootElement *vecty.HTML
 }
 
-type MDCRoot struct {
-	MDC     base.ComponentStartStopper
-	Element *vecty.HTML
-}
-
-func (b *MDCRoot) Mount() {
-	applyer.StartRipple(b.Element)
+func (b *MDC) Mount() {
+	applyer.StartRipple(b.RootElement)
 	switch {
-	case b.MDC == nil:
+	case b.Component == nil:
 		fallthrough
-	case applyer.IsCSSOnly(b.Element):
+	case applyer.IsCSSOnly(b.RootElement):
 		return
 	}
-	err := b.MDC.Start(b.Element.Node())
+	err := b.Component.Start(b.RootElement.Node())
 	if err != nil {
 		panic(err)
 	}
 }
 
-func (b *MDCRoot) Unmount() {
-	if b.MDC != nil {
-		err := b.MDC.Stop()
+func (b *MDC) Unmount() {
+	if b.Component != nil {
+		err := b.Component.Stop()
 		if err != nil {
 			panic(err)
 		}

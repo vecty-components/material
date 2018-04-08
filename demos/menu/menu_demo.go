@@ -134,7 +134,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 	demoM.AnchorElement = menuBtn
 	btnPositionFunc := func(thisR *radio.R, e *vecty.Event) {
 		if thisR.Checked {
-			s := demoM.MDCRoot.MDC.Component().RootElement.Get(
+			s := demoM.MDC.Component.Component().RootElement.Get(
 				"parentNode").Get("style")
 			s.Call("removeProperty", "top")
 			s.Call("removeProperty", "right")

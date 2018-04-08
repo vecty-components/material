@@ -10,7 +10,7 @@ import (
 
 // IT is a vecty-material icontoggle component.
 type IT struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root          vecty.MarkupOrChild
 	ChangeHandler func(thisIT *IT, e *vecty.Event)
@@ -48,11 +48,11 @@ func (c *IT) Render() vecty.ComponentOrHTML {
 
 func (c *IT) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 		fallthrough
-	case c.MDCRoot.MDC == nil:
-		c.MDCRoot.MDC = icontoggle.New()
+	case c.MDC.Component == nil:
+		c.MDC.Component = icontoggle.New()
 	}
 
 	var markup []vecty.Applyer
@@ -115,7 +115,7 @@ func (c *IT) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-icon-toggle--on"),
 		),
 	).Apply(h)
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 }
 
 func (c *IT) wrapChangeHandler() func(e *vecty.Event) {

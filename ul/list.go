@@ -15,7 +15,7 @@ type nativeInputer interface {
 
 // L is a vecty-material list component.
 type L struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root           vecty.MarkupOrChild
 	Items          []vecty.ComponentOrHTML
@@ -29,7 +29,7 @@ type L struct {
 
 // Item is a vecty-material list-item component.
 type Item struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root      vecty.MarkupOrChild
 	Primary   vecty.ComponentOrHTML
@@ -44,7 +44,7 @@ type Item struct {
 
 // Group is a vecty-material list-group component.
 type Group struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root  vecty.MarkupOrChild
 	Lists []vecty.ComponentOrHTML
@@ -88,8 +88,8 @@ func (c *L) Render() vecty.ComponentOrHTML {
 
 func (c *L) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 	}
 
 	vecty.Markup(
@@ -103,7 +103,7 @@ func (c *L) Apply(h *vecty.HTML) {
 		vecty.MarkupIf(c.NonInteractive,
 			vecty.Class("mdc-list--non-interactive")),
 	).Apply(h)
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 }
 
 // Render implements the vecty.Component interface.
@@ -161,8 +161,8 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 
 func (c *Item) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 	}
 
 	vecty.Markup(
@@ -176,7 +176,7 @@ func (c *Item) Apply(h *vecty.HTML) {
 		),
 		vecty.MarkupIf(c.Href != "", prop.Href(c.Href)),
 	).Apply(h)
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 }
 
 // Render implements the vecty.Component interface.
@@ -198,14 +198,14 @@ func (c *Group) Render() vecty.ComponentOrHTML {
 
 func (c *Group) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 	}
 
 	vecty.Markup(
 		vecty.Class("mdc-list-group"),
 	).Apply(h)
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 }
 
 func ListDivider() vecty.ComponentOrHTML {

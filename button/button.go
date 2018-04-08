@@ -11,7 +11,7 @@ import (
 
 // B is a vecty-material button component.
 type B struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root       vecty.MarkupOrChild
 	Label      vecty.ComponentOrHTML
@@ -58,11 +58,11 @@ func (c *B) Render() vecty.ComponentOrHTML {
 
 func (c *B) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 	}
-	c.MDCRoot.MDC = nil
-	c.MDCRoot.Element = h
+	c.MDC.Component = nil
+	c.MDC.RootElement = h
 	vecty.Markup(
 		vecty.Class("mdc-button"),
 		prop.Type(prop.TypeButton),

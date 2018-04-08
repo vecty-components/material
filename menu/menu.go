@@ -12,7 +12,7 @@ import (
 // M is a vecty-material menu component.
 type M struct {
 	*menu.M
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root       vecty.MarkupOrChild
 	menuAnchor *vecty.HTML
@@ -107,15 +107,15 @@ func (c *M) Render() vecty.ComponentOrHTML {
 
 func (c *M) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 		fallthrough
-	case c.M == nil, c.MDCRoot.MDC == nil:
+	case c.M == nil, c.MDC.Component == nil:
 		// TODO: Make initial values work in material package
 		open := js.InternalObject(c).Get("Open").Bool()
 		quickOpen := js.InternalObject(c).Get("QuickOpen").Bool()
 		c.M = menu.New()
-		c.MDCRoot.MDC = c.M
+		c.MDC.Component = c.M
 		c.Open = open
 		c.QuickOpen = quickOpen
 	}
@@ -138,10 +138,10 @@ func (c *M) Apply(h *vecty.HTML) {
 	).Apply(h)
 
 	if c.menuAnchor != nil {
-		c.MDCRoot.Element = c.menuAnchor
+		c.MDC.RootElement = c.menuAnchor
 		return
 	}
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 }
 
 func (c *M) onSelect(e *vecty.Event) {

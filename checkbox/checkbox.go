@@ -12,7 +12,7 @@ import (
 
 // CB is a vecty-material checkbox component.
 type CB struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root          vecty.MarkupOrChild
 	Input         vecty.MarkupOrChild
@@ -76,12 +76,12 @@ func (c *CB) Render() vecty.ComponentOrHTML {
 
 func (c *CB) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 		fallthrough
-	case c.MDCRoot.MDC == nil:
-		c.MDCRoot.MDC = checkbox.New()
-		if cb, ok := c.MDCRoot.MDC.(*checkbox.CB); ok {
+	case c.MDC.Component == nil:
+		c.MDC.Component = checkbox.New()
+		if cb, ok := c.MDC.Component.(*checkbox.CB); ok {
 			cb.Checked = c.Checked
 			cb.Indeterminate = c.Indeterminate
 			cb.Disabled = c.Disabled
@@ -93,11 +93,11 @@ func (c *CB) Apply(h *vecty.HTML) {
 		vecty.Class("mdc-checkbox"),
 		vecty.MarkupIf(c.Disabled, vecty.Class("mdc-checkbox--disabled")),
 	).Apply(h)
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 }
 
 func (c *CB) onChange(e *vecty.Event) {
-	if cb, ok := c.MDCRoot.MDC.(*checkbox.CB); ok {
+	if cb, ok := c.MDC.Component.(*checkbox.CB); ok {
 		c.Checked = cb.Checked
 		c.Indeterminate = cb.Indeterminate
 		c.Disabled = cb.Disabled

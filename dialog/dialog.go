@@ -14,7 +14,7 @@ import (
 
 // D is a material dialog component.
 type D struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root       vecty.MarkupOrChild
 	Header     string
@@ -127,13 +127,13 @@ func (c *D) Render() vecty.ComponentOrHTML {
 
 func (c *D) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 		fallthrough
-	case c.MDCRoot.MDC == nil:
-		c.MDCRoot.MDC = dialog.New()
+	case c.MDC.Component == nil:
+		c.MDC.Component = dialog.New()
 	}
-	c.MDCRoot.MDC.(*dialog.D).Open = c.Open
+	c.MDC.Component.(*dialog.D).Open = c.Open
 	vecty.Markup(
 		vecty.Class("mdc-dialog"),
 		vecty.MarkupIf(c.Role == "", vecty.Attribute("role", "dialog")),
@@ -143,7 +143,7 @@ func (c *D) Apply(h *vecty.HTML) {
 		c.ariaLabelledBy(h),
 		c.ariaDescribedBy(h),
 	).Apply(h)
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 }
 
 func (c *D) labelID(h *vecty.HTML) string {
@@ -177,7 +177,7 @@ func (c *D) ariaDescribedBy(h *vecty.HTML) vecty.Applyer {
 }
 
 func (c *D) onCancel(e *vecty.Event) {
-	if d, ok := c.MDCRoot.MDC.(*dialog.D); ok {
+	if d, ok := c.MDC.Component.(*dialog.D); ok {
 		c.Open = d.Open
 	}
 	if c.OnCancel != nil {
@@ -186,7 +186,7 @@ func (c *D) onCancel(e *vecty.Event) {
 }
 
 func (c *D) onAccept(e *vecty.Event) {
-	if d, ok := c.MDCRoot.MDC.(*dialog.D); ok {
+	if d, ok := c.MDC.Component.(*dialog.D); ok {
 		c.Open = d.Open
 	}
 	if c.OnAccept != nil {

@@ -18,7 +18,7 @@ const (
 
 // D is a vecty-material drawer component.
 type D struct {
-	*base.MDCRoot
+	*base.MDC
 	vecty.Core
 	Root vecty.MarkupOrChild
 	Type
@@ -62,18 +62,18 @@ func (c *D) Render() vecty.ComponentOrHTML {
 
 func (c *D) Apply(h *vecty.HTML) {
 	switch {
-	case c.MDCRoot == nil:
-		c.MDCRoot = &base.MDCRoot{}
+	case c.MDC == nil:
+		c.MDC = &base.MDC{}
 		fallthrough
-	case c.MDCRoot.MDC == nil:
+	case c.MDC.Component == nil:
 		switch c.Type {
 		case Permanent:
 		case Temporary:
-			c.MDCRoot.MDC = temporarydrawer.New()
-			c.MDCRoot.MDC.(*temporarydrawer.TD).Open = c.Open
+			c.MDC.Component = temporarydrawer.New()
+			c.MDC.Component.(*temporarydrawer.TD).Open = c.Open
 		case Persistent:
-			c.MDCRoot.MDC = persistentdrawer.New()
-			c.MDCRoot.MDC.(*persistentdrawer.PD).Open = c.Open
+			c.MDC.Component = persistentdrawer.New()
+			c.MDC.Component.(*persistentdrawer.PD).Open = c.Open
 		}
 	}
 
@@ -91,7 +91,7 @@ func (c *D) Apply(h *vecty.HTML) {
 	}
 
 	vecty.Markup(markup...).Apply(h)
-	c.MDCRoot.Element = h
+	c.MDC.RootElement = h
 }
 
 func (c *D) renderDrawer() vecty.List {
