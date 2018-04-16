@@ -44,12 +44,12 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 						Href:      makeHref("button"),
 						Graphic:   renderGraphic("ic_button_24px.svg"),
 					},
-					&ul.Item{
-						Primary:   vecty.Text("Card"),
-						Secondary: vecty.Text("Various card layout styles"),
-						Href:      makeHref("card"),
-						Graphic:   renderGraphic("ic_card_24px.svg"),
-					},
+					// &ul.Item{
+					// 	Primary:   vecty.Text("Card"),
+					// 	Secondary: vecty.Text("Various card layout styles"),
+					// 	Href:      makeHref("card"),
+					// 	Graphic:   renderGraphic("ic_card_24px.svg"),
+					// },
 					&ul.Item{
 						Primary:   vecty.Text("Checkbox"),
 						Secondary: vecty.Text("Multi-selection controls"),
