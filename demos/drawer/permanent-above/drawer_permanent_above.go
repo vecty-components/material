@@ -128,9 +128,9 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 						Root: vecty.Markup(vecty.Class(
 							"demo-toolbar-example-heading__rtl-toggle-button"),
 						),
-						Label:   vecty.Text("Toggle RTL"),
-						Stroked: true,
-						Dense:   true,
+						Label:    vecty.Text("Toggle RTL"),
+						Outlined: true,
+						Dense:    true,
 						OnClick: func(thisB *button.B,
 							e *vecty.Event) {
 							b := c.body.Node()
@@ -148,9 +148,9 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 						Root: vecty.Markup(
 							prop.ID("toggle-wide"),
 						),
-						Label:   vecty.Text("Toggle extra-wide content"),
-						Stroked: true,
-						Dense:   true,
+						Label:    vecty.Text("Toggle extra-wide content"),
+						Outlined: true,
+						Dense:    true,
 						OnClick: func(thisB *button.B,
 							e *vecty.Event) {
 							s := ewc.Node().Get("style")
@@ -168,9 +168,9 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 						Root: vecty.Markup(
 							prop.ID("toggle-tall"),
 						),
-						Label:   vecty.Text("Toggle extra-tall content"),
-						Stroked: true,
-						Dense:   true,
+						Label:    vecty.Text("Toggle extra-tall content"),
+						Outlined: true,
+						Dense:    true,
 						OnClick: func(thisB *button.B,
 							e *vecty.Event) {
 							s := etc.Node().Get("style")

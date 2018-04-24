@@ -20,7 +20,7 @@ type B struct {
 	Disabled   bool
 	Raised     bool
 	Unelevated bool
-	Stroked    bool
+	Outlined   bool
 	Dense      bool
 	Href       string
 }
@@ -74,8 +74,8 @@ func (c *B) Apply(h *vecty.HTML) {
 		vecty.MarkupIf(c.Unelevated,
 			vecty.Class("mdc-button--unelevated"),
 		),
-		vecty.MarkupIf(c.Stroked,
-			vecty.Class("mdc-button--stroked"),
+		vecty.MarkupIf(c.Outlined,
+			vecty.Class("mdc-button--outlined"),
 		),
 		vecty.MarkupIf(c.Dense,
 			vecty.Class("mdc-button--dense"),

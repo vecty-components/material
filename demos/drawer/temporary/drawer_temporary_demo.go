@@ -120,9 +120,9 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 						Root: vecty.Markup(vecty.Class(
 							"demo-toolbar-example-heading__rtl-toggle-button"),
 						),
-						Label:   vecty.Text("Toggle RTL"),
-						Stroked: true,
-						Dense:   true,
+						Label:    vecty.Text("Toggle RTL"),
+						Outlined: true,
+						Dense:    true,
 						OnClick: func(thisB *button.B,
 							e *vecty.Event) {
 							b := c.body.Node()

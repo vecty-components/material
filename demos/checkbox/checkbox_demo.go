@@ -123,8 +123,8 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 							vecty.Class("demo-toggle-group"),
 						),
 						&button.B{
-							Label:   vecty.Text("Toggle RTL"),
-							Stroked: true,
+							Label:    vecty.Text("Toggle RTL"),
+							Outlined: true,
 							OnClick: func(thisB *button.B, e *vecty.Event) {
 								ff := e.Target.Get("parentElement")
 								ff = ff.Get("parentElement")
@@ -143,7 +143,7 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 									vecty.Text("--align-end"),
 								),
 							},
-							Stroked: true,
+							Outlined: true,
 							OnClick: func(thisB *button.B,
 								e *vecty.Event) {
 								c.defaultFF.AlignEnd = !c.defaultFF.AlignEnd
@@ -249,10 +249,10 @@ func makeButton(h func(*button.B, *vecty.Event), l vecty.List, class string) *bu
 		applyer = vecty.Class(class)
 	}
 	return &button.B{
-		Root:    vecty.Markup(applyer),
-		Label:   l,
-		OnClick: h,
-		Stroked: true,
+		Root:     vecty.Markup(applyer),
+		Label:    l,
+		OnClick:  h,
+		Outlined: true,
 	}
 }
 
