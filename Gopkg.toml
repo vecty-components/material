@@ -1,7 +1,3 @@
-ignored = [
-  "github.com/gopherjs/gopherjs/js"
-]
-
 [prune]
   non-go = true
   go-tests = true

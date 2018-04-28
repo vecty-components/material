@@ -10,9 +10,15 @@
   ]
   revision = "ec2136c8d5bef18c172f2cabe4f7574e2b2232ea"
 
+[[projects]]
+  branch = "master"
+  name = "github.com/gopherjs/gopherjs"
+  packages = ["js"]
+  revision = "8dffc02ea1cb8398bb73f30424697c60fcf8d4c5"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7ccdb392cb7fcc610f0ba852a1245889e5f4710704f7f65a751d8b5bc71e7ed5"
+  inputs-digest = "6004435f2591adb4360516e3699d86d25e6dce67b800ee1a69e5e21f02cf6085"
   solver-name = "gps-cdcl"
   solver-version = 1
