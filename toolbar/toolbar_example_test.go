@@ -35,9 +35,9 @@ func Example() {
 	printName(c)
 
 	// Output:
-	// MDCTextField
-	// MDCTextField
-	// MDCTextField
+	// MDCToolbar
+	// MDCToolbar
+	// MDCToolbar
 }
 
 func printName(c *toolbar.T) {

@@ -38,8 +38,8 @@ func (c *T) Component() *base.Component {
 	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
-				MDCClassName:     "MDCTextField",
-				MDCCamelCaseName: "textField",
+				MDCClassName:     "MDCToolbar",
+				MDCCamelCaseName: "toolbar",
 			},
 		}
 		fallthrough
