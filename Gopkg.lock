@@ -23,7 +23,7 @@
     "temporarydrawer",
     "toolbar"
   ]
-  revision = "385a4712e74f85d3f1447e2d752774b6e6e078a9"
+  revision = "a8d3157f981b295decbf4c414fbdc248446286c4"
 
 [[projects]]
   name = "github.com/PuerkitoBio/goquery"
@@ -46,7 +46,7 @@
     "event",
     "prop"
   ]
-  revision = "19a11ec3acc3ae6c2e095b1ace2b7134c5f28c10"
+  revision = "03f625a089048e8a5ef550fb98c7eb29e581db9c"
 
 [[projects]]
   branch = "master"
@@ -55,7 +55,7 @@
     "html",
     "html/atom"
   ]
-  revision = "6078986fec03a1dcc236c34816c71b0e05018fda"
+  revision = "9ef9f5bb98a1fdc41f8cf6c250a4404b4085e389"
 
 [solve-meta]
   analyzer-name = "dep"
