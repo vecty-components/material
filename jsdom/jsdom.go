@@ -13,25 +13,27 @@ package jsdom // import "agamigo.io/gojs/jsdom"
 
 import (
 	"agamigo.io/gojs"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
+type M map[string]interface{}
+
 type JSDOM interface {
-	DOM() *js.Object
-	Window() *js.Object
-	Document() *js.Object
+	DOM() js.Value
+	Window() js.Value
+	Document() js.Value
 	SetHTML(html string)
-	PopulateBody(html string) *js.Object
-	QueryElement(querySelector string) (e *js.Object, err error)
-	RootElement() *js.Object
+	PopulateBody(html string) js.Value
+	QueryElement(querySelector string) (e js.Value, err error)
+	RootElement() js.Value
 }
 
 type jsdom struct {
-	*js.Object
-	options js.M
+	js.Value
+	options M
 }
 
-func New(html string, options *js.M) (JSDOM, error) {
+func New(html string, options *M) (JSDOM, error) {
 	c, err := jsdomClass()
 	if err != nil {
 		return nil, err
@@ -45,28 +47,28 @@ func New(html string, options *js.M) (JSDOM, error) {
 	return j, err
 }
 
-func jsdomClass() (c *js.Object, err error) {
+func jsdomClass() (c js.Value, err error) {
 	defer gojs.CatchException(&err)
-	c = js.Global.Call("require", "jsdom")
+	c = js.Global().Call("require", "jsdom")
 	return c, err
 }
 
-func newJSDOM(c *js.Object, html string, options *js.M) (j jsdom, err error) {
+func newJSDOM(c js.Value, html string, options *M) (j jsdom, err error) {
 	defer gojs.CatchException(&err)
 	j.options = *options
-	j.Object = c.Get("JSDOM").New(html, options)
+	j.Value = c.Get("JSDOM").New(html, options)
 	return j, err
 }
 
-func (j jsdom) DOM() *js.Object {
-	return j.Object
+func (j jsdom) DOM() js.Value {
+	return j.Value
 }
 
-func (j jsdom) Window() *js.Object {
+func (j jsdom) Window() js.Value {
 	return j.Get("window")
 }
 
-func (j jsdom) Document() *js.Object {
+func (j jsdom) Document() js.Value {
 	return j.Window().Get("document")
 }
 
@@ -76,18 +78,18 @@ func (j jsdom) SetHTML(html string) {
 
 // PopulateBody resets documentElement with html inside a valid html/body DOM
 // and returns the HTMLElement of html.
-func (j jsdom) PopulateBody(html string) *js.Object {
+func (j jsdom) PopulateBody(html string) js.Value {
 	j.SetHTML("<html><body>" + html +
 		"</body></html>")
-	return js.Global.Get("document").Get("body").Get("firstElementChild")
+	return js.Global().Get("document").Get("body").Get("firstElementChild")
 }
 
-func (j jsdom) QueryElement(querySelector string) (e *js.Object, err error) {
+func (j jsdom) QueryElement(querySelector string) (e js.Value, err error) {
 	defer gojs.CatchException(&err)
 	e = j.Document().Call("querySelector", querySelector)
 	return e, err
 }
 
-func (j jsdom) RootElement() *js.Object {
+func (j jsdom) RootElement() js.Value {
 	return j.Document().Get("documentElement")
 }
