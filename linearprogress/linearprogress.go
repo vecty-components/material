@@ -6,7 +6,7 @@ package linearprogress // import "agamigo.io/material/linearprogress"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // LP is a material libearprogress component.

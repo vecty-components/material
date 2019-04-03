@@ -1,6 +1,6 @@
 package base // import "agamigo.io/material/base"
 
-import "github.com/gopherjs/gopherjs/js"
+import "github.com/gopherjs/gopherwasm/js"
 
 // Componenter is a base interface for every material component implementation.
 type Componenter interface {

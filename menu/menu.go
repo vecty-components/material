@@ -5,7 +5,7 @@ package menu // import "agamigo.io/material/menu"
 
 import (
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 type Corner int

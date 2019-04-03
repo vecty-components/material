@@ -6,7 +6,7 @@ import (
 
 	"agamigo.io/material/internal/mdctest"
 	"agamigo.io/material/slider"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 func Example() {
@@ -22,9 +22,9 @@ func Example() {
 	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a slider.
-	js.Global.Get("document").Get("body").Set("innerHTML",
+	js.Global().Get("document").Get("body").Set("innerHTML",
 		mdctest.HTML(c.Component().Type.MDCClassName))
-	rootElem := js.Global.Get("document").Get("body").Get("firstElementChild")
+	rootElem := js.Global().Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.
 	err := c.Start(rootElem)

@@ -6,7 +6,7 @@ package ripple // import "agamigo.io/material/ripple"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // R is a material ripple component.

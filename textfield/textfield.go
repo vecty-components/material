@@ -6,7 +6,7 @@ package textfield // import "agamigo.io/material/textfield"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // TF is a material textfield component.

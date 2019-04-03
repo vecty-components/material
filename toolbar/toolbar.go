@@ -5,7 +5,7 @@ package toolbar
 
 import (
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // T is a material toolbar component.

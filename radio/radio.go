@@ -5,7 +5,7 @@ package radio // import "agamigo.io/material/radio"
 
 import (
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // R is a material radio component.

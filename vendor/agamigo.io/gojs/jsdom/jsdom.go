@@ -13,7 +13,7 @@ package jsdom // import "agamigo.io/gojs/jsdom"
 
 import (
 	"agamigo.io/gojs"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 type JSDOM interface {
@@ -47,7 +47,7 @@ func New(html string, options *js.M) (JSDOM, error) {
 
 func jsdomClass() (c *js.Object, err error) {
 	defer gojs.CatchException(&err)
-	c = js.Global.Call("require", "jsdom")
+	c = js.Global().Call("require", "jsdom")
 	return c, err
 }
 
@@ -79,7 +79,7 @@ func (j jsdom) SetHTML(html string) {
 func (j jsdom) PopulateBody(html string) *js.Object {
 	j.SetHTML("<html><body>" + html +
 		"</body></html>")
-	return js.Global.Get("document").Get("body").Get("firstElementChild")
+	return js.Global().Get("document").Get("body").Get("firstElementChild")
 }
 
 func (j jsdom) QueryElement(querySelector string) (e *js.Object, err error) {

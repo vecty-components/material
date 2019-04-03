@@ -8,7 +8,7 @@ import (
 
 	"agamigo.io/gojs"
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // S is a material snackbar component.

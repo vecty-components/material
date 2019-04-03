@@ -3,7 +3,7 @@ package mdctest // import "agamigo.io/material/internal/mdctest"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/gojs/jsdom"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 const (
@@ -37,9 +37,9 @@ func Init() error {
 // MDCMenu, it only comes with an undocumented MDCSimpleMenu.
 func InitMenu() (err error) {
 	gojs.CatchException(&err)
-	mdc := js.Global.Get("Object").New()
-	mdc.Set("menu", js.Global.Call("require", "@material/menu/dist/mdc.menu"))
-	js.Global.Set("mdc", mdc)
+	mdc := js.Global().Get("Object").New()
+	mdc.Set("menu", js.Global().Call("require", "@material/menu/dist/mdc.menu"))
+	js.Global().Set("mdc", mdc)
 
 	Dom, err = EmulateDOM()
 	if err != nil {
@@ -51,13 +51,13 @@ func InitMenu() (err error) {
 
 func LoadMDCModule() (err error) {
 	gojs.CatchException(&err)
-	js.Global.Set("mdc", js.Global.Call("require", MCW_MODULE))
+	js.Global().Set("mdc", js.Global().Call("require", MCW_MODULE))
 	return err
 }
 
 func ShimHyperform() (err error) {
 	gojs.CatchException(&err)
-	js.Global.Call("require", "hyperform").Invoke(js.Global.Get("window"))
+	js.Global().Call("require", "hyperform").Invoke(js.Global().Get("window"))
 	return err
 }
 
@@ -70,14 +70,14 @@ func EmulateDOM() (dom jsdom.JSDOM, err error) {
 		return nil, err
 	}
 	dom.SetHTML(`<html><body></body></html>`)
-	js.Global.Set("window", dom.Window())
-	js.Global.Set("document", dom.Window().Get("document"))
-	js.Global.Set("HTMLElement", dom.Window().Get("HTMLElement"))
+	js.Global().Set("window", dom.Window())
+	js.Global().Set("document", dom.Window().Get("document"))
+	js.Global().Set("HTMLElement", dom.Window().Get("HTMLElement"))
 	raf := dom.Window().Get("requestAnimationFrame")
-	js.Global.Set("requestAnimationFrame", raf)
+	js.Global().Set("requestAnimationFrame", raf)
 	caf := dom.Window().Get("cancelAnimationFrame")
-	js.Global.Set("cancelAnimationFrame", caf)
+	js.Global().Set("cancelAnimationFrame", caf)
 	gcs := dom.Window().Get("getComputedStyle")
-	js.Global.Set("getComputedStyle", gcs)
+	js.Global().Set("getComputedStyle", gcs)
 	return dom, err
 }

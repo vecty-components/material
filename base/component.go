@@ -8,7 +8,7 @@ import (
 	"errors"
 
 	"agamigo.io/gojs"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // Component is a base type for all Material components.
@@ -29,7 +29,7 @@ type StateMap map[string]interface{}
 // Component implements the base.Componenter interface.
 func (c *Component) Component() *Component {
 	if c.Object == nil || c.Object == js.Undefined {
-		c.Object = js.Global.Get("Object").New()
+		c.Object = js.Global().Get("Object").New()
 	}
 	if c.MDCState == nil {
 		c.MDCState = &MDCState{}
@@ -128,7 +128,7 @@ func Start(c Componenter, rootElem *js.Object) (err error) {
 		if CCaseName == "" || ClassName == "" {
 			return errors.New("Empty string in ComponentType")
 		}
-		mdcObject := js.Global.Get("mdc")
+		mdcObject := js.Global().Get("mdc")
 		newMDCClassObj = mdcObject.Get(CCaseName).Get(ClassName)
 	}
 

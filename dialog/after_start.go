@@ -2,12 +2,12 @@ package dialog
 
 import (
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 func (c *D) afterStart() (err error) {
-	proto := js.Global.Get("Object").Call("getPrototypeOf", c)
-	ogGetter := js.Global.Get("Object").Call("getOwnPropertyDescriptor",
+	proto := js.Global().Get("Object").Call("getPrototypeOf", c)
+	ogGetter := js.Global().Get("Object").Call("getOwnPropertyDescriptor",
 		proto, "open").Get("get")
 	return base.DefineSetGet(c, "open",
 		func(v interface{}) {

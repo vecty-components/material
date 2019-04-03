@@ -23,7 +23,7 @@ program. See: https://material.io/components/web/catalog/
 
 4. Put that HTMLElement into a GopherJS object.
 
-  cbElem := js.Global.Get("document").Get("body").Get("firstElementChild")
+  cbElem := js.Global().Get("document").Get("body").Get("firstElementChild")
 
 5. Create a new instance of the component and start it.
 

@@ -5,7 +5,7 @@ package formfield // import "agamigo.io/material/formfield"
 
 import (
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // FF is a material formfield component.

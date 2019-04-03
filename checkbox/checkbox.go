@@ -5,7 +5,7 @@ package checkbox // import "agamigo.io/material/checkbox"
 
 import (
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // CB is a material checkbox component.

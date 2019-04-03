@@ -5,7 +5,7 @@ package icontoggle // import "agamigo.io/material/icontoggle"
 
 import (
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // IT is a material icontoggle component.

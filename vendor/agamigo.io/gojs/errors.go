@@ -1,6 +1,6 @@
 package gojs // import "agamigo.io/gojs"
 
-import "github.com/gopherjs/gopherjs/js"
+import "github.com/gopherjs/gopherwasm/js"
 
 // catchException recovers any JS exceptions and
 // stores the error in the parameter

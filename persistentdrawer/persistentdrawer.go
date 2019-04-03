@@ -4,7 +4,7 @@
 package persistentdrawer // import "agamigo.io/material/persistentdrawer"
 import (
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // PD is a material persistentdrawer component.

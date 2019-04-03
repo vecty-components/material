@@ -4,7 +4,7 @@
 package temporarydrawer // import "agamigo.io/material/temporarydrawer"
 import (
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // TD is a material temporarydrawer component.

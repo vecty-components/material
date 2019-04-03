@@ -6,7 +6,7 @@ package dialog // import "agamigo.io/material/dialog"
 import (
 	"agamigo.io/gojs"
 	"agamigo.io/material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 )
 
 // D is a material dialog component.
