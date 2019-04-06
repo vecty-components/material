@@ -14,7 +14,7 @@ type Componenter interface {
 // etc. can accept any component.
 type ComponentStartStopper interface {
 	Componenter
-	Start(rootElem *js.Object) error
+	Start(rootElem js.Value) error
 	Stop() error
 }
 
@@ -22,7 +22,7 @@ type ComponentStartStopper interface {
 // class object that will be used to create/initialize the component. It
 // overrides ComponentTyper when calling base.Start.
 type MDCClasser interface {
-	MDCClass() *js.Object
+	MDCClass() js.Value
 }
 
 // StateMapper is an interface that components implement in order to provide a

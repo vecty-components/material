@@ -28,7 +28,7 @@ func New() *LP {
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
-func (c *LP) Start(rootElem *js.Object) error {
+func (c *LP) Start(rootElem js.Value) error {
 	backup := c.StateMap()
 	backup["buffer"] = c.Buffer
 	err := base.Start(c, rootElem)
@@ -62,7 +62,7 @@ func (c *LP) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Object == nil:
+	case c.mdc.Value == js.Null():
 		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
@@ -76,7 +76,7 @@ func (c *LP) StateMap() base.StateMap {
 		"progress":    c.Progress,
 		"buffer":      c.bufferCache,
 	}
-	if c.Component().Object.Get("progress").String() == "undefined" {
+	if c.Component().Value.Get("progress").String() == "undefined" {
 		sm["progress"] = js.InternalObject(c).Get("Progress")
 	}
 	return sm

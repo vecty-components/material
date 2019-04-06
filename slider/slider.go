@@ -45,7 +45,7 @@ func New() *S {
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
-func (c *S) Start(rootElem *js.Object) error {
+func (c *S) Start(rootElem js.Value) error {
 	return base.Start(c, rootElem)
 }
 
@@ -66,7 +66,7 @@ func (c *S) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Object == nil:
+	case c.mdc.Value == js.Null():
 		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
@@ -81,16 +81,16 @@ func (c *S) StateMap() base.StateMap {
 		"step":     c.Step,
 		"disabled": c.Disabled,
 	}
-	if c.Component().Object.Get("value").String() == "undefined" {
+	if c.Component().Value.Get("value").String() == "undefined" {
 		sm["value"] = js.InternalObject(c).Get("Value")
 	}
-	if c.Component().Object.Get("min").String() == "undefined" {
+	if c.Component().Value.Get("min").String() == "undefined" {
 		sm["min"] = js.InternalObject(c).Get("Min")
 	}
-	if c.Component().Object.Get("max").String() == "undefined" {
+	if c.Component().Value.Get("max").String() == "undefined" {
 		sm["max"] = js.InternalObject(c).Get("Max")
 	}
-	if c.Component().Object.Get("step").String() == "undefined" {
+	if c.Component().Value.Get("step").String() == "undefined" {
 		sm["step"] = js.InternalObject(c).Get("Step")
 	}
 	return sm

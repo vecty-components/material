@@ -13,7 +13,7 @@ import (
 
 // Component is a base type for all Material components.
 type Component struct {
-	*js.Object
+	js.Value
 	*MDCState
 	Type ComponentType
 }
@@ -21,15 +21,15 @@ type Component struct {
 type MDCState struct {
 	Basic       bool
 	Started     bool
-	RootElement *js.Object
+	RootElement js.Value
 }
 
 type StateMap map[string]interface{}
 
 // Component implements the base.Componenter interface.
 func (c *Component) Component() *Component {
-	if c.Object == nil || c.Object == js.Undefined {
-		c.Object = js.Global().Get("Object").New()
+	if c.Value == js.Undefined() {
+		c.Value = js.Global().Get("Object").New()
 	}
 	if c.MDCState == nil {
 		c.MDCState = &MDCState{}
@@ -48,7 +48,7 @@ func (c *Component) ComponentType() ComponentType {
 	return c.Type
 }
 
-func (c *Component) Start(rootElem *js.Object) error {
+func (c *Component) Start(rootElem js.Value) error {
 	return nil
 }
 
@@ -96,7 +96,7 @@ func (c *Component) SetState(sm StateMap) *Component {
 // the MDC component class.
 //
 // See: https://material.io/components/web/docs/framework-integration/
-func Start(c Componenter, rootElem *js.Object) (err error) {
+func Start(c Componenter, rootElem js.Value) (err error) {
 	defer gojs.CatchException(&err)
 
 	backup := StateMap{}
@@ -114,11 +114,11 @@ func Start(c Componenter, rootElem *js.Object) (err error) {
 			return err
 		}
 	}
-	if rootElem == nil || rootElem == js.Undefined {
+	if rootElem == js.Undefined() {
 		return errors.New("rootElem is nil.")
 	}
 
-	var newMDCClassObj *js.Object
+	var newMDCClassObj js.Value
 	switch t := c.(type) {
 	case MDCClasser:
 		newMDCClassObj = t.MDCClass()
@@ -133,7 +133,7 @@ func Start(c Componenter, rootElem *js.Object) (err error) {
 	}
 
 	// Create a new MDC component instance tied to rootElem
-	c.Component().Object = newMDCClassObj.New(rootElem)
+	c.Component().Value = newMDCClassObj.New(rootElem)
 	c.Component().MDCState.RootElement = rootElem
 	c.Component().MDCState.Started = true
 

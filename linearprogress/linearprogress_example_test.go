@@ -83,7 +83,7 @@ func printState(c *linearprogress.LP) {
 	fmt.Printf("[Go] Determinate: %v, Progress: %v, Buffer: %v, Reverse: %v\n",
 		c.Determinate, c.Progress, c.Buffer, c.Reverse)
 	mdcObj := c.Component().Get("foundation_")
-	if mdcObj != js.Undefined {
+	if mdcObj != js.Undefined() {
 		fmt.Printf("[JS] Determinate: %v, Progress: %v, Buffer: %v, Reverse: %v\n",
 			mdcObj.Get("determinate_"),
 			mdcObj.Get("progress_"),

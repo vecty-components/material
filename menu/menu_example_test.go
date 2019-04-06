@@ -101,7 +101,7 @@ func printState(c *menu.M) {
 		c.AnchorMargins().Top,
 		c.AnchorMargins().Bottom,
 	)
-	if c.Component().Get("foundation_") != js.Undefined {
+	if c.Component().Get("foundation_") != js.Undefined() {
 		jsMargins := c.Component().Get("foundation_").Get("anchorMargin_")
 		fmt.Printf("[JS] Left: %v, Right: %v, Top: %v, Bottom: %v\n",
 			jsMargins.Get("left"),

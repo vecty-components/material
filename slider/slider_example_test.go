@@ -73,7 +73,7 @@ func printState(c *slider.S) {
 	fmt.Println()
 	fmt.Printf("[Go] Value: %v, Min: %v, Max %v, Step %v, Disabled: %v\n",
 		c.Value, c.Min, c.Max, c.Step, c.Disabled)
-	if c.Component().Get("foundation_") != js.Undefined {
+	if c.Component().Get("foundation_") != js.Undefined() {
 		fmt.Printf("[JS] Value: %v, Min: %v, Max %v, Step %v, Disabled: %v\n",
 			c.Component().Get("foundation_").Get("value_"),
 			c.Component().Get("foundation_").Get("min_"),

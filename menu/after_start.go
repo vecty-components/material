@@ -8,7 +8,7 @@ import (
 // afterStart adds a missing getter to MDCMenu.quickOpen so we can work with
 // that variable as expected in Go.
 func (c *M) afterStart() error {
-	o := c.Component().Object
+	o := c.Component().Value
 	proto := js.Global().Get("Object").Call("getPrototypeOf", c)
 	ogSetter := js.Global().Get("Object").Call("getOwnPropertyDescriptor",
 		proto, "quickOpen").Get("set")

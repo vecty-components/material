@@ -33,10 +33,10 @@ type M struct {
 	QuickOpen bool `js:"quickOpen"`
 
 	// For now we give read-only access with the Items() method.
-	items []*js.Object `js:"items"`
+	items []js.Value `js:"items"`
 
 	// For now we give read-only access with the ItemsContainer() method.
-	itemsContainer *js.Object `js:"itemsContainer_"`
+	itemsContainer js.Value `js:"itemsContainer_"`
 }
 
 // Margins holds margin values used to configure menu anchor margins via
@@ -52,13 +52,13 @@ type Margins struct {
 func New() *M {
 	c := &M{}
 	c.Component()
-	c.items = make([]*js.Object, 0)
+	c.items = make([]js.Value, 0)
 	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
-func (c *M) Start(rootElem *js.Object) error {
+func (c *M) Start(rootElem js.Value) error {
 	backup := c.StateMap()
 	err := base.Start(c.Component(), rootElem)
 	if err != nil {
@@ -91,7 +91,7 @@ func (c *M) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Object == nil:
+	case c.mdc.Value == js.Null():
 		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
@@ -111,18 +111,18 @@ func (c *M) OpenFocus(index int) {
 }
 
 // Items returns the HTMLLIElements that represent the menu's items.
-func (c *M) Items() []*js.Object {
+func (c *M) Items() []js.Value {
 	return c.items
 }
 
 // ItemsContainer is the HTMLUListElement that contains the menu's items
-func (m *M) ItemsContainer() *js.Object {
+func (m *M) ItemsContainer() js.Value {
 	return m.itemsContainer
 }
 
 // AnchorCorner returns the Corner the menu is/will be attached to.
 func (m *M) AnchorCorner() Corner {
-	if m.Component().Get("foundation_") == js.Undefined {
+	if m.Component().Get("foundation_") == js.Undefined() {
 		return 0
 	}
 	return Corner(m.Component().Get("foundation_").Get("anchorCorner_").Int())
@@ -136,7 +136,7 @@ func (m *M) SetAnchorCorner(c Corner) {
 // AnchorMargins returns the distance from the anchor point that the menu
 // is/will be.
 func (m *M) AnchorMargins() *Margins {
-	if m.Component().Get("foundation_") == js.Undefined {
+	if m.Component().Get("foundation_") == js.Undefined() {
 		return &Margins{}
 	}
 	o := m.Component().Get("foundation_").Get("anchorMargin_")
@@ -151,10 +151,10 @@ func (m *M) AnchorMargins() *Margins {
 // AnchorMargins sets the distance from the anchor point that the menu is/will
 // be.
 func (m *M) SetAnchorMargins(ms *Margins) {
-	if m.Component().Get("foundation_") == js.Undefined {
+	if m.Component().Get("foundation_") == js.Undefined() {
 		return
 	}
-	o := &js.M{
+	o := &jsdom.M{
 		"left":   ms.Left,
 		"right":  ms.Right,
 		"top":    ms.Top,

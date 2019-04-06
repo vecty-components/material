@@ -2,6 +2,7 @@ package base
 
 import (
 	"agamigo.io/gojs"
+	"agamigo.io/gojs/jsdom"
 	"github.com/gopherjs/gopherwasm/js"
 )
 
@@ -10,7 +11,7 @@ func DefineSetGet(c Componenter, key string,
 	gojs.CatchException(&err)
 	js.Global().Get("Object").Call("defineProperty",
 		c, key,
-		js.M{
+		jsdom.M{
 			"set": setter,
 			"get": getter,
 		},

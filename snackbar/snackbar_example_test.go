@@ -86,7 +86,7 @@ func printState(c *snackbar.S) {
 		c.Component().Get("actionHandler") != nil, c.ActionText)
 	fmt.Printf("Multiline: %v, ActionOnBottom: %v\n",
 		c.MultiLine, c.ActionOnBottom)
-	if c.Component().Get("foundation_") != js.Undefined {
+	if c.Component().Get("foundation_") != js.Undefined() {
 		o := c.Component().Get("foundation_").Get("snackbarData_")
 		if o == nil {
 			fmt.Println("Snackbar has not been shown yet.")

@@ -65,7 +65,7 @@ func ShimHyperform() (err error) {
 // browser dom since tests run in Node, and MDC components need a dom element to
 // attach to.  This is not needed when running in a browser.
 func EmulateDOM() (dom jsdom.JSDOM, err error) {
-	dom, err = jsdom.New(``, &js.M{"pretendToBeVisual": true})
+	dom, err = jsdom.New(``, &jsdom.M{"pretendToBeVisual": true})
 	if err != nil {
 		return nil, err
 	}

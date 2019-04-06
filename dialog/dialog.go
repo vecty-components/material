@@ -26,7 +26,7 @@ func New() *D {
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
-func (c *D) Start(rootElem *js.Object) error {
+func (c *D) Start(rootElem js.Value) error {
 	backup := c.stateMap()
 	err := base.Start(c, rootElem)
 	if err != nil {
@@ -60,7 +60,7 @@ func (c *D) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Object == nil:
+	case c.mdc.Value == js.Null():
 		c.mdc.Component().SetState(c.stateMap())
 	}
 	return c.mdc.Component()

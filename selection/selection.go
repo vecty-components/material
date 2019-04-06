@@ -24,7 +24,7 @@ func New() *S {
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
-func (c *S) Start(rootElem *js.Object) error {
+func (c *S) Start(rootElem js.Value) error {
 	return base.Start(c, rootElem)
 }
 
@@ -45,7 +45,7 @@ func (c *S) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Object == nil:
+	case c.mdc.Value == js.Null():
 		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
@@ -72,11 +72,11 @@ func (s *S) SelectedString() string {
 
 // SelectedElem returns a NodeList of either the currently selected option, or
 // an empty js.S if nothing is selected.
-func (s *S) SelectedElem() *js.Object {
+func (s *S) SelectedElem() js.Value {
 	return s.mdc.Get("selectedOptions")
 }
 
 // Options returns a slice of menu items comprising the select’s options.
-func (s *S) Options() *js.Object {
+func (s *S) Options() js.Value {
 	return s.mdc.Get("options")
 }

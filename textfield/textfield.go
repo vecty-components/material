@@ -39,7 +39,7 @@ func New() *TF {
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
-func (c *TF) Start(rootElem *js.Object) error {
+func (c *TF) Start(rootElem js.Value) error {
 	return base.Start(c, rootElem)
 }
 
@@ -60,7 +60,7 @@ func (c *TF) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Object == nil:
+	case c.mdc.Value == js.Null():
 		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
@@ -75,10 +75,10 @@ func (c *TF) StateMap() base.StateMap {
 		"required":   c.Required,
 		"helperText": c.HelperText,
 	}
-	if c.Component().Object.Get("value").String() == "undefined" {
+	if c.Component().Value.Get("value").String() == "undefined" {
 		sm["value"] = js.InternalObject(c).Get("Value")
 	}
-	if c.Component().Object.Get("helperText").String() == "undefined" {
+	if c.Component().Value.Get("helperText").String() == "undefined" {
 		sm["helperText"] = js.InternalObject(c).Get("HelperText")
 	}
 	return sm

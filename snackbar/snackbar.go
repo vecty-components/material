@@ -56,7 +56,7 @@ func New() *S {
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
-func (c *S) Start(rootElem *js.Object) error {
+func (c *S) Start(rootElem js.Value) error {
 	return base.Start(c, rootElem)
 }
 
@@ -77,7 +77,7 @@ func (c *S) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Object == nil:
+	case c.mdc.Value == js.Null():
 		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
@@ -94,17 +94,17 @@ func (c *S) StateMap() base.StateMap {
 		"actionText":      c.ActionText,
 		"actionOnBottom":  c.ActionOnBottom,
 	}
-	if c.Component().Object.Get("message").String() == "undefined" {
+	if c.Component().Value.Get("message").String() == "undefined" {
 		sm["message"] = js.InternalObject(c).Get("Message")
 	}
-	if c.Component().Object.Get("timeout").String() == "undefined" {
+	if c.Component().Value.Get("timeout").String() == "undefined" {
 		sm["timeout"] = 2750
 	}
 	if c.Component().Get("actionHandler").String() == "undefined" {
 		c.ActionHandler = nil
 		sm["actionHandler"] = nil
 	}
-	if c.Component().Object.Get("actionText").String() == "undefined" {
+	if c.Component().Value.Get("actionText").String() == "undefined" {
 		sm["actionText"] = js.InternalObject(c).Get("ActionText")
 	}
 	return sm
@@ -122,7 +122,7 @@ func (c *S) Show() error {
 	if c.isNew && c.Timeout == 0 {
 		c.Timeout = 2750
 	}
-	data := make(js.M)
+	data := make(jsdom.M)
 	data["message"] = c.Message
 	data["timeout"] = c.Timeout
 	data["multiline"] = c.MultiLine
