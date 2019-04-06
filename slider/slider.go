@@ -82,16 +82,16 @@ func (c *S) StateMap() base.StateMap {
 		"disabled": c.Disabled,
 	}
 	if c.Component().Value.Get("value").String() == "undefined" {
-		sm["value"] = js.InternalObject(c).Get("Value")
+		sm["value"] = js.ValueOf(c).Get("Value")
 	}
 	if c.Component().Value.Get("min").String() == "undefined" {
-		sm["min"] = js.InternalObject(c).Get("Min")
+		sm["min"] = js.ValueOf(c).Get("Min")
 	}
 	if c.Component().Value.Get("max").String() == "undefined" {
-		sm["max"] = js.InternalObject(c).Get("Max")
+		sm["max"] = js.ValueOf(c).Get("Max")
 	}
 	if c.Component().Value.Get("step").String() == "undefined" {
-		sm["step"] = js.InternalObject(c).Get("Step")
+		sm["step"] = js.ValueOf(c).Get("Step")
 	}
 	return sm
 }

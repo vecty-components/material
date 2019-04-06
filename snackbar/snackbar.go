@@ -95,7 +95,7 @@ func (c *S) StateMap() base.StateMap {
 		"actionOnBottom":  c.ActionOnBottom,
 	}
 	if c.Component().Value.Get("message").String() == "undefined" {
-		sm["message"] = js.InternalObject(c).Get("Message")
+		sm["message"] = js.ValueOf(c).Get("Message")
 	}
 	if c.Component().Value.Get("timeout").String() == "undefined" {
 		sm["timeout"] = 2750
@@ -105,7 +105,7 @@ func (c *S) StateMap() base.StateMap {
 		sm["actionHandler"] = nil
 	}
 	if c.Component().Value.Get("actionText").String() == "undefined" {
-		sm["actionText"] = js.InternalObject(c).Get("ActionText")
+		sm["actionText"] = js.ValueOf(c).Get("ActionText")
 	}
 	return sm
 }

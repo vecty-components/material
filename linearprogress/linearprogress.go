@@ -77,7 +77,7 @@ func (c *LP) StateMap() base.StateMap {
 		"buffer":      c.bufferCache,
 	}
 	if c.Component().Value.Get("progress").String() == "undefined" {
-		sm["progress"] = js.InternalObject(c).Get("Progress")
+		sm["progress"] = js.ValueOf(c).Get("Progress")
 	}
 	return sm
 }

@@ -76,10 +76,10 @@ func (c *TF) StateMap() base.StateMap {
 		"helperText": c.HelperText,
 	}
 	if c.Component().Value.Get("value").String() == "undefined" {
-		sm["value"] = js.InternalObject(c).Get("Value")
+		sm["value"] = js.ValueOf(c).Get("Value")
 	}
 	if c.Component().Value.Get("helperText").String() == "undefined" {
-		sm["helperText"] = js.InternalObject(c).Get("HelperText")
+		sm["helperText"] = js.ValueOf(c).Get("HelperText")
 	}
 	return sm
 }
