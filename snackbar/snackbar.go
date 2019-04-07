@@ -7,6 +7,7 @@ import (
 	"errors"
 
 	"agamigo.io/gojs"
+	"agamigo.io/gojs/jsdom"
 	"agamigo.io/material/base"
 	"github.com/gopherjs/gopherwasm/js"
 )
