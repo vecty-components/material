@@ -5,7 +5,7 @@ import (
 
 	"agamigo.io/vecty-material/icon"
 	"agamigo.io/vecty-material/toolbar"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -30,7 +30,7 @@ type ToolbarHeader struct {
 }
 
 func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
-	pathname := js.Global.Get("window").Get("location").Get("pathname").String()
+	pathname := js.Global().Get("window").Get("location").Get("pathname").String()
 	var toolbarNav vecty.ComponentOrHTML
 	switch c.Navigation {
 	case NavRoot:

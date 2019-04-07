@@ -7,7 +7,7 @@ import (
 	"agamigo.io/vecty-material/drawer"
 	"agamigo.io/vecty-material/formfield"
 	"agamigo.io/vecty-material/radio"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
@@ -72,7 +72,7 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 								Checked: true,
 								OnChange: func(thisR *radio.R,
 									e *vecty.Event) {
-									d := js.Global.Get("window").Get("document")
+									d := js.Global().Get("window").Get("document")
 									dd := d.Call("querySelector", ".demo-drawer")
 									dd.Get("classList").Call("remove",
 										"demo-drawer--accessible")
@@ -92,7 +92,7 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 								Name: "theme",
 								OnChange: func(thisR *radio.R,
 									e *vecty.Event) {
-									d := js.Global.Get("window").Get("document")
+									d := js.Global().Get("window").Get("document")
 									dd := d.Call("querySelector", ".demo-drawer")
 									dd.Get("classList").Call("remove",
 										"demo-drawer--accessible")
@@ -112,7 +112,7 @@ func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 								Name: "theme",
 								OnChange: func(thisR *radio.R,
 									e *vecty.Event) {
-									d := js.Global.Get("window").Get("document")
+									d := js.Global().Get("window").Get("document")
 									dd := d.Call("querySelector", ".demo-drawer")
 									dd.Get("classList").Call("remove",
 										"demo-drawer--custom")

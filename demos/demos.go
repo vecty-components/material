@@ -5,7 +5,7 @@ import (
 
 	"agamigo.io/vecty-material/demos/common"
 	"agamigo.io/vecty-material/ul"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
@@ -238,6 +238,6 @@ func renderGraphic(filename string) vecty.ComponentOrHTML {
 }
 
 func makeHref(cName string) string {
-	pathname := js.Global.Get("window").Get("location").Get("pathname").String()
+	pathname := js.Global().Get("window").Get("location").Get("pathname").String()
 	return path.Clean(pathname + "/" + cName)
 }

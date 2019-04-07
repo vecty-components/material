@@ -2,7 +2,7 @@ package ul
 
 import (
 	"agamigo.io/vecty-material/base"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"

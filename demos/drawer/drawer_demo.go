@@ -4,7 +4,7 @@ import (
 	"path"
 
 	"agamigo.io/vecty-material/demos/common"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
@@ -19,7 +19,7 @@ func main() {
 }
 
 func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
-	pathname := js.Global.Get("window").Get("location").Get("pathname").String()
+	pathname := js.Global().Get("window").Get("location").Get("pathname").String()
 	return elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),

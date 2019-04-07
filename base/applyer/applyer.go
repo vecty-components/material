@@ -1,7 +1,7 @@
 package applyer
 
 import (
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 )
@@ -55,7 +55,7 @@ func StartRipple(h *vecty.HTML) {
 	p.Get("Start").Invoke()
 }
 
-func findProp(key string, h *vecty.HTML) *js.Object {
+func findProp(key string, h *vecty.HTML) js.Value {
 	k := js.InternalObject(h)
 	if k == js.Undefined {
 		return nil

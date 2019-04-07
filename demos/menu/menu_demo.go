@@ -12,7 +12,7 @@ import (
 	"agamigo.io/vecty-material/menu"
 	"agamigo.io/vecty-material/radio"
 	"agamigo.io/vecty-material/ul"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -197,7 +197,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 	}
 
 	rtlFunc := func(thisCB *checkbox.CB, e *vecty.Event) {
-		d := js.Global.Get("window").Get("document")
+		d := js.Global().Get("window").Get("document")
 		dw := d.Call("getElementById", "demo-wrapper")
 		if thisCB.Checked {
 			dw.Call("setAttribute", "dir", "rtl")

@@ -9,7 +9,7 @@ import (
 	"agamigo.io/vecty-material/icon"
 	"agamigo.io/vecty-material/ripple"
 	"agamigo.io/vecty-material/ul"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
@@ -77,7 +77,7 @@ func (c *listDemoView) Render() vecty.ComponentOrHTML {
 						),
 						OnChange: func(thisCB *checkbox.CB,
 							e *vecty.Event) {
-							w := js.Global.Get("window")
+							w := js.Global().Get("window")
 							d := w.Get("document")
 							dw := d.Call("getElementById",
 								"demo-wrapper")

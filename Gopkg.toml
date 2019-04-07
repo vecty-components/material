@@ -1,5 +1,5 @@
 ignored = [
-  "github.com/gopherjs/gopherjs/js"
+  "github.com/gopherjs/gopherwasm/js"
 ]
 
 [prune]

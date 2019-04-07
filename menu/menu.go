@@ -4,7 +4,7 @@ import (
 	"agamigo.io/material/menu"
 	"agamigo.io/vecty-material/base"
 	"agamigo.io/vecty-material/ul"
-	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 )
