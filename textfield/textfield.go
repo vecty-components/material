@@ -4,7 +4,7 @@
 package textfield // import "github.com/vecty-material/material/textfield"
 
 import (
-	"agamigo.io/gojs"
+	"github.com/vecty-material/gojs"
 	"github.com/vecty-material/material/base"
 	"github.com/gopherjs/gopherwasm/js"
 )

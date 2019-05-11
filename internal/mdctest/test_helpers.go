@@ -1,8 +1,8 @@
 package mdctest // import "github.com/vecty-material/material/internal/mdctest"
 
 import (
-	"agamigo.io/gojs"
-	"agamigo.io/gojs/jsdom"
+	"github.com/vecty-material/gojs"
+	"github.com/vecty-material/gojs/jsdom"
 	"github.com/gopherjs/gopherwasm/js"
 )
 
