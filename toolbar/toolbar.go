@@ -1,8 +1,8 @@
 package toolbar
 
 import (
-	"agamigo.io/material/toolbar"
-	"agamigo.io/vecty-material/base"
+	"github.com/vecty-material/material/toolbar"
+	"github.com/vecty-material/vecty-material/base"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 )

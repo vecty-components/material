@@ -1,9 +1,9 @@
 package main
 
 import (
-	"agamigo.io/vecty-material/demos/common"
-	"agamigo.io/vecty-material/icon"
-	"agamigo.io/vecty-material/icontoggle"
+	"github.com/vecty-material/vecty-material/demos/common"
+	"github.com/vecty-material/vecty-material/icon"
+	"github.com/vecty-material/vecty-material/icontoggle"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"

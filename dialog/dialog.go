@@ -1,11 +1,11 @@
 // https://material.io/components/web/catalog/dialogs/
-package dialog // import "agamigo.io/vecty-material/dialog"
+package dialog // import "github.com/vecty-material/vecty-material/dialog"
 
 import (
-	"agamigo.io/material/dialog"
-	"agamigo.io/vecty-material/base"
-	"agamigo.io/vecty-material/base/applyer"
-	"agamigo.io/vecty-material/button"
+	"github.com/vecty-material/material/dialog"
+	"github.com/vecty-material/vecty-material/base"
+	"github.com/vecty-material/vecty-material/base/applyer"
+	"github.com/vecty-material/vecty-material/button"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"

@@ -3,7 +3,7 @@ package main
 import (
 	"path"
 
-	"agamigo.io/vecty-material/demos/common"
+	"github.com/vecty-material/vecty-material/demos/common"
 	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"

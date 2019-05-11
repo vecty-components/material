@@ -1,9 +1,9 @@
 package drawer
 
 import (
-	"agamigo.io/material/persistentdrawer"
-	"agamigo.io/material/temporarydrawer"
-	"agamigo.io/vecty-material/base"
+	"github.com/vecty-material/material/persistentdrawer"
+	"github.com/vecty-material/material/temporarydrawer"
+	"github.com/vecty-material/vecty-material/base"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 )

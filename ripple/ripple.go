@@ -1,7 +1,7 @@
 package ripple
 
 import (
-	"agamigo.io/material/ripple"
+	"github.com/vecty-material/material/ripple"
 	"github.com/gopherjs/vecty"
 )
 

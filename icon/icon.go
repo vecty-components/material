@@ -1,7 +1,7 @@
 package icon
 
 import (
-	"agamigo.io/vecty-material/base"
+	"github.com/vecty-material/vecty-material/base"
 	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"

@@ -1,9 +1,9 @@
 package icontoggle
 
 import (
-	"agamigo.io/material/icontoggle"
-	"agamigo.io/vecty-material/base"
-	"agamigo.io/vecty-material/icon"
+	"github.com/vecty-material/material/icontoggle"
+	"github.com/vecty-material/vecty-material/base"
+	"github.com/vecty-material/vecty-material/icon"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 )

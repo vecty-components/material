@@ -1,12 +1,12 @@
 package main
 
 import (
-	"agamigo.io/vecty-material/button"
-	"agamigo.io/vecty-material/checkbox"
-	"agamigo.io/vecty-material/demos/common"
-	"agamigo.io/vecty-material/formfield"
-	"agamigo.io/vecty-material/icon"
-	"agamigo.io/vecty-material/ripple"
+	"github.com/vecty-material/vecty-material/button"
+	"github.com/vecty-material/vecty-material/checkbox"
+	"github.com/vecty-material/vecty-material/demos/common"
+	"github.com/vecty-material/vecty-material/formfield"
+	"github.com/vecty-material/vecty-material/icon"
+	"github.com/vecty-material/vecty-material/ripple"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"

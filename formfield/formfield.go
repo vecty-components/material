@@ -1,9 +1,9 @@
 package formfield
 
 import (
-	"agamigo.io/material/formfield"
-	"agamigo.io/vecty-material/base"
-	"agamigo.io/vecty-material/base/applyer"
+	"github.com/vecty-material/material/formfield"
+	"github.com/vecty-material/vecty-material/base"
+	"github.com/vecty-material/vecty-material/base/applyer"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"

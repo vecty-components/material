@@ -1,8 +1,8 @@
 package base
 
 import (
-	"agamigo.io/material/base"
-	"agamigo.io/vecty-material/base/applyer"
+	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/vecty-material/base/applyer"
 	"github.com/gopherjs/vecty"
 )
 

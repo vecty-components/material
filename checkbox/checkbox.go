@@ -1,9 +1,9 @@
 package checkbox
 
 import (
-	"agamigo.io/material/checkbox"
-	"agamigo.io/vecty-material/base"
-	"agamigo.io/vecty-material/base/applyer"
+	"github.com/vecty-material/material/checkbox"
+	"github.com/vecty-material/vecty-material/base"
+	"github.com/vecty-material/vecty-material/base/applyer"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"

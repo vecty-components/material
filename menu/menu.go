@@ -1,9 +1,9 @@
 package menu
 
 import (
-	"agamigo.io/material/menu"
-	"agamigo.io/vecty-material/base"
-	"agamigo.io/vecty-material/ul"
+	"github.com/vecty-material/material/menu"
+	"github.com/vecty-material/vecty-material/base"
+	"github.com/vecty-material/vecty-material/ul"
 	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"

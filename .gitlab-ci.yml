@@ -1,7 +1,7 @@
 image: golang:alpine
 
 variables:
-  REPO_NAME: agamigo.io/vecty-material
+  REPO_NAME: github.com/vecty-material/vecty-material
 
 before_script:
   - mkdir -p "${GOPATH}/src/$(dirname ${REPO_NAME})"

@@ -1,8 +1,8 @@
 // https://material.io/components/web/catalog/buttons/
-package button // import "agamigo.io/vecty-material/button"
+package button // import "github.com/vecty-material/vecty-material/button"
 
 import (
-	"agamigo.io/vecty-material/base"
+	"github.com/vecty-material/vecty-material/base"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"

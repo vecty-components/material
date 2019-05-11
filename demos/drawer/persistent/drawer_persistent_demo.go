@@ -1,12 +1,12 @@
 package main
 
 import (
-	"agamigo.io/vecty-material/button"
-	"agamigo.io/vecty-material/demos/common"
-	dcommon "agamigo.io/vecty-material/demos/drawer/common"
-	"agamigo.io/vecty-material/drawer"
-	"agamigo.io/vecty-material/formfield"
-	"agamigo.io/vecty-material/radio"
+	"github.com/vecty-material/vecty-material/button"
+	"github.com/vecty-material/vecty-material/demos/common"
+	dcommon "github.com/vecty-material/vecty-material/demos/drawer/common"
+	"github.com/vecty-material/vecty-material/drawer"
+	"github.com/vecty-material/vecty-material/formfield"
+	"github.com/vecty-material/vecty-material/radio"
 	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"

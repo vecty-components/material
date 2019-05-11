@@ -3,8 +3,8 @@ package common
 import (
 	"path"
 
-	"agamigo.io/vecty-material/icon"
-	"agamigo.io/vecty-material/toolbar"
+	"github.com/vecty-material/vecty-material/icon"
+	"github.com/vecty-material/vecty-material/toolbar"
 	"github.com/gopherjs/gopherwasm/js"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"

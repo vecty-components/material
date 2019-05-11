@@ -1,10 +1,10 @@
 package common
 
 import (
-	"agamigo.io/vecty-material/base"
-	"agamigo.io/vecty-material/drawer"
-	"agamigo.io/vecty-material/icon"
-	"agamigo.io/vecty-material/ul"
+	"github.com/vecty-material/vecty-material/base"
+	"github.com/vecty-material/vecty-material/drawer"
+	"github.com/vecty-material/vecty-material/icon"
+	"github.com/vecty-material/vecty-material/ul"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"

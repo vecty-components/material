@@ -1,10 +1,10 @@
 package main
 
 import (
-	"agamigo.io/vecty-material/base/applyer"
-	"agamigo.io/vecty-material/demos/common"
-	"agamigo.io/vecty-material/formfield"
-	"agamigo.io/vecty-material/radio"
+	"github.com/vecty-material/vecty-material/base/applyer"
+	"github.com/vecty-material/vecty-material/demos/common"
+	"github.com/vecty-material/vecty-material/formfield"
+	"github.com/vecty-material/vecty-material/radio"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
