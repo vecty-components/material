@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/gopherjs/gopherwasm/js"
 	"github.com/vecty-material/material/internal/mdctest"
 	"github.com/vecty-material/material/snackbar"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 func Example() {
@@ -95,7 +95,7 @@ func printState(c *snackbar.S) {
 		fmt.Printf("[Js] Message: %v, Timeout: %v, ActionHandler: %v, ActionText: %v",
 			o.Get("message"),
 			o.Get("timeout"),
-			o.Get("actionHandler").Interface(),
+			o.Get("actionHandler"),
 			o.Get("actionText"),
 		)
 		fmt.Printf("Multiline: %v, ActionOnBottom: %v\n",
