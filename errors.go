@@ -1,4 +1,4 @@
-package gojs // import "agamigo.io/gojs"
+package gojs // import "github.com/vecty-material/gojs"
 
 import "github.com/gopherjs/gopherwasm/js"
 

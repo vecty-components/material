@@ -9,11 +9,11 @@
 // Node's global environment. See:
 // https://github.com/jsdom/jsdom/wiki/Don't-stuff-jsdom-globals-onto-the-Node-global
 
-package jsdom // import "agamigo.io/gojs/jsdom"
+package jsdom // import "github.com/vecty-material/gojs/jsdom"
 
 import (
-	"agamigo.io/gojs"
 	"github.com/gopherjs/gopherwasm/js"
+	"github.com/vecty-material/gojs"
 )
 
 type M map[string]interface{}
