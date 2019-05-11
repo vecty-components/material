@@ -1,11 +1,11 @@
 // textfield implements a material textfield component.
 //
 // See: https://material.io/components/web/catalog/input-controls/text-field/
-package textfield // import "agamigo.io/material/textfield"
+package textfield // import "github.com/vecty-material/material/textfield"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/base"
+	"github.com/vecty-material/material/base"
 	"github.com/gopherjs/gopherwasm/js"
 )
 

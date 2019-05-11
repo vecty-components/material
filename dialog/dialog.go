@@ -1,11 +1,11 @@
 // dialog implements a material dialog component.
 //
 // See: https://material.io/components/web/catalog/dialogs/
-package dialog // import "agamigo.io/material/dialog"
+package dialog // import "github.com/vecty-material/material/dialog"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/base"
+	"github.com/vecty-material/material/base"
 	"github.com/gopherjs/gopherwasm/js"
 )
 

@@ -53,13 +53,13 @@ definitions we are trying to enforce in Material.
 | [material-components-web][] | The official upstream JavaScript library.            |
 | MDC or MCW                  | Synonyms/abbreviations of `material-components-web`. |
 | [Material][]                | This project.                                        |
-| [Material component][]      | Our `agamigo.io/material/*` Go packages.             |
+| [Material component][]      | Our `github.com/vecty-material/material/*` Go packages.             |
 | [Material menu][]           | An example of a specific type of Material component. |
 
 [material-components-web]: https://github.com/material-components/material-components-web
 [Material]: https://gitlab.com/agamigo/material
-[Material component]: https://godoc.org/agamigo.io/material
-[Material menu]: https://godoc.org/agamigo.io/material/menu
+[Material component]: https://godoc.org/github.com/vecty-material/material
+[Material menu]: https://godoc.org/github.com/vecty-material/material/menu
 [vecty-material]: https://gitlab.com/agamigo/vecty-material
 [Gopher Slack]: https://gophers.slack.com
 [gl-issue-1]: https://gitlab.com/agamigo/material/issues/1

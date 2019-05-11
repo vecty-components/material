@@ -1,14 +1,14 @@
 // snackbar implements a material snackbar component.
 //
 // See: https://material.io/components/web/catalog/snackbars/
-package snackbar // import "agamigo.io/material/snackbar"
+package snackbar // import "github.com/vecty-material/material/snackbar"
 
 import (
 	"errors"
 
 	"agamigo.io/gojs"
 	"agamigo.io/gojs/jsdom"
-	"agamigo.io/material/base"
+	"github.com/vecty-material/material/base"
 	"github.com/gopherjs/gopherwasm/js"
 )
 

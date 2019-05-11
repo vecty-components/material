@@ -1,10 +1,10 @@
 // checkbox implements a material checkbox component.
 //
 // See: https://material.io/components/web/catalog/input-controls/checkboxes/
-package checkbox // import "agamigo.io/material/checkbox"
+package checkbox // import "github.com/vecty-material/material/checkbox"
 
 import (
-	"agamigo.io/material/base"
+	"github.com/vecty-material/material/base"
 	"github.com/gopherjs/gopherwasm/js"
 )
 

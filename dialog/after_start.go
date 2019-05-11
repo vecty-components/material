@@ -1,7 +1,7 @@
 package dialog
 
 import (
-	"agamigo.io/material/base"
+	"github.com/vecty-material/material/base"
 	"github.com/gopherjs/gopherwasm/js"
 )
 

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"agamigo.io/material/checkbox"
-	"agamigo.io/material/formfield"
-	"agamigo.io/material/internal/mdctest"
+	"github.com/vecty-material/material/checkbox"
+	"github.com/vecty-material/material/formfield"
+	"github.com/vecty-material/material/internal/mdctest"
 	"github.com/gopherjs/gopherwasm/js"
 )
 

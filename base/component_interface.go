@@ -1,4 +1,4 @@
-package base // import "agamigo.io/material/base"
+package base // import "github.com/vecty-material/material/base"
 
 import "github.com/gopherjs/gopherwasm/js"
 

@@ -1,10 +1,10 @@
 // radio implements a material radio component.
 //
 // See: https://material.io/components/web/catalog/input-controls/radio-buttons/
-package radio // import "agamigo.io/material/radio"
+package radio // import "github.com/vecty-material/material/radio"
 
 import (
-	"agamigo.io/material/base"
+	"github.com/vecty-material/material/base"
 	"github.com/gopherjs/gopherwasm/js"
 )
 

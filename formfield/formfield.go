@@ -1,10 +1,10 @@
 // formfield implements a material formfield component.
 //
 // See: https://material.io/components/web/catalog/input-controls/form-fields/
-package formfield // import "agamigo.io/material/formfield"
+package formfield // import "github.com/vecty-material/material/formfield"
 
 import (
-	"agamigo.io/material/base"
+	"github.com/vecty-material/material/base"
 	"github.com/gopherjs/gopherwasm/js"
 )
 

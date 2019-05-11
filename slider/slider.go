@@ -1,11 +1,11 @@
 // slider implements a material slider component.
 //
 // See: https://material.io/components/web/catalog/input-controls/sliders/
-package slider // import "agamigo.io/material/slider"
+package slider // import "github.com/vecty-material/material/slider"
 
 import (
 	"agamigo.io/gojs"
-	"agamigo.io/material/base"
+	"github.com/vecty-material/material/base"
 	"github.com/gopherjs/gopherwasm/js"
 )
 

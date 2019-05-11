@@ -1,7 +1,7 @@
 package linearprogress
 
 import (
-	"agamigo.io/material/base"
+	"github.com/vecty-material/material/base"
 )
 
 // afterStart defines missing getters for MDCLinearProgress properties, so that

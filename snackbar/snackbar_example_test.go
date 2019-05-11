@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"agamigo.io/material/internal/mdctest"
-	"agamigo.io/material/snackbar"
+	"github.com/vecty-material/material/internal/mdctest"
+	"github.com/vecty-material/material/snackbar"
 	"github.com/gopherjs/gopherwasm/js"
 )
 

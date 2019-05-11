@@ -1,4 +1,4 @@
-package base // import "agamigo.io/material/base"
+package base // import "github.com/vecty-material/material/base"
 
 // ComponentType is a specific component type, as implemented by the
 // material-components-web library.
