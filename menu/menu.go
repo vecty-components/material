@@ -93,7 +93,7 @@ func (c *M) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Value == js.Null():
+	case c.mdc.Value.IsNull():
 		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
@@ -124,7 +124,7 @@ func (m *M) ItemsContainer() js.Value {
 
 // AnchorCorner returns the Corner the menu is/will be attached to.
 func (m *M) AnchorCorner() Corner {
-	if m.Component().Get("foundation_") == js.Undefined() {
+	if m.Component().Get("foundation_").IsUndefined() {
 		return 0
 	}
 	return Corner(m.Component().Get("foundation_").Get("anchorCorner_").Int())
@@ -138,7 +138,7 @@ func (m *M) SetAnchorCorner(c Corner) {
 // AnchorMargins returns the distance from the anchor point that the menu
 // is/will be.
 func (m *M) AnchorMargins() *Margins {
-	if m.Component().Get("foundation_") == js.Undefined() {
+	if m.Component().Get("foundation_").IsUndefined() {
 		return &Margins{}
 	}
 	o := m.Component().Get("foundation_").Get("anchorMargin_")
@@ -153,7 +153,7 @@ func (m *M) AnchorMargins() *Margins {
 // AnchorMargins sets the distance from the anchor point that the menu is/will
 // be.
 func (m *M) SetAnchorMargins(ms *Margins) {
-	if m.Component().Get("foundation_") == js.Undefined() {
+	if m.Component().Get("foundation_").IsUndefined() {
 		return
 	}
 	o := &jsdom.M{

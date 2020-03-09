@@ -61,7 +61,7 @@ func (c *D) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Value == js.Null():
+	case c.mdc.Value.IsNull():
 		c.mdc.Component().SetState(c.stateMap())
 	}
 	return c.mdc.Component()

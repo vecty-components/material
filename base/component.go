@@ -29,7 +29,7 @@ type StateMap map[string]interface{}
 
 // Component implements the base.Componenter interface.
 func (c *Component) Component() *Component {
-	if c.Value == js.Undefined() {
+	if c.Value.IsUndefined() {
 		c.Value = js.Global().Get("Object").New()
 	}
 	if c.MDCState == nil {
@@ -115,7 +115,7 @@ func Start(c Componenter, rootElem js.Value) (err error) {
 			return err
 		}
 	}
-	if rootElem == js.Undefined() {
+	if rootElem.IsUndefined() {
 		return errors.New("rootElem is nil.")
 	}
 

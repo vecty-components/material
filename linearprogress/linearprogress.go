@@ -63,7 +63,7 @@ func (c *LP) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Value == js.Null():
+	case c.mdc.Value.IsNull():
 		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
