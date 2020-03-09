@@ -4,8 +4,9 @@
 package formfield // import "github.com/vecty-material/material/formfield"
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // FF is a material formfield component.

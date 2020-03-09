@@ -1,8 +1,9 @@
 package dialog
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 func (c *D) afterStart() (err error) {

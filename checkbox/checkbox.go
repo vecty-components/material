@@ -4,8 +4,9 @@
 package checkbox // import "github.com/vecty-material/material/checkbox"
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // CB is a material checkbox component.

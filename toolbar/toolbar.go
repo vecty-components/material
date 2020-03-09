@@ -4,8 +4,9 @@
 package toolbar
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // T is a material toolbar component.

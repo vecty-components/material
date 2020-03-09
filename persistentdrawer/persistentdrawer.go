@@ -3,8 +3,9 @@
 // See: https://material.io/components/web/catalog/drawers/
 package persistentdrawer // import "github.com/vecty-material/material/persistentdrawer"
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // PD is a material persistentdrawer component.

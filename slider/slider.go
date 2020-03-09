@@ -4,9 +4,10 @@
 package slider // import "github.com/vecty-material/material/slider"
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/gojs"
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // S is a material slider component.

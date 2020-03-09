@@ -7,8 +7,9 @@ package base // import "github.com/vecty-material/material/base"
 import (
 	"errors"
 
+	"syscall/js"
+
 	"github.com/vecty-material/gojs"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // Component is a base type for all Material components.

@@ -4,8 +4,9 @@
 package icontoggle // import "github.com/vecty-material/material/icontoggle"
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // IT is a material icontoggle component.

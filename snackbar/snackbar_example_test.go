@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gopherjs/gopherwasm/js"
+	"syscall/js"
+
 	"github.com/vecty-material/material/internal/mdctest"
 	"github.com/vecty-material/material/snackbar"
 )

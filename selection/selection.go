@@ -4,8 +4,9 @@
 package selection // import "github.com/vecty-material/material/selection"
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // S is a material selection component.

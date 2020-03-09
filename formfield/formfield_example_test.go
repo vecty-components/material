@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"log"
 
+	"syscall/js"
+
 	"github.com/vecty-material/material/checkbox"
 	"github.com/vecty-material/material/formfield"
 	"github.com/vecty-material/material/internal/mdctest"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 func Example() {

@@ -4,8 +4,9 @@
 package radio // import "github.com/vecty-material/material/radio"
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // R is a material radio component.

@@ -3,8 +3,9 @@
 // See: https://material.io/components/web/catalog/drawers/
 package temporarydrawer // import "github.com/vecty-material/material/temporarydrawer"
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // TD is a material temporarydrawer component.

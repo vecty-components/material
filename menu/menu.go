@@ -7,7 +7,7 @@ import (
 	"github.com/vecty-material/gojs/jsdom"
 	"github.com/vecty-material/material/base"
 
-	"github.com/gopherjs/gopherwasm/js"
+	"syscall/js"
 )
 
 type Corner int

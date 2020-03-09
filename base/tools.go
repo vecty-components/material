@@ -1,9 +1,10 @@
 package base
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/gojs"
 	"github.com/vecty-material/gojs/jsdom"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 func DefineSetGet(c Componenter, key string,

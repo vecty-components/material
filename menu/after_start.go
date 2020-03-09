@@ -1,8 +1,9 @@
 package menu
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // afterStart adds a missing getter to MDCMenu.quickOpen so we can work with

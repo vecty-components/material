@@ -1,6 +1,6 @@
 package base // import "github.com/vecty-material/material/base"
 
-import "github.com/gopherjs/gopherwasm/js"
+import "syscall/js"
 
 // Componenter is a base interface for every material component implementation.
 type Componenter interface {

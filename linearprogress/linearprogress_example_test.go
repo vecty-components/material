@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"log"
 
+	"syscall/js"
+
 	"github.com/vecty-material/material/internal/mdctest"
 	"github.com/vecty-material/material/linearprogress"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 func Example() {

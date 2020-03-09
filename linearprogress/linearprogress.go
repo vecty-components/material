@@ -4,9 +4,10 @@
 package linearprogress // import "github.com/vecty-material/material/linearprogress"
 
 import (
+	"syscall/js"
+
 	"github.com/vecty-material/gojs"
 	"github.com/vecty-material/material/base"
-	"github.com/gopherjs/gopherwasm/js"
 )
 
 // LP is a material libearprogress component.
