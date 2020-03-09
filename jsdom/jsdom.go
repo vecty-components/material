@@ -12,7 +12,8 @@
 package jsdom // import "github.com/vecty-material/gojs/jsdom"
 
 import (
-	"github.com/gopherjs/gopherwasm/js"
+	"syscall/js"
+
 	"github.com/vecty-material/gojs"
 )
 

@@ -1,6 +1,6 @@
 package gojs // import "github.com/vecty-material/gojs"
 
-import "github.com/gopherjs/gopherwasm/js"
+import "syscall/js"
 
 // catchException recovers any JS exceptions and
 // stores the error in the parameter
