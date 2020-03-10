@@ -3,13 +3,14 @@ package common
 import (
 	"path"
 
-	"github.com/vecty-material/vecty-material/icon"
-	"github.com/vecty-material/vecty-material/toolbar"
-	"github.com/gopherjs/gopherwasm/js"
+	"syscall/js"
+
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/vecty-material/icon"
+	"github.com/vecty-material/vecty-material/toolbar"
 )
 
 type NavType int

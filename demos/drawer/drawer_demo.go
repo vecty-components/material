@@ -3,11 +3,12 @@ package main
 import (
 	"path"
 
-	"github.com/vecty-material/vecty-material/demos/common"
-	"github.com/gopherjs/gopherwasm/js"
+	"syscall/js"
+
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/vecty-material/demos/common"
 )
 
 type drawerDemoView struct {

@@ -1,16 +1,17 @@
 package main
 
 import (
+	"syscall/js"
+
+	"github.com/gopherjs/vecty"
+	"github.com/gopherjs/vecty/elem"
+	"github.com/gopherjs/vecty/prop"
 	"github.com/vecty-material/vecty-material/button"
 	"github.com/vecty-material/vecty-material/demos/common"
 	dcommon "github.com/vecty-material/vecty-material/demos/drawer/common"
 	"github.com/vecty-material/vecty-material/drawer"
 	"github.com/vecty-material/vecty-material/formfield"
 	"github.com/vecty-material/vecty-material/radio"
-	"github.com/gopherjs/gopherwasm/js"
-	"github.com/gopherjs/vecty"
-	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/prop"
 )
 
 type drawerDemoView struct {

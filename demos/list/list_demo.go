@@ -3,17 +3,18 @@ package main
 import (
 	"strconv"
 
+	"syscall/js"
+
+	"github.com/gopherjs/vecty"
+	"github.com/gopherjs/vecty/elem"
+	"github.com/gopherjs/vecty/event"
+	"github.com/gopherjs/vecty/prop"
 	"github.com/vecty-material/vecty-material/checkbox"
 	"github.com/vecty-material/vecty-material/demos/common"
 	"github.com/vecty-material/vecty-material/formfield"
 	"github.com/vecty-material/vecty-material/icon"
 	"github.com/vecty-material/vecty-material/ripple"
 	"github.com/vecty-material/vecty-material/ul"
-	"github.com/gopherjs/gopherwasm/js"
-	"github.com/gopherjs/vecty"
-	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/event"
-	"github.com/gopherjs/vecty/prop"
 )
 
 const MDCImagesURL = "https://material-components-web.appspot.com/images/"

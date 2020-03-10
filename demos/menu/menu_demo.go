@@ -3,6 +3,12 @@ package main
 import (
 	"strconv"
 
+	"syscall/js"
+
+	"github.com/gopherjs/vecty"
+	"github.com/gopherjs/vecty/elem"
+	"github.com/gopherjs/vecty/event"
+	"github.com/gopherjs/vecty/prop"
 	mmenu "github.com/vecty-material/material/menu"
 	"github.com/vecty-material/vecty-material/base/applyer"
 	"github.com/vecty-material/vecty-material/button"
@@ -12,11 +18,6 @@ import (
 	"github.com/vecty-material/vecty-material/menu"
 	"github.com/vecty-material/vecty-material/radio"
 	"github.com/vecty-material/vecty-material/ul"
-	"github.com/gopherjs/gopherwasm/js"
-	"github.com/gopherjs/vecty"
-	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/event"
-	"github.com/gopherjs/vecty/prop"
 )
 
 // MenuDemoView is our demo page component.

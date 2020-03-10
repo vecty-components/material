@@ -1,12 +1,13 @@
 package ul
 
 import (
-	"github.com/vecty-material/vecty-material/base"
-	"github.com/gopherjs/gopherwasm/js"
+	"syscall/js"
+
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/vecty-material/base"
 )
 
 type nativeInputer interface {

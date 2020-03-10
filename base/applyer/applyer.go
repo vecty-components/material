@@ -1,7 +1,8 @@
 package applyer
 
 import (
-	"github.com/gopherjs/gopherwasm/js"
+	"syscall/js"
+
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 )
