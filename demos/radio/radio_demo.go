@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/vecty-material/vecty-material/base/applyer"
-	"github.com/vecty-material/vecty-material/demos/common"
-	"github.com/vecty-material/vecty-material/formfield"
-	"github.com/vecty-material/vecty-material/radio"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/material/base/applyer"
+	"github.com/vecty-material/material/demos/common"
+	"github.com/vecty-material/material/formfield"
+	"github.com/vecty-material/material/radio"
 )
 
 // radioDemoView is our demo page component.

@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/vecty-material/vecty-material/demos/common"
-	"github.com/vecty-material/vecty-material/icon"
-	"github.com/vecty-material/vecty-material/icontoggle"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/material/demos/common"
+	"github.com/vecty-material/material/icon"
+	"github.com/vecty-material/material/icontoggle"
 )
 
 // icontoggleDemoView is our demo page component.

@@ -1,13 +1,13 @@
 package common
 
 import (
-	"github.com/vecty-material/vecty-material/base"
-	"github.com/vecty-material/vecty-material/drawer"
-	"github.com/vecty-material/vecty-material/icon"
-	"github.com/vecty-material/vecty-material/ul"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/drawer"
+	"github.com/vecty-material/material/icon"
+	"github.com/vecty-material/material/ul"
 )
 
 func NewDemoDrawer(dType drawer.Type) *drawer.D {

@@ -1,13 +1,13 @@
 package radio
 
 import (
-	"github.com/vecty-material/material/radio"
-	"github.com/vecty-material/vecty-material/base"
-	"github.com/vecty-material/vecty-material/base/applyer"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/base/applyer"
+	"github.com/vecty-material/material/material/radio"
 )
 
 // R is a vecty-material radio component.

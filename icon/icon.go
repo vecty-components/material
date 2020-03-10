@@ -5,7 +5,7 @@ import (
 
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/vecty-material/vecty-material/base"
+	"github.com/vecty-material/material/base"
 )
 
 type Size string

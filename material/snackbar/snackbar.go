@@ -1,16 +1,16 @@
 // snackbar implements a material snackbar component.
 //
 // See: https://material.io/components/web/catalog/snackbars/
-package snackbar // import "github.com/vecty-material/material/snackbar"
+package snackbar // import "github.com/vecty-material/material/material/snackbar"
 
 import (
 	"errors"
 
 	"syscall/js"
 
-	"github.com/vecty-material/gojs"
-	"github.com/vecty-material/gojs/jsdom"
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/gojs"
+	"github.com/vecty-material/material/gojs/jsdom"
+	"github.com/vecty-material/material/material/base"
 )
 
 // S is a material snackbar component.

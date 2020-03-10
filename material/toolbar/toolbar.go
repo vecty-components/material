@@ -6,7 +6,7 @@ package toolbar
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/material/base"
 )
 
 // T is a material toolbar component.

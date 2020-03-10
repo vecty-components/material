@@ -9,8 +9,8 @@ import (
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
-	"github.com/vecty-material/vecty-material/icon"
-	"github.com/vecty-material/vecty-material/toolbar"
+	"github.com/vecty-material/material/icon"
+	"github.com/vecty-material/material/toolbar"
 )
 
 type NavType int

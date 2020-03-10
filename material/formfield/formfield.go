@@ -1,12 +1,12 @@
 // formfield implements a material formfield component.
 //
 // See: https://material.io/components/web/catalog/input-controls/form-fields/
-package formfield // import "github.com/vecty-material/material/formfield"
+package formfield // import "github.com/vecty-material/material/material/formfield"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/material/base"
 )
 
 // FF is a material formfield component.

@@ -9,12 +9,12 @@
 // Node's global environment. See:
 // https://github.com/jsdom/jsdom/wiki/Don't-stuff-jsdom-globals-onto-the-Node-global
 
-package jsdom // import "github.com/vecty-material/gojs/jsdom"
+package jsdom // import "github.com/vecty-material/material/gojs/jsdom"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/gojs"
+	"github.com/vecty-material/material/gojs"
 )
 
 type M map[string]interface{}

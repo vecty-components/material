@@ -1,8 +1,8 @@
 package ripple
 
 import (
-	"github.com/vecty-material/material/ripple"
 	"github.com/gopherjs/vecty"
+	"github.com/vecty-material/material/material/ripple"
 )
 
 type R struct {

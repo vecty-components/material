@@ -1,13 +1,13 @@
 // slider implements a material slider component.
 //
 // See: https://material.io/components/web/catalog/input-controls/sliders/
-package slider // import "github.com/vecty-material/material/slider"
+package slider // import "github.com/vecty-material/material/material/slider"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/gojs"
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/gojs"
+	"github.com/vecty-material/material/material/base"
 )
 
 // S is a material slider component.

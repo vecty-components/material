@@ -1,11 +1,11 @@
 // temporarydrawer implements a material temporarydrawer component.
 //
 // See: https://material.io/components/web/catalog/drawers/
-package temporarydrawer // import "github.com/vecty-material/material/temporarydrawer"
+package temporarydrawer // import "github.com/vecty-material/material/material/temporarydrawer"
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/material/base"
 )
 
 // TD is a material temporarydrawer component.

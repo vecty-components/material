@@ -1,11 +1,11 @@
 package icontoggle
 
 import (
-	"github.com/vecty-material/material/icontoggle"
-	"github.com/vecty-material/vecty-material/base"
-	"github.com/vecty-material/vecty-material/icon"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
+	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/icon"
+	"github.com/vecty-material/material/material/icontoggle"
 )
 
 // IT is a vecty-material icontoggle component.

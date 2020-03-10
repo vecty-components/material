@@ -5,9 +5,9 @@ import (
 
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/vecty-material/material/menu"
-	"github.com/vecty-material/vecty-material/base"
-	"github.com/vecty-material/vecty-material/ul"
+	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/material/menu"
+	"github.com/vecty-material/material/ul"
 )
 
 // M is a vecty-material menu component.

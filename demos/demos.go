@@ -8,8 +8,8 @@ import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
-	"github.com/vecty-material/vecty-material/demos/common"
-	"github.com/vecty-material/vecty-material/ul"
+	"github.com/vecty-material/material/demos/common"
+	"github.com/vecty-material/material/ul"
 )
 
 // demosCatalogView is our main page component.

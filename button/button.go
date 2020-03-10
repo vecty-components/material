@@ -1,12 +1,12 @@
 // https://material.io/components/web/catalog/buttons/
-package button // import "github.com/vecty-material/vecty-material/button"
+package button // import "github.com/vecty-material/material/button"
 
 import (
-	"github.com/vecty-material/vecty-material/base"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/material/base"
 )
 
 // B is a vecty-material button component.

@@ -8,7 +8,7 @@ up, etc).
 
 2. Import a Material component from this project in your Go progrem.
 
-  import "github.com/vecty-material/material/checkbox"
+  import "github.com/vecty-material/material/material/checkbox"
 
 3. Make the HTML suitable for that MDC component available to your GopherJS
 program. See: https://material.io/components/web/catalog/
@@ -30,4 +30,4 @@ program. See: https://material.io/components/web/catalog/
   cb := checkbox.CB{}
   cb.Start(cbElem)
 */
-package material // import "github.com/vecty-material/material"
+package material // import "github.com/vecty-material/material/material"

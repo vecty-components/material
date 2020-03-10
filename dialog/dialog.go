@@ -1,15 +1,15 @@
 // https://material.io/components/web/catalog/dialogs/
-package dialog // import "github.com/vecty-material/vecty-material/dialog"
+package dialog // import "github.com/vecty-material/material/dialog"
 
 import (
-	"github.com/vecty-material/material/dialog"
-	"github.com/vecty-material/vecty-material/base"
-	"github.com/vecty-material/vecty-material/base/applyer"
-	"github.com/vecty-material/vecty-material/button"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/base/applyer"
+	"github.com/vecty-material/material/button"
+	"github.com/vecty-material/material/material/dialog"
 )
 
 // D is a material dialog component.

@@ -1,13 +1,13 @@
 // ripple implements a material ripple component.
 //
 // See: https://material.io/components/web/catalog/ripples/
-package ripple // import "github.com/vecty-material/material/ripple"
+package ripple // import "github.com/vecty-material/material/material/ripple"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/gojs"
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/gojs"
+	"github.com/vecty-material/material/material/base"
 )
 
 // R is a material ripple component.

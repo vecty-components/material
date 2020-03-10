@@ -2,14 +2,14 @@
 The base package contains code shared by implementations of material components
 for GopherJS.
 */
-package base // import "github.com/vecty-material/material/base"
+package base // import "github.com/vecty-material/material/material/base"
 
 import (
 	"errors"
 
 	"syscall/js"
 
-	"github.com/vecty-material/gojs"
+	"github.com/vecty-material/material/gojs"
 )
 
 // Component is a base type for all Material components.

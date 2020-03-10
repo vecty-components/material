@@ -1,11 +1,11 @@
 // menu implements a material menu component.
 //
 // See: https://material.io/components/web/catalog/menus/
-package menu // import "github.com/vecty-material/material/menu"
+package menu // import "github.com/vecty-material/material/material/menu"
 
 import (
-	"github.com/vecty-material/gojs/jsdom"
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/gojs/jsdom"
+	"github.com/vecty-material/material/material/base"
 
 	"syscall/js"
 )

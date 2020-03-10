@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/vecty-material/vecty-material/base/applyer"
-	"github.com/vecty-material/vecty-material/button"
-	"github.com/vecty-material/vecty-material/checkbox"
-	"github.com/vecty-material/vecty-material/demos/common"
-	"github.com/vecty-material/vecty-material/formfield"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/material/base/applyer"
+	"github.com/vecty-material/material/button"
+	"github.com/vecty-material/material/checkbox"
+	"github.com/vecty-material/material/demos/common"
+	"github.com/vecty-material/material/formfield"
 )
 
 const (

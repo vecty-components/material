@@ -3,13 +3,13 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/vecty-material/gojs"
+  name = "github.com/vecty-material/material/gojs"
   packages = ["."]
   revision = "ec2136c8d5bef18c172f2cabe4f7574e2b2232ea"
 
 [[projects]]
   branch = "master"
-  name = "github.com/vecty-material/material"
+  name = "github.com/vecty-material/material/material"
   packages = [
     "base",
     "checkbox",

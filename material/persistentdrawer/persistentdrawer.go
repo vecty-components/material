@@ -1,11 +1,11 @@
 // persistentdrawer implements a material persistentdrawer component.
 //
 // See: https://material.io/components/web/catalog/drawers/
-package persistentdrawer // import "github.com/vecty-material/material/persistentdrawer"
+package persistentdrawer // import "github.com/vecty-material/material/material/persistentdrawer"
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/material/base"
 )
 
 // PD is a material persistentdrawer component.

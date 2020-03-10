@@ -9,12 +9,12 @@ import (
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/event"
 	"github.com/gopherjs/vecty/prop"
-	"github.com/vecty-material/vecty-material/checkbox"
-	"github.com/vecty-material/vecty-material/demos/common"
-	"github.com/vecty-material/vecty-material/formfield"
-	"github.com/vecty-material/vecty-material/icon"
-	"github.com/vecty-material/vecty-material/ripple"
-	"github.com/vecty-material/vecty-material/ul"
+	"github.com/vecty-material/material/checkbox"
+	"github.com/vecty-material/material/demos/common"
+	"github.com/vecty-material/material/formfield"
+	"github.com/vecty-material/material/icon"
+	"github.com/vecty-material/material/ripple"
+	"github.com/vecty-material/material/ul"
 )
 
 const MDCImagesURL = "https://material-components-web.appspot.com/images/"

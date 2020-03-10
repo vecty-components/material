@@ -1,13 +1,13 @@
 // linearprogress implements a material linearprogress component.
 //
 // See: https://material.io/components/web/catalog/linear-progress/
-package linearprogress // import "github.com/vecty-material/material/linearprogress"
+package linearprogress // import "github.com/vecty-material/material/material/linearprogress"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/gojs"
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/gojs"
+	"github.com/vecty-material/material/material/base"
 )
 
 // LP is a material libearprogress component.

@@ -1,7 +1,7 @@
 package linearprogress
 
 import (
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/material/base"
 )
 
 // afterStart defines missing getters for MDCLinearProgress properties, so that

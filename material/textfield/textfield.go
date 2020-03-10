@@ -1,13 +1,13 @@
 // textfield implements a material textfield component.
 //
 // See: https://material.io/components/web/catalog/input-controls/text-field/
-package textfield // import "github.com/vecty-material/material/textfield"
+package textfield // import "github.com/vecty-material/material/material/textfield"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/gojs"
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/gojs"
+	"github.com/vecty-material/material/material/base"
 )
 
 // TF is a material textfield component.

@@ -1,12 +1,12 @@
 package formfield
 
 import (
-	"github.com/vecty-material/material/formfield"
-	"github.com/vecty-material/vecty-material/base"
-	"github.com/vecty-material/vecty-material/base/applyer"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/gopherjs/vecty/prop"
+	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/base/applyer"
+	"github.com/vecty-material/material/material/formfield"
 )
 
 // FF is a vecty-material formfield component.

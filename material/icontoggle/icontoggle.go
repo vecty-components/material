@@ -1,12 +1,12 @@
 // icontoggle implements a material icontoggle component.
 //
 // See: https://material.io/components/web/catalog/buttons/icon-toggle-buttons/
-package icontoggle // import "github.com/vecty-material/material/icontoggle"
+package icontoggle // import "github.com/vecty-material/material/material/icontoggle"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/material/base"
 )
 
 // IT is a material icontoggle component.

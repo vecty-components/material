@@ -9,7 +9,7 @@ ignored = [
 
 [[constraint]]
   branch = "master"
-  name = "github.com/vecty-material/material"
+  name = "github.com/vecty-material/material/material"
 
 [[constraint]]
   branch = "master"

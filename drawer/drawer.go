@@ -1,11 +1,11 @@
 package drawer
 
 import (
-	"github.com/vecty-material/material/persistentdrawer"
-	"github.com/vecty-material/material/temporarydrawer"
-	"github.com/vecty-material/vecty-material/base"
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
+	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/material/persistentdrawer"
+	"github.com/vecty-material/material/material/temporarydrawer"
 )
 
 type Type int

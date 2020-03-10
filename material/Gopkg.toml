@@ -5,4 +5,4 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/vecty-material/gojs"
+  name = "github.com/vecty-material/material/gojs"

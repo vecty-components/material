@@ -1,9 +1,9 @@
 package base
 
 import (
-	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/vecty-material/base/applyer"
 	"github.com/gopherjs/vecty"
+	"github.com/vecty-material/material/base/applyer"
+	"github.com/vecty-material/material/material/base"
 )
 
 type MDC struct {

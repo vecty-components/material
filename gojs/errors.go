@@ -1,4 +1,4 @@
-package gojs // import "github.com/vecty-material/gojs"
+package gojs // import "github.com/vecty-material/material/gojs"
 
 import "syscall/js"
 

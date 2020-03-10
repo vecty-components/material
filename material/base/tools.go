@@ -3,8 +3,8 @@ package base
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/gojs"
-	"github.com/vecty-material/gojs/jsdom"
+	"github.com/vecty-material/material/gojs"
+	"github.com/vecty-material/material/gojs/jsdom"
 )
 
 func DefineSetGet(c Componenter, key string,
