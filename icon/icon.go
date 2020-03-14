@@ -1,8 +1,6 @@
 package icon
 
 import (
-	"syscall/js"
-
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
 	"github.com/vecty-material/material/base"
@@ -71,7 +69,7 @@ func (c *I) Apply(h *vecty.HTML) {
 }
 
 func (c *I) iconDetails() (sizeClass string, isIconCode bool) {
-	sizeClass = js.InternalObject(c).Get("SizePX").String()
+	sizeClass = c.MDC.RootElement.Node().Get("SizePX").String()
 	switch sizeClass {
 	case "undefined", "", "24":
 		sizeClass = ""
