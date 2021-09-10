@@ -1,8 +1,6 @@
 package menu
 
 import (
-	"syscall/js"
-
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-material/material/base"
@@ -50,7 +48,7 @@ func (c *M) Render() vecty.ComponentOrHTML {
 	}
 
 	// TODO: Make initial values work in material package
-	open := js.InternalObject(c).Get("Open").Bool()
+	open := c.RootElement.Node().Get("Open").Bool()
 
 	listMarkup := []vecty.Applyer{
 		vecty.Class("mdc-menu__items"),
@@ -113,8 +111,8 @@ func (c *M) Apply(h *vecty.HTML) {
 		fallthrough
 	case c.M == nil, c.MDC.Component == nil:
 		// TODO: Make initial values work in material package
-		open := js.InternalObject(c).Get("Open").Bool()
-		quickOpen := js.InternalObject(c).Get("QuickOpen").Bool()
+		open := c.RootElement.Node().Get("Open").Bool()
+		quickOpen := c.RootElement.Node().Get("QuickOpen").Bool()
 		c.M = menu.New()
 		c.MDC.Component = c.M
 		c.Open = open

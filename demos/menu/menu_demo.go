@@ -104,7 +104,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 			ulItem.Selected = true
 		}
 		sItem := c.menuItemsExtraLarge[index].(*ul.Item)
-		lsiStatus.name = js.InternalObject(sItem.Primary).Get("text").String()
+		lsiStatus.name = sItem.RootElement.Node().Get("text").String()
 		lsiStatus.index = index
 		vecty.Rerender(lsiStatus)
 		vecty.Rerender(demoM)

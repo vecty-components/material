@@ -84,12 +84,12 @@ func printState(c *snackbar.S) {
 
 	fmt.Printf("[Go] Message: %v, Timeout: %v, ActionHandler Exists: %v,"+
 		" ActionText: %v", c.Message, c.Timeout,
-		c.Component().Get("actionHandler") != nil, c.ActionText)
+		c.Component().Get("actionHandler") != struct{}{}, c.ActionText)
 	fmt.Printf("Multiline: %v, ActionOnBottom: %v\n",
 		c.MultiLine, c.ActionOnBottom)
 	if c.Component().Get("foundation_") != js.Undefined() {
 		o := c.Component().Get("foundation_").Get("snackbarData_")
-		if o == nil {
+		if o == struct{}{} {
 			fmt.Println("Snackbar has not been shown yet.")
 			return
 		}

@@ -1,8 +1,6 @@
 package ul
 
 import (
-	"syscall/js"
-
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
@@ -282,7 +280,8 @@ func setupGraphicOrMeta(c vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 	var graphic vecty.ComponentOrHTML
 	if c != nil {
 		graphic = c
-		if js.InternalObject(graphic).Get("tag").String() != "img" {
+		html, ok := graphic.(*vecty.HTML)
+		if ok && html.Node().Get("tag").String() != "img" {
 			graphic = elem.Span(graphic)
 		}
 	}
