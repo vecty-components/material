@@ -13,4 +13,4 @@ ignored = [
 
 [[constraint]]
   branch = "master"
-  name = "github.com/gopherjs/vecty"
+  name = "github.com/hexops/vecty"

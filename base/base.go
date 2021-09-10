@@ -1,7 +1,7 @@
 package base
 
 import (
-	"github.com/gopherjs/vecty"
+	"github.com/hexops/vecty"
 	"github.com/vecty-material/material/base/applyer"
 	"github.com/vecty-material/material/material/base"
 )

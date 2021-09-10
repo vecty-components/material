@@ -1,9 +1,9 @@
 package common
 
 import (
-	"github.com/gopherjs/vecty"
-	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/prop"
+	"github.com/hexops/vecty"
+	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/drawer"
 	"github.com/vecty-material/material/icon"

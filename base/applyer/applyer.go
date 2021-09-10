@@ -3,8 +3,8 @@ package applyer
 import (
 	"syscall/js"
 
-	"github.com/gopherjs/vecty"
-	"github.com/gopherjs/vecty/elem"
+	"github.com/hexops/vecty"
+	"github.com/hexops/vecty/elem"
 )
 
 type nativeInputer interface {
