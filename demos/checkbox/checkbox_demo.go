@@ -1,8 +1,6 @@
 package main
 
 import (
-	"time"
-
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
@@ -37,7 +35,6 @@ type checkboxDemoView struct {
 
 func main() {
 	base.SetViewport()
-	base.AddResources()
 
 	vecty.SetTitle("Checkbox - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/checkbox.css")
@@ -63,7 +60,7 @@ func main() {
 		}
 	`))
 
-	time.Sleep(1 * time.Second)
+	base.AddResources()
 
 	cdv := &checkboxDemoView{
 		checkboxes: map[string]*checkbox.CB{

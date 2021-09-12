@@ -1,8 +1,6 @@
 package main
 
 import (
-	"time"
-
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
@@ -24,7 +22,6 @@ type dialogDemoView struct {
 
 func main() {
 	base.SetViewport()
-	base.AddResources()
 
 	vecty.SetTitle("Dialog - Material Components Catalog")
 
@@ -56,7 +53,7 @@ func main() {
 		}
 	`))
 
-	time.Sleep(1 * time.Second)
+	base.AddResources()
 
 	vecty.RenderBody(&dialogDemoView{dialogs: make(map[string]*dialog.D, 0)})
 }

@@ -1,8 +1,6 @@
 package main
 
 import (
-	"time"
-
 	"github.com/lithammer/dedent"
 
 	"github.com/hexops/vecty"
@@ -23,7 +21,6 @@ type buttonDemoView struct {
 
 func main() {
 	base.SetViewport()
-	base.AddResources()
 
 	vecty.SetTitle("Button - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/button.css")
@@ -78,8 +75,7 @@ func main() {
 		}
 	`))
 
-	time.Sleep(1 * time.Second)
-
+	base.AddResources()
 	vecty.RenderBody(&buttonDemoView{})
 }
 

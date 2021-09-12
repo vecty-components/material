@@ -2,7 +2,6 @@ package main
 
 import (
 	"strconv"
-	"time"
 
 	"syscall/js"
 
@@ -45,15 +44,11 @@ func main() {
 
 	vecty.SetTitle("List Item - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/list.css")
-	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
-	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
-	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
 	vecty.AddStylesheet("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css")
 
 	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
 
-	time.Sleep(1 * time.Second)
-
+	base.AddResources()
 	vecty.RenderBody(&listDemoView{})
 }
 

@@ -9,6 +9,8 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
+	"github.com/lithammer/dedent"
+	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/base/applyer"
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/checkbox"
@@ -36,6 +38,85 @@ type lastSelectedItem struct {
 }
 
 func main() {
+	base.SetViewport()
+	vecty.SetTitle("Menu - Material Components Catalog")
+
+	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/menu.css")
+
+	base.AddCSS(dedent.Dedent(`
+		html,
+		body,
+		main {
+		position: relative;
+		flex-direction: column;
+		}
+
+		.hero .mdc-menu {
+		z-index: initial;
+		}
+
+		.demo-content {
+		position: relative;
+		top: 64px;
+		}
+
+		.demo-controls-container {
+		width: 100%;
+		height: calc(100vh - 80px);
+		}
+
+		.demo-controls {
+		margin-left: auto;
+		margin-right: auto;
+		width: 380px;
+		}
+
+		.mdc-menu-anchor {
+		position: absolute;
+		margin: 16px;
+		}
+
+		.margin-inputs input {
+		width: 2em;
+		}
+
+		.left-column-controls {
+		display: inline-block;
+		vertical-align: top;
+		}
+
+		.right-column-controls {
+		display: inline-block;
+		margin-left: 2em;
+		vertical-align: top;
+		}
+
+		.demo-button__normal-text,
+		.demo-button__long-text {
+		display: none;
+		}
+
+		.demo-button--normal .demo-button__normal-text,
+		.demo-button--long .demo-button__normal-text,
+		.demo-button--long .demo-button__long-text {
+		display: inline;
+		}
+
+		.demo-menu__long-items,
+		.demo-menu__extra-long-items {
+		display: none;
+		}
+
+		.demo-menu--long .demo-menu__long-items,
+		.demo-menu--extra-long .demo-menu__long-items,
+		.demo-menu--extra-long .demo-menu__extra-long-items {
+		display: inline;
+		}
+	`))
+
+	base.AddResources()
+
 	mdv := &MenuDemoView{}
 	mdv.menuItems = []vecty.ComponentOrHTML{
 		&ul.Item{Primary: vecty.Text("Back")},

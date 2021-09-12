@@ -2,6 +2,7 @@ package base
 
 import (
 	"syscall/js"
+	"time"
 
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
@@ -80,4 +81,11 @@ func AddResources() {
 	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
 	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
 	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
+
+	for {
+		time.Sleep(25 * time.Millisecond)
+		if mdcObject := js.Global().Get("mdc"); !mdcObject.IsUndefined() {
+			break
+		}
+	}
 }
