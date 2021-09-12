@@ -9,7 +9,7 @@ import (
 	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/base/applyer"
 	"github.com/vecty-material/material/button"
-	"github.com/vecty-material/material/material/dialog"
+	"github.com/vecty-material/material/components/dialog"
 )
 
 // D is a material dialog component.

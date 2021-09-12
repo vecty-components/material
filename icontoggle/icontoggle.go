@@ -4,8 +4,8 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/components/icontoggle"
 	"github.com/vecty-material/material/icon"
-	"github.com/vecty-material/material/material/icontoggle"
 )
 
 // IT is a vecty-material icontoggle component.

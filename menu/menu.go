@@ -4,7 +4,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/material/menu"
+	"github.com/vecty-material/material/components/menu"
 	"github.com/vecty-material/material/ul"
 )
 

@@ -6,7 +6,7 @@ import (
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/base/applyer"
-	"github.com/vecty-material/material/material/formfield"
+	"github.com/vecty-material/material/components/formfield"
 )
 
 // FF is a vecty-material formfield component.
