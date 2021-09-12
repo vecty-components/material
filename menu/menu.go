@@ -86,7 +86,7 @@ func (c *M) Render() vecty.ComponentOrHTML {
 	menuElement := elem.Div(
 		vecty.Markup(
 			c,
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			base.MarkupIfNotNil(rootMarkup),
 		),
 		c.List,
 	)

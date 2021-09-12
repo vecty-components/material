@@ -80,7 +80,7 @@ func (c *L) Render() vecty.ComponentOrHTML {
 	root := elem.UnorderedList(items...)
 	vecty.Markup(
 		c,
-		vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+		base.MarkupIfNotNil(rootMarkup),
 	).Apply(root)
 	return root
 }
@@ -189,7 +189,7 @@ func (c *Group) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
 			c,
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			base.MarkupIfNotNil(rootMarkup),
 		),
 		c.listList(),
 	)

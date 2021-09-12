@@ -6,7 +6,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material"
+	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/demos/common"
 	"github.com/vecty-material/material/icon"
 	"github.com/vecty-material/material/icontoggle"
@@ -24,7 +24,7 @@ type favorite struct {
 }
 
 func main() {
-	material.SetViewport()
+	base.SetViewport()
 
 	vecty.SetTitle("Icon Toggle - Material Components Demo")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/icon-toggle.css")
@@ -33,7 +33,7 @@ func main() {
 	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
 	vecty.AddStylesheet("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css")
 
-	material.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
 
 	time.Sleep(1 * time.Second)
 

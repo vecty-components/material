@@ -39,7 +39,7 @@ func (c *IT) Render() vecty.ComponentOrHTML {
 	return elem.Span(
 		vecty.Markup(
 			c,
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			base.MarkupIfNotNil(rootMarkup),
 		),
 		vecty.If(!c.On, c.OffIcon),
 		vecty.If(c.On, c.OnIcon),

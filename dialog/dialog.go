@@ -71,7 +71,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 
 	h := elem.Aside(
 		vecty.Markup(
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			base.MarkupIfNotNil(rootMarkup),
 		),
 	)
 
@@ -79,7 +79,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 	return elem.Aside(
 		vecty.Markup(
 			c,
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			base.MarkupIfNotNil(rootMarkup),
 		),
 		elem.Div(
 			vecty.Markup(

@@ -37,7 +37,7 @@ func (c *R) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
 			c,
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			base.MarkupIfNotNil(rootMarkup),
 		),
 		input,
 		elem.Div(

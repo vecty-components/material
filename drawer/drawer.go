@@ -40,7 +40,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 
 	markup := vecty.Markup(
 		c,
-		vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+		base.MarkupIfNotNil(rootMarkup),
 	)
 
 	// Built-in root element.

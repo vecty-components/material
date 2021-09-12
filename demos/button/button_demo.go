@@ -8,7 +8,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material"
+	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/checkbox"
 	"github.com/vecty-material/material/formfield"
@@ -22,7 +22,7 @@ type buttonDemoView struct {
 }
 
 func main() {
-	material.SetViewport()
+	base.SetViewport()
 
 	vecty.SetTitle("Button - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/button.css")
@@ -30,9 +30,9 @@ func main() {
 	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
 	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
 
-	material.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-	material.AddScript("https://material-components-web.appspot.com/assets/material-components-web.js")
-	material.AddCSS(dedent.Dedent(`
+	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	base.AddScript("https://material-components-web.appspot.com/assets/material-components-web.js")
+	base.AddCSS(dedent.Dedent(`
 		.demo-wrapper {
 			padding-bottom: 100px;
 		}

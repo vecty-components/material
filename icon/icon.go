@@ -33,7 +33,7 @@ func (c *I) Render() vecty.ComponentOrHTML {
 	return elem.Italic(
 		vecty.Markup(
 			c,
-			// vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			base.MarkupIfNotNil(rootMarkup),
 		),
 		vecty.If(!isIconCode, vecty.Text(c.Name)),
 	)

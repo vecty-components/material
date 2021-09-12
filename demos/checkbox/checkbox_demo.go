@@ -7,7 +7,7 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
 	"github.com/lithammer/dedent"
-	"github.com/vecty-material/material"
+	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/base/applyer"
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/checkbox"
@@ -42,9 +42,9 @@ func main() {
 	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
 	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
 
-	material.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-	material.AddScript("https://material-components-web.appspot.com/assets/material-components-web.js")
-	material.AddCSS(dedent.Dedent(`
+	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	base.AddScript("https://material-components-web.appspot.com/assets/material-components-web.js")
+	base.AddCSS(dedent.Dedent(`
 		.example--with-js .mdc-form-field {
 			min-width: 450px;
 		}

@@ -30,7 +30,7 @@ func (c *T) Render() vecty.ComponentOrHTML {
 	return elem.Header(
 		vecty.Markup(
 			c,
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			base.MarkupIfNotNil(rootMarkup),
 		),
 		elem.Div(
 			vecty.Markup(
