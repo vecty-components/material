@@ -4,8 +4,8 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/material/persistentdrawer"
-	"github.com/vecty-material/material/material/temporarydrawer"
+	"github.com/vecty-material/material/components/persistentdrawer"
+	"github.com/vecty-material/material/components/temporarydrawer"
 )
 
 type Type int

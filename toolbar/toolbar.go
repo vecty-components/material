@@ -4,7 +4,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/material/toolbar"
+	"github.com/vecty-material/material/components/toolbar"
 )
 
 // T is a vecty-material toolbar component.

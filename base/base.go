@@ -3,7 +3,7 @@ package base
 import (
 	"github.com/hexops/vecty"
 	"github.com/vecty-material/material/base/applyer"
-	"github.com/vecty-material/material/material/base"
+	"github.com/vecty-material/material/components/base"
 )
 
 type MDC struct {

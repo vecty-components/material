@@ -7,7 +7,7 @@ import (
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/base/applyer"
-	"github.com/vecty-material/material/material/radio"
+	"github.com/vecty-material/material/components/radio"
 )
 
 // R is a vecty-material radio component.
