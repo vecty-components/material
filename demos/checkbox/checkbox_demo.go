@@ -36,14 +36,13 @@ type checkboxDemoView struct {
 }
 
 func main() {
+	base.SetViewport()
+	base.AddResources()
+
 	vecty.SetTitle("Checkbox - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/checkbox.css")
-	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
-	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
-	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
 
 	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-	base.AddScript("https://material-components-web.appspot.com/assets/material-components-web.js")
 	base.AddCSS(dedent.Dedent(`
 		.example--with-js .mdc-form-field {
 			min-width: 450px;

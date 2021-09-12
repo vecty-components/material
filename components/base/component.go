@@ -12,6 +12,8 @@ import (
 	"github.com/vecty-material/material/gojs"
 )
 
+const MDC_VERSION = "0.28.0"
+
 // Component is a base type for all Material components.
 type Component struct {
 	js.Value

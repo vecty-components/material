@@ -23,8 +23,10 @@ type dialogDemoView struct {
 }
 
 func main() {
-	vecty.SetTitle("Dialog - Material Components Catalog")
+	base.SetViewport()
 	base.AddResources()
+
+	vecty.SetTitle("Dialog - Material Components Catalog")
 
 	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
 	base.AddCSS(dedent.Dedent(`

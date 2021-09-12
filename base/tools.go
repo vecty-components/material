@@ -5,6 +5,7 @@ import (
 
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/vecty-material/material/components/base"
 )
 
 type StaticComponent struct {
@@ -73,9 +74,9 @@ func AddCSS(css string) {
 }
 
 func AddResources() {
-	AddScript("https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js")
+	AddScript("https://unpkg.com/material-components-web@" + base.MDC_VERSION + "/dist/material-components-web.min.js")
 
-	vecty.AddStylesheet("https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css")
+	vecty.AddStylesheet("https://unpkg.com/material-components-web@" + base.MDC_VERSION + "/dist/material-components-web.min.css")
 	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
 	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
 	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
