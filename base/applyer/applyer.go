@@ -57,6 +57,13 @@ func StartRipple(h *vecty.HTML) {
 }
 
 func findProp(key string, h *vecty.HTML) js.Value {
+	defer func() {
+		msg := "vecty: cannot call (*HTML).Node() before DOM node creation / component mount"
+		if p := recover(); p != nil && p != msg {
+			panic(p)
+		}
+	}()
+
 	k := h.Node()
 	if k.IsUndefined() {
 		return js.Null()

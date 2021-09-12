@@ -134,7 +134,7 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 				vecty.Markup(
 					vecty.Class("hero"),
 				),
-				// c.checkboxes[HERO_ID],
+				c.checkboxes[HERO_ID],
 				elem.Label(
 					vecty.Markup(
 						prop.ID("hero-checkbox-label"),
