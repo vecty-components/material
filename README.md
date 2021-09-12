@@ -20,17 +20,17 @@ Monetary contributions are not accepted at this time; only pull requests.
 To simplify demos and development, this package makes use of gaepher. To
 install it, run:
 
-  git clone https://bitbucket.org/xoviat/gaepher.git
-  cd gaepher
-  go install
+    git clone https://bitbucket.org/xoviat/gaepher.git
+    cd gaepher
+    go install
 
 Once gaepher is installed, change to the demo that you want to run
 
-  cd demos/button
+    cd demos/button
 
 Then run it with
 
-  gaepher local
+    gaepher local
 
 Under the hood, gaepher will compile the demo using the go compiler,
 then start an http server on port 4000 and server a bootstrap html
