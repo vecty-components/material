@@ -9,6 +9,7 @@ import (
 	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/checkbox"
+	"github.com/vecty-material/material/demos/common"
 	"github.com/vecty-material/material/formfield"
 	"github.com/vecty-material/material/ripple"
 )
@@ -83,10 +84,10 @@ func main() {
 func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		vecty.Markup(vecty.Class("mdc-typography")),
-		//		&common.ToolbarHeader{
-		//			Title:      "Buttons",
-		//			Navigation: common.NavBack,
-		//		},
+		&common.ToolbarHeader{
+			Title:      "Buttons",
+			Navigation: common.NavBack,
+		},
 		elem.Main(
 			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
 			elem.Section(
