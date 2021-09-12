@@ -71,3 +71,12 @@ func AddCSS(css string) {
 	style.Set("innerHTML", css)
 	js.Global().Get("document").Get("head").Call("appendChild", style)
 }
+
+func AddResources() {
+	AddScript("https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js")
+
+	vecty.AddStylesheet("https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
+	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
+}

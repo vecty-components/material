@@ -24,13 +24,9 @@ type dialogDemoView struct {
 
 func main() {
 	vecty.SetTitle("Dialog - Material Components Catalog")
-	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/dialog.css")
-	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
-	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
-	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
+	base.AddResources()
 
 	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-	base.AddScript("https://material-components-web.appspot.com/assets/material-components-web.js")
 	base.AddCSS(dedent.Dedent(`
 		.demo-body {
 			padding: 24px;
