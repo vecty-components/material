@@ -17,7 +17,7 @@ func CSSOnly() vecty.Applyer {
 
 func IsCSSOnly(h *vecty.HTML) bool {
 	p := findProp("vecty-material-css-only", h)
-	if p.IsNull() {
+	if p.IsNull() || p.IsUndefined() {
 		return false
 	}
 	return p.Bool()
@@ -36,7 +36,7 @@ func FindID(moc vecty.MarkupOrChild) string {
 		return FindID(d)
 	case *vecty.HTML:
 		id := findProp("id", t)
-		if id.IsNull() {
+		if id.IsNull() || id.IsUndefined() {
 			return ""
 		}
 		return id.String()
@@ -50,7 +50,7 @@ func FindID(moc vecty.MarkupOrChild) string {
 
 func StartRipple(h *vecty.HTML) {
 	p := findProp("vecty-material-ripple", h)
-	if p.IsNull() {
+	if p.IsNull() || p.IsUndefined() {
 		return
 	}
 	p.Get("Start").Invoke()

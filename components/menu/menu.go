@@ -93,7 +93,7 @@ func (c *M) Component() *base.Component {
 			},
 		}
 		fallthrough
-	case c.mdc.Value.IsNull():
+	case c.mdc.Value.IsNull() || c.mdc.Value.IsUndefined():
 		c.mdc.Component().SetState(c.StateMap())
 	}
 	return c.mdc.Component()
