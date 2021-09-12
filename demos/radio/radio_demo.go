@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
@@ -34,6 +36,8 @@ func main() {
 			padding: 24px;
 		}
 	`))
+
+	time.Sleep(1 * time.Second)
 
 	vecty.RenderBody(&radioDemoView{})
 }

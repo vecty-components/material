@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
@@ -55,6 +57,8 @@ func main() {
 			justify-content: center;
 		}
 	`))
+
+	time.Sleep(1 * time.Second)
 
 	vecty.RenderBody(&dialogDemoView{dialogs: make(map[string]*dialog.D, 0)})
 }

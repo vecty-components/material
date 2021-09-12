@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
@@ -61,6 +63,8 @@ func main() {
 			text-transform: none;
 		}
 	`))
+
+	time.Sleep(1 * time.Second)
 
 	cdv := &checkboxDemoView{
 		checkboxes: map[string]*checkbox.CB{

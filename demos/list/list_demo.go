@@ -2,6 +2,7 @@ package main
 
 import (
 	"strconv"
+	"time"
 
 	"syscall/js"
 
@@ -50,6 +51,8 @@ func main() {
 	vecty.AddStylesheet("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css")
 
 	material.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+
+	time.Sleep(1 * time.Second)
 
 	vecty.RenderBody(&listDemoView{})
 }

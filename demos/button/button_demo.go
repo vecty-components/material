@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/lithammer/dedent"
 
 	"github.com/hexops/vecty"
@@ -78,6 +80,8 @@ func main() {
 			color: rgba(33, 33, 33, .38);
 		}
 	`))
+
+	time.Sleep(1 * time.Second)
 
 	vecty.RenderBody(&buttonDemoView{})
 }
