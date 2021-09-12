@@ -5,8 +5,11 @@ import (
 
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material"
 	"github.com/vecty-material/material/button"
+	"github.com/vecty-material/material/checkbox"
+	"github.com/vecty-material/material/formfield"
 	"github.com/vecty-material/material/ripple"
 )
 
@@ -101,25 +104,25 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 			),
 			elem.Section(
 				vecty.Markup(vecty.Class("demo-wrapper")),
-				//				&formfield.FF{
-				//					Label: "Disable buttons (excluding links)",
-				//					Input: &checkbox.CB{
-				//						Input: vecty.Markup(
-				//							prop.ID("toggle-disabled"),
-				//						),
-				//						OnChange: func(thisCB *checkbox.CB,
-				//							e *vecty.Event) {
-				//							checked := e.Target.Get("checked").Bool()
-				//							for _, b := range c.buttons {
-				//								if b.Href != "" {
-				//									continue
-				//								}
-				//								b.Disabled = checked
-				//								vecty.Rerender(b)
-				//							}
-				//						},
-				//					},
-				//				},
+				&formfield.FF{
+					Label: "Disable buttons (excluding links)",
+					Input: &checkbox.CB{
+						Input: vecty.Markup(
+							prop.ID("toggle-disabled"),
+						),
+						OnChange: func(thisCB *checkbox.CB,
+							e *vecty.Event) {
+							checked := e.Target.Get("checked").Bool()
+							for _, b := range c.buttons {
+								if b.Href != "" {
+									continue
+								}
+								b.Disabled = checked
+								vecty.Rerender(b)
+							}
+						},
+					},
+				},
 			),
 		),
 		c.renderBtnFieldSets("Ripple Enabled", true),

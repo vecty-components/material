@@ -53,6 +53,6 @@ func (c *FF) Component() *base.Component {
 // StateMap implements the base.StateMapper interface.
 func (c *FF) StateMap() base.StateMap {
 	return base.StateMap{
-		"input": js.ValueOf(c).Get("Input"),
+		"input": c.mdc.Get("Input"),
 	}
 }

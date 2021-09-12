@@ -3,9 +3,7 @@ package formfield
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/base/applyer"
 	"github.com/vecty-material/material/components/formfield"
 )
 
@@ -27,18 +25,16 @@ func (c *FF) Render() vecty.ComponentOrHTML {
 		return elem.Div(c.Root)
 	}
 
-	inputID := applyer.FindID(c.Input)
+	//inputID := applyer.FindID(c.Input)
 	return elem.Div(
 		vecty.Markup(
 			c,
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			// vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
 		),
-		c.Input,
+		// c.Input,
 		elem.Label(
 			vecty.Markup(
-				vecty.MarkupIf(inputID != "",
-					prop.For(inputID),
-				),
+			// vecty.MarkupIf(inputID != "", prop.For(inputID)),
 			),
 			vecty.Text(c.Label),
 		),
