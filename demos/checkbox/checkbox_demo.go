@@ -4,6 +4,8 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
+	"github.com/lithammer/dedent"
+	"github.com/vecty-material/material"
 	"github.com/vecty-material/material/base/applyer"
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/checkbox"
@@ -32,6 +34,34 @@ type checkboxDemoView struct {
 }
 
 func main() {
+	vecty.SetTitle("Checkbox - Material Components Catalog")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/checkbox.css")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
+	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
+
+	material.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	material.AddScript("https://material-components-web.appspot.com/assets/material-components-web.js")
+	material.AddCSS(dedent.Dedent(`
+		.example--with-js .mdc-form-field {
+			min-width: 450px;
+		}
+
+		.demo-toggle-group {
+			display: inline-block;
+		}
+
+		@media (max-width: 600px) {
+			.mdc-button {
+				margin-bottom: 4px;
+			}
+		}
+
+		.mdc-button code {
+			text-transform: none;
+		}
+	`))
+
 	cdv := &checkboxDemoView{
 		checkboxes: map[string]*checkbox.CB{
 			HERO_ID:                nil,
@@ -100,7 +130,7 @@ func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
 				vecty.Markup(
 					vecty.Class("hero"),
 				),
-				c.checkboxes[HERO_ID],
+				// c.checkboxes[HERO_ID],
 				elem.Label(
 					vecty.Markup(
 						prop.ID("hero-checkbox-label"),

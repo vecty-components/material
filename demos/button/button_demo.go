@@ -1,14 +1,12 @@
 package main
 
 import (
+	"github.com/lithammer/dedent"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	"github.com/hexops/vecty/prop"
+	"github.com/vecty-material/material"
 	"github.com/vecty-material/material/button"
-	"github.com/vecty-material/material/checkbox"
-	"github.com/vecty-material/material/demos/common"
-	"github.com/vecty-material/material/formfield"
-	"github.com/vecty-material/material/icon"
 	"github.com/vecty-material/material/ripple"
 )
 
@@ -19,6 +17,65 @@ type buttonDemoView struct {
 }
 
 func main() {
+	material.SetViewport()
+
+	vecty.SetTitle("Button - Material Components Catalog")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/button.css")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
+	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
+
+	material.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	material.AddScript("https://material-components-web.appspot.com/assets/material-components-web.js")
+	material.AddCSS(dedent.Dedent(`
+		.demo-wrapper {
+			padding-bottom: 100px;
+		}
+
+		fieldset {
+			padding: 24px;
+			padding-top: 0;
+			padding-bottom: 16px;
+		}
+
+		fieldset .mdc-button {
+			margin: 16px;
+		}
+
+		.hero button {
+			margin-left: 32px;
+			margin-right: 32px;
+		}
+
+		fieldset legend {
+			display: block;
+			padding: 16px;
+			padding-top: 48px;
+			padding-bottom: 24px;
+		}
+
+		h1 {
+			padding-left: 36px;
+			padding-top: 64px;
+			padding-bottom: 8px;
+		}
+
+		.mdc-form-field {
+			margin: 50px 0 -20px 30px;
+		}
+
+		.hero {
+			position: relative;
+		}
+
+		.hero .note {
+			position: absolute;
+			bottom: 10px;
+			left: 36px;
+			color: rgba(33, 33, 33, .38);
+		}
+	`))
+
 	vecty.RenderBody(&buttonDemoView{})
 }
 
@@ -26,10 +83,10 @@ func main() {
 func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		vecty.Markup(vecty.Class("mdc-typography")),
-		&common.ToolbarHeader{
-			Title:      "Buttons",
-			Navigation: common.NavBack,
-		},
+		//		&common.ToolbarHeader{
+		//			Title:      "Buttons",
+		//			Navigation: common.NavBack,
+		//		},
 		elem.Main(
 			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
 			elem.Section(
@@ -44,25 +101,25 @@ func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 			),
 			elem.Section(
 				vecty.Markup(vecty.Class("demo-wrapper")),
-				&formfield.FF{
-					Label: "Disable buttons (excluding links)",
-					Input: &checkbox.CB{
-						Input: vecty.Markup(
-							prop.ID("toggle-disabled"),
-						),
-						OnChange: func(thisCB *checkbox.CB,
-							e *vecty.Event) {
-							checked := e.Target.Get("checked").Bool()
-							for _, b := range c.buttons {
-								if b.Href != "" {
-									continue
-								}
-								b.Disabled = checked
-								vecty.Rerender(b)
-							}
-						},
-					},
-				},
+				//				&formfield.FF{
+				//					Label: "Disable buttons (excluding links)",
+				//					Input: &checkbox.CB{
+				//						Input: vecty.Markup(
+				//							prop.ID("toggle-disabled"),
+				//						),
+				//						OnChange: func(thisCB *checkbox.CB,
+				//							e *vecty.Event) {
+				//							checked := e.Target.Get("checked").Bool()
+				//							for _, b := range c.buttons {
+				//								if b.Href != "" {
+				//									continue
+				//								}
+				//								b.Disabled = checked
+				//								vecty.Rerender(b)
+				//							}
+				//						},
+				//					},
+				//				},
 			),
 		),
 		c.renderBtnFieldSets("Ripple Enabled", true),
@@ -125,9 +182,9 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 			c.newBtn(
 				&button.B{
 					Label: vecty.Text("Icon"),
-					Icon: &icon.I{
-						Name: "favorite",
-					},
+					//					Icon: &icon.I{
+					//						Name: "favorite",
+					//					},
 					Raised:     b.Raised,
 					Unelevated: b.Unelevated,
 					Outlined:   b.Outlined,

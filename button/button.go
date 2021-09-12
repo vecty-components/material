@@ -49,7 +49,7 @@ func (c *B) Render() vecty.ComponentOrHTML {
 	return elem.Button(
 		vecty.Markup(
 			c,
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+//			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
 		),
 		ico,
 		base.RenderStoredChild(c.Label),

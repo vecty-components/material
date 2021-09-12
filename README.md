@@ -17,9 +17,30 @@ Monetary contributions are not accepted at this time; only pull requests.
 
 ## Getting Started
 
-There is a quickstart guide in the [material package][material component]
-documentation, and every component package's documentation page has a basic
-example of how to set up and use it.
+To simplify demos and development, this package makes use of gaepher. To
+install it, run:
+
+  git clone https://bitbucket.org/xoviat/gaepher.git
+  cd gaepher
+  go install
+
+Once gaepher is installed, change to the demo that you want to run
+
+  cd demos/button
+
+Then run it with
+
+  gaepher local
+
+Under the hood, gaepher will compile the demo using the go compiler,
+then start an http server on port 4000 and server a bootstrap html
+file, the `wasm_exec.js` from your local go installation, and the wasm
+file. This allows all code in the repository to be written in go without
+html, css, or js. 
+
+Note that gaepher is at this time not well-polished but is simply the
+bare minimum needed to develop go+wasm applications. It's also not a
+high priority to improve because it does what it needs to do.
 
 ## Contributing
 

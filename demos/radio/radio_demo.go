@@ -4,6 +4,8 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
+	"github.com/lithammer/dedent"
+	"github.com/vecty-material/material"
 	"github.com/vecty-material/material/base/applyer"
 	"github.com/vecty-material/material/demos/common"
 	"github.com/vecty-material/material/formfield"
@@ -16,6 +18,23 @@ type radioDemoView struct {
 }
 
 func main() {
+	material.SetViewport()
+
+	vecty.SetTitle("Radio Button - Material Components Catalog")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/radio.css")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
+	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
+	vecty.AddStylesheet("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css")
+
+	material.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	material.AddCSS(dedent.Dedent(`
+		.example {
+			margin: 24px;
+			padding: 24px;
+		}
+	`))
+
 	vecty.RenderBody(&radioDemoView{})
 }
 

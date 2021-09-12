@@ -4,6 +4,8 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
+	"github.com/lithammer/dedent"
+	"github.com/vecty-material/material"
 	"github.com/vecty-material/material/base/applyer"
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/checkbox"
@@ -19,6 +21,41 @@ type dialogDemoView struct {
 }
 
 func main() {
+	vecty.SetTitle("Dialog - Material Components Catalog")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/dialog.css")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
+	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
+
+	material.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	material.AddScript("https://material-components-web.appspot.com/assets/material-components-web.js")
+	material.AddCSS(dedent.Dedent(`
+		.demo-body {
+			padding: 24px;
+			margin: 0;
+			box-sizing: border-box;
+		}
+		.demo-content > button {
+			margin-bottom: 6px;
+		}
+
+		section.demo-content {
+			padding: 24px;
+		}
+
+		.catalog-dialog-demo {
+			position: relative;
+			width: 320px;
+			z-index: auto;
+		}
+
+		.dialog-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+	`))
+
 	vecty.RenderBody(&dialogDemoView{dialogs: make(map[string]*dialog.D, 0)})
 }
 

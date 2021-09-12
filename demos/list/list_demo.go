@@ -9,6 +9,7 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
+	"github.com/vecty-material/material"
 	"github.com/vecty-material/material/checkbox"
 	"github.com/vecty-material/material/demos/common"
 	"github.com/vecty-material/material/formfield"
@@ -39,6 +40,17 @@ type listDemoView struct {
 }
 
 func main() {
+	material.SetViewport()
+
+	vecty.SetTitle("List Item - Material Components Catalog")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/list.css")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
+	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
+	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
+	vecty.AddStylesheet("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css")
+
+	material.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+
 	vecty.RenderBody(&listDemoView{})
 }
 

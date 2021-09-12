@@ -33,7 +33,7 @@ func (c *I) Render() vecty.ComponentOrHTML {
 	return elem.Italic(
 		vecty.Markup(
 			c,
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			// vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
 		),
 		vecty.If(!isIconCode, vecty.Text(c.Name)),
 	)
@@ -69,7 +69,7 @@ func (c *I) Apply(h *vecty.HTML) {
 }
 
 func (c *I) iconDetails() (sizeClass string, isIconCode bool) {
-	sizeClass = c.MDC.RootElement.Node().Get("SizePX").String()
+	// sizeClass = c.RootElement.Node().Get("SizePX").String()
 	switch sizeClass {
 	case "undefined", "", "24":
 		sizeClass = ""
