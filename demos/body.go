@@ -7,6 +7,7 @@ import (
 
 	dbutton "github.com/vecty-material/material/demos/button"
 	dcheckbox "github.com/vecty-material/material/demos/checkbox"
+	ddialog "github.com/vecty-material/material/demos/dialog"
 
 	router "marwan.io/vecty-router"
 )
@@ -23,6 +24,7 @@ func (b *Body) Render() vecty.ComponentOrHTML {
 			router.NewRoute("/", &DemosCatalogView{}, router.NewRouteOpts{ExactMatch: true}),
 			router.NewRoute("/button", &dbutton.ButtonDemoView{}, router.NewRouteOpts{ExactMatch: true}),
 			router.NewRoute("/checkbox", dcheckbox.NewCheckboxDemoView(), router.NewRouteOpts{ExactMatch: true}),
+			router.NewRoute("/dialog", ddialog.NewDialogDemoView(), router.NewRouteOpts{ExactMatch: true}),
 			router.NotFoundHandler(&notFound{}),
 		),
 	)

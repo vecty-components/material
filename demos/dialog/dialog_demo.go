@@ -1,4 +1,4 @@
-package main
+package dialog
 
 import (
 	"github.com/hexops/vecty"
@@ -20,12 +20,15 @@ type dialogDemoView struct {
 	dialogs map[string]*dialog.D
 }
 
-func main() {
-	base.SetViewport()
+func NewDialogDemoView() *dialogDemoView {
+	return &dialogDemoView{dialogs: make(map[string]*dialog.D)}
+}
 
+// Render implements the vecty.Component interface.
+func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Dialog - Material Components Catalog")
 
-	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	base.ClearCSS()
 	base.AddCSS(dedent.Dedent(`
 		.demo-body {
 			padding: 24px;
@@ -53,13 +56,6 @@ func main() {
 		}
 	`))
 
-	base.AddResources()
-
-	vecty.RenderBody(&dialogDemoView{dialogs: make(map[string]*dialog.D, 0)})
-}
-
-// Render implements the vecty.Component interface.
-func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		vecty.Markup(vecty.Class("mdc-typography")),
 		&common.ToolbarHeader{

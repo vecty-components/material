@@ -80,7 +80,7 @@ func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 					&ul.Item{
 						Primary:   vecty.Text("Dialog"),
 						Secondary: vecty.Text("Secondary text"),
-						Href:      makeHref("dialog"),
+						OnClick:   makeRedirect("dialog"),
 						Graphic:   renderGraphic("ic_dialog_24px.svg"),
 					},
 					&ul.Item{

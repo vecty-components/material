@@ -7,7 +7,7 @@ import (
 )
 
 func (c *D) afterStart() (err error) {
-	proto := js.Global().Get("Object").Call("getPrototypeOf", c)
+	proto := js.Global().Get("Object").Call("getPrototypeOf", c.mdc.Value)
 	ogGetter := js.Global().Get("Object").Call("getOwnPropertyDescriptor",
 		proto, "open").Get("get")
 	return base.DefineSetGet(c, "open",
