@@ -11,8 +11,10 @@ func CatchException(err *error) {
 		return
 	}
 
-	if e, ok := e.(*js.Error); ok {
-		*err = e
+	if er, ok := e.(*js.Error); ok {
+		*err = er
+	} else if er, ok := e.(*js.ValueError); ok {
+		*err = er
 	} else {
 		// panic(e)
 	}

@@ -118,7 +118,7 @@ func Start(c Componenter, rootElem js.Value) (err error) {
 		}
 	}
 	if rootElem.IsNull() || rootElem.IsUndefined() {
-		return errors.New("rootElem is nil.")
+		return errors.New("rootElem is nil")
 	}
 
 	var newMDCClassObj js.Value
@@ -129,7 +129,7 @@ func Start(c Componenter, rootElem js.Value) (err error) {
 		CCaseName := t.Component().ComponentType().MDCCamelCaseName
 		ClassName := t.Component().ComponentType().MDCClassName
 		if CCaseName == "" || ClassName == "" {
-			return errors.New("Empty string in ComponentType")
+			return errors.New("empty string in ComponentType")
 		}
 		mdcObject := js.Global().Get("mdc")
 		newMDCClassObj = mdcObject.Get(CCaseName).Get(ClassName)
@@ -149,10 +149,10 @@ func Stop(c Componenter) (err error) {
 	defer gojs.CatchException(&err)
 
 	if !c.Component().MDCState.Started {
-		return errors.New("Refusing to stop non-started component.")
+		return errors.New("refusing to stop non-started component")
 	}
 	if c.Component() == nil {
-		return errors.New("GetComponent() returned nil.")
+		return errors.New("GetComponent() returned nil")
 	}
 	c.Component().Call("destroy")
 	c.Component().SetComponent(nil)

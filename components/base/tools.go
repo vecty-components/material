@@ -12,7 +12,7 @@ func DefineSetGet(c Componenter, key string,
 	defer gojs.CatchException(&err)
 
 	js.Global().Get("Object").Call("defineProperty",
-		c, key,
+		c.Component().Value, key,
 		jsdom.M{
 			"set": setter,
 			"get": getter,
