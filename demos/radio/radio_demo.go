@@ -1,4 +1,4 @@
-package main
+package radio
 
 import (
 	"github.com/hexops/vecty"
@@ -12,19 +12,18 @@ import (
 	"github.com/vecty-material/material/radio"
 )
 
-// radioDemoView is our demo page component.
-type radioDemoView struct {
+// RadioDemoView is our demo page component.
+type RadioDemoView struct {
 	vecty.Core
 }
 
-func main() {
-	base.SetViewport()
-
+// Render implements the vecty.Component interface.
+func (c *RadioDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Radio Button - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/radio.css")
 	vecty.AddStylesheet("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css")
 
-	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	base.ClearCSS()
 	base.AddCSS(dedent.Dedent(`
 		.example {
 			margin: 24px;
@@ -32,12 +31,6 @@ func main() {
 		}
 	`))
 
-	base.AddResources()
-	vecty.RenderBody(&radioDemoView{})
-}
-
-// Render implements the vecty.Component interface.
-func (c *radioDemoView) Render() vecty.ComponentOrHTML {
 	basicRadios := []*radio.R{
 		&radio.R{
 			Root: vecty.Markup(

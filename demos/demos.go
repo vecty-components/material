@@ -86,7 +86,7 @@ func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 					&ul.Item{
 						Primary:   vecty.Text("Drawer"),
 						Secondary: vecty.Text("Various drawer styles"),
-						Href:      makeHref("drawer"),
+						OnClick:   makeRedirect("drawer"),
 						Graphic: renderGraphic(
 							"ic_side_navigation_24px.svg"),
 					},
@@ -117,7 +117,7 @@ func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 					&ul.Item{
 						Primary:   vecty.Text("Icon toggle"),
 						Secondary: vecty.Text("Toggling icon states"),
-						Href:      makeHref("icontoggle"),
+						OnClick:   makeRedirect("icontoggle"),
 						Graphic:   renderGraphic("ic_component_24px.svg"),
 					},
 					// ul.NewItem(nil,
@@ -151,7 +151,7 @@ func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 					&ul.Item{
 						Primary:   vecty.Text("Radio buttons"),
 						Secondary: vecty.Text("Single selection controls"),
-						Href:      makeHref("radio"),
+						OnClick:   makeRedirect("radio"),
 						Graphic:   renderGraphic("ic_radio_button_24px.svg"),
 					},
 					// ul.NewItem(nil,

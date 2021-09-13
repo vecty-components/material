@@ -13,6 +13,8 @@ import (
 	dpbdrawer "github.com/vecty-material/material/demos/drawer/permanent-below"
 	dpersistent "github.com/vecty-material/material/demos/drawer/persistent"
 	dtemporary "github.com/vecty-material/material/demos/drawer/temporary"
+	dicontoggle "github.com/vecty-material/material/demos/icontoggle"
+	dradio "github.com/vecty-material/material/demos/radio"
 
 	router "marwan.io/vecty-router"
 )
@@ -35,6 +37,9 @@ func (b *Body) Render() vecty.ComponentOrHTML {
 			router.NewRoute("/drawer/permanent-below", &dpbdrawer.DrawerDemoView{}, router.NewRouteOpts{ExactMatch: true}),
 			router.NewRoute("/drawer/persistent", &dpersistent.DrawerDemoView{}, router.NewRouteOpts{ExactMatch: true}),
 			router.NewRoute("/drawer/temporary", &dtemporary.DrawerDemoView{}, router.NewRouteOpts{ExactMatch: true}),
+			router.NewRoute("/icontoggle", &dicontoggle.IcontoggleDemoView{}, router.NewRouteOpts{ExactMatch: true}),
+			router.NewRoute("/radio", &dradio.RadioDemoView{}, router.NewRouteOpts{ExactMatch: true}),
+
 			router.NotFoundHandler(&notFound{}),
 		),
 	)
