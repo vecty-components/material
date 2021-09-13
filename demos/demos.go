@@ -21,7 +21,10 @@ type demosCatalogView struct {
 func main() {
 	base.SetViewport()
 
+	vecty.SetTitle("Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/index.css")
+
+	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
 
 	base.AddResources()
 

@@ -7,7 +7,7 @@ library ([MDC](#Terminology)).
 
 Material was under active development, but development was suspended in
 2018. Development is currently ongoing to move the project to WASM, but
-as of now the project is not functional.
+as of now the project is not fully functional.
 
 Your help is requested and appreciated. With your support, it will be
 possible to easily build a web application in Go using material
@@ -30,10 +30,10 @@ Once gaepher is installed, change to the demo that you want to run
 
 Then run it with
 
-    gaepher local
+    gaepher serve
 
 Under the hood, gaepher will compile the demo using the go compiler,
-then start an http server on port 4000 and server a bootstrap html
+then start an http server on port 4000 and serve a bootstrap html
 file, the `wasm_exec.js` from your local go installation, and the wasm
 file. This allows all code in the repository to be written in go without
 html, css, or js. 

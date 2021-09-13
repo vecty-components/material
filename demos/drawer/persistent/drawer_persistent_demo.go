@@ -6,6 +6,8 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
+	"github.com/lithammer/dedent"
+	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/demos/common"
 	dcommon "github.com/vecty-material/material/demos/drawer/common"
@@ -21,6 +23,46 @@ type drawerDemoView struct {
 }
 
 func main() {
+	base.SetViewport()
+	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+
+	vecty.SetTitle("Drawer (Persistent) - Material Components Catalog")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/radio.css")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/drawer/drawer.css")
+
+	base.AddCSS(dedent.Dedent(`
+		/* Ensure layout covers the entire screen. */
+		html {
+			height: 100%;
+		}
+
+		/* Place drawer and content side by side. */
+		.demo-body {
+			display: flex;
+			flex-direction: row;
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+			height: 100%;
+			width: 100%;
+		}
+
+		/* Stack toolbar and main on top of each other. */
+		.demo-content {
+			display: inline-flex;
+			flex-direction: column;
+			flex-grow: 1;
+			height: 100%;
+			box-sizing: border-box;
+		}
+
+		.demo-main {
+			padding: 16px;
+		}
+	`))
+
+	base.AddResources()
+
 	vecty.RenderBody(&drawerDemoView{})
 }
 

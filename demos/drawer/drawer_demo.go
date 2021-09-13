@@ -8,6 +8,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
+	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/demos/common"
 )
 
@@ -16,6 +17,14 @@ type drawerDemoView struct {
 }
 
 func main() {
+	base.SetViewport()
+
+	vecty.SetTitle("Drawer - Material Components Catalog")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/radio.cs")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/drawer/drawer.css")
+
+	base.AddResources()
+
 	vecty.RenderBody(&drawerDemoView{})
 }
 
