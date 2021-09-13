@@ -1,4 +1,4 @@
-package main
+package checkbox
 
 import (
 	"github.com/hexops/vecty"
@@ -26,43 +26,15 @@ const (
 	JS_CUSTOM_SOME_ID      = "native-js-checkbox-custom-stroke-and-fill"
 )
 
-// checkboxDemoView is our demo page component.
-type checkboxDemoView struct {
+// CheckboxDemoView is our demo page component.
+type CheckboxDemoView struct {
 	vecty.Core
 	checkboxes map[string]*checkbox.CB
 	defaultFF  *formfield.FF
 }
 
-func main() {
-	base.SetViewport()
-
-	vecty.SetTitle("Checkbox - Material Components Catalog")
-	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/checkbox.css")
-
-	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-	base.AddCSS(dedent.Dedent(`
-		.example--with-js .mdc-form-field {
-			min-width: 450px;
-		}
-
-		.demo-toggle-group {
-			display: inline-block;
-		}
-
-		@media (max-width: 600px) {
-			.mdc-button {
-				margin-bottom: 4px;
-			}
-		}
-
-		.mdc-button code {
-			text-transform: none;
-		}
-	`))
-
-	base.AddResources()
-
-	cdv := &checkboxDemoView{
+func NewCheckboxDemoView() *CheckboxDemoView {
+	cdv := &CheckboxDemoView{
 		checkboxes: map[string]*checkbox.CB{
 			HERO_ID:                nil,
 			BASIC_ID:               nil,
@@ -107,11 +79,36 @@ func main() {
 		Label: "Default checkbox",
 		Input: cdv.checkboxes[BASIC_ID],
 	}
-	vecty.RenderBody(cdv)
+
+	return cdv
 }
 
 // Render implements the vecty.Component interface.
-func (c *checkboxDemoView) Render() vecty.ComponentOrHTML {
+func (c *CheckboxDemoView) Render() vecty.ComponentOrHTML {
+	vecty.SetTitle("Checkbox - Material Components Catalog")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/checkbox.css")
+
+	base.ClearCSS()
+	base.AddCSS(dedent.Dedent(`
+		.example--with-js .mdc-form-field {
+			min-width: 450px;
+		}
+
+		.demo-toggle-group {
+			display: inline-block;
+		}
+
+		@media (max-width: 600px) {
+			.mdc-button {
+				margin-bottom: 4px;
+			}
+		}
+
+		.mdc-button code {
+			text-transform: none;
+		}
+	`))
+
 	return elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),

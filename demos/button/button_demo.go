@@ -1,11 +1,10 @@
-package main
+package button
 
 import (
-	"github.com/lithammer/dedent"
-
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
+	"github.com/lithammer/dedent"
 	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/checkbox"
@@ -15,18 +14,17 @@ import (
 )
 
 // buttonDemo is our main page component.
-type buttonDemoView struct {
+type ButtonDemoView struct {
 	vecty.Core
 	buttons []*button.B
 }
 
-func main() {
-	base.SetViewport()
-
+// Render implements the vecty.Component interface.
+func (c *ButtonDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Button - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/button.css")
 
-	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	base.ClearCSS()
 	base.AddCSS(dedent.Dedent(`
 		.demo-wrapper {
 			padding-bottom: 100px;
@@ -76,12 +74,6 @@ func main() {
 		}
 	`))
 
-	base.AddResources()
-	vecty.RenderBody(&buttonDemoView{})
-}
-
-// Render implements the vecty.Component interface.
-func (c *buttonDemoView) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		vecty.Markup(vecty.Class("mdc-typography")),
 		&common.ToolbarHeader{
@@ -134,7 +126,7 @@ func r(applyRipple bool) vecty.Applyer {
 	)
 }
 
-func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
+func (c *ButtonDemoView) renderBtnFieldSet(title string, Ripple bool,
 	b *button.B) vecty.ComponentOrHTML {
 	if b == nil {
 		b = &button.B{}
@@ -210,7 +202,7 @@ func (c *buttonDemoView) renderBtnFieldSet(title string, Ripple bool,
 	)
 }
 
-func (c *buttonDemoView) renderBtnFieldSets(heading string,
+func (c *ButtonDemoView) renderBtnFieldSets(heading string,
 	Ripple bool) vecty.ComponentOrHTML {
 	return vecty.List{
 		elem.Heading1(
@@ -261,7 +253,7 @@ func (c *buttonDemoView) renderBtnFieldSets(heading string,
 }
 
 // Wraps button.New() and keeps track of created buttons
-func (c *buttonDemoView) newBtn(b *button.B) *button.B {
+func (c *ButtonDemoView) newBtn(b *button.B) *button.B {
 	c.buttons = append(c.buttons, b)
 	return b
 }

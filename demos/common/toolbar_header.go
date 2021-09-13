@@ -1,16 +1,13 @@
 package common
 
 import (
-	"path"
-
-	"syscall/js"
-
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/icon"
 	"github.com/vecty-material/material/toolbar"
+	router "marwan.io/vecty-router"
 )
 
 type NavType int
@@ -31,7 +28,7 @@ type ToolbarHeader struct {
 }
 
 func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
-	pathname := js.Global().Get("window").Get("location").Get("pathname").String()
+	// pathname := js.Global().Get("window").Get("location").Get("pathname").String()
 	var toolbarNav vecty.ComponentOrHTML
 	switch c.Navigation {
 	case NavRoot:
@@ -49,9 +46,11 @@ func (c *ToolbarHeader) Render() vecty.ComponentOrHTML {
 	case NavBack:
 		toolbarNav = elem.Anchor(
 			vecty.Markup(
-				prop.Href(path.Clean(pathname+"/..")),
 				vecty.Class("catalog-back"),
 				vecty.Class("mdc-toolbar__menu-icon"),
+				event.Click(func(e *vecty.Event) {
+					router.Redirect("/")
+				}).PreventDefault(),
 			),
 			&icon.I{Name: "&#xE5C4;"},
 		)
