@@ -40,8 +40,12 @@ func (c *StaticComponent) SkipRender(prev vecty.Component) bool {
 
 func MarkupIfNotNil(rootMarkup *vecty.MarkupList) vecty.Applyer {
 	if rootMarkup != nil {
+		// todo: enable this for all paths
+		if js.Global().Get("window").Get("location").Get("pathname").String() == "/checkbox" {
+			return vecty.MarkupIf(rootMarkup != nil, *rootMarkup)
+		}
+
 		return nil
-		// return vecty.MarkupIf(rootMarkup != nil, *rootMarkup)
 	} else {
 		return nil
 	}
