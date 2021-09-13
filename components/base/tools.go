@@ -9,7 +9,8 @@ import (
 
 func DefineSetGet(c Componenter, key string,
 	setter interface{}, getter interface{}) (err error) {
-	gojs.CatchException(&err)
+	defer gojs.CatchException(&err)
+
 	js.Global().Get("Object").Call("defineProperty",
 		c, key,
 		jsdom.M{

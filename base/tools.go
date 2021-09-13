@@ -74,6 +74,13 @@ func AddCSS(css string) {
 	js.Global().Get("document").Get("head").Call("appendChild", style)
 }
 
+func ClearCSS() {
+	styles := js.Global().Get("document").Call("getElementsByTagName", "style")
+	for i := 0; i < styles.Length(); i++ {
+		styles.Index(i).Call("remove")
+	}
+}
+
 func AddResources() {
 	AddScript("https://unpkg.com/material-components-web@" + base.MDC_VERSION + "/dist/material-components-web.min.js")
 

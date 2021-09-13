@@ -1,4 +1,4 @@
-package main
+package drawer
 
 import (
 	"path"
@@ -8,27 +8,18 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/demos/common"
 )
 
-type drawerDemoView struct {
+type DrawerDemoView struct {
 	vecty.Core
 }
 
-func main() {
-	base.SetViewport()
-
+func (c *DrawerDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Drawer - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/radio.cs")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/drawer/drawer.css")
 
-	base.AddResources()
-
-	vecty.RenderBody(&drawerDemoView{})
-}
-
-func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 	pathname := js.Global().Get("window").Get("location").Get("pathname").String()
 	return elem.Body(
 		vecty.Markup(

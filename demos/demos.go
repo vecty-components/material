@@ -11,29 +11,30 @@ import (
 	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/demos/common"
 	"github.com/vecty-material/material/ul"
+
+	router "marwan.io/vecty-router"
 )
 
-// demosCatalogView is our main page component.
-type demosCatalogView struct {
+// DemosCatalogView is our main page component.
+type DemosCatalogView struct {
 	vecty.Core
 }
 
 func main() {
 	base.SetViewport()
 
-	vecty.SetTitle("Material Components Catalog")
-	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/index.css")
-
 	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-
 	base.AddResources()
 
-	dcv := &demosCatalogView{}
-	vecty.RenderBody(dcv)
+	body := &Body{}
+	vecty.RenderBody(body)
 }
 
 // Render implements the vecty.Component interface.
-func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
+func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
+	vecty.SetTitle("Material Components Catalog")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/index.css")
+
 	return elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
@@ -52,7 +53,7 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					&ul.Item{
 						Primary:   vecty.Text("Button"),
 						Secondary: vecty.Text("Raised and flat buttons"),
-						Href:      makeHref("button"),
+						OnClick:   makeRedirect("button"),
 						Graphic:   renderGraphic("ic_button_24px.svg"),
 					},
 					// &ul.Item{
@@ -64,7 +65,7 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					&ul.Item{
 						Primary:   vecty.Text("Checkbox"),
 						Secondary: vecty.Text("Multi-selection controls"),
-						Href:      makeHref("checkbox"),
+						OnClick:   makeRedirect("checkbox"),
 						Graphic: renderGraphic(
 							"ic_selection_control_24px.svg"),
 					},
@@ -79,13 +80,13 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					&ul.Item{
 						Primary:   vecty.Text("Dialog"),
 						Secondary: vecty.Text("Secondary text"),
-						Href:      makeHref("dialog"),
+						OnClick:   makeRedirect("dialog"),
 						Graphic:   renderGraphic("ic_dialog_24px.svg"),
 					},
 					&ul.Item{
 						Primary:   vecty.Text("Drawer"),
 						Secondary: vecty.Text("Various drawer styles"),
-						Href:      makeHref("drawer"),
+						OnClick:   makeRedirect("drawer"),
 						Graphic: renderGraphic(
 							"ic_side_navigation_24px.svg"),
 					},
@@ -116,7 +117,7 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					&ul.Item{
 						Primary:   vecty.Text("Icon toggle"),
 						Secondary: vecty.Text("Toggling icon states"),
-						Href:      makeHref("icontoggle"),
+						OnClick:   makeRedirect("icontoggle"),
 						Graphic:   renderGraphic("ic_component_24px.svg"),
 					},
 					// ul.NewItem(nil,
@@ -150,7 +151,7 @@ func (c *demosCatalogView) Render() vecty.ComponentOrHTML {
 					&ul.Item{
 						Primary:   vecty.Text("Radio buttons"),
 						Secondary: vecty.Text("Single selection controls"),
-						Href:      makeHref("radio"),
+						OnClick:   makeRedirect("radio"),
 						Graphic:   renderGraphic("ic_radio_button_24px.svg"),
 					},
 					// ul.NewItem(nil,
@@ -251,4 +252,10 @@ func renderGraphic(filename string) vecty.ComponentOrHTML {
 func makeHref(cName string) string {
 	pathname := js.Global().Get("window").Get("location").Get("pathname").String()
 	return path.Clean(pathname + "/" + cName)
+}
+
+func makeRedirect(cName string) func(i *ul.Item, e *vecty.Event) {
+	return func(i *ul.Item, e *vecty.Event) {
+		router.Redirect("/" + cName)
+	}
 }

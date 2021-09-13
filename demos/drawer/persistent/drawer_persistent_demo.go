@@ -1,4 +1,4 @@
-package main
+package persistent
 
 import (
 	"syscall/js"
@@ -16,20 +16,18 @@ import (
 	"github.com/vecty-material/material/radio"
 )
 
-type drawerDemoView struct {
+type DrawerDemoView struct {
 	vecty.Core
 	body   *vecty.HTML
 	drawer *drawer.D
 }
 
-func main() {
-	base.SetViewport()
-	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-
+func (c *DrawerDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Drawer (Persistent) - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/radio.css")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/drawer/drawer.css")
 
+	base.ClearCSS()
 	base.AddCSS(dedent.Dedent(`
 		/* Ensure layout covers the entire screen. */
 		html {
@@ -61,12 +59,6 @@ func main() {
 		}
 	`))
 
-	base.AddResources()
-
-	vecty.RenderBody(&drawerDemoView{})
-}
-
-func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 	c.drawer = dcommon.NewDemoDrawer(drawer.Persistent)
 	c.body = elem.Body(
 		vecty.Markup(

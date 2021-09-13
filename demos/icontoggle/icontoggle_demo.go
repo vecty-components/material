@@ -1,17 +1,16 @@
-package main
+package icontoggle
 
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/demos/common"
 	"github.com/vecty-material/material/icon"
 	"github.com/vecty-material/material/icontoggle"
 )
 
-// icontoggleDemoView is our demo page component.
-type icontoggleDemoView struct {
+// IcontoggleDemoView is our demo page component.
+type IcontoggleDemoView struct {
 	vecty.Core
 	favStatus bool `vecty:"prop"`
 }
@@ -21,21 +20,12 @@ type favorite struct {
 	status string
 }
 
-func main() {
-	base.SetViewport()
-
+// Render implements the vecty.Component interface.
+func (c *IcontoggleDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Icon Toggle - Material Components Demo")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/icon-toggle.css")
 	vecty.AddStylesheet("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css")
 
-	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-
-	base.AddResources()
-	vecty.RenderBody(&icontoggleDemoView{})
-}
-
-// Render implements the vecty.Component interface.
-func (c *icontoggleDemoView) Render() vecty.ComponentOrHTML {
 	favStatus := &favorite{status: "no"}
 	return elem.Body(
 		vecty.Markup(
