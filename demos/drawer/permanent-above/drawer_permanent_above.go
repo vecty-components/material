@@ -1,4 +1,4 @@
-package main
+package permanent_above
 
 import (
 	"syscall/js"
@@ -16,19 +16,17 @@ import (
 	"github.com/vecty-material/material/radio"
 )
 
-type drawerDemoView struct {
+type DrawerDemoView struct {
 	vecty.Core
 	body *vecty.HTML
 }
 
-func main() {
-	base.SetViewport()
-	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-
+func (c *DrawerDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Drawer Above Toolbar - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/radio.css")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/drawer/drawer.css")
 
+	base.ClearCSS()
 	base.AddCSS(dedent.Dedent(`
 		/* Ensure layout covers the entire screen. */
 		html {
@@ -74,12 +72,6 @@ func main() {
 		}
 	`))
 
-	base.AddResources()
-
-	vecty.RenderBody(&drawerDemoView{})
-}
-
-func (c *drawerDemoView) Render() vecty.ComponentOrHTML {
 	ewc := elem.Div(
 		vecty.Markup(
 			prop.ID("extra-wide-content"),

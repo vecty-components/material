@@ -8,6 +8,11 @@ import (
 	dbutton "github.com/vecty-material/material/demos/button"
 	dcheckbox "github.com/vecty-material/material/demos/checkbox"
 	ddialog "github.com/vecty-material/material/demos/dialog"
+	ddrawer "github.com/vecty-material/material/demos/drawer"
+	dpadrawer "github.com/vecty-material/material/demos/drawer/permanent-above"
+	dpbdrawer "github.com/vecty-material/material/demos/drawer/permanent-below"
+	dpersistent "github.com/vecty-material/material/demos/drawer/persistent"
+	dtemporary "github.com/vecty-material/material/demos/drawer/temporary"
 
 	router "marwan.io/vecty-router"
 )
@@ -25,6 +30,11 @@ func (b *Body) Render() vecty.ComponentOrHTML {
 			router.NewRoute("/button", &dbutton.ButtonDemoView{}, router.NewRouteOpts{ExactMatch: true}),
 			router.NewRoute("/checkbox", dcheckbox.NewCheckboxDemoView(), router.NewRouteOpts{ExactMatch: true}),
 			router.NewRoute("/dialog", ddialog.NewDialogDemoView(), router.NewRouteOpts{ExactMatch: true}),
+			router.NewRoute("/drawer", &ddrawer.DrawerDemoView{}, router.NewRouteOpts{ExactMatch: true}),
+			router.NewRoute("/drawer/permanent-above", &dpadrawer.DrawerDemoView{}, router.NewRouteOpts{ExactMatch: true}),
+			router.NewRoute("/drawer/permanent-below", &dpbdrawer.DrawerDemoView{}, router.NewRouteOpts{ExactMatch: true}),
+			router.NewRoute("/drawer/persistent", &dpersistent.DrawerDemoView{}, router.NewRouteOpts{ExactMatch: true}),
+			router.NewRoute("/drawer/temporary", &dtemporary.DrawerDemoView{}, router.NewRouteOpts{ExactMatch: true}),
 			router.NotFoundHandler(&notFound{}),
 		),
 	)
