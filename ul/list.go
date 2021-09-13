@@ -150,7 +150,7 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 	return vecty.Tag(tag,
 		vecty.Markup(
 			c,
-			vecty.MarkupIf(rootMarkup != nil, *rootMarkup),
+			base.MarkupIfNotNil(rootMarkup),
 		),
 		graphic,
 		base.RenderStoredChild(text),
@@ -277,6 +277,13 @@ func (c *Item) wrapOnClick() func(e *vecty.Event) {
 }
 
 func setupGraphicOrMeta(c vecty.ComponentOrHTML) vecty.ComponentOrHTML {
+	defer func() {
+		msg := "vecty: cannot call (*HTML).Node() before DOM node creation / component mount"
+		if p := recover(); p != nil && p != msg {
+			panic(p)
+		}
+	}()
+
 	var graphic vecty.ComponentOrHTML
 	if c != nil {
 		graphic = c

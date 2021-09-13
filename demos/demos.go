@@ -8,6 +8,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
+	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/demos/common"
 	"github.com/vecty-material/material/ul"
 )
@@ -18,6 +19,12 @@ type demosCatalogView struct {
 }
 
 func main() {
+	base.SetViewport()
+
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/index.css")
+
+	base.AddResources()
+
 	dcv := &demosCatalogView{}
 	vecty.RenderBody(dcv)
 }
