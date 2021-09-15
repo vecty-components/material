@@ -1,6 +1,6 @@
-# Material Components For Go
+# Material Components For Vecty
 
-Material is Vecty bindings for the [material-components-web][] JavaScript
+Vecty Material is Vecty bindings for the [material-components-web][] JavaScript
 library ([MDC](#Terminology)).
 
 ## Project Status
@@ -20,13 +20,11 @@ Monetary contributions are not accepted at this time; only pull requests.
 To simplify demos and development, this package makes use of gaepher. To
 install it, run:
 
-    git clone https://bitbucket.org/xoviat/gaepher.git
-    cd gaepher
-    go install
+    go install bitbucket.org/xoviat/gaepher@009f197
 
-Once gaepher is installed, change to the demo that you want to run
+Once gaepher is installed, change to the demos folder
 
-    cd demos/button
+    cd demos
 
 Then run it with
 
@@ -38,9 +36,10 @@ file, the `wasm_exec.js` from your local go installation, and the wasm
 file. This allows all code in the repository to be written in go without
 html, css, or js. 
 
-Note that gaepher is at this time not well-polished but is simply the
-bare minimum needed to develop go+wasm applications. It's also not a
-high priority to improve because it does what it needs to do.
+Gaepher is meant to make development of this project efficient and
+painless. If you have questions/comments about running the demos,
+or think the process could be more efficient, commment on the
+[relevant issue](https://github.com/vecty-material/material/issues/45).
 
 ## Contributing
 
