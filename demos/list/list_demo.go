@@ -1,4 +1,4 @@
-package main
+package list
 
 import (
 	"strconv"
@@ -9,7 +9,6 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/checkbox"
 	"github.com/vecty-material/material/demos/common"
 	"github.com/vecty-material/material/formfield"
@@ -34,26 +33,17 @@ type demoList struct {
 	markup  []vecty.Applyer
 }
 
-// listDemoView is our demo page component.
-type listDemoView struct {
+// ListDemoView is our demo page component.
+type ListDemoView struct {
 	vecty.Core
 }
 
-func main() {
-	base.SetViewport()
-
+// Render implements the vecty.Component interface.
+func (c *ListDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("List Item - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/list.css")
 	vecty.AddStylesheet("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css")
 
-	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-
-	base.AddResources()
-	vecty.RenderBody(&listDemoView{})
-}
-
-// Render implements the vecty.Component interface.
-func (c *listDemoView) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		vecty.Markup(vecty.Class("mdc-typography")),
 		&common.ToolbarHeader{

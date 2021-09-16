@@ -1,4 +1,4 @@
-package main
+package menu
 
 import (
 	"strconv"
@@ -37,13 +37,43 @@ type lastSelectedItem struct {
 	index int
 }
 
-func main() {
-	base.SetViewport()
+func NewMenuDemoView() *MenuDemoView {
+	mdv := &MenuDemoView{}
+	mdv.menuItems = []vecty.ComponentOrHTML{
+		&ul.Item{Primary: vecty.Text("Back")},
+		&ul.Item{Primary: vecty.Text("Forward")},
+		&ul.Item{Primary: vecty.Text("Reload")},
+		ul.ItemDivider(),
+		&ul.Item{Primary: vecty.Text("Save as...")},
+		&ul.Item{Primary: vecty.Text("Help")},
+	}
+	mdv.menuItemsLarge = append(mdv.menuItems,
+		&ul.Item{Primary: vecty.Text("Settings")},
+		&ul.Item{Primary: vecty.Text("Feedback")},
+		&ul.Item{Primary: vecty.Text("Options...")},
+		&ul.Item{Primary: vecty.Text("Item 1")},
+		&ul.Item{Primary: vecty.Text("Item 2")},
+	)
+	mdv.menuItemsExtraLarge = append(mdv.menuItemsLarge,
+		&ul.Item{Primary: vecty.Text("Item 3")},
+		&ul.Item{Primary: vecty.Text("Item 4")},
+		&ul.Item{Primary: vecty.Text("Item 5")},
+		&ul.Item{Primary: vecty.Text("Item 6")},
+		&ul.Item{Primary: vecty.Text("Item 7")},
+		&ul.Item{Primary: vecty.Text("Item 8")},
+		&ul.Item{Primary: vecty.Text("Item 9")},
+	)
+
+	return mdv
+}
+
+// Render implements the vecty.Component interface.
+func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Menu - Material Components Catalog")
 
-	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/menu.css")
 
+	base.ClearCSS()
 	base.AddCSS(dedent.Dedent(`
 		html,
 		body,
@@ -115,38 +145,6 @@ func main() {
 		}
 	`))
 
-	base.AddResources()
-
-	mdv := &MenuDemoView{}
-	mdv.menuItems = []vecty.ComponentOrHTML{
-		&ul.Item{Primary: vecty.Text("Back")},
-		&ul.Item{Primary: vecty.Text("Forward")},
-		&ul.Item{Primary: vecty.Text("Reload")},
-		ul.ItemDivider(),
-		&ul.Item{Primary: vecty.Text("Save as...")},
-		&ul.Item{Primary: vecty.Text("Help")},
-	}
-	mdv.menuItemsLarge = append(mdv.menuItems,
-		&ul.Item{Primary: vecty.Text("Settings")},
-		&ul.Item{Primary: vecty.Text("Feedback")},
-		&ul.Item{Primary: vecty.Text("Options...")},
-		&ul.Item{Primary: vecty.Text("Item 1")},
-		&ul.Item{Primary: vecty.Text("Item 2")},
-	)
-	mdv.menuItemsExtraLarge = append(mdv.menuItemsLarge,
-		&ul.Item{Primary: vecty.Text("Item 3")},
-		&ul.Item{Primary: vecty.Text("Item 4")},
-		&ul.Item{Primary: vecty.Text("Item 5")},
-		&ul.Item{Primary: vecty.Text("Item 6")},
-		&ul.Item{Primary: vecty.Text("Item 7")},
-		&ul.Item{Primary: vecty.Text("Item 8")},
-		&ul.Item{Primary: vecty.Text("Item 9")},
-	)
-	vecty.RenderBody(mdv)
-}
-
-// Render implements the vecty.Component interface.
-func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 	heroM := &menu.M{
 		Open: true,
 		Root: vecty.Markup(
@@ -328,6 +326,8 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 		}
 	}
 
+	_ = heroM
+
 	return elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
@@ -340,12 +340,11 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
 			elem.Section(
 				vecty.Markup(vecty.Class("hero")),
-				heroM,
+				// heroM,
 			),
 			elem.Div(vecty.Markup(vecty.Class("demo-content")),
-				elem.Div(vecty.Markup(prop.ID("demo-wrapper")),
-					demoM,
-				),
+				elem.Div(vecty.Markup(prop.ID("demo-wrapper"))), // demoM,
+
 				elem.Div(vecty.Markup(vecty.Class("demo-controls-container")),
 					elem.Div(vecty.Markup(vecty.Class("demo-controls")),
 						elem.Div(
