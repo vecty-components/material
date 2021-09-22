@@ -48,7 +48,10 @@ func (c *M) Render() vecty.ComponentOrHTML {
 	}
 
 	// TODO: Make initial values work in material package
-	open := c.RootElement.Node().Get("Open").Bool()
+	open := false
+	// 	if c.RootElement != nil {
+	// 		open = c.RootElement.Node().Get("Open").Bool()
+	// 	}
 
 	listMarkup := []vecty.Applyer{
 		vecty.Class("mdc-menu__items"),
@@ -111,8 +114,10 @@ func (c *M) Apply(h *vecty.HTML) {
 		fallthrough
 	case c.M == nil, c.MDC.Component == nil:
 		// TODO: Make initial values work in material package
-		open := c.RootElement.Node().Get("Open").Bool()
-		quickOpen := c.RootElement.Node().Get("QuickOpen").Bool()
+		// open := c.RootElement.Node().Get("Open").Bool()
+		open := false
+		// quickOpen := c.RootElement.Node().Get("QuickOpen").Bool()
+		quickOpen := false
 		c.M = menu.New()
 		c.MDC.Component = c.M
 		c.Open = open

@@ -326,8 +326,6 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 		}
 	}
 
-	_ = heroM
-
 	return elem.Body(
 		vecty.Markup(
 			vecty.Class("mdc-typography"),
@@ -340,7 +338,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 			elem.Div(vecty.Markup(vecty.Class("mdc-toolbar-fixed-adjust"))),
 			elem.Section(
 				vecty.Markup(vecty.Class("hero")),
-				// heroM,
+				heroM,
 			),
 			elem.Div(vecty.Markup(vecty.Class("demo-content")),
 				elem.Div(vecty.Markup(prop.ID("demo-wrapper"))), // demoM,
