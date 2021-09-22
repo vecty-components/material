@@ -5,6 +5,7 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
 
+	"github.com/vecty-material/material/base"
 	dbutton "github.com/vecty-material/material/demos/button"
 	dcheckbox "github.com/vecty-material/material/demos/checkbox"
 	ddialog "github.com/vecty-material/material/demos/dialog"
@@ -20,6 +21,16 @@ import (
 
 	router "marwan.io/vecty-router"
 )
+
+func main() {
+	base.SetViewport()
+
+	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
+	base.AddResources()
+
+	body := &Body{}
+	vecty.RenderBody(body)
+}
 
 // Body renders the <body> tag
 type Body struct {

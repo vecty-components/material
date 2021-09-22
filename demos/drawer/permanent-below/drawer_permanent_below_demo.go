@@ -24,7 +24,6 @@ type DrawerDemoView struct {
 func (c *DrawerDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Drawer Below Toolbar - Material Components Catalog")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/radio.css")
-	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/drawer/drawer.css")
 
 	base.ClearCSS()
 	base.AddCSS(dedent.Dedent(`

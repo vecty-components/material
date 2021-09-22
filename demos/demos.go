@@ -8,7 +8,6 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/demos/common"
 	"github.com/vecty-material/material/ul"
 
@@ -18,16 +17,6 @@ import (
 // DemosCatalogView is our main page component.
 type DemosCatalogView struct {
 	vecty.Core
-}
-
-func main() {
-	base.SetViewport()
-
-	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
-	base.AddResources()
-
-	body := &Body{}
-	vecty.RenderBody(body)
 }
 
 // Render implements the vecty.Component interface.
@@ -139,13 +128,13 @@ func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 					&ul.Item{
 						Primary:   vecty.Text("List"),
 						Secondary: vecty.Text("Item layouts in lists"),
-						Href:      makeHref("list"),
+						OnClick:   makeRedirect("list"),
 						Graphic:   renderGraphic("ic_list_24px.svg"),
 					},
 					&ul.Item{
 						Primary:   vecty.Text("Menu"),
 						Secondary: vecty.Text("Pop over menus"),
-						Href:      makeHref("menu"),
+						OnClick:   makeRedirect("menu"),
 						Graphic:   renderGraphic("ic_menu_24px.svg"),
 					},
 					&ul.Item{
