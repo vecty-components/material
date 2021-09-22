@@ -20,7 +20,8 @@ func (c *R) Apply(h *vecty.HTML) {
 	// }
 	// vecty.Property("vecty-material-ripple", js.InternalObject(start)).Apply(h)
 	// vecty.Property("vecty-material-ripple", &start).Apply(h)
-	vecty.Property("vecty-material-ripple", c).Apply(h)
+	// vecty.Property("vecty-material-ripple", c).Apply(h)
+	vecty.Property("vecty-material-ripple", c.R.Component()).Apply(h)
 }
 
 func (c *R) Start() error {
