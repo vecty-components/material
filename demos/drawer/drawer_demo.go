@@ -17,7 +17,7 @@ type DrawerDemoView struct {
 
 func (c *DrawerDemoView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Drawer - Material Components Catalog")
-	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/radio.cs")
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/radio.css")
 	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/drawer/drawer.css")
 
 	pathname := js.Global().Get("window").Get("location").Get("pathname").String()
