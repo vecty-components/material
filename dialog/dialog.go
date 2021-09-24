@@ -177,18 +177,24 @@ func (c *D) ariaDescribedBy(h *vecty.HTML) vecty.Applyer {
 }
 
 func (c *D) onCancel(e *vecty.Event) {
+	c.Open = false
 	if d, ok := c.MDC.Component.(*dialog.D); ok {
-		c.Open = d.Open
+		d.Open = false
 	}
+
+	vecty.Rerender(c)
 	if c.OnCancel != nil {
 		c.OnCancel(c, e)
 	}
 }
 
 func (c *D) onAccept(e *vecty.Event) {
+	c.Open = false
 	if d, ok := c.MDC.Component.(*dialog.D); ok {
-		c.Open = d.Open
+		d.Open = false
 	}
+
+	vecty.Rerender(c)
 	if c.OnAccept != nil {
 		c.OnAccept(c, e)
 	}

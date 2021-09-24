@@ -22,7 +22,6 @@ type DemosCatalogView struct {
 // Render implements the vecty.Component interface.
 func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Material Components Catalog")
-	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/index.css")
 
 	return elem.Body(
 		vecty.Markup(

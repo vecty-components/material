@@ -28,6 +28,8 @@ func main() {
 	base.AddIcon("https://material-components-web.appspot.com/images/logo_components_color_2x_web_48dp.png")
 	base.AddResources()
 
+	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/index.css")
+
 	body := &Body{}
 	vecty.RenderBody(body)
 }
