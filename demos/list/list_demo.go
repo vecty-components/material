@@ -55,7 +55,7 @@ func (c *ListDemoView) Render() vecty.ComponentOrHTML {
 			&demoSection{
 				heading: "hero",
 				lists: []*demoList{
-					&demoList{heading: "hero"}},
+					{heading: "hero"}},
 			},
 			elem.Section(
 				vecty.Markup(vecty.Class("preamble", "mdc-typography--body1")),
@@ -96,7 +96,7 @@ func (c *ListDemoView) Render() vecty.ComponentOrHTML {
 				&demoSection{
 					heading: "Custom Colors",
 					groups: []*ul.Group{
-						&ul.Group{
+						{
 							Root: vecty.Markup(
 								vecty.Class("demo-list-group--custom"),
 							),
@@ -106,10 +106,10 @@ func (c *ListDemoView) Render() vecty.ComponentOrHTML {
 						"Example - Two-Line Lists, Avatars, " +
 							"Metadata, Inset Dividers"},
 					lists: []*demoList{
-						&demoList{heading: "Folders",
+						{heading: "Folders",
 							markup: []vecty.Applyer{
 								vecty.Class("demo-list--custom")}},
-						&demoList{heading: "Files",
+						{heading: "Files",
 							markup: []vecty.Applyer{
 								vecty.Class("demo-list--custom")}},
 					},
@@ -117,53 +117,53 @@ func (c *ListDemoView) Render() vecty.ComponentOrHTML {
 				&demoSection{
 					heading: "Single-Line List",
 					lists: []*demoList{
-						&demoList{heading: "Text only, non-interactive " +
+						{heading: "Text only, non-interactive " +
 							"(no states)"},
-						&demoList{heading: "Text only (dense)"},
-						&demoList{heading: "Graphic"},
-						&demoList{heading: "Graphic (dense)"},
-						&demoList{heading: "Graphic Example - Icon with Text"},
-						&demoList{heading: "Leading Checkbox"},
-						&demoList{heading: "Avatar List"},
-						&demoList{heading: "Avatar List (dense)"},
-						&demoList{heading: "Example - Avatar with Text"},
-						&demoList{heading: "Metadata"},
-						&demoList{heading: "Metadata (Dense)"},
-						&demoList{heading: "Trailing Checkbox"},
-						&demoList{heading: "Avatar + Metadata"},
-						&demoList{heading: "Avatar + Metadata (Dense)"},
-						&demoList{heading: "Example - Avatar with Text " +
+						{heading: "Text only (dense)"},
+						{heading: "Graphic"},
+						{heading: "Graphic (dense)"},
+						{heading: "Graphic Example - Icon with Text"},
+						{heading: "Leading Checkbox"},
+						{heading: "Avatar List"},
+						{heading: "Avatar List (dense)"},
+						{heading: "Example - Avatar with Text"},
+						{heading: "Metadata"},
+						{heading: "Metadata (Dense)"},
+						{heading: "Trailing Checkbox"},
+						{heading: "Avatar + Metadata"},
+						{heading: "Avatar + Metadata (Dense)"},
+						{heading: "Example - Avatar with Text " +
 							"and Icon"},
 					},
 				},
 				&demoSection{
 					heading: "Two-Line List",
 					lists: []*demoList{
-						&demoList{heading: "Text-Only"},
-						&demoList{heading: "Text-Only (Dense)"},
-						&demoList{heading: "Graphic"},
-						&demoList{heading: "Graphic (Dense)"},
-						&demoList{heading: "Avatar List"},
-						&demoList{heading: "Avatar List (dense)"},
-						&demoList{heading: "Metadata"},
-						&demoList{heading: "Metadata (Dense)"},
-						&demoList{heading: "Example - Two-line Avatar + " +
+						{heading: "Text-Only"},
+						{heading: "Text-Only (Dense)"},
+						{heading: "Graphic"},
+						{heading: "Graphic (Dense)"},
+						{heading: "Avatar List"},
+						{heading: "Avatar List (dense)"},
+						{heading: "Metadata"},
+						{heading: "Metadata (Dense)"},
+						{heading: "Example - Two-line Avatar + " +
 							"Text + Icon"},
-						&demoList{heading: "Lists w/ Ellipsis"},
+						{heading: "Lists w/ Ellipsis"},
 					},
 				},
 				&demoSection{
 					heading: "List Dividers",
 					lists: []*demoList{
-						&demoList{heading: "Full-Width Dividers"},
-						&demoList{heading: "Inset Dividers"},
+						{heading: "Full-Width Dividers"},
+						{heading: "Inset Dividers"},
 					},
 				},
 				&demoSection{
 					heading: "List Groups",
 					groups: []*ul.Group{
-						&ul.Group{},
-						&ul.Group{},
+						{},
+						{},
 					},
 					groupHeadings: []string{
 						"Basic Usage",
@@ -171,16 +171,16 @@ func (c *ListDemoView) Render() vecty.ComponentOrHTML {
 							"Inset Dividers",
 					},
 					lists: []*demoList{
-						&demoList{heading: "List 1"},
-						&demoList{heading: "List 2"},
-						&demoList{heading: "Folders"},
-						&demoList{heading: "Files"},
+						{heading: "List 1"},
+						{heading: "List 2"},
+						{heading: "Folders"},
+						{heading: "Files"},
 					},
 				},
 				&demoSection{
 					heading: "Interactive Lists (with ink ripple)",
 					lists: []*demoList{
-						&demoList{heading: "Example - Interactive List"},
+						{heading: "Example - Interactive List"},
 					},
 				},
 			),
@@ -443,7 +443,7 @@ func (dl *demoList) makeGraphicExampleItems(l *ul.L, interactive bool) {
 			if item, ok := cItem.(*ul.Item); ok {
 				item.Href = "#"
 				item.Root = vecty.Markup(
-					event.Click(nil).PreventDefault(),
+					event.Click(func(e *vecty.Event) {}).PreventDefault(),
 					&ripple.R{},
 				)
 			}
@@ -453,17 +453,17 @@ func (dl *demoList) makeGraphicExampleItems(l *ul.L, interactive bool) {
 
 func (dl *demoList) makeCheckboxItems(l *ul.L, isLeading bool) {
 	cbs := []*checkbox.CB{
-		&checkbox.CB{
+		{
 			Input: vecty.Markup(
 				prop.ID("leading-checkbox-blueberries"),
 			),
 		},
-		&checkbox.CB{
+		{
 			Input: vecty.Markup(
 				prop.ID("leading-checkbox-boysenberries"),
 			),
 		},
-		&checkbox.CB{
+		{
 			Input: vecty.Markup(
 				prop.ID("leading-checkbox-strawberries"),
 			),
