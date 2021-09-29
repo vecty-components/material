@@ -12,7 +12,7 @@ import (
 	"github.com/vecty-material/material/gojs"
 )
 
-const MDC_VERSION = "4.0"
+const MDC_VERSION = "4.0.0"
 
 // Component is a base type for all Material components.
 type Component struct {

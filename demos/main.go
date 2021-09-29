@@ -13,8 +13,6 @@ func main() {
 	base.SetViewport()
 	base.AddResources()
 
-	vecty.AddStylesheet("https://material-components-web.appspot.com/assets/index.css")
-
 	body := &Body{}
 	vecty.RenderBody(body)
 }
