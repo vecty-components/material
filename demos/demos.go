@@ -24,6 +24,8 @@ type CatalogView struct {
 func (c *CatalogView) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Material Components Web | Catalog")
 
+	vecty.AddStylesheet("/assets/styles/CatalogPage.css")
+
 	return elem.Div(
 		&HeaderBar{},
 	)

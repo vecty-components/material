@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/prop"
 )
 
 /*
@@ -11,6 +12,7 @@ import (
 
 type HeaderIcon struct {
 	vecty.Core
+	IsTopPage bool
 }
 
 func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
@@ -21,15 +23,35 @@ func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
 			),
 			vecty.Attribute("title", "home"),
 		),
-		elem.Image(),
+		func() vecty.ComponentOrHTML {
+			if hi.IsTopPage {
+				return elem.Image(
+					vecty.Markup(
+						prop.Src("/assets/images/ic_component_24px_white.svg"),
+						prop.Alt("Material logo"),
+					),
+				)
+			}
+
+			return elem.Italic(
+				vecty.Markup(
+					prop.Alt("Menu button"),
+					vecty.Class("material-icons"),
+				),
+				vecty.Text("menu"),
+			)
+		}(),
 	)
 }
 
 type HeaderBar struct {
 	vecty.Core
+	IsTopPage bool
 }
 
 func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
+	vecty.AddStylesheet("/assets/styles/HeaderBar.css")
+
 	return elem.Header(
 		vecty.Markup(
 			vecty.Class("mdc-top-app-bar", "catalog-top-app-bar"),
@@ -44,8 +66,7 @@ func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 						"mdc-top-app-bar__section", "mdc-top-app-bar__section--align-start",
 					),
 				),
-				/* HeaderIcon */
-
+				&HeaderIcon{IsTopPage: hb.IsTopPage},
 				elem.Span(
 					vecty.Markup(
 						vecty.Class(

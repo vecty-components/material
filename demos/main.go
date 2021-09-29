@@ -24,6 +24,8 @@ type Body struct {
 
 // Render renders the <body> tag with the App as its children
 func (b *Body) Render() vecty.ComponentOrHTML {
+	vecty.AddStylesheet("/assets/styles/App.css")
+
 	return elem.Body(
 		elem.Div(
 			router.NewRoute("/", &CatalogView{}, router.NewRouteOpts{ExactMatch: true}),
