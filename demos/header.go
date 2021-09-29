@@ -46,11 +46,13 @@ func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
 
 type HeaderBar struct {
 	vecty.Core
-	IsTopPage bool
 }
 
 func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("/assets/styles/HeaderBar.css")
+
+	/* todo: re-check with js */
+	IsTopPage := true
 
 	return elem.Header(
 		vecty.Markup(
@@ -66,7 +68,7 @@ func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 						"mdc-top-app-bar__section", "mdc-top-app-bar__section--align-start",
 					),
 				),
-				&HeaderIcon{IsTopPage: hb.IsTopPage},
+				&HeaderIcon{IsTopPage: IsTopPage},
 				elem.Span(
 					vecty.Markup(
 						vecty.Class(

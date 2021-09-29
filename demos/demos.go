@@ -3,30 +3,25 @@ package main
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	router "marwan.io/vecty-router"
 )
 
-type NotFoundView struct {
+type CatalogPage struct {
 	vecty.Core
 }
 
-func (nf *NotFoundView) Render() vecty.ComponentOrHTML {
-	return elem.Div(
-		elem.Heading1(
-			vecty.Text("page not found"),
-		),
-	)
-}
-
-type CatalogView struct {
-	vecty.Core
-}
-
-func (c *CatalogView) Render() vecty.ComponentOrHTML {
+func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Material Components Web | Catalog")
 
 	vecty.AddStylesheet("/assets/styles/CatalogPage.css")
 
 	return elem.Div(
 		&HeaderBar{},
+		router.NewRoute("/", &ComponentImageList{
+			images: make(map[string]string),
+		}, router.NewRouteOpts{ExactMatch: true}),
+		router.NotFoundHandler(&ComponentImageList{
+			images: make(map[string]string),
+		}),
 	)
 }
