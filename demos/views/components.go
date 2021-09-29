@@ -1,4 +1,4 @@
-package main
+package views
 
 import (
 	"io/ioutil"
@@ -7,12 +7,19 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
+	"github.com/vecty-material/material/base"
 	router "marwan.io/vecty-router"
 )
 
 type ComponentImageList struct {
 	vecty.Core
 	images map[string]string
+}
+
+func NewComponentImageList() *ComponentImageList {
+	return &ComponentImageList{
+		images: make(map[string]string),
+	}
 }
 
 func (cl *ComponentImageList) Render() vecty.ComponentOrHTML {
@@ -77,7 +84,7 @@ func (cl *ComponentImageList) renderListItem(
 		vecty.Markup(
 			vecty.Class("catalog-image-list-item", "mdc-image-list__item"),
 		),
-		RichLink("/"+url,
+		base.RichLink("/"+url,
 			[]vecty.ComponentOrHTML{
 				elem.Div(
 					vecty.Markup(

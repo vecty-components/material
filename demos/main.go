@@ -3,11 +3,11 @@ package main
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	"github.com/hexops/vecty/event"
-	"github.com/hexops/vecty/prop"
 	router "marwan.io/vecty-router"
 
 	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/demos/components"
+	"github.com/vecty-material/material/demos/views"
 )
 
 func main() {
@@ -30,24 +30,18 @@ func (b *Body) Render() vecty.ComponentOrHTML {
 	return elem.Body(&CatalogPage{})
 }
 
-func RichLink(route string, elements []vecty.ComponentOrHTML, opts router.LinkOptions) *vecty.HTML {
-	children := make([]vecty.MarkupOrChild, len(elements))
-	for i, element := range elements {
-		children[i] = element
-	}
-
-	return elem.Anchor(append([]vecty.MarkupOrChild{
-		vecty.Markup(
-			prop.Href(route),
-			vecty.MarkupIf(opts.ID != "", prop.ID(opts.ID)),
-			vecty.MarkupIf(opts.Class != "", vecty.Class(opts.Class)),
-			event.Click(onClick(route)).PreventDefault(),
-		),
-	}, children...)...)
+type CatalogPage struct {
+	vecty.Core
 }
 
-func onClick(route string) router.EventCallback {
-	return func(e *vecty.Event) {
-		router.Redirect(route)
-	}
+func (c *CatalogPage) Render() vecty.ComponentOrHTML {
+	vecty.SetTitle("Material Components Web | Catalog")
+
+	vecty.AddStylesheet("/assets/styles/CatalogPage.css")
+
+	return elem.Div(
+		components.NewHeaderBar(),
+		router.NewRoute("/", views.NewComponentImageList(), router.NewRouteOpts{ExactMatch: true}),
+		router.NotFoundHandler(views.NewComponentImageList()),
+	)
 }

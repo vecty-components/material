@@ -1,4 +1,4 @@
-package main
+package components
 
 import (
 	"github.com/hexops/vecty"
@@ -46,6 +46,10 @@ func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
 
 type HeaderBar struct {
 	vecty.Core
+}
+
+func NewHeaderBar() *HeaderBar {
+	return &HeaderBar{}
 }
 
 func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
