@@ -6,6 +6,7 @@ import (
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/base"
+	router "marwan.io/vecty-router"
 )
 
 type nativeInputer interface {
@@ -30,15 +31,27 @@ type L struct {
 type Item struct {
 	*base.MDC
 	vecty.Core
-	Root      vecty.MarkupOrChild
-	Primary   vecty.ComponentOrHTML
-	Secondary vecty.ComponentOrHTML
-	Graphic   vecty.ComponentOrHTML
-	Meta      vecty.ComponentOrHTML
-	Selected  bool
-	Activated bool
-	OnClick   func(i *Item, e *vecty.Event)
-	Href      string
+	Root           vecty.MarkupOrChild
+	Primary        vecty.ComponentOrHTML
+	Secondary      vecty.ComponentOrHTML
+	Graphic        vecty.ComponentOrHTML
+	Meta           vecty.ComponentOrHTML
+	Selected       bool
+	Activated      bool
+	OnClick        func(i *Item, e *vecty.Event)
+	PreventDefault bool
+	Href           string
+}
+
+func ItemLink(route, text string) *Item {
+	return &Item{
+		Primary:        vecty.Text(text),
+		Href:           route,
+		PreventDefault: true,
+		OnClick: func(item *Item, e *vecty.Event) {
+			router.Redirect(route)
+		},
+	}
 }
 
 // Group is a vecty-material list-group component.
@@ -170,8 +183,11 @@ func (c *Item) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-list-item--selected")),
 		vecty.MarkupIf(c.Activated,
 			vecty.Class("mdc-list-item--activated")),
-		vecty.MarkupIf(c.OnClick != nil,
+		vecty.MarkupIf(c.OnClick != nil && !c.PreventDefault,
 			event.Click(c.wrapOnClick()),
+		),
+		vecty.MarkupIf(c.OnClick != nil && c.PreventDefault,
+			event.Click(c.wrapOnClick()).PreventDefault(),
 		),
 		vecty.MarkupIf(c.Href != "", prop.Href(c.Href)),
 	).Apply(h)

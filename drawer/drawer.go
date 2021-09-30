@@ -51,10 +51,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 	// Persistent or Temporary drawer.
 	return elem.Aside(
 		markup,
-		elem.Navigation(
-			vecty.Markup(vecty.Class("mdc-drawer__drawer")),
-			c.renderDrawer(),
-		),
+		c.renderDrawer(),
 	)
 }
 
