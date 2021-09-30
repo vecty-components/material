@@ -10,7 +10,6 @@ import (
 
 	"github.com/vecty-material/material/components/base"
 	"github.com/vecty-material/material/gojs"
-	"github.com/vecty-material/material/gojs/jsdom"
 )
 
 // S is a material snackbar component.
@@ -124,7 +123,7 @@ func (c *S) Show() error {
 	if c.isNew && c.Timeout == 0 {
 		c.Timeout = 2750
 	}
-	data := make(jsdom.M)
+	data := make(map[string]interface{})
 	data["message"] = c.Message
 	data["timeout"] = c.Timeout
 	data["multiline"] = c.MultiLine
