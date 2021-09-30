@@ -1,4 +1,4 @@
-package persistentdrawer_test
+package drawer_test
 
 import (
 	"fmt"
@@ -6,19 +6,19 @@ import (
 
 	"syscall/js"
 
+	"github.com/vecty-material/material/components/drawer"
 	"github.com/vecty-material/material/components/internal/mdctest"
-	"github.com/vecty-material/material/components/persistentdrawer"
 )
 
 func Example() {
-	// Create a new instance of a material persistentdrawer component.
-	c := persistentdrawer.New()
+	// Create a new instance of a material drawer component.
+	c := drawer.New()
 	printName(c)
 	printState(c)
 	c.Open = true
 	printState(c)
 
-	// Set up a DOM HTMLElement suitable for a persistentdrawer.
+	// Set up a DOM HTMLElement suitable for a drawer.
 	js.Global().Get("document").Get("body").Set("innerHTML",
 		mdctest.HTML(c.Component().Type.MDCClassName))
 	rootElem := js.Global().Get("document").Get("body").Get("firstElementChild")
@@ -52,11 +52,11 @@ func Example() {
 	// MDC Open: false
 }
 
-func printName(c *persistentdrawer.PD) {
+func printName(c *drawer.PD) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 
-func printState(c *persistentdrawer.PD) {
+func printState(c *drawer.PD) {
 	fmt.Println()
 	fmt.Printf("MDC Open: %v\n", c.Component().Get("open"))
 }

@@ -6,12 +6,30 @@ import (
 )
 
 type ComponentPage struct {
-	component vecty.Component
+	panel *ComponentCatalogPanel
 	vecty.Core
 }
 
-func NewComponentPage(c vecty.Component) *ComponentPage {
-	return &ComponentPage{component: c}
+func NewComponentPage(
+	designLink string,
+	description string,
+	docsLink string,
+	sourceLink string,
+	title string,
+	hero vecty.ComponentOrHTML,
+	demos vecty.ComponentOrHTML,
+) *ComponentPage {
+	return &ComponentPage{
+		panel: &ComponentCatalogPanel{
+			designLink:  designLink,
+			description: description,
+			demos:       demos,
+			docsLink:    docsLink,
+			hero:        hero,
+			sourceLink:  sourceLink,
+			title:       title,
+		},
+	}
 }
 
 func (cp *ComponentPage) Render() vecty.ComponentOrHTML {
@@ -19,14 +37,14 @@ func (cp *ComponentPage) Render() vecty.ComponentOrHTML {
 		vecty.Markup(
 			vecty.Class("demo-panel"),
 		),
-		/* sidebar */
+		&ComponentSidebar{},
 		elem.Div(
 			vecty.Markup(
 				vecty.Class(
 					"demo-content", "mdc-drawer-app-content", "mdc-top-app-bar--fixed-adjust",
 				),
 			),
-			cp.component,
+			cp.panel,
 		),
 	)
 }

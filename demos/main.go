@@ -41,6 +41,9 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 
 	return elem.Div(
 		components.NewHeaderBar(),
+		router.NewRoute(
+			"/button", views.NewButtonPage(), router.NewRouteOpts{ExactMatch: true},
+		),
 		router.NewRoute("/", views.NewComponentImageList(), router.NewRouteOpts{ExactMatch: true}),
 		router.NotFoundHandler(views.NewComponentImageList()),
 	)

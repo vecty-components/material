@@ -1,14 +1,14 @@
-// persistentdrawer implements a material persistentdrawer component.
+// drawer implements a material drawer component.
 //
 // See: https://material.io/components/web/catalog/drawers/
-package persistentdrawer // import "github.com/vecty-material/material/components/persistentdrawer"
+package drawer // import "github.com/vecty-material/material/components/drawer"
 import (
 	"syscall/js"
 
 	"github.com/vecty-material/material/components/base"
 )
 
-// PD is a material persistentdrawer component.
+// PD is a material drawer component.
 type PD struct {
 	mdc  *base.Component
 	Open bool `js:"open"`

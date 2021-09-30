@@ -4,16 +4,14 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/components/persistentdrawer"
-	"github.com/vecty-material/material/components/temporarydrawer"
+	"github.com/vecty-material/material/components/drawer"
 )
 
 type Type int
 
 const (
-	Temporary Type = iota
-	Persistent
-	Permanent
+	Dismissible Type = iota
+	Modal
 )
 
 // D is a vecty-material drawer component.
@@ -44,7 +42,7 @@ func (c *D) Render() vecty.ComponentOrHTML {
 	)
 
 	// Built-in root element.
-	if c.Type == Permanent {
+	if c.Type == Modal {
 		return elem.Navigation(
 			markup,
 			c.renderDrawer(),
@@ -66,15 +64,8 @@ func (c *D) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		switch c.Type {
-		case Permanent:
-		case Temporary:
-			c.MDC.Component = temporarydrawer.New()
-			c.MDC.Component.(*temporarydrawer.TD).Open = c.Open
-		case Persistent:
-			c.MDC.Component = persistentdrawer.New()
-			c.MDC.Component.(*persistentdrawer.PD).Open = c.Open
-		}
+		c.MDC.Component = drawer.New()
+		c.MDC.Component.(*drawer.PD).Open = c.Open
 	}
 
 	markup := []vecty.Applyer{
@@ -82,12 +73,10 @@ func (c *D) Apply(h *vecty.HTML) {
 		vecty.MarkupIf(c.Open, vecty.Class("mdc-drawer--open")),
 	}
 	switch c.Type {
-	case Permanent:
-		markup = append(markup, vecty.Class("mdc-drawer--permanent"))
-	case Temporary:
-		markup = append(markup, vecty.Class("mdc-drawer--temporary"))
-	case Persistent:
-		markup = append(markup, vecty.Class("mdc-drawer--persistent"))
+	case Dismissible:
+		markup = append(markup, vecty.Class("mdc-drawer--dismissible"))
+	case Modal:
+		markup = append(markup, vecty.Class("mdc-drawer--modal"))
 	}
 
 	vecty.Markup(markup...).Apply(h)
