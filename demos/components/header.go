@@ -1,6 +1,8 @@
 package components
 
 import (
+	"syscall/js"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
@@ -46,6 +48,7 @@ func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
 
 type HeaderBar struct {
 	vecty.Core
+	hi *HeaderIcon
 }
 
 func NewHeaderBar() *HeaderBar {
@@ -55,8 +58,16 @@ func NewHeaderBar() *HeaderBar {
 func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("/assets/styles/HeaderBar.css")
 
-	/* todo: re-check with js */
-	IsTopPage := true
+	isTopPage := js.Global().Get("window").Get("location").
+		Get("pathname").String() == "/"
+	if hb.hi != nil && isTopPage != hb.hi.IsTopPage {
+		hb.hi.IsTopPage = isTopPage
+		vecty.Rerender(hb.hi)
+	} else {
+		hb.hi = &HeaderIcon{
+			IsTopPage: isTopPage,
+		}
+	}
 
 	return elem.Header(
 		vecty.Markup(
@@ -72,7 +83,7 @@ func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 						"mdc-top-app-bar__section", "mdc-top-app-bar__section--align-start",
 					),
 				),
-				&HeaderIcon{IsTopPage: IsTopPage},
+				hb.hi,
 				elem.Span(
 					vecty.Markup(
 						vecty.Class(

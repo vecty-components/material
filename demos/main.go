@@ -40,7 +40,8 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("/assets/styles/CatalogPage.css")
 
 	return elem.Div(
-		components.NewHeaderBar(),
+		/* put this inside a route so that it's re-rendered on location change */
+		router.NewRoute("/.*", components.NewHeaderBar(), router.NewRouteOpts{}),
 		router.NewRoute(
 			"/button", views.NewButtonPage(), router.NewRouteOpts{ExactMatch: true},
 		),
