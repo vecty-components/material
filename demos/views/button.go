@@ -6,11 +6,10 @@ import (
 	"github.com/vecty-material/material/demos/components"
 )
 
-func NewButtonPage(sidebar *components.ComponentSidebar) vecty.Component {
-	return components.NewComponentPage(
+func NewButtonPage() vecty.Component {
+	return components.NewComponentCatalogPanel(
 		"", "", "", "", "",
 		&ButtonHero{}, &ButtonDemos{},
-		sidebar,
 	)
 }
 

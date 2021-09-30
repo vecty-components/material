@@ -17,6 +17,26 @@ type ComponentCatalogPanel struct {
 	vecty.Core
 }
 
+func NewComponentCatalogPanel(
+	designLink string,
+	description string,
+	docsLink string,
+	sourceLink string,
+	title string,
+	hero vecty.ComponentOrHTML,
+	demos vecty.ComponentOrHTML,
+) *ComponentCatalogPanel {
+	return &ComponentCatalogPanel{
+		designLink:  designLink,
+		description: description,
+		demos:       demos,
+		docsLink:    docsLink,
+		hero:        hero,
+		sourceLink:  sourceLink,
+		title:       title,
+	}
+}
+
 func (cp *ComponentCatalogPanel) Render() vecty.ComponentOrHTML {
 
 	heroComponent := cp.hero
