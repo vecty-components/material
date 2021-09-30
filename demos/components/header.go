@@ -5,6 +5,7 @@ import (
 
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
 )
 
@@ -14,7 +15,12 @@ import (
 
 type HeaderIcon struct {
 	vecty.Core
-	IsTopPage bool
+	isTopPage bool
+	sidebar   *ComponentSidebar
+}
+
+func (hi *HeaderIcon) onClick(e *vecty.Event) {
+	hi.sidebar.Toggle()
 }
 
 func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
@@ -24,9 +30,10 @@ func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
 				"mdc-icon-button", "material-icons", "mdc-top-app-bar__navigation-icon",
 			),
 			vecty.Attribute("title", "home"),
+			event.Click(hi.onClick),
 		),
 		func() vecty.ComponentOrHTML {
-			if hi.IsTopPage {
+			if hi.isTopPage {
 				return elem.Image(
 					vecty.Markup(
 						prop.Src("/assets/images/ic_component_24px_white.svg"),
@@ -48,11 +55,12 @@ func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
 
 type HeaderBar struct {
 	vecty.Core
-	hi *HeaderIcon
+	hi      *HeaderIcon
+	sidebar *ComponentSidebar
 }
 
-func NewHeaderBar() *HeaderBar {
-	return &HeaderBar{}
+func NewHeaderBar(sidebar *ComponentSidebar) *HeaderBar {
+	return &HeaderBar{sidebar: sidebar}
 }
 
 func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
@@ -60,12 +68,13 @@ func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 
 	isTopPage := js.Global().Get("window").Get("location").
 		Get("pathname").String() == "/"
-	if hb.hi != nil && isTopPage != hb.hi.IsTopPage {
-		hb.hi.IsTopPage = isTopPage
+	if hb.hi != nil && isTopPage != hb.hi.isTopPage {
+		hb.hi.isTopPage = isTopPage
 		vecty.Rerender(hb.hi)
 	} else {
 		hb.hi = &HeaderIcon{
-			IsTopPage: isTopPage,
+			isTopPage: isTopPage,
+			sidebar:   hb.sidebar,
 		}
 	}
 

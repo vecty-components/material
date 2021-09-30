@@ -6,7 +6,8 @@ import (
 )
 
 type ComponentPage struct {
-	panel *ComponentCatalogPanel
+	panel   *ComponentCatalogPanel
+	sidebar *ComponentSidebar
 	vecty.Core
 }
 
@@ -18,6 +19,7 @@ func NewComponentPage(
 	title string,
 	hero vecty.ComponentOrHTML,
 	demos vecty.ComponentOrHTML,
+	sidebar *ComponentSidebar,
 ) *ComponentPage {
 	return &ComponentPage{
 		panel: &ComponentCatalogPanel{
@@ -29,6 +31,7 @@ func NewComponentPage(
 			sourceLink:  sourceLink,
 			title:       title,
 		},
+		sidebar: sidebar,
 	}
 }
 
@@ -37,7 +40,7 @@ func (cp *ComponentPage) Render() vecty.ComponentOrHTML {
 		vecty.Markup(
 			vecty.Class("demo-panel"),
 		),
-		&ComponentSidebar{},
+		cp.sidebar,
 		elem.Div(
 			vecty.Markup(
 				vecty.Class(

@@ -14,7 +14,19 @@ type link struct {
 }
 
 type ComponentSidebar struct {
+	drawer *drawer.D
 	vecty.Core
+}
+
+func NewComponentSidebar() *ComponentSidebar {
+	return &ComponentSidebar{}
+}
+
+func (cs *ComponentSidebar) Toggle() {
+	if cs.drawer != nil {
+		cs.drawer.Open = !cs.drawer.Open
+		vecty.Rerender(cs.drawer)
+	}
 }
 
 func (cs *ComponentSidebar) renderSidebarLink(link link, index int) vecty.ComponentOrHTML {
@@ -113,13 +125,17 @@ func (cs *ComponentSidebar) renderDrawer() vecty.ComponentOrHTML {
 		items[i] = cs.renderSidebarLink(link, i)
 	}
 
-	return elem.Div(
-		&drawer.D{
+	if cs.drawer == nil {
+		cs.drawer = &drawer.D{
 			Type: drawer.Dismissible,
 			Content: &ul.L{
 				Items: items,
 			},
-		},
+		}
+	}
+
+	return elem.Div(
+		cs.drawer,
 	)
 }
 

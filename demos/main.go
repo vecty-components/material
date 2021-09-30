@@ -39,11 +39,13 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 
 	vecty.AddStylesheet("/assets/styles/CatalogPage.css")
 
+	sidebar := components.NewComponentSidebar()
+
 	return elem.Div(
 		/* put this inside a route so that it's re-rendered on location change */
-		router.NewRoute("/.*", components.NewHeaderBar(), router.NewRouteOpts{}),
+		router.NewRoute("/.*", components.NewHeaderBar(sidebar), router.NewRouteOpts{}),
 		router.NewRoute(
-			"/button", views.NewButtonPage(), router.NewRouteOpts{ExactMatch: true},
+			"/button", views.NewButtonPage(sidebar), router.NewRouteOpts{ExactMatch: true},
 		),
 		router.NewRoute("/", views.NewComponentImageList(), router.NewRouteOpts{ExactMatch: true}),
 		router.NotFoundHandler(views.NewComponentImageList()),
