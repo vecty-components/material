@@ -30,7 +30,7 @@ func HTML(t string) string {
   </div>
   <div class="mdc-dialog__backdrop"></div>
 </aside>`
-	case "MDCPersistentDrawer":
+	case "MDCDrawer":
 		return `
 <aside class="mdc-drawer mdc-drawer--persistent mdc-typography">
   <nav class="mdc-drawer__drawer">

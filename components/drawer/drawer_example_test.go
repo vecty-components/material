@@ -41,7 +41,7 @@ func Example() {
 	}
 
 	// Output:
-	// MDCPersistentDrawer
+	// MDCDrawer
 	//
 	// MDC Open: false
 	//

@@ -39,7 +39,7 @@ func (c *PD) Component() *base.Component {
 	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
-				MDCClassName:     "MDCPersistentDrawer",
+				MDCClassName:     "MDCDrawer",
 				MDCCamelCaseName: "drawer",
 			},
 		}
