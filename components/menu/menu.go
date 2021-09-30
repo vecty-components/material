@@ -5,7 +5,6 @@ package menu // import "github.com/vecty-material/material/components/menu"
 
 import (
 	"github.com/vecty-material/material/components/base"
-	"github.com/vecty-material/material/gojs/jsdom"
 
 	"syscall/js"
 )
@@ -156,7 +155,7 @@ func (m *M) SetAnchorMargins(ms *Margins) {
 	if m.Component().Get("foundation_").IsUndefined() {
 		return
 	}
-	o := &jsdom.M{
+	o := map[string]interface{}{
 		"left":   ms.Left,
 		"right":  ms.Right,
 		"top":    ms.Top,
