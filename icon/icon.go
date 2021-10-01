@@ -68,8 +68,12 @@ func (c *I) Apply(h *vecty.HTML) {
 	).Apply(h)
 }
 
-func (c *I) iconDetails() (sizeClass string, isIconCode bool) {
-	// sizeClass = c.RootElement.Node().Get("SizePX").String()
+func (c *I) iconDetails() (string, bool) {
+	isIconCode := false
+	sizeClass := ""
+	if c.MDC != nil && c.MDC.RootElement != nil {
+		sizeClass = c.MDC.RootElement.Node().Get("SizePX").String()
+	}
 	switch sizeClass {
 	case "undefined", "", "24":
 		sizeClass = ""
@@ -79,5 +83,5 @@ func (c *I) iconDetails() (sizeClass string, isIconCode bool) {
 	if c.Name != "" && string([]byte(c.Name)[0]) == "&" {
 		isIconCode = true
 	}
-	return
+	return sizeClass, isIconCode
 }
