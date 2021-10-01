@@ -4,6 +4,8 @@ import (
 	"github.com/vecty-material/material/components/base"
 )
 
+// TODO: fix functions to be js.Func
+
 // afterStart defines missing getters for MDCLinearProgress properties, so that
 // we can use our struct fields as one would normally expect.
 func (c *LP) afterStart() error {
