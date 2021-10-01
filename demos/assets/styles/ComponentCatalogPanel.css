@@ -1,0 +1,109 @@
+.demo-content {
+    padding: 64px 16px 0 16px;
+}
+
+.component-catalog-panel {
+    margin-top: 24px;
+    padding-bottom: 24px;
+}
+.component-catalog-panel.component-catalog-panel--v2-hero .component-catalog-panel__header {
+    -ms-flex: 1 1 40%;  
+    flex: 1 1 40%;
+}
+.component-catalog-panel__header {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: column wrap;
+        flex-flow: column wrap;
+    height: 550px;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+.component-catalog-panel__header.component-catalog-panel--v2-hero {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+.component-catalog-panel__hero-area {
+    height: 100%;
+    margin-bottom: 48px;
+}
+.component-catalog-panel__header-elements {
+    max-width: 300px;
+    padding-right: 40px;
+}
+.component-catalog-panel .hero {
+    -ms-flex-order: 4;
+    order: 4;
+    -ms-flex: 1 1 100%;
+    flex: 1 1 100%;
+    width: calc(100% - (300px + 40px));
+    height: 550px;
+    padding: 24px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.component-catalog-panel .hero-options {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+.component-catalog-panel .hero-component {
+    -ms-flex-order: 4;
+    order: 4;
+    -ms-flex: 1 1 100%;
+    flex: 1 1 100%;
+    height: 550px;
+    width: calc(100% - (300px + 40px));
+    margin-top: 32px;
+}
+
+@media screen and (max-width: 820px) {
+    .component-catalog-panel.component-catalog-panel--v2-hero .hero-component {
+        -ms-flex-order: 0;
+            order: 0;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+        height: auto;
+    }
+    .component-catalog-panel__header-elements {
+        max-width: none;
+    }
+    .component-catalog-panel__header {
+        -ms-flex-flow: column nowrap;
+            flex-flow: column nowrap;
+        height: auto;
+    }
+    .component-catalog-panel .hero-options {
+        max-height: none;
+    }
+    .component-catalog-panel .hero,
+    .component-catalog-panel .hero-component {
+        width: 100%;
+    }
+}
+.hero-select {
+    width: 250px;
+}
+
+.hero-iframe {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    -ms-flex: 1 1 100%;
+    flex: 1 1 100%;
+    height: 408px;
+    padding: 24px;
+    -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+}
+
+.component-catalog-resources {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}

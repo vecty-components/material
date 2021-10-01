@@ -38,8 +38,7 @@ func NewComponentCatalogPanel(
 }
 
 func (cp *ComponentCatalogPanel) Render() vecty.ComponentOrHTML {
-
-	heroComponent := cp.hero
+	vecty.AddStylesheet("/assets/styles/ComponentCatalogPanel.css")
 
 	return elem.Section(
 		vecty.Markup(
@@ -69,7 +68,7 @@ func (cp *ComponentCatalogPanel) Render() vecty.ComponentOrHTML {
 					),
 					vecty.Text(cp.description),
 				),
-				heroComponent,
+				cp.hero,
 				/*
 				   <HeroOptionsComponent
 				     className=' component-catalog-panel__header-elements component-catalog-panel__header__hero-options'

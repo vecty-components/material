@@ -22,6 +22,8 @@ func NewComponentPage(routes map[string]*ComponentCatalogPanel, sidebar *Compone
 }
 
 func (cp *ComponentPage) Render() vecty.ComponentOrHTML {
+	vecty.AddStylesheet("/assets/styles/ComponentPage.css")
+
 	path := js.Global().Get("window").Get("location").Get("pathname").String()
 	var p *ComponentCatalogPanel
 	for route, panel := range cp.routes {

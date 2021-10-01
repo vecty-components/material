@@ -27,7 +27,12 @@ type Body struct {
 func (b *Body) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("/assets/styles/App.css")
 
-	return elem.Body(&CatalogPage{})
+	return elem.Body(
+		vecty.Markup(
+			vecty.Class("mdc-typography"),
+		),
+		&CatalogPage{},
+	)
 }
 
 type CatalogPage struct {

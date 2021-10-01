@@ -1,0 +1,119 @@
+.hero {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: center;
+        justify-content: center;
+    min-height: 360px;
+    background-color: #f2f2f2;
+    overflow: auto;
+  }
+  
+  .sidebar-active {
+    font-weight: 600;
+  }
+  
+  .demo-title {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.87);
+  }
+  
+  .resources-graphic {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .demo-panel {
+    display: -ms-flexbox;
+    display: flex;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .mdc-drawer--dismissible.demo-drawer {
+    z-index: 1;
+  }
+  
+  .demo-drawer {
+    height: 100%;
+  }
+  .demo-drawer .mdc-list-item {
+    cursor: pointer;
+  }
+  
+  .demo-drawer-header {
+    position: absolute;
+    top: 18px;
+    opacity: 0.74;
+  }
+  
+  .demo-content {
+    height: 100%;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    padding: 40px 16px 100px;
+    -webkit-transition: 200ms -webkit-transform cubic-bezier(0.4, 0, 0.2, 1) 50ms;
+    transition: 200ms -webkit-transform cubic-bezier(0.4, 0, 0.2, 1) 50ms;
+    -o-transition: 200ms transform cubic-bezier(0.4, 0, 0.2, 1) 50ms;
+    transition: 200ms transform cubic-bezier(0.4, 0, 0.2, 1) 50ms;
+    transition: 200ms transform cubic-bezier(0.4, 0, 0.2, 1) 50ms, 200ms -webkit-transform cubic-bezier(0.4, 0, 0.2, 1) 50ms;
+    width: 100%;
+    overflow: auto;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+        flex-direction: column;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: start;
+        justify-content: flex-start;
+  }
+  
+  @supports (-webkit-overflow-scrolling: touch) {
+    /* CSS specific to iOS devices */
+    .demo-content {
+      overflow: scroll;
+      /* Has to be scroll, not auto. */
+      -webkit-overflow-scrolling: touch;
+      /* For momentum scrolling. */
+    }
+  }
+  .demo-content-transition {
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  .loadComponent-enter {
+    opacity: 0;
+    -webkit-transform: translateY(15px);
+        -ms-transform: translateY(15px);
+            transform: translateY(15px);
+  }
+  
+  .loadComponent-enter.loadComponent-enter-active {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+            transform: translateY(0);
+    -webkit-transition: all 235ms linear 100ms;
+    -o-transition: all 235ms linear 100ms;
+    transition: all 235ms linear 100ms;
+  }
+  .loadComponent-enter.loadComponent-enter-active .mdc-snackbar {
+    display: none;
+  }
+  
+  .loadComponent-exit {
+    display: none;
+  }
+  .loadComponent-exit-active {
+    display: none;
+  }
+  .loadComponent-exit-done {
+    display: none;
+  }
