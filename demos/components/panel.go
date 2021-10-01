@@ -18,11 +18,11 @@ type ComponentCatalogPanel struct {
 }
 
 func NewComponentCatalogPanel(
-	designLink string,
+	title string,
 	description string,
+	designLink string,
 	docsLink string,
 	sourceLink string,
-	title string,
 	hero vecty.ComponentOrHTML,
 	demos vecty.ComponentOrHTML,
 ) *ComponentCatalogPanel {
@@ -129,6 +129,7 @@ func (cp *ComponentCatalogPanel) renderResource(title, imageSource, url string) 
 					),
 				),
 			),
+			vecty.Text(title),
 		),
 	)
 }
