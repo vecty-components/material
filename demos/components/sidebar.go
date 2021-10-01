@@ -36,6 +36,11 @@ func (cs *ComponentSidebar) renderSidebarLink(link link, index int) vecty.Compon
 }
 
 func (cs *ComponentSidebar) renderDrawer() vecty.ComponentOrHTML {
+	if cs.drawer != nil {
+		return elem.Div(
+			cs.drawer,
+		)
+	}
 
 	links := []link{
 		{
@@ -123,13 +128,11 @@ func (cs *ComponentSidebar) renderDrawer() vecty.ComponentOrHTML {
 		items[i] = cs.renderSidebarLink(link, i)
 	}
 
-	if cs.drawer == nil {
-		cs.drawer = &drawer.D{
-			Type: drawer.Dismissible,
-			Content: &ul.L{
-				Items: items,
-			},
-		}
+	cs.drawer = &drawer.D{
+		Type: drawer.Dismissible,
+		Content: &ul.L{
+			Items: items,
+		},
 	}
 
 	return elem.Div(

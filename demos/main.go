@@ -44,10 +44,12 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		/* put this inside a route so that it's re-rendered on location change */
 		router.NewRoute("/.*", components.NewHeaderBar(sidebar), router.NewRouteOpts{}),
-		router.NewRoute("/[a-zA-Z].*", components.NewComponentPage([]*router.Route{
-			// router.NewRoute("/button", views.NewButtonPage(), router.NewRouteOpts{ExactMatch: true}),
-		}, sidebar), router.NewRouteOpts{}),
 		router.NewRoute("/", views.NewComponentImageList(), router.NewRouteOpts{ExactMatch: true}),
-		router.NotFoundHandler(views.NewComponentImageList()),
+		router.NewRoute("/[a-zA-Z].*", components.NewComponentPage(
+			map[string]*components.ComponentCatalogPanel{
+				"/button": views.NewButtonPage(),
+			}, sidebar,
+		), router.NewRouteOpts{}),
+		// router.NotFoundHandler(views.NewComponentImageList()),
 	)
 }

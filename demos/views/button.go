@@ -6,7 +6,7 @@ import (
 	"github.com/vecty-material/material/demos/components"
 )
 
-func NewButtonPage() vecty.Component {
+func NewButtonPage() *components.ComponentCatalogPanel {
 	return components.NewComponentCatalogPanel(
 		"", "", "", "", "",
 		&ButtonHero{}, &ButtonDemos{},

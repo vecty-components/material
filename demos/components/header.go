@@ -20,7 +20,9 @@ type HeaderIcon struct {
 }
 
 func (hi *HeaderIcon) onClick(e *vecty.Event) {
-	hi.sidebar.Toggle()
+	if !hi.isTopPage {
+		hi.sidebar.Toggle()
+	}
 }
 
 func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
@@ -55,28 +57,20 @@ func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
 
 type HeaderBar struct {
 	vecty.Core
-	hi      *HeaderIcon
-	sidebar *ComponentSidebar
+	hi *HeaderIcon
 }
 
 func NewHeaderBar(sidebar *ComponentSidebar) *HeaderBar {
-	return &HeaderBar{sidebar: sidebar}
+	return &HeaderBar{
+		hi: &HeaderIcon{sidebar: sidebar},
+	}
 }
 
 func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("/assets/styles/HeaderBar.css")
 
-	isTopPage := js.Global().Get("window").Get("location").
+	hb.hi.isTopPage = js.Global().Get("window").Get("location").
 		Get("pathname").String() == "/"
-	if hb.hi != nil && isTopPage != hb.hi.isTopPage {
-		hb.hi.isTopPage = isTopPage
-		vecty.Rerender(hb.hi)
-	} else {
-		hb.hi = &HeaderIcon{
-			isTopPage: isTopPage,
-			sidebar:   hb.sidebar,
-		}
-	}
 
 	return elem.Header(
 		vecty.Markup(
