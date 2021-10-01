@@ -1,0 +1,29 @@
+.demo-button {
+    margin: 8px 16px;
+  }
+  
+  .hero-button {
+    margin: 16px 32px;
+  }
+  
+  .hero-button-container {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+    -ms-flex-align: center;
+        align-items: center;
+  }
+  @media screen and (max-width: 600px) {
+    .hero-button-container {
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+    }
+  }
+  
+  .demo-button-shaped {
+    border-radius: 18px;
+  }
+  .demo-button-shaped .mdc-button__ripple {
+    border-radius: 18px;
+  }

@@ -12,7 +12,7 @@ type ComponentCatalogPanel struct {
 	description string
 	demos       vecty.ComponentOrHTML
 	docsLink    string
-	hero        vecty.ComponentOrHTML
+	hero        *HeroComponent
 	sourceLink  string
 	title       string
 	vecty.Core
@@ -24,7 +24,7 @@ func NewComponentCatalogPanel(
 	designLink string,
 	docsLink string,
 	sourceLink string,
-	hero vecty.ComponentOrHTML,
+	hero *HeroComponent,
 	demos vecty.ComponentOrHTML,
 ) *ComponentCatalogPanel {
 	return &ComponentCatalogPanel{
