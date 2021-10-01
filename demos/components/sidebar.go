@@ -2,7 +2,7 @@ package components
 
 import (
 	"github.com/hexops/vecty"
-	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/drawer"
 	"github.com/vecty-material/material/ul"
 )
@@ -35,11 +35,9 @@ func (cs *ComponentSidebar) renderSidebarLink(link link, index int) vecty.Compon
 	)
 }
 
-func (cs *ComponentSidebar) renderDrawer() vecty.ComponentOrHTML {
+func (cs *ComponentSidebar) Render() vecty.ComponentOrHTML {
 	if cs.drawer != nil {
-		return elem.Div(
-			cs.drawer,
-		)
+		return cs.drawer
 	}
 
 	links := []link{
@@ -129,28 +127,15 @@ func (cs *ComponentSidebar) renderDrawer() vecty.ComponentOrHTML {
 	}
 
 	cs.drawer = &drawer.D{
+		Root: vecty.Markup(
+			prop.ID("demo-drawer"),
+			vecty.Class("demo-drawer", "mdc-top-app-bar--fixed-adjust"),
+		),
 		Type: drawer.Dismissible,
 		Content: &ul.L{
 			Items: items,
 		},
 	}
 
-	return elem.Div(
-		cs.drawer,
-	)
-}
-
-func (cs *ComponentSidebar) renderScrim() vecty.ComponentOrHTML {
-	return elem.Div(
-		vecty.Markup(
-			vecty.Class("mdc-drawer-scrim"),
-		),
-	)
-}
-
-func (cs *ComponentSidebar) Render() vecty.ComponentOrHTML {
-	return elem.Div(
-		cs.renderDrawer(),
-		cs.renderScrim(),
-	)
+	return cs.drawer
 }

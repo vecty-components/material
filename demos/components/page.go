@@ -49,7 +49,12 @@ func (cp *ComponentPage) Render() vecty.ComponentOrHTML {
 					"demo-content", "mdc-drawer-app-content", "mdc-top-app-bar--fixed-adjust",
 				),
 			),
-			p,
+			elem.Div(
+				vecty.Markup(
+					vecty.Class("demo-content-transition"),
+				),
+				p,
+			),
 		),
 	)
 }
