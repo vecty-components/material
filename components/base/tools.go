@@ -9,6 +9,20 @@ import (
 func DefineSetGet(c Componenter, key string,
 	setter interface{}, getter interface{}) (err error) {
 
+	proto := js.Global().Get("Object").Call(
+		"getPrototypeOf", c.Component().Value,
+	)
+	if setter == nil {
+		setter = js.Global().Get("Object").Call(
+			"getOwnPropertyDescriptor", proto, key,
+		).Get("set")
+	}
+	if getter == nil {
+		getter = js.Global().Get("Object").Call(
+			"getOwnPropertyDescriptor", proto, key,
+		).Get("get")
+	}
+
 	for _, f := range []interface{}{setter, getter} {
 		switch f.(type) {
 		case js.Value: // should precede Wrapper to avoid a loop
