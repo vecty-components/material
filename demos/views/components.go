@@ -3,6 +3,7 @@ package views
 import (
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
@@ -23,6 +24,7 @@ func NewComponentImageList() *ComponentImageList {
 }
 
 func (cl *ComponentImageList) Render() vecty.ComponentOrHTML {
+	vecty.AddStylesheet("/assets/styles/ImageListCatalog.css")
 
 	buttonImg := "/assets/images/buttons_180px.svg"
 	// cardsImg := "/assets/images/cards_180px.svg"
@@ -74,8 +76,17 @@ func (cl *ComponentImageList) renderListItem(
 			r, _ := http.Get(imageSource)
 			svg, _ := ioutil.ReadAll(r.Body)
 			r.Body.Close()
+			source := string(svg)
 
-			cl.images[imageSource] = string(svg)
+			/* TODO: fix this to manipulate html */
+			source = strings.ReplaceAll(
+				source, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "",
+			)
+			source = strings.ReplaceAll(
+				source, "<svg width=\"180px\" height=\"180px\"", "<svg",
+			)
+
+			cl.images[imageSource] = source
 			vecty.Rerender(cl)
 		}()
 	}
