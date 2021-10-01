@@ -1,6 +1,8 @@
 package ul
 
 import (
+	"reflect"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
@@ -41,6 +43,7 @@ type Item struct {
 	OnClick        func(i *Item, e *vecty.Event)
 	PreventDefault bool
 	Href           string
+	Alt            string
 }
 
 func ItemLink(route, text string) *Item {
@@ -292,21 +295,16 @@ func (c *Item) wrapOnClick() func(e *vecty.Event) {
 	}
 }
 
-func setupGraphicOrMeta(c vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-	defer func() {
-		msg := "vecty: cannot call (*HTML).Node() before DOM node creation / component mount"
-		if p := recover(); p != nil && p != msg {
-			panic(p)
-		}
-	}()
+func setupGraphicOrMeta(graphic vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 
-	var graphic vecty.ComponentOrHTML
-	if c != nil {
-		graphic = c
-		html, ok := graphic.(*vecty.HTML)
-		if ok && html.Node().Get("tag").String() != "img" {
-			graphic = elem.Span(graphic)
+	if graphic != nil {
+		tag := reflect.ValueOf(graphic).Elem().FieldByName("tag").String()
+		if tag != "span" {
+			graphic = elem.Span(
+				graphic,
+			)
 		}
 	}
+
 	return graphic
 }

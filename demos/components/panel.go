@@ -4,6 +4,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
+	"github.com/vecty-material/material/ul"
 )
 
 type ComponentCatalogPanel struct {
@@ -110,25 +111,20 @@ func (cp *ComponentCatalogPanel) renderResource(title, imageSource, url string) 
 		return elem.Span()
 	}
 
-	return elem.ListItem(
-		elem.Anchor(
+	return &ul.Item{
+		Href: url,
+		Graphic: elem.Span(
 			vecty.Markup(
-				prop.Href(url),
-				vecty.Class("mdc-list-item"),
+				vecty.Class("resources-graphic"),
 			),
-			elem.Span(
+			elem.Image(
 				vecty.Markup(
-					vecty.Class("mdc-list-item__graphic", "resources-graphic"),
-				),
-				elem.Image(
-					vecty.Markup(
-						prop.Src(imageSource),
-						vecty.Class("resources-graphic"),
-						prop.Alt(title+" icon"),
-					),
+					prop.Src(imageSource),
+					vecty.Class("resources-graphic"),
+					prop.Alt(title+" icon"),
 				),
 			),
-			vecty.Text(title),
 		),
-	)
+		Primary: vecty.Text(title),
+	}
 }
