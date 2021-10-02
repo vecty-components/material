@@ -41,7 +41,7 @@ type Item struct {
 	Activated bool
 	Alt       string
 
-	link *base.SimplifiedMarkup
+	link *base.LinkMarkup
 }
 
 // Group is a vecty-material list-group component.
@@ -110,7 +110,7 @@ func (c *L) Apply(h *vecty.HTML) {
 
 // Render implements the vecty.Component interface.
 func (c *Item) Render() vecty.ComponentOrHTML {
-	c.link = base.ExtractMarkup(
+	c.link = base.ExtractMarkupFromLink(
 		c.Primary.(*vecty.HTML),
 	)
 
@@ -142,16 +142,21 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 	}
 
 	var text vecty.ComponentOrHTML
+	primary := c.Primary
+	if c.link.Href != "" && c.link.Child != nil {
+		primary = c.link.Child
+	}
+
 	switch {
 	case c.Secondary != nil:
 		text = elem.Span(vecty.Markup(vecty.Class("mdc-list-item__text")),
-			c.link.Child,
+			primary,
 			elem.Span(vecty.Markup(
 				vecty.Class("mdc-list-item__secondary-text")),
 				c.Secondary,
 			))
 	default:
-		text = c.link.Child
+		text = primary
 	}
 
 	return vecty.Tag(tag,

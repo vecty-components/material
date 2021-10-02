@@ -55,23 +55,28 @@ func MarkupOnly(moc vecty.MarkupOrChild) *vecty.MarkupList {
 /*
 	Represents a simplified version of an element
 */
-type SimplifiedMarkup struct {
+type LinkMarkup struct {
 	Child          vecty.ComponentOrHTML
 	Href           string
 	OnClick        func(*vecty.Event)
 	PreventDefault bool
 }
 
-func ExtractMarkup(html *vecty.HTML) *SimplifiedMarkup {
-	sm := &SimplifiedMarkup{}
+func ExtractMarkupFromLink(html *vecty.HTML) *LinkMarkup {
+	sm := &LinkMarkup{}
 
 	h := reflect.ValueOf(*html)
 	tag := h.FieldByName("tag").String()
-	href := h.FieldByName("properties").
-		MapIndex(reflect.ValueOf("href")).Elem().String()
+	href := ""
+	if !h.FieldByName("properties").IsZero() {
+		href = h.FieldByName("properties").
+			MapIndex(reflect.ValueOf("href")).Elem().String()
+	}
 
 	if tag == "a" && href != "" {
 		sm.Href = href
+	} else {
+		return sm
 	}
 
 	for i := 0; i < h.FieldByName("eventListeners").Len(); i++ {
