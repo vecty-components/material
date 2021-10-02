@@ -75,8 +75,6 @@ func ExtractMarkupFromLink(html *vecty.HTML) *LinkMarkup {
 
 	if tag == "a" && href != "" {
 		sm.Href = href
-	} else {
-		return sm
 	}
 
 	for i := 0; i < h.FieldByName("eventListeners").Len(); i++ {

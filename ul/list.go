@@ -23,7 +23,6 @@ type L struct {
 	Dense          bool
 	Avatar         bool
 	NonInteractive bool
-	OnClick        func(thisL *L, thisI *Item, e *vecty.Event)
 	GroupSubheader string
 	twoLine        bool
 }
@@ -277,18 +276,6 @@ func (c *Group) listList() vecty.List {
 		}
 	}
 	return lists
-}
-
-func (c *L) wrapOnClick() func(i *Item, e *vecty.Event) {
-	return func(i *Item, e *vecty.Event) {
-		c.OnClick(c, i, e)
-	}
-}
-
-func (c *Item) wrapOnClick() func(e *vecty.Event) {
-	return func(e *vecty.Event) {
-		// c.OnClick(c, e)
-	}
 }
 
 func setupGraphicOrMeta(graphic vecty.ComponentOrHTML) vecty.ComponentOrHTML {

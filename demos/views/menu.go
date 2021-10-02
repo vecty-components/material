@@ -1,8 +1,11 @@
 package views
 
 import (
+	"fmt"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/event"
 
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/demos/components"
@@ -73,11 +76,17 @@ func (bd *MenuDemos) Render() vecty.ComponentOrHTML {
 			vecty.Text("Anchored Menu"),
 		),
 		&button.B{
-			Label: vecty.Text("Open menu"),
-			OnClick: func(this *button.B, e *vecty.Event) {
-				menu.Open = !menu.Open
-				vecty.Rerender(menu)
-			},
+			Label: elem.Anchor(
+				vecty.Markup(
+					event.Click(func(e *vecty.Event) {
+						fmt.Println("button click")
+
+						menu.Open = !menu.Open
+						vecty.Rerender(menu)
+					}),
+				),
+				vecty.Text("Open menu"),
+			),
 		},
 		menu,
 	)
