@@ -134,7 +134,9 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 		return vecty.Tag(tag, c.Root)
 	}
 
-	graphic := setupGraphicOrMeta(c.Graphic)
+	graphic := setupGraphicOrMeta(
+		base.RenderStoredChild(c.Graphic),
+	)
 	if graphic != nil {
 		if g, ok := graphic.(*vecty.HTML); ok {
 			vecty.Class("mdc-list-item__graphic").Apply(g)
@@ -142,7 +144,9 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 		}
 	}
 
-	meta := setupGraphicOrMeta(c.Meta)
+	meta := setupGraphicOrMeta(
+		base.RenderStoredChild(c.Meta),
+	)
 	if meta != nil {
 		if g, ok := meta.(*vecty.HTML); ok {
 			vecty.Class("mdc-list-item__meta").Apply(g)

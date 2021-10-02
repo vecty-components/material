@@ -92,7 +92,7 @@ func (c *M) Render() vecty.ComponentOrHTML {
 			vecty.Markup(
 				vecty.Class("mdc-menu-surface--anchor"),
 			),
-			c.AnchorElement,
+			base.RenderStoredChild(c.AnchorElement),
 			menuElement,
 		)
 		return c.menuAnchor

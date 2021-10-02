@@ -76,7 +76,6 @@ func (bd *MenuDemos) Render() vecty.ComponentOrHTML {
 			Label: vecty.Text("Open menu"),
 			OnClick: func(this *button.B, e *vecty.Event) {
 				menu.Open = !menu.Open
-				menu.AnchorElement = elem.Div()
 				vecty.Rerender(menu)
 			},
 		},
