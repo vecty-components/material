@@ -2,6 +2,7 @@ package base
 
 import (
 	"reflect"
+	"unsafe"
 
 	"github.com/hexops/vecty"
 	"github.com/vecty-material/material/base/applyer"
@@ -52,43 +53,53 @@ func MarkupOnly(moc vecty.MarkupOrChild) *vecty.MarkupList {
 }
 
 /*
-	Returns:
-		- If the element is an anchor, the associated href
-		- The associated event listener
-		- Whether PreventDefault is enabled for such listener
+	Represents a simplified version of an element
 */
-func ExtractLinkAndListeners(html *vecty.HTML) (
-	vecty.ComponentOrHTML, string, func(*vecty.Event), bool,
-) {
+type SimplifiedMarkup struct {
+	Child          vecty.ComponentOrHTML
+	Href           string
+	OnClick        func(*vecty.Event)
+	PreventDefault bool
+}
+
+func ExtractMarkup(html *vecty.HTML) *SimplifiedMarkup {
+	sm := &SimplifiedMarkup{}
+
 	h := reflect.ValueOf(*html)
 	tag := h.FieldByName("tag").String()
-	properties := h.FieldByName("properties").
-		Interface().(map[string]interface{})
-	listeners := h.FieldByName("eventListeners").
-		Interface().([]*vecty.EventListener)
-	children := h.FieldByName("children").
-		Interface().([]vecty.ComponentOrHTML)
+	href := h.FieldByName("properties").
+		MapIndex(reflect.ValueOf("href")).Elem().String()
 
-	var OnClick *vecty.EventListener
-	for _, listener := range listeners {
-		if listener.Name != "OnClick" {
+	if tag == "a" && href != "" {
+		sm.Href = href
+	}
+
+	for i := 0; i < h.FieldByName("eventListeners").Len(); i++ {
+		if h.FieldByName("eventListeners").Index(i).
+			Elem().FieldByName("Name").String() != "click" {
 			continue
 		}
 
-		OnClick = listener
+		sm.OnClick = *(*func(*vecty.Event))(
+			unsafe.Pointer(
+				h.FieldByName("eventListeners").Index(i).
+					Elem().FieldByName("Listener").UnsafeAddr(),
+			),
+		)
+
+		sm.PreventDefault = h.FieldByName("eventListeners").Index(i).
+			Elem().FieldByName("callPreventDefault").Bool()
+
+		break
 	}
 
-	var callPreventDefault bool
-	var f func(*vecty.Event)
-	if OnClick != nil {
-		callPreventDefault = reflect.ValueOf(OnClick).
-			FieldByName("callPreventDefault").Bool()
+	if h.FieldByName("children").Len() > 0 {
+		sm.Child = *(*vecty.ComponentOrHTML)(
+			unsafe.Pointer(
+				h.FieldByName("children").Index(0).UnsafeAddr(),
+			),
+		)
 	}
 
-	var href string
-	if h, ok := properties["href"]; tag == "a" && ok {
-		href = h.(string)
-	}
-
-	return children[0], href, f, callPreventDefault
+	return sm
 }

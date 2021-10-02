@@ -41,10 +41,7 @@ type Item struct {
 	Activated bool
 	Alt       string
 
-	primary            vecty.ComponentOrHTML
-	onclick            func(*vecty.Event)
-	href               string
-	callPreventDefault bool
+	link *base.SimplifiedMarkup
 }
 
 // Group is a vecty-material list-group component.
@@ -113,17 +110,12 @@ func (c *L) Apply(h *vecty.HTML) {
 
 // Render implements the vecty.Component interface.
 func (c *Item) Render() vecty.ComponentOrHTML {
-	primary, href, onclick, callPreventDefault := base.ExtractLinkAndListeners(
+	c.link = base.ExtractMarkup(
 		c.Primary.(*vecty.HTML),
 	)
 
-	c.primary = primary
-	c.href = href
-	c.onclick = onclick
-	c.callPreventDefault = callPreventDefault
-
 	tag := "li"
-	if c.href != "" {
+	if c.link.Href != "" {
 		tag = "a"
 	}
 
@@ -185,13 +177,13 @@ func (c *Item) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-list-item--selected")),
 		vecty.MarkupIf(c.Activated,
 			vecty.Class("mdc-list-item--activated")),
-		vecty.MarkupIf(c.onclick != nil && !c.callPreventDefault,
-			event.Click(c.onclick),
+		vecty.MarkupIf(c.link.OnClick != nil && !c.link.PreventDefault,
+			event.Click(c.link.OnClick),
 		),
-		vecty.MarkupIf(c.onclick != nil && c.callPreventDefault,
-			event.Click(c.onclick).PreventDefault(),
+		vecty.MarkupIf(c.link.OnClick != nil && c.link.PreventDefault,
+			event.Click(c.link.OnClick).PreventDefault(),
 		),
-		vecty.MarkupIf(c.href != "", prop.Href(c.href)),
+		vecty.MarkupIf(c.link.Href != "", prop.Href(c.link.Href)),
 	).Apply(h)
 	c.MDC.RootElement = h
 }
