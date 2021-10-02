@@ -53,6 +53,7 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 		router.NewRoute("/[a-zA-Z].*", components.NewComponentPage(
 			map[string]*components.ComponentCatalogPanel{
 				"/button": views.NewButtonPage(),
+				"/menu":   views.NewMenuPage(),
 			}, sidebar,
 		), router.NewRouteOpts{}),
 		// router.NotFoundHandler(views.NewComponentImageList()),

@@ -50,7 +50,7 @@ func (c *M) Render() vecty.ComponentOrHTML {
 	// TODO: Make initial values work in material package
 	open := false
 	if c.MDC != nil && c.MDC.RootElement != nil {
-		open = c.MDC.RootElement.Node().Get("Open").Bool()
+		// open = c.MDC.RootElement.Node().Get("Open").Bool()
 	}
 
 	listMarkup := []vecty.Applyer{
@@ -97,7 +97,7 @@ func (c *M) Render() vecty.ComponentOrHTML {
 	if c.AnchorElement != nil {
 		c.menuAnchor = elem.Div(
 			vecty.Markup(
-				vecty.Class("mdc-menu-anchor"),
+				vecty.Class("mdc-menu-surface--anchor"),
 			),
 			c.AnchorElement,
 			menuElement,
@@ -128,9 +128,9 @@ func (c *M) Apply(h *vecty.HTML) {
 	}
 
 	vecty.Markup(
-		vecty.Class("mdc-menu"),
+		vecty.Class("mdc-menu", "mdc-menu-surface"),
 		vecty.MarkupIf(c.Open,
-			vecty.Class("mdc-menu--open"),
+			vecty.Class("mdc-menu-surface--open"),
 		),
 		vecty.Style("position", "absolute"),
 		vecty.Attribute("tabindex", -1),

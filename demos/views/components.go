@@ -41,7 +41,7 @@ func (cl *ComponentImageList) Render() vecty.ComponentOrHTML {
 	// layoutGridImg := "/assets/images/layout_grid_180px.svg"
 	// listImg := "/assets/images/list_180px.svg"
 	// linearProgressImg := "/assets/images/linear_progress_180px.svg"
-	// menuImg := "/assets/images/menu_180px.svg"
+	menuImg := "/assets/images/menu_180px.svg"
 	// radioImg := "/assets/images/radio_180px.svg"
 	// rippleImg := "/assets/images/ripple_180px.svg"
 	// sliderImg := "/assets/images/slider_180px.svg"
@@ -62,6 +62,7 @@ func (cl *ComponentImageList) Render() vecty.ComponentOrHTML {
 				),
 			),
 			cl.renderListItem("Button", buttonImg, "button"),
+			cl.renderListItem("Menu", menuImg, "menu"),
 		),
 	)
 }
