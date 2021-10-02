@@ -145,13 +145,13 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 	switch {
 	case c.Secondary != nil:
 		text = elem.Span(vecty.Markup(vecty.Class("mdc-list-item__text")),
-			c.Primary,
+			c.link.Child,
 			elem.Span(vecty.Markup(
 				vecty.Class("mdc-list-item__secondary-text")),
 				c.Secondary,
 			))
 	default:
-		text = c.Primary
+		text = c.link.Child
 	}
 
 	return vecty.Tag(tag,
