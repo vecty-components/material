@@ -7,18 +7,22 @@ import (
 	"github.com/vecty-material/material/ul"
 )
 
-type link struct {
-	content string
-	url     string
+type DemoLink struct {
+	Name  string
+	Url   string
+	Image string
 }
 
 type ComponentSidebar struct {
 	drawer *drawer.D
+	list   []DemoLink
 	vecty.Core
 }
 
-func NewComponentSidebar() *ComponentSidebar {
-	return &ComponentSidebar{}
+func NewComponentSidebar(list []DemoLink) *ComponentSidebar {
+	return &ComponentSidebar{
+		list: list,
+	}
 }
 
 func (cs *ComponentSidebar) Toggle() {
@@ -28,10 +32,10 @@ func (cs *ComponentSidebar) Toggle() {
 	}
 }
 
-func (cs *ComponentSidebar) renderSidebarLink(link link, index int) vecty.ComponentOrHTML {
+func (cs *ComponentSidebar) renderSidebarLink(link *DemoLink, index int) vecty.ComponentOrHTML {
 	return ul.ItemLink(
-		link.url,
-		link.content,
+		link.Url,
+		link.Name,
 	)
 }
 
@@ -40,90 +44,16 @@ func (cs *ComponentSidebar) Render() vecty.ComponentOrHTML {
 		return cs.drawer
 	}
 
-	links := []link{
+	links := append([]DemoLink{
 		{
-			content: "Home",
-			url:     "/",
-		}, {
-			content: "Button",
-			url:     "/button",
-		}, {
-			content: "Card",
-			url:     "/card",
-		}, {
-			content: "Checkbox",
-			url:     "/checkbox",
-		}, {
-			content: "Chips",
-			url:     "/chips",
-		}, {
-			content: "Data Table",
-			url:     "/data-table",
-		}, {
-			content: "Dialog",
-			url:     "/dialog",
-		}, {
-			content: "Drawer",
-			url:     "/drawer",
-		}, {
-			content: "Elevation",
-			url:     "/elevation",
-		}, {
-			content: "FAB",
-			url:     "/fab",
-		}, {
-			content: "Icon Button",
-			url:     "/icon-button",
-		}, {
-			content: "Image List",
-			url:     "/image-list",
-		}, {
-			content: "Layout Grid",
-			url:     "/layout-grid",
-		}, {
-			content: "Linear Progress Indicator",
-			url:     "/linear-progress-indicator",
-		}, {
-			content: "List",
-			url:     "/list",
-		}, {
-			content: "Menu",
-			url:     "/menu",
-		}, {
-			content: "Radio Button",
-			url:     "/radio",
-		}, {
-			content: "Ripple",
-			url:     "/ripple",
-		}, {
-			content: "Select",
-			url:     "/select",
-		}, {
-			content: "Slider",
-			url:     "/slider",
-		}, {
-			content: "Snackbar",
-			url:     "/snackbar",
-		}, {
-			content: "Switch",
-			url:     "/switch",
-		}, {
-			content: "Tab Bar",
-			url:     "/tabs",
-		}, {
-			content: "Text Field",
-			url:     "/text-field",
-		}, {
-			content: "Top App Bar",
-			url:     "/top-app-bar",
-		}, {
-			content: "Typography",
-			url:     "/typography",
+			Name: "Home",
+			Url:  "/",
 		},
-	}
+	}, cs.list...)
+
 	items := make([]vecty.ComponentOrHTML, len(links))
 	for i, link := range links {
-		items[i] = cs.renderSidebarLink(link, i)
+		items[i] = cs.renderSidebarLink(&link, i)
 	}
 
 	cs.drawer = &drawer.D{

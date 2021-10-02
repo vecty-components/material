@@ -9,60 +9,45 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/demos/components"
 	router "marwan.io/vecty-router"
 )
 
 type ComponentImageList struct {
 	vecty.Core
 	images map[string]string
+	list   []components.DemoLink
 }
 
-func NewComponentImageList() *ComponentImageList {
+func NewComponentImageList(list []components.DemoLink) *ComponentImageList {
 	return &ComponentImageList{
 		images: make(map[string]string),
+		list:   list,
 	}
 }
 
 func (cl *ComponentImageList) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("/assets/styles/ImageListCatalog.css")
 
-	buttonImg := "/assets/images/buttons_180px.svg"
-	// cardsImg := "/assets/images/cards_180px.svg"
-	// checkboxImg := "/assets/images/checkbox_180px.svg"
-	// chipsImg := "/assets/images/chips_180px.svg"
-	// dataTableImg := "/assets/images/data_table_180px.svg"
-	// dialogImg := "/assets/images/dialog_180px.svg"
-	// drawerImg := "/assets/images/drawer_180px.svg"
-	// elevationImg := "/assets/images/elevation_180px.svg"
-	// fabImg := "/assets/images/floating_action_button_180px.svg"
-	// iconButtonImg := "/assets/images/icon_button_180px.svg"
-	// imageListImg := "/assets/images/image_list_180px.svg"
-	// inputImg := "/assets/images/form_field_180px.svg"
-	// layoutGridImg := "/assets/images/layout_grid_180px.svg"
-	// listImg := "/assets/images/list_180px.svg"
-	// linearProgressImg := "/assets/images/linear_progress_180px.svg"
-	menuImg := "/assets/images/menu_180px.svg"
-	// radioImg := "/assets/images/radio_180px.svg"
-	// rippleImg := "/assets/images/ripple_180px.svg"
-	// sliderImg := "/assets/images/slider_180px.svg"
-	// snackbarImg := "/assets/images/snackbar_180px.svg"
-	// switchImg := "/assets/images/switch_180px.svg"
-	// tabsImg := "/assets/images/tabs_180px.svg"
-	// themeImg := "/assets/images/ic_theme_24px.svg"
-	// topAppBarImg := "/assets/images/top_app_bar_180px.svg"
-	// typographyImg := "/assets/images/fonts_180px.svg"
+	children := []vecty.MarkupOrChild{
+		vecty.Markup(
+			prop.ID("catalog-image-list"),
+			vecty.Class(
+				"mdc-image-list", "standard-image-list",
+				"mdc-top-app-bar--fixed-adjust",
+			),
+		),
+	}
+
+	for _, item := range cl.list {
+		children = append(
+			children, cl.renderListItem(item.Name, item.Image, item.Url),
+		)
+	}
 
 	return elem.Div(
 		elem.UnorderedList(
-			vecty.Markup(
-				prop.ID("catalog-image-list"),
-				vecty.Class(
-					"mdc-image-list", "standard-image-list",
-					"mdc-top-app-bar--fixed-adjust",
-				),
-			),
-			cl.renderListItem("Button", buttonImg, "button"),
-			cl.renderListItem("Menu", menuImg, "menu"),
+			children...,
 		),
 	)
 }
@@ -96,7 +81,7 @@ func (cl *ComponentImageList) renderListItem(
 		vecty.Markup(
 			vecty.Class("catalog-image-list-item", "mdc-image-list__item"),
 		),
-		base.RichLink("/"+url,
+		base.RichLink(url,
 			[]vecty.ComponentOrHTML{
 				elem.Div(
 					vecty.Markup(
