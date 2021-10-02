@@ -1,6 +1,8 @@
 package base
 
 import (
+	"reflect"
+
 	"github.com/hexops/vecty"
 	"github.com/vecty-material/material/base/applyer"
 	"github.com/vecty-material/material/components/base"
@@ -47,4 +49,46 @@ func MarkupOnly(moc vecty.MarkupOrChild) *vecty.MarkupList {
 		return &t
 	}
 	return nil
+}
+
+/*
+	Returns:
+		- If the element is an anchor, the associated href
+		- The associated event listener
+		- Whether PreventDefault is enabled for such listener
+*/
+func ExtractLinkAndListeners(html *vecty.HTML) (
+	vecty.ComponentOrHTML, string, func(*vecty.Event), bool,
+) {
+	h := reflect.ValueOf(*html)
+	tag := h.FieldByName("tag").String()
+	properties := h.FieldByName("properties").
+		Interface().(map[string]interface{})
+	listeners := h.FieldByName("eventListeners").
+		Interface().([]*vecty.EventListener)
+	children := h.FieldByName("children").
+		Interface().([]vecty.ComponentOrHTML)
+
+	var OnClick *vecty.EventListener
+	for _, listener := range listeners {
+		if listener.Name != "OnClick" {
+			continue
+		}
+
+		OnClick = listener
+	}
+
+	var callPreventDefault bool
+	var f func(*vecty.Event)
+	if OnClick != nil {
+		callPreventDefault = reflect.ValueOf(OnClick).
+			FieldByName("callPreventDefault").Bool()
+	}
+
+	var href string
+	if h, ok := properties["href"]; tag == "a" && ok {
+		href = h.(string)
+	}
+
+	return children[0], href, f, callPreventDefault
 }

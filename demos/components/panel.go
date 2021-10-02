@@ -112,7 +112,6 @@ func (cp *ComponentCatalogPanel) renderResource(title, imageSource, url string) 
 	}
 
 	return &ul.Item{
-		Href: url,
 		Graphic: elem.Span(
 			vecty.Markup(
 				vecty.Class("resources-graphic"),
@@ -125,6 +124,11 @@ func (cp *ComponentCatalogPanel) renderResource(title, imageSource, url string) 
 				),
 			),
 		),
-		Primary: vecty.Text(title),
+		Primary: elem.Anchor(
+			vecty.Markup(
+				prop.Href(url),
+			),
+			vecty.Text(title),
+		),
 	}
 }

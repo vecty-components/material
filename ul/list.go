@@ -8,7 +8,6 @@ import (
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/base"
-	router "marwan.io/vecty-router"
 )
 
 type nativeInputer interface {
@@ -33,28 +32,19 @@ type L struct {
 type Item struct {
 	*base.MDC
 	vecty.Core
-	Root           vecty.MarkupOrChild
-	Primary        vecty.ComponentOrHTML
-	Secondary      vecty.ComponentOrHTML
-	Graphic        vecty.ComponentOrHTML
-	Meta           vecty.ComponentOrHTML
-	Selected       bool
-	Activated      bool
-	OnClick        func(i *Item, e *vecty.Event)
-	PreventDefault bool
-	Href           string
-	Alt            string
-}
+	Root      vecty.MarkupOrChild
+	Primary   vecty.ComponentOrHTML
+	Secondary vecty.ComponentOrHTML
+	Graphic   vecty.ComponentOrHTML
+	Meta      vecty.ComponentOrHTML
+	Selected  bool
+	Activated bool
+	Alt       string
 
-func ItemLink(route, text string) *Item {
-	return &Item{
-		Primary:        vecty.Text(text),
-		Href:           route,
-		PreventDefault: true,
-		OnClick: func(item *Item, e *vecty.Event) {
-			router.Redirect(route)
-		},
-	}
+	primary            vecty.ComponentOrHTML
+	onclick            func(*vecty.Event)
+	href               string
+	callPreventDefault bool
 }
 
 // Group is a vecty-material list-group component.
@@ -123,8 +113,17 @@ func (c *L) Apply(h *vecty.HTML) {
 
 // Render implements the vecty.Component interface.
 func (c *Item) Render() vecty.ComponentOrHTML {
+	primary, href, onclick, callPreventDefault := base.ExtractLinkAndListeners(
+		c.Primary.(*vecty.HTML),
+	)
+
+	c.primary = primary
+	c.href = href
+	c.onclick = onclick
+	c.callPreventDefault = callPreventDefault
+
 	tag := "li"
-	if c.Href != "" {
+	if c.href != "" {
 		tag = "a"
 	}
 
@@ -186,13 +185,13 @@ func (c *Item) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-list-item--selected")),
 		vecty.MarkupIf(c.Activated,
 			vecty.Class("mdc-list-item--activated")),
-		vecty.MarkupIf(c.OnClick != nil && !c.PreventDefault,
-			event.Click(c.wrapOnClick()),
+		vecty.MarkupIf(c.onclick != nil && !c.callPreventDefault,
+			event.Click(c.onclick),
 		),
-		vecty.MarkupIf(c.OnClick != nil && c.PreventDefault,
-			event.Click(c.wrapOnClick()).PreventDefault(),
+		vecty.MarkupIf(c.onclick != nil && c.callPreventDefault,
+			event.Click(c.onclick).PreventDefault(),
 		),
-		vecty.MarkupIf(c.Href != "", prop.Href(c.Href)),
+		vecty.MarkupIf(c.href != "", prop.Href(c.href)),
 	).Apply(h)
 	c.MDC.RootElement = h
 }
@@ -291,7 +290,7 @@ func (c *L) wrapOnClick() func(i *Item, e *vecty.Event) {
 
 func (c *Item) wrapOnClick() func(e *vecty.Event) {
 	return func(e *vecty.Event) {
-		c.OnClick(c, e)
+		// c.OnClick(c, e)
 	}
 }
 

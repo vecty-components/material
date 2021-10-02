@@ -5,6 +5,7 @@ import (
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/drawer"
 	"github.com/vecty-material/material/ul"
+	router "marwan.io/vecty-router"
 )
 
 type DemoLink struct {
@@ -33,10 +34,13 @@ func (cs *ComponentSidebar) Toggle() {
 }
 
 func (cs *ComponentSidebar) renderSidebarLink(link *DemoLink, index int) vecty.ComponentOrHTML {
-	return ul.ItemLink(
-		link.Url,
-		link.Name,
-	)
+	return &ul.Item{
+		Primary: router.Link(
+			link.Url,
+			link.Name,
+			router.LinkOptions{},
+		),
+	}
 }
 
 func (cs *ComponentSidebar) Render() vecty.ComponentOrHTML {
