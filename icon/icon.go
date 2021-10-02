@@ -1,6 +1,8 @@
 package icon
 
 import (
+	"strconv"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-material/material/base"
@@ -70,10 +72,7 @@ func (c *I) Apply(h *vecty.HTML) {
 
 func (c *I) iconDetails() (string, bool) {
 	isIconCode := false
-	sizeClass := ""
-	if c.MDC != nil && c.MDC.RootElement != nil {
-		sizeClass = c.MDC.RootElement.Node().Get("SizePX").String()
-	}
+	sizeClass := strconv.Itoa(c.SizePX)
 	switch sizeClass {
 	case "undefined", "", "24":
 		sizeClass = ""
