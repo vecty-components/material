@@ -141,10 +141,6 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 	}
 
 	var text vecty.ComponentOrHTML
-	primary := c.Primary
-	if c.link.Href != "" && c.link.Child != nil {
-		primary = c.link.Child
-	}
 
 	switch {
 	case c.Secondary != nil:
