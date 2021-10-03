@@ -3,6 +3,7 @@ package dialog
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
 	"github.com/lithammer/dedent"
 	"github.com/vecty-material/material/base"
@@ -137,43 +138,55 @@ func (c *dialogDemoView) Render() vecty.ComponentOrHTML {
 					Root: vecty.Markup(
 						prop.ID("default-dialog-activation"),
 					),
-					Label:  vecty.Text("Show Dialog"),
+					Label: elem.Anchor(
+						vecty.Markup(
+							event.Click(func(e *vecty.Event) {
+								class := "mdc-dialog-default"
+								if _, ok := c.dialogs[class]; ok {
+									c.dialogs[class].Open = true
+									vecty.Rerender(c.dialogs[class])
+								}
+							}),
+						),
+						vecty.Text("Show Dialog"),
+					),
 					Raised: true,
-					OnClick: func(thisB *button.B, e *vecty.Event) {
-						class := "mdc-dialog-default"
-						if _, ok := c.dialogs[class]; ok {
-							c.dialogs[class].Open = true
-							vecty.Rerender(c.dialogs[class])
-						}
-					},
 				},
 				&button.B{
 					Root: vecty.Markup(
 						prop.ID("colored-footer-button-dialog-activation"),
 					),
-					Label:  vecty.Text("Show Colored Footer Button Dialog"),
+					Label: elem.Anchor(
+						vecty.Markup(
+							event.Click(func(e *vecty.Event) {
+								class := "mdc-dialog-colored-footer-buttons"
+								if _, ok := c.dialogs[class]; ok {
+									c.dialogs[class].Open = true
+									vecty.Rerender(c.dialogs[class])
+								}
+							}),
+						),
+						vecty.Text("Show Colored Footer Button Dialog"),
+					),
 					Raised: true,
-					OnClick: func(thisB *button.B, e *vecty.Event) {
-						class := "mdc-dialog-colored-footer-buttons"
-						if _, ok := c.dialogs[class]; ok {
-							c.dialogs[class].Open = true
-							vecty.Rerender(c.dialogs[class])
-						}
-					},
 				},
 				&button.B{
 					Root: vecty.Markup(
 						prop.ID("dialog-with-list-activation"),
 					),
-					Label:  vecty.Text("Show Scrolling Dialog"),
+					Label: elem.Anchor(
+						vecty.Markup(
+							event.Click(func(e *vecty.Event) {
+								class := "mdc-dialog-with-list"
+								if _, ok := c.dialogs[class]; ok {
+									c.dialogs[class].Open = true
+									vecty.Rerender(c.dialogs[class])
+								}
+							}),
+						),
+						vecty.Text("Show Scrolling Dialog"),
+					),
 					Raised: true,
-					OnClick: func(thisB *button.B, e *vecty.Event) {
-						class := "mdc-dialog-with-list"
-						if _, ok := c.dialogs[class]; ok {
-							c.dialogs[class].Open = true
-							vecty.Rerender(c.dialogs[class])
-						}
-					},
 				},
 				&formfield.FF{
 					Label: "Toggle RTL",

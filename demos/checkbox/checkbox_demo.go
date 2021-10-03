@@ -3,6 +3,7 @@ package checkbox
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
 	"github.com/lithammer/dedent"
 	"github.com/vecty-material/material/base"
@@ -150,32 +151,39 @@ func (c *CheckboxDemoView) Render() vecty.ComponentOrHTML {
 							vecty.Class("demo-toggle-group"),
 						),
 						&button.B{
-							Label:    vecty.Text("Toggle RTL"),
+							Label: elem.Anchor(
+								vecty.Markup(
+									event.Click(func(e *vecty.Event) {
+										ff := e.Target.Get("parentElement")
+										ff = ff.Get("parentElement")
+										dir := ff.Call("hasAttribute", "dir").Bool()
+										if dir {
+											ff.Call("removeAttribute", "dir")
+											return
+										}
+										ff.Call("setAttribute", "dir", "rtl")
+									}),
+								),
+								vecty.Text("Toggle RTL"),
+							),
 							Outlined: true,
-							OnClick: func(thisB *button.B, e *vecty.Event) {
-								ff := e.Target.Get("parentElement")
-								ff = ff.Get("parentElement")
-								dir := ff.Call("hasAttribute", "dir").Bool()
-								if dir {
-									ff.Call("removeAttribute", "dir")
-									return
-								}
-								ff.Call("setAttribute", "dir", "rtl")
-							},
 						},
 						&button.B{
-							Label: vecty.List{
-								vecty.Text("Toggle "),
-								elem.Code(
-									vecty.Text("--align-end"),
+							Label: elem.Anchor(
+								vecty.Markup(
+									event.Click(func(e *vecty.Event) {
+										c.defaultFF.AlignEnd = !c.defaultFF.AlignEnd
+										vecty.Rerender(c.defaultFF)
+									}),
 								),
-							},
+								vecty.List{
+									vecty.Text("Toggle "),
+									elem.Code(
+										vecty.Text("--align-end"),
+									),
+								},
+							),
 							Outlined: true,
-							OnClick: func(thisB *button.B,
-								e *vecty.Event) {
-								c.defaultFF.AlignEnd = !c.defaultFF.AlignEnd
-								vecty.Rerender(c.defaultFF)
-							},
 						},
 					),
 					elem.Div(
@@ -270,22 +278,26 @@ func (c *CheckboxDemoView) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func makeButton(h func(*button.B, *vecty.Event), l vecty.List, class string) *button.B {
+func makeButton(h func(*vecty.Event), l vecty.List, class string) *button.B {
 	var applyer vecty.Applyer
 	if class != "" {
 		applyer = vecty.Class(class)
 	}
 	return &button.B{
-		Root:     vecty.Markup(applyer),
-		Label:    l,
-		OnClick:  h,
+		Root: vecty.Markup(applyer),
+		Label: elem.Anchor(
+			vecty.Markup(
+				event.Click(h),
+			),
+			l,
+		),
 		Outlined: true,
 	}
 }
 
 func makeIndeterminateButton(cb *checkbox.CB) *button.B {
 	return makeButton(
-		func(thisB *button.B, e *vecty.Event) {
+		func(e *vecty.Event) {
 			cb.Indeterminate = !cb.Indeterminate
 			vecty.Rerender(cb)
 		},
@@ -300,7 +312,7 @@ func makeIndeterminateButton(cb *checkbox.CB) *button.B {
 
 func makeDisabledButton(cb *checkbox.CB) *button.B {
 	return makeButton(
-		func(thisB *button.B, e *vecty.Event) {
+		func(e *vecty.Event) {
 			cb.Disabled = !cb.Disabled
 			vecty.Rerender(cb)
 		},

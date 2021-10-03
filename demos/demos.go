@@ -39,9 +39,8 @@ func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 				),
 				Items: []vecty.ComponentOrHTML{
 					&ul.Item{
-						Primary:   vecty.Text("Button"),
+						Primary:   router.Link("/button", "Button", router.LinkOptions{}),
 						Secondary: vecty.Text("Raised and flat buttons"),
-						OnClick:   makeRedirect("button"),
 						Graphic:   renderGraphic("ic_button_24px.svg"),
 					},
 					// &ul.Item{
@@ -51,9 +50,8 @@ func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 					// 	Graphic:   renderGraphic("ic_card_24px.svg"),
 					// },
 					&ul.Item{
-						Primary:   vecty.Text("Checkbox"),
+						Primary:   router.Link("/checkbox", "Checkbox", router.LinkOptions{}),
 						Secondary: vecty.Text("Multi-selection controls"),
-						OnClick:   makeRedirect("checkbox"),
 						Graphic: renderGraphic(
 							"ic_selection_control_24px.svg"),
 					},
@@ -66,15 +64,13 @@ func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 					// 	},
 					// ),
 					&ul.Item{
-						Primary:   vecty.Text("Dialog"),
+						Primary:   router.Link("/dialog", "Dialog", router.LinkOptions{}),
 						Secondary: vecty.Text("Secondary text"),
-						OnClick:   makeRedirect("dialog"),
 						Graphic:   renderGraphic("ic_dialog_24px.svg"),
 					},
 					&ul.Item{
-						Primary:   vecty.Text("Drawer"),
+						Primary:   router.Link("/drawer", "Drawer", router.LinkOptions{}),
 						Secondary: vecty.Text("Various drawer styles"),
-						OnClick:   makeRedirect("drawer"),
 						Graphic: renderGraphic(
 							"ic_side_navigation_24px.svg"),
 					},
@@ -103,9 +99,8 @@ func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 					// 	},
 					// ),
 					&ul.Item{
-						Primary:   vecty.Text("Icon toggle"),
+						Primary:   router.Link("/icontoggle", "Icon toggle", router.LinkOptions{}),
 						Secondary: vecty.Text("Toggling icon states"),
-						OnClick:   makeRedirect("icontoggle"),
 						Graphic:   renderGraphic("ic_component_24px.svg"),
 					},
 					// ul.NewItem(nil,
@@ -125,21 +120,18 @@ func (c *DemosCatalogView) Render() vecty.ComponentOrHTML {
 					// 	},
 					// ),
 					&ul.Item{
-						Primary:   vecty.Text("List"),
+						Primary:   router.Link("/list", "List", router.LinkOptions{}),
 						Secondary: vecty.Text("Item layouts in lists"),
-						OnClick:   makeRedirect("list"),
 						Graphic:   renderGraphic("ic_list_24px.svg"),
 					},
 					&ul.Item{
-						Primary:   vecty.Text("Menu"),
+						Primary:   router.Link("/menu", "Menu", router.LinkOptions{}),
 						Secondary: vecty.Text("Pop over menus"),
-						OnClick:   makeRedirect("menu"),
 						Graphic:   renderGraphic("ic_menu_24px.svg"),
 					},
 					&ul.Item{
-						Primary:   vecty.Text("Radio buttons"),
+						Primary:   router.Link("/radio", "Radio buttons", router.LinkOptions{}),
 						Secondary: vecty.Text("Single selection controls"),
-						OnClick:   makeRedirect("radio"),
 						Graphic:   renderGraphic("ic_radio_button_24px.svg"),
 					},
 					// ul.NewItem(nil,

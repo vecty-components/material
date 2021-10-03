@@ -196,20 +196,25 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 			menuBtnClasses,
 		),
 		Raised: true,
-		Label: vecty.List{
-			vecty.Text("Show"),
-			elem.Span(vecty.Markup(
-				vecty.Class("demo-button__normal-text")),
-				vecty.Text(" Menu"),
+		Label: elem.Anchor(
+			vecty.Markup(
+				event.Click(func(e *vecty.Event) {
+					demoM.Open = !demoM.Open
+					vecty.Rerender(demoM)
+				}),
 			),
-			elem.Span(vecty.Markup(
-				vecty.Class("demo-button__long-text")),
-				vecty.Text(" From Here Now!"),
-			)},
-		OnClick: func(thisB *button.B, e *vecty.Event) {
-			demoM.Open = !demoM.Open
-			vecty.Rerender(demoM)
-		},
+			vecty.List{
+				vecty.Text("Show"),
+				elem.Span(vecty.Markup(
+					vecty.Class("demo-button__normal-text")),
+					vecty.Text(" Menu"),
+				),
+				elem.Span(vecty.Markup(
+					vecty.Class("demo-button__long-text")),
+					vecty.Text(" From Here Now!"),
+				),
+			},
+		),
 	}
 	demoM.AnchorElement = menuBtn
 	btnPositionFunc := func(thisR *radio.R, e *vecty.Event) {
@@ -247,13 +252,13 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 		if thisR.Checked {
 			switch thisR.Value {
 			case "top start":
-				demoM.SetAnchorCorner(mmenu.TOP_START)
+				demoM.Component.(*mmenu.M).SetAnchorCorner(mmenu.TOP_START)
 			case "top end":
-				demoM.SetAnchorCorner(mmenu.TOP_END)
+				demoM.Component.(*mmenu.M).SetAnchorCorner(mmenu.TOP_END)
 			case "bottom start":
-				demoM.SetAnchorCorner(mmenu.BOTTOM_START)
+				demoM.Component.(*mmenu.M).SetAnchorCorner(mmenu.BOTTOM_START)
 			case "bottom end":
-				demoM.SetAnchorCorner(mmenu.BOTTOM_END)
+				demoM.Component.(*mmenu.M).SetAnchorCorner(mmenu.BOTTOM_END)
 			}
 		}
 	}
@@ -261,7 +266,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 	menuMarginFunc := func(e *vecty.Event) {
 		id := e.Target.Get("id").String()
 		val := e.Target.Get("value").Int()
-		m := demoM.AnchorMargins()
+		m := demoM.Component.(*mmenu.M).AnchorMargins()
 		switch id {
 		case "top-margin":
 			m.Top = val
@@ -272,7 +277,7 @@ func (c *MenuDemoView) Render() vecty.ComponentOrHTML {
 		case "right-margin":
 			m.Right = val
 		}
-		demoM.SetAnchorMargins(m)
+		demoM.Component.(*mmenu.M).SetAnchorMargins(m)
 		vecty.Rerender(c)
 	}
 

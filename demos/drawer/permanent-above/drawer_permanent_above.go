@@ -5,6 +5,7 @@ import (
 
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
 	"github.com/lithammer/dedent"
 	"github.com/vecty-material/material/base"
@@ -176,19 +177,22 @@ func (c *DrawerDemoView) Render() vecty.ComponentOrHTML {
 						Root: vecty.Markup(vecty.Class(
 							"demo-toolbar-example-heading__rtl-toggle-button"),
 						),
-						Label:    vecty.Text("Toggle RTL"),
+						Label: elem.Anchor(
+							vecty.Markup(
+								event.Click(func(e *vecty.Event) {
+									b := c.body.Node()
+									if b.Call("getAttribute",
+										"dir").String() == "rtl" {
+										b.Call("setAttribute", "dir", "ltr")
+										return
+									}
+									b.Call("setAttribute", "dir", "rtl")
+								}),
+							),
+							vecty.Text("Toggle RTL"),
+						),
 						Outlined: true,
 						Dense:    true,
-						OnClick: func(thisB *button.B,
-							e *vecty.Event) {
-							b := c.body.Node()
-							if b.Call("getAttribute",
-								"dir").String() == "rtl" {
-								b.Call("setAttribute", "dir", "ltr")
-								return
-							}
-							b.Call("setAttribute", "dir", "rtl")
-						},
 					},
 				),
 				elem.Div(vecty.Markup(vecty.Class("extra-content-wrapper")),
@@ -196,18 +200,21 @@ func (c *DrawerDemoView) Render() vecty.ComponentOrHTML {
 						Root: vecty.Markup(
 							prop.ID("toggle-wide"),
 						),
-						Label:    vecty.Text("Toggle extra-wide content"),
+						Label: elem.Anchor(
+							vecty.Markup(
+								event.Click(func(e *vecty.Event) {
+									s := ewc.Node().Get("style")
+									if s.Get("display").String() == "none" {
+										s.Set("display", "")
+										return
+									}
+									s.Set("display", "none")
+								}),
+							),
+							vecty.Text("Toggle extra-wide content"),
+						),
 						Outlined: true,
 						Dense:    true,
-						OnClick: func(thisB *button.B,
-							e *vecty.Event) {
-							s := ewc.Node().Get("style")
-							if s.Get("display").String() == "none" {
-								s.Set("display", "")
-								return
-							}
-							s.Set("display", "none")
-						},
 					},
 					ewc,
 				),
@@ -216,18 +223,21 @@ func (c *DrawerDemoView) Render() vecty.ComponentOrHTML {
 						Root: vecty.Markup(
 							prop.ID("toggle-tall"),
 						),
-						Label:    vecty.Text("Toggle extra-tall content"),
+						Label: elem.Anchor(
+							vecty.Markup(
+								event.Click(func(e *vecty.Event) {
+									s := etc.Node().Get("style")
+									if s.Get("display").String() == "none" {
+										s.Set("display", "")
+										return
+									}
+									s.Set("display", "none")
+								}),
+							),
+							vecty.Text("Toggle extra-tall content"),
+						),
 						Outlined: true,
 						Dense:    true,
-						OnClick: func(thisB *button.B,
-							e *vecty.Event) {
-							s := etc.Node().Get("style")
-							if s.Get("display").String() == "none" {
-								s.Set("display", "")
-								return
-							}
-							s.Set("display", "none")
-						},
 					},
 					etc,
 				),

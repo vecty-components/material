@@ -16,17 +16,21 @@ type B struct {
 	Root       vecty.MarkupOrChild
 	Label      vecty.ComponentOrHTML
 	Icon       vecty.ComponentOrHTML
-	OnClick    func(this *B, e *vecty.Event)
 	Disabled   bool
 	Raised     bool
 	Unelevated bool
 	Outlined   bool
 	Dense      bool
-	Href       string
+
+	markup *base.LinkMarkup
 }
 
 // Render implements the vecty.Component interface.
 func (c *B) Render() vecty.ComponentOrHTML {
+	c.markup = base.ExtractMarkupFromLink(
+		c.Label.(*vecty.HTML),
+	)
+
 	rootMarkup := base.MarkupOnly(c.Root)
 	if c.Root != nil && rootMarkup == nil {
 		// User supplied root element.
@@ -52,7 +56,7 @@ func (c *B) Render() vecty.ComponentOrHTML {
 			base.MarkupIfNotNil(rootMarkup),
 		),
 		ico,
-		base.RenderStoredChild(c.Label),
+		base.RenderStoredChild(c.markup.Child),
 	)
 }
 
@@ -66,7 +70,12 @@ func (c *B) Apply(h *vecty.HTML) {
 	vecty.Markup(
 		vecty.Class("mdc-button"),
 		prop.Type(prop.TypeButton),
-		event.Click(c.onClick),
+		vecty.MarkupIf(c.markup.OnClick != nil && !c.markup.PreventDefault,
+			event.Click(c.markup.OnClick),
+		),
+		vecty.MarkupIf(c.markup.OnClick != nil && c.markup.PreventDefault,
+			event.Click(c.markup.OnClick).PreventDefault(),
+		),
 		vecty.Property("disabled", c.Disabled),
 		vecty.MarkupIf(c.Raised,
 			vecty.Class("mdc-button--raised"),
@@ -81,10 +90,4 @@ func (c *B) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-button--dense"),
 		),
 	).Apply(h)
-}
-
-func (c *B) onClick(e *vecty.Event) {
-	if c.OnClick != nil {
-		c.OnClick(c, e)
-	}
 }

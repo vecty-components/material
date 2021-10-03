@@ -5,6 +5,7 @@ import (
 
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
 	"github.com/lithammer/dedent"
 	"github.com/vecty-material/material/base"
@@ -155,19 +156,22 @@ func (c *DrawerDemoView) Render() vecty.ComponentOrHTML {
 						Root: vecty.Markup(vecty.Class(
 							"demo-toolbar-example-heading__rtl-toggle-button"),
 						),
-						Label:    vecty.Text("Toggle RTL"),
+						Label: elem.Anchor(
+							vecty.Markup(
+								event.Click(func(e *vecty.Event) {
+									b := c.body.Node()
+									if b.Call("getAttribute",
+										"dir").String() == "rtl" {
+										b.Call("setAttribute", "dir", "ltr")
+										return
+									}
+									b.Call("setAttribute", "dir", "rtl")
+								}),
+							),
+							vecty.Text("Toggle RTL"),
+						),
 						Outlined: true,
 						Dense:    true,
-						OnClick: func(thisB *button.B,
-							e *vecty.Event) {
-							b := c.body.Node()
-							if b.Call("getAttribute",
-								"dir").String() == "rtl" {
-								b.Call("setAttribute", "dir", "ltr")
-								return
-							}
-							b.Call("setAttribute", "dir", "rtl")
-						},
 					},
 				),
 			),

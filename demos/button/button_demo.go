@@ -104,7 +104,9 @@ func (c *ButtonDemoView) Render() vecty.ComponentOrHTML {
 							e *vecty.Event) {
 							checked := e.Target.Get("checked").Bool()
 							for _, b := range c.buttons {
-								if b.Href != "" {
+								if base.ExtractMarkupFromLink(
+									b.Label.(*vecty.HTML),
+								).Href != "" {
 									continue
 								}
 								b.Disabled = checked
@@ -189,7 +191,6 @@ func (c *ButtonDemoView) renderBtnFieldSet(title string, Ripple bool,
 			c.newBtn(
 				&button.B{
 					Label:      vecty.Text("Link"),
-					Href:       "javascript:void(0)",
 					Raised:     b.Raised,
 					Unelevated: b.Unelevated,
 					Outlined:   b.Outlined,

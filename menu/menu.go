@@ -10,18 +10,17 @@ import (
 
 // M is a vecty-material menu component.
 type M struct {
-	*menu.M
 	*base.MDC
 	vecty.Core
 	Root       vecty.MarkupOrChild
 	menuAnchor *vecty.HTML
 
 	// Open is the visible state of the menu component.
-	Open bool `js:"open"`
+	Open bool
 
 	// QuickOpen controls whether the menu should open and close without
 	// animation. False uses animation, true does not.
-	QuickOpen bool `js:"quickOpen"`
+	QuickOpen bool
 
 	// List is a HTMLUListElement containing the menu's items.
 	List vecty.ComponentOrHTML
@@ -47,17 +46,11 @@ func (c *M) Render() vecty.ComponentOrHTML {
 		return elem.Div(c.Root)
 	}
 
-	// TODO: Make initial values work in material package
-	open := false
-	if c.MDC != nil && c.MDC.RootElement != nil {
-		open = c.MDC.RootElement.Node().Get("Open").Bool()
-	}
-
 	listMarkup := []vecty.Applyer{
 		vecty.Class("mdc-menu__items"),
 		vecty.Attribute("role", "menu"),
 	}
-	if !open {
+	if !c.Open {
 		listMarkup = append(listMarkup, vecty.Attribute("aria-hidden", "true"))
 	}
 	switch t := c.List.(type) {
@@ -81,7 +74,7 @@ func (c *M) Render() vecty.ComponentOrHTML {
 	case *vecty.HTML:
 		vecty.Class("mdc-menu__items").Apply(t)
 		vecty.Attribute("role", "menu").Apply(t)
-		if open {
+		if c.Open {
 			vecty.Attribute("aria-hidden", "false").Apply(t)
 		}
 	}
@@ -97,9 +90,9 @@ func (c *M) Render() vecty.ComponentOrHTML {
 	if c.AnchorElement != nil {
 		c.menuAnchor = elem.Div(
 			vecty.Markup(
-				vecty.Class("mdc-menu-anchor"),
+				vecty.Class("mdc-menu-surface--anchor"),
 			),
-			c.AnchorElement,
+			base.RenderStoredChild(c.AnchorElement),
 			menuElement,
 		)
 		return c.menuAnchor
@@ -112,25 +105,16 @@ func (c *M) Apply(h *vecty.HTML) {
 	case c.MDC == nil:
 		c.MDC = &base.MDC{}
 		fallthrough
-	case c.M == nil, c.MDC.Component == nil:
-		// TODO: Make initial values work in material package
-		open := false
-		quickOpen := false
-		if c.MDC.RootElement != nil {
-			open = c.MDC.RootElement.Node().Get("Open").Bool()
-			quickOpen = c.MDC.RootElement.Node().Get("QuickOpen").Bool()
-		}
-
-		c.M = menu.New()
-		c.MDC.Component = c.M
-		c.Open = open
-		c.QuickOpen = quickOpen
+	case c.MDC.Component == nil:
+		c.MDC.Component = menu.New()
 	}
 
 	vecty.Markup(
-		vecty.Class("mdc-menu"),
+		vecty.Class("mdc-menu", "mdc-menu-surface"),
 		vecty.MarkupIf(c.Open,
-			vecty.Class("mdc-menu--open"),
+			vecty.Class(
+				"mdc-menu--open", "mdc-menu-surface--open",
+			),
 		),
 		vecty.Style("position", "absolute"),
 		vecty.Attribute("tabindex", -1),

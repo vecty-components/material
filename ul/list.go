@@ -1,6 +1,8 @@
 package ul
 
 import (
+	"reflect"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
@@ -37,8 +39,9 @@ type Item struct {
 	Meta      vecty.ComponentOrHTML
 	Selected  bool
 	Activated bool
-	OnClick   func(i *Item, e *vecty.Event)
-	Href      string
+	Alt       string
+
+	markup *base.LinkMarkup
 }
 
 // Group is a vecty-material list-group component.
@@ -107,8 +110,12 @@ func (c *L) Apply(h *vecty.HTML) {
 
 // Render implements the vecty.Component interface.
 func (c *Item) Render() vecty.ComponentOrHTML {
+	c.markup = base.ExtractMarkupFromLink(
+		c.Primary.(*vecty.HTML),
+	)
+
 	tag := "li"
-	if c.Href != "" {
+	if c.markup.Href != "" {
 		tag = "a"
 	}
 
@@ -138,13 +145,13 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 	switch {
 	case c.Secondary != nil:
 		text = elem.Span(vecty.Markup(vecty.Class("mdc-list-item__text")),
-			c.Primary,
+			c.markup.Child,
 			elem.Span(vecty.Markup(
 				vecty.Class("mdc-list-item__secondary-text")),
 				c.Secondary,
 			))
 	default:
-		text = c.Primary
+		text = c.markup.Child
 	}
 
 	return vecty.Tag(tag,
@@ -170,10 +177,13 @@ func (c *Item) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-list-item--selected")),
 		vecty.MarkupIf(c.Activated,
 			vecty.Class("mdc-list-item--activated")),
-		vecty.MarkupIf(c.OnClick != nil,
-			event.Click(c.wrapOnClick()),
+		vecty.MarkupIf(c.markup.OnClick != nil && !c.markup.PreventDefault,
+			event.Click(c.markup.OnClick),
 		),
-		vecty.MarkupIf(c.Href != "", prop.Href(c.Href)),
+		vecty.MarkupIf(c.markup.OnClick != nil && c.markup.PreventDefault,
+			event.Click(c.markup.OnClick).PreventDefault(),
+		),
+		vecty.MarkupIf(c.markup.Href != "", prop.Href(c.markup.Href)),
 	).Apply(h)
 	c.MDC.RootElement = h
 }
@@ -264,33 +274,20 @@ func (c *Group) listList() vecty.List {
 	return lists
 }
 
-func (c *L) wrapOnClick() func(i *Item, e *vecty.Event) {
-	return func(i *Item, e *vecty.Event) {
-		c.OnClick(c, i, e)
-	}
-}
+func setupGraphicOrMeta(graphic vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 
-func (c *Item) wrapOnClick() func(e *vecty.Event) {
-	return func(e *vecty.Event) {
-		c.OnClick(c, e)
-	}
-}
-
-func setupGraphicOrMeta(c vecty.ComponentOrHTML) vecty.ComponentOrHTML {
-	defer func() {
-		msg := "vecty: cannot call (*HTML).Node() before DOM node creation / component mount"
-		if p := recover(); p != nil && p != msg {
-			panic(p)
-		}
-	}()
-
-	var graphic vecty.ComponentOrHTML
-	if c != nil {
-		graphic = c
-		html, ok := graphic.(*vecty.HTML)
-		if ok && html.Node().Get("tag").String() != "img" {
-			graphic = elem.Span(graphic)
+	if graphic != nil && reflect.ValueOf(graphic).Kind().String() != "slice" {
+		tag := reflect.ValueOf(graphic).Elem().FieldByName("tag").String()
+		if tag != "span" {
+			graphic = elem.Span(
+				graphic,
+			)
 		}
 	}
+
+	if graphic != nil {
+		graphic = base.RenderStoredChild(graphic)
+	}
+
 	return graphic
 }

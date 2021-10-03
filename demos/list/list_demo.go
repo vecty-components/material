@@ -9,6 +9,7 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
+	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/checkbox"
 	"github.com/vecty-material/material/demos/common"
 	"github.com/vecty-material/material/formfield"
@@ -441,7 +442,7 @@ func (dl *demoList) makeGraphicExampleItems(l *ul.L, interactive bool) {
 	if interactive {
 		for _, cItem := range l.Items {
 			if item, ok := cItem.(*ul.Item); ok {
-				item.Href = "#"
+				// item.Href = "#"
 				item.Root = vecty.Markup(
 					event.Click(func(e *vecty.Event) {}).PreventDefault(),
 					&ripple.R{},
@@ -497,18 +498,26 @@ func (dl *demoList) makeCheckboxItems(l *ul.L, isLeading bool) {
 			} else {
 				item.Meta = cbs[i]
 			}
-			item.OnClick = func(it *ul.Item, e *vecty.Event) {
-				var cb *checkbox.CB
-				if isLeading {
-					cb = item.Graphic.(*checkbox.CB)
-					cb.Checked = !cb.Checked
-					vecty.Rerender(cb)
-				} else {
-					cb = item.Meta.(*checkbox.CB)
-					cb.Checked = !cb.Checked
-					vecty.Rerender(cb)
-				}
-			}
+			markup := base.ExtractMarkupFromLink(
+				item.Primary.(*vecty.HTML),
+			)
+			item.Primary = elem.Anchor(
+				vecty.Markup(
+					event.Click(func(e *vecty.Event) {
+						var cb *checkbox.CB
+						if isLeading {
+							cb = item.Graphic.(*checkbox.CB)
+							cb.Checked = !cb.Checked
+							vecty.Rerender(cb)
+						} else {
+							cb = item.Meta.(*checkbox.CB)
+							cb.Checked = !cb.Checked
+							vecty.Rerender(cb)
+						}
+					}),
+				),
+				markup.Child,
+			)
 		}
 	}
 }
