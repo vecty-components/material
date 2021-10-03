@@ -1,7 +1,7 @@
-// toolbar implements a material toolbar component.
+// appbar implements a material appbar component.
 //
-// See: https://material.io/components/web/catalog/toolbar/
-package toolbar
+// See: https://material.io/components/web/catalog/appbar/
+package appbar
 
 import (
 	"syscall/js"
@@ -9,38 +9,38 @@ import (
 	"github.com/vecty-material/material/components/base"
 )
 
-// T is a material toolbar component.
-type T struct {
+// A is a material appbar component.
+type A struct {
 	mdc *base.Component
 }
 
 // New returns a new component.
-func New() *T {
-	c := &T{}
+func New() *A {
+	c := &A{}
 	c.Component()
 	return c
 }
 
-// Start initializes the component with an existing HTMLElement, rootElem. Start
+// Start initializes the component with an existing HAMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
-func (c *T) Start(rootElem js.Value) error {
+func (c *A) Start(rootElem js.Value) error {
 	return base.Start(c, rootElem)
 }
 
-// Stop removes the component's association with its HTMLElement and cleans up
+// Stop removes the component's association with its HAMLElement and cleans up
 // event listeners, etc.
-func (c *T) Stop() error {
+func (c *A) Stop() error {
 	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
-func (c *T) Component() *base.Component {
+func (c *A) Component() *base.Component {
 	switch {
 	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
-				MDCClassName:     "MDCToolbar",
-				MDCCamelCaseName: "toolbar",
+				MDCClassName:     "MDCTopAppBar",
+				MDCCamelCaseName: "topAppBar",
 			},
 		}
 		fallthrough
@@ -51,6 +51,6 @@ func (c *T) Component() *base.Component {
 }
 
 // StateMap implements the base.StateMapper interface.
-func (c *T) StateMap() base.StateMap {
+func (c *A) StateMap() base.StateMap {
 	return base.StateMap{}
 }

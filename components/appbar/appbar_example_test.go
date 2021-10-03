@@ -1,4 +1,4 @@
-package toolbar_test
+package appbar_test
 
 import (
 	"fmt"
@@ -6,16 +6,16 @@ import (
 
 	"syscall/js"
 
+	"github.com/vecty-material/material/components/appbar"
 	"github.com/vecty-material/material/components/internal/mdctest"
-	"github.com/vecty-material/material/components/toolbar"
 )
 
 func Example() {
-	// Create a new instance of a material toolbar component.
-	c := toolbar.New()
+	// Create a new instance of a material appbar component.
+	c := appbar.New()
 	printName(c)
 
-	// Set up a DOM HTMLElement suitable for a toolbar.
+	// Set up a DOM HTMLElement suitable for a appbar.
 	js.Global().Get("document").Get("body").Set("innerHTML",
 		mdctest.HTML(c.Component().Type.MDCClassName))
 	rootElem := js.Global().Get("document").Get("body").Get("firstElementChild")
@@ -41,7 +41,7 @@ func Example() {
 	// MDCToolbar
 }
 
-func printName(c *toolbar.T) {
+func printName(c *appbar.A) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 

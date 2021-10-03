@@ -6,6 +6,8 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
+	"github.com/vecty-material/material/appbar"
+	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/icon"
 	"github.com/vecty-material/material/iconbutton"
 )
@@ -55,46 +57,27 @@ func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 
 	}
 
-	return elem.Header(
-		vecty.Markup(
-			vecty.Class("mdc-top-app-bar", "catalog-top-app-bar"),
+	var icon vecty.ComponentOrHTML
+	if pathname() == "/" {
+		icon = hb.ticonb
+	} else {
+		icon = hb.miconb
+	}
+
+	return &appbar.A{
+		Root: vecty.Markup(
+			vecty.Class("catalog-top-app-bar"),
 		),
-		elem.Div(
-			vecty.Markup(
-				vecty.Class("mdc-top-app-bar__row"),
-			),
-			elem.Section(
-				vecty.Markup(
+		SectionStart: vecty.List{
+			base.RenderStoredChild(icon),
+			appbar.Title(
+				"Material Components for the Web",
+				[]vecty.Applyer{
 					vecty.Class(
-						"mdc-top-app-bar__section", "mdc-top-app-bar__section--align-start",
+						"catalog-top-app-bar__title",
 					),
-				),
-				vecty.If(pathname() == "/", hb.ticonb),
-				vecty.If(pathname() != "/", hb.miconb),
-				elem.Span(
-					vecty.Markup(
-						vecty.Class(
-							"mdc-top-app-bar__title", "catalog-top-app-bar__title",
-						),
-					),
-					elem.Span(
-						vecty.Markup(
-							vecty.Class(
-								"catalog-top-app-bar__title--small-screen",
-							),
-						),
-						vecty.Text("MDC Web"),
-					),
-					elem.Span(
-						vecty.Markup(
-							vecty.Class(
-								"catalog-top-app-bar__title--large-screen",
-							),
-						),
-						vecty.Text("Material Components for the Web"),
-					),
-				),
+				},
 			),
-		),
-	)
+		},
+	}
 }
