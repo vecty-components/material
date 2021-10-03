@@ -1,60 +1,30 @@
 package components
 
 import (
-	"syscall/js"
-
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	router "marwan.io/vecty-router"
+	"github.com/vecty-material/material/base"
 )
 
 type ComponentPage struct {
-	routes  map[string]*ComponentCatalogPanel
-	sidebar *ComponentSidebar
+	panel *ComponentCatalogPanel
 	vecty.Core
-}
-
-func NewComponentPage(routes map[string]*ComponentCatalogPanel, sidebar *ComponentSidebar) *ComponentPage {
-	return &ComponentPage{
-		routes:  routes,
-		sidebar: sidebar,
-	}
 }
 
 func (cp *ComponentPage) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("/assets/styles/ComponentPage.css")
 
-	path := js.Global().Get("window").Get("location").Get("pathname").String()
-	var p *ComponentCatalogPanel
-	for route, panel := range cp.routes {
-		if route != path {
-			continue
-		}
-		p = panel
-	}
-
-	if p == nil {
-		router.Redirect("/")
-		return elem.Div()
-	}
-
 	return elem.Div(
 		vecty.Markup(
-			vecty.Class("demo-panel"),
+			vecty.Class(
+				"demo-content", "mdc-drawer-app-content", "mdc-top-app-bar--fixed-adjust",
+			),
 		),
-		cp.sidebar,
 		elem.Div(
 			vecty.Markup(
-				vecty.Class(
-					"demo-content", "mdc-drawer-app-content", "mdc-top-app-bar--fixed-adjust",
-				),
+				vecty.Class("demo-content-transition"),
 			),
-			elem.Div(
-				vecty.Markup(
-					vecty.Class("demo-content-transition"),
-				),
-				p,
-			),
+			base.RenderStoredChild(cp.panel),
 		),
 	)
 }

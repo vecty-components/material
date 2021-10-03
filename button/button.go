@@ -50,13 +50,18 @@ func (c *B) Render() vecty.ComponentOrHTML {
 		vecty.Class("mdc-button__icon").Apply(ico)
 	}
 
+	label := c.Label
+	if c.link.Href != "" && c.link.Child != nil {
+		label = c.link.Child
+	}
+
 	return elem.Button(
 		vecty.Markup(
 			c,
 			base.MarkupIfNotNil(rootMarkup),
 		),
 		ico,
-		base.RenderStoredChild(c.link.Child),
+		base.RenderStoredChild(label),
 	)
 }
 

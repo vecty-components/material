@@ -45,10 +45,8 @@ func (cl *ComponentImageList) Render() vecty.ComponentOrHTML {
 		)
 	}
 
-	return elem.Div(
-		elem.UnorderedList(
-			children...,
-		),
+	return elem.UnorderedList(
+		children...,
 	)
 }
 

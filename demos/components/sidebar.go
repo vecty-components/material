@@ -44,31 +44,29 @@ func (cs *ComponentSidebar) renderSidebarLink(link *DemoLink, index int) vecty.C
 }
 
 func (cs *ComponentSidebar) Render() vecty.ComponentOrHTML {
-	if cs.drawer != nil {
-		return cs.drawer
-	}
+	if cs.drawer == nil {
+		links := append([]DemoLink{
+			{
+				Name: "Home",
+				Url:  "/",
+			},
+		}, cs.list...)
 
-	links := append([]DemoLink{
-		{
-			Name: "Home",
-			Url:  "/",
-		},
-	}, cs.list...)
+		items := make([]vecty.ComponentOrHTML, len(links))
+		for i, link := range links {
+			items[i] = cs.renderSidebarLink(&link, i)
+		}
 
-	items := make([]vecty.ComponentOrHTML, len(links))
-	for i, link := range links {
-		items[i] = cs.renderSidebarLink(&link, i)
-	}
-
-	cs.drawer = &drawer.D{
-		Root: vecty.Markup(
-			prop.ID("demo-drawer"),
-			vecty.Class("demo-drawer", "mdc-top-app-bar--fixed-adjust"),
-		),
-		Type: drawer.Dismissible,
-		Content: &ul.L{
-			Items: items,
-		},
+		cs.drawer = &drawer.D{
+			Root: vecty.Markup(
+				prop.ID("demo-drawer"),
+				vecty.Class("demo-drawer", "mdc-top-app-bar--fixed-adjust"),
+			),
+			Type: drawer.Dismissible,
+			Content: &ul.L{
+				Items: items,
+			},
+		}
 	}
 
 	return cs.drawer

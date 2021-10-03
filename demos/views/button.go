@@ -8,8 +8,9 @@ import (
 	"github.com/vecty-material/material/icon"
 )
 
-func NewButtonPage() *components.ComponentCatalogPanel {
-	return components.NewComponentCatalogPanel(
+func NewButtonPage() *components.ComponentPage {
+	return components.NewComponentPage(
+
 		"Button",
 		"Buttons communicate an action a user can take. They "+
 			"are typically placed throughout your UI, in places "+

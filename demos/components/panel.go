@@ -18,7 +18,7 @@ type ComponentCatalogPanel struct {
 	vecty.Core
 }
 
-func NewComponentCatalogPanel(
+func NewComponentPage(
 	title string,
 	description string,
 	designLink string,
@@ -26,15 +26,17 @@ func NewComponentCatalogPanel(
 	sourceLink string,
 	hero *HeroComponent,
 	demos vecty.ComponentOrHTML,
-) *ComponentCatalogPanel {
-	return &ComponentCatalogPanel{
-		designLink:  designLink,
-		description: description,
-		demos:       demos,
-		docsLink:    docsLink,
-		hero:        hero,
-		sourceLink:  sourceLink,
-		title:       title,
+) *ComponentPage {
+	return &ComponentPage{
+		panel: &ComponentCatalogPanel{
+			designLink:  designLink,
+			description: description,
+			demos:       demos,
+			docsLink:    docsLink,
+			hero:        hero,
+			sourceLink:  sourceLink,
+			title:       title,
+		},
 	}
 }
 

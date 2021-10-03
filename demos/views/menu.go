@@ -1,8 +1,6 @@
 package views
 
 import (
-	"fmt"
-
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
@@ -13,8 +11,8 @@ import (
 	"github.com/vecty-material/material/ul"
 )
 
-func NewMenuPage() *components.ComponentCatalogPanel {
-	return components.NewComponentCatalogPanel(
+func NewMenuPage() *components.ComponentPage {
+	return components.NewComponentPage(
 		"Menu",
 		"Menus display a list of choices on a transient sheet of material.",
 		"https://material.io/go/design-menus",
@@ -79,8 +77,6 @@ func (bd *MenuDemos) Render() vecty.ComponentOrHTML {
 			Label: elem.Anchor(
 				vecty.Markup(
 					event.Click(func(e *vecty.Event) {
-						fmt.Println("button click")
-
 						menu.Open = !menu.Open
 						vecty.Rerender(menu)
 					}),
