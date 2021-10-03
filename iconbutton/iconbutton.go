@@ -1,30 +1,28 @@
-package icontoggle
+package iconbutton
 
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/components/icontoggle"
+	"github.com/vecty-material/material/components/iconbutton"
 	"github.com/vecty-material/material/icon"
 )
 
-// IT is a vecty-material icontoggle component.
-type IT struct {
+// IB is a vecty-material iconbutton component.
+type IB struct {
 	*base.MDC
 	vecty.Core
 	Root          vecty.MarkupOrChild
-	ChangeHandler func(thisIT *IT, e *vecty.Event)
+	ChangeHandler func(thisIB *IB, e *vecty.Event)
 	On            bool
-	Disabled      bool
 	OnIcon        *icon.I
 	OffIcon       *icon.I
-	activeIcon    *icon.I
 	OnLabel       string
 	OffLabel      string
 }
 
 // Render implements the vecty.Component interface.
-func (c *IT) Render() vecty.ComponentOrHTML {
+func (c *IB) Render() vecty.ComponentOrHTML {
 	rootMarkup := base.MarkupOnly(c.Root)
 	if c.Root != nil && rootMarkup == nil {
 		// User supplied root element.
@@ -32,7 +30,7 @@ func (c *IT) Render() vecty.ComponentOrHTML {
 	}
 
 	if c.OffIcon == nil || c.OnIcon == nil {
-		panic("OnIcon and/or OffIcon missing in icontoggle.")
+		panic("OnIcon and/or OffIcon missing in iconbutton.")
 	}
 
 	// Built-in root element.
@@ -46,13 +44,13 @@ func (c *IT) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func (c *IT) Apply(h *vecty.HTML) {
+func (c *IB) Apply(h *vecty.HTML) {
 	switch {
 	case c.MDC == nil:
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = icontoggle.New()
+		c.MDC.Component = iconbutton.New()
 	}
 
 	var markup []vecty.Applyer
@@ -86,19 +84,11 @@ func (c *IT) Apply(h *vecty.HTML) {
 	// )
 
 	vecty.Markup(
-		vecty.Class("mdc-icon-toggle"),
+		vecty.Class("mdc-icon-button"),
 		vecty.Attribute("role", "button"),
 		vecty.Attribute("aria-pressed", c.On),
-		vecty.MarkupIf(!c.Disabled,
-			vecty.Attribute("tabindex", "0"),
-		),
-		vecty.MarkupIf(c.Disabled,
-			vecty.Attribute("tabindex", "-1"),
-			vecty.Class("mdc-icon-toggle--disabled"),
-			vecty.Attribute("aria-hidden", true),
-		),
 		&vecty.EventListener{
-			Name: "MDCIconToggle:change",
+			Name: "MDCIconButtonToggle:change",
 			Listener: func(e *vecty.Event) {
 				c.On = !c.On
 				vecty.Rerender(c)
@@ -106,19 +96,19 @@ func (c *IT) Apply(h *vecty.HTML) {
 		},
 		vecty.MarkupIf(c.ChangeHandler != nil,
 			&vecty.EventListener{
-				Name:     "MDCIconToggle:change",
+				Name:     "MDCIconButtonToggle:change",
 				Listener: c.wrapChangeHandler(),
 			},
 		),
 		vecty.Markup(markup...),
 		vecty.MarkupIf(c.On,
-			vecty.Class("mdc-icon-toggle--on"),
+			vecty.Class("mdc-icon-button--on"),
 		),
 	).Apply(h)
 	c.MDC.RootElement = h
 }
 
-func (c *IT) wrapChangeHandler() func(e *vecty.Event) {
+func (c *IB) wrapChangeHandler() func(e *vecty.Event) {
 	return func(e *vecty.Event) {
 		c.ChangeHandler(c, e)
 	}

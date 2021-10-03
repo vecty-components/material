@@ -1,4 +1,4 @@
-package icontoggle_test
+package iconbutton_test
 
 import (
 	"fmt"
@@ -6,19 +6,18 @@ import (
 
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/icontoggle"
+	"github.com/vecty-material/material/components/iconbutton"
 	"github.com/vecty-material/material/components/internal/mdctest"
 )
 
 func Example() {
-	// Create a new instance of a material icontoggle component.
-	c := icontoggle.New()
+	// Create a new instance of a material iconbutton component.
+	c := iconbutton.New()
 	printName(c)
 	printState(c)
 	c.On = true
-	c.Disabled = true
 
-	// Set up a DOM HTMLElement suitable for an icontoggle.
+	// Set up a DOM HTMLElement suitable for an iconbutton.
 	js.Global().Get("document").Get("body").Set("innerHTML",
 		mdctest.HTML(c.Component().Type.MDCClassName))
 	rootElem := js.Global().Get("document").Get("body").Get("firstElementChild")
@@ -31,7 +30,6 @@ func Example() {
 	}
 
 	printState(c)
-	c.Disabled = false
 	c.On = false
 	printState(c)
 
@@ -42,7 +40,7 @@ func Example() {
 	}
 
 	// Output:
-	// MDCIconToggle
+	// MDCIconbutton
 	//
 	// [Go] On: false, Disabled: false
 	// [JS] On: false, Disabled: false
@@ -54,15 +52,15 @@ func Example() {
 	// [JS] On: false, Disabled: false
 }
 
-func printName(c *icontoggle.IT) {
+func printName(c *iconbutton.IB) {
 	fmt.Printf("%s\n", c.Component().Type)
 }
 
-func printState(c *icontoggle.IT) {
+func printState(c *iconbutton.IB) {
 	fmt.Println()
 	mdcObj := c.Component()
 	fmt.Printf("[Go] On: %v, Disabled: %v\n",
-		c.On, c.Disabled)
+		c.On, true)
 	fmt.Printf("[JS] On: %v, Disabled: %v\n",
 		mdcObj.Get("on"), mdcObj.Get("disabled"))
 }

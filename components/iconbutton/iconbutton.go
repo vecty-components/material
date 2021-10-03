@@ -1,7 +1,7 @@
-// icontoggle implements a material icontoggle component.
+// iconbutton implements a material iconbutton component.
 //
 // See: https://material.io/components/web/catalog/buttons/icon-toggle-buttons/
-package icontoggle // import "github.com/vecty-material/material/components/icontoggle"
+package iconbutton // import "github.com/vecty-material/material/components/iconbutton"
 
 import (
 	"syscall/js"
@@ -9,40 +9,39 @@ import (
 	"github.com/vecty-material/material/components/base"
 )
 
-// IT is a material icontoggle component.
-type IT struct {
-	mdc      *base.Component
-	On       bool `js:"on"`
-	Disabled bool `js:"disabled"`
+// IB is a material iconbutton component.
+type IB struct {
+	mdc *base.Component
+	On  bool `js:"on"`
 }
 
 // New returns a new component.
-func New() *IT {
-	c := &IT{}
+func New() *IB {
+	c := &IB{}
 	c.Component()
 	return c
 }
 
 // Start initializes the component with an existing HTMLElement, rootElem. Start
 // should only be used on a newly created component, or after calling Stop.
-func (c *IT) Start(rootElem js.Value) error {
+func (c *IB) Start(rootElem js.Value) error {
 	return base.Start(c, rootElem)
 }
 
 // Stop removes the component's association with its HTMLElement and cleans up
 // event listeners, etc.
-func (c *IT) Stop() error {
+func (c *IB) Stop() error {
 	return base.Stop(c)
 }
 
 // Component returns the component's underlying base.Component.
-func (c *IT) Component() *base.Component {
+func (c *IB) Component() *base.Component {
 	switch {
 	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
-				MDCClassName:     "MDCIconToggle",
-				MDCCamelCaseName: "iconToggle",
+				MDCClassName:     "MDCIconButtonToggle",
+				MDCCamelCaseName: "iconButton",
 			},
 		}
 		fallthrough
@@ -53,10 +52,9 @@ func (c *IT) Component() *base.Component {
 }
 
 // StateMap implements the base.StateMapper interface.
-func (c *IT) StateMap() base.StateMap {
+func (c *IB) StateMap() base.StateMap {
 	return base.StateMap{
-		"on":       c.On,
-		"disabled": c.Disabled,
+		"on": c.On,
 	}
 }
 
