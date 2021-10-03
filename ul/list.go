@@ -40,7 +40,7 @@ type Item struct {
 	Activated bool
 	Alt       string
 
-	link *base.LinkMarkup
+	markup *base.LinkMarkup
 }
 
 // Group is a vecty-material list-group component.
@@ -109,12 +109,12 @@ func (c *L) Apply(h *vecty.HTML) {
 
 // Render implements the vecty.Component interface.
 func (c *Item) Render() vecty.ComponentOrHTML {
-	c.link = base.ExtractMarkupFromLink(
+	c.markup = base.ExtractMarkupFromLink(
 		c.Primary.(*vecty.HTML),
 	)
 
 	tag := "li"
-	if c.link.Href != "" {
+	if c.markup.Href != "" {
 		tag = "a"
 	}
 
@@ -149,13 +149,13 @@ func (c *Item) Render() vecty.ComponentOrHTML {
 	switch {
 	case c.Secondary != nil:
 		text = elem.Span(vecty.Markup(vecty.Class("mdc-list-item__text")),
-			primary,
+			c.markup.Child,
 			elem.Span(vecty.Markup(
 				vecty.Class("mdc-list-item__secondary-text")),
 				c.Secondary,
 			))
 	default:
-		text = primary
+		text = c.markup.Child
 	}
 
 	return vecty.Tag(tag,
@@ -181,13 +181,13 @@ func (c *Item) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-list-item--selected")),
 		vecty.MarkupIf(c.Activated,
 			vecty.Class("mdc-list-item--activated")),
-		vecty.MarkupIf(c.link.OnClick != nil && !c.link.PreventDefault,
-			event.Click(c.link.OnClick),
+		vecty.MarkupIf(c.markup.OnClick != nil && !c.markup.PreventDefault,
+			event.Click(c.markup.OnClick),
 		),
-		vecty.MarkupIf(c.link.OnClick != nil && c.link.PreventDefault,
-			event.Click(c.link.OnClick).PreventDefault(),
+		vecty.MarkupIf(c.markup.OnClick != nil && c.markup.PreventDefault,
+			event.Click(c.markup.OnClick).PreventDefault(),
 		),
-		vecty.MarkupIf(c.link.Href != "", prop.Href(c.link.Href)),
+		vecty.MarkupIf(c.markup.Href != "", prop.Href(c.markup.Href)),
 	).Apply(h)
 	c.MDC.RootElement = h
 }
@@ -280,13 +280,16 @@ func (c *Group) listList() vecty.List {
 
 func setupGraphicOrMeta(graphic vecty.ComponentOrHTML) vecty.ComponentOrHTML {
 
-	if graphic != nil {
+	if graphic != nil && reflect.ValueOf(graphic).Kind().String() != "slice" {
 		tag := reflect.ValueOf(graphic).Elem().FieldByName("tag").String()
 		if tag != "span" {
 			graphic = elem.Span(
 				graphic,
 			)
 		}
+	}
+
+	if graphic != nil {
 		graphic = base.RenderStoredChild(graphic)
 	}
 

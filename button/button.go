@@ -22,12 +22,12 @@ type B struct {
 	Outlined   bool
 	Dense      bool
 
-	link *base.LinkMarkup
+	markup *base.LinkMarkup
 }
 
 // Render implements the vecty.Component interface.
 func (c *B) Render() vecty.ComponentOrHTML {
-	c.link = base.ExtractMarkupFromLink(
+	c.markup = base.ExtractMarkupFromLink(
 		c.Label.(*vecty.HTML),
 	)
 
@@ -61,7 +61,7 @@ func (c *B) Render() vecty.ComponentOrHTML {
 			base.MarkupIfNotNil(rootMarkup),
 		),
 		ico,
-		base.RenderStoredChild(label),
+		base.RenderStoredChild(c.markup.Child),
 	)
 }
 
@@ -75,11 +75,11 @@ func (c *B) Apply(h *vecty.HTML) {
 	vecty.Markup(
 		vecty.Class("mdc-button"),
 		prop.Type(prop.TypeButton),
-		vecty.MarkupIf(c.link.OnClick != nil && !c.link.PreventDefault,
-			event.Click(c.link.OnClick),
+		vecty.MarkupIf(c.markup.OnClick != nil && !c.markup.PreventDefault,
+			event.Click(c.markup.OnClick),
 		),
-		vecty.MarkupIf(c.link.OnClick != nil && c.link.PreventDefault,
-			event.Click(c.link.OnClick).PreventDefault(),
+		vecty.MarkupIf(c.markup.OnClick != nil && c.markup.PreventDefault,
+			event.Click(c.markup.OnClick).PreventDefault(),
 		),
 		vecty.Property("disabled", c.Disabled),
 		vecty.MarkupIf(c.Raised,

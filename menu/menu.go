@@ -112,7 +112,9 @@ func (c *M) Apply(h *vecty.HTML) {
 	vecty.Markup(
 		vecty.Class("mdc-menu", "mdc-menu-surface"),
 		vecty.MarkupIf(c.Open,
-			vecty.Class("mdc-menu-surface--open"),
+			vecty.Class(
+				"mdc-menu--open", "mdc-menu-surface--open",
+			),
 		),
 		vecty.Style("position", "absolute"),
 		vecty.Attribute("tabindex", -1),

@@ -96,12 +96,14 @@ func ExtractMarkupFromLink(html *vecty.HTML) *LinkMarkup {
 		break
 	}
 
-	if h.FieldByName("children").Len() > 0 {
+	if tag == "a" && h.FieldByName("children").Len() > 0 {
 		sm.Child = *(*vecty.ComponentOrHTML)(
 			unsafe.Pointer(
 				h.FieldByName("children").Index(0).UnsafeAddr(),
 			),
 		)
+	} else {
+		sm.Child = html
 	}
 
 	return sm
