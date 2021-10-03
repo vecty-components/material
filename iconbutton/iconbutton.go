@@ -3,6 +3,7 @@ package iconbutton
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/event"
 	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/components/iconbutton"
 	"github.com/vecty-material/material/icon"
@@ -15,10 +16,11 @@ type IB struct {
 	Root          vecty.MarkupOrChild
 	ChangeHandler func(thisIB *IB, e *vecty.Event)
 	On            bool
-	OnIcon        *icon.I
-	OffIcon       *icon.I
+	OnIcon        vecty.ComponentOrHTML
+	OffIcon       vecty.ComponentOrHTML
 	OnLabel       string
 	OffLabel      string
+	OnClick       func(*vecty.Event)
 }
 
 // Render implements the vecty.Component interface.
@@ -29,18 +31,20 @@ func (c *IB) Render() vecty.ComponentOrHTML {
 		return elem.Div(c.Root)
 	}
 
-	if c.OffIcon == nil || c.OnIcon == nil {
-		panic("OnIcon and/or OffIcon missing in iconbutton.")
+	if c.OnIcon == nil {
+		panic("OnIcon missing in iconbutton (and is required).")
 	}
 
 	// Built-in root element.
-	return elem.Span(
+	return elem.Button(
 		vecty.Markup(
 			c,
 			base.MarkupIfNotNil(rootMarkup),
 		),
 		vecty.If(!c.On, c.OffIcon),
-		vecty.If(c.On, c.OnIcon),
+		vecty.If(
+			c.On || c.OffIcon == nil, c.OnIcon,
+		),
 	)
 }
 
@@ -54,7 +58,7 @@ func (c *IB) Apply(h *vecty.HTML) {
 	}
 
 	var markup []vecty.Applyer
-	var itElement *icon.I
+	var itElement vecty.ComponentOrHTML
 	switch {
 	case c.On:
 		itElement = c.OnIcon
@@ -68,10 +72,11 @@ func (c *IB) Apply(h *vecty.HTML) {
 			vecty.Attribute("aria-label", c.OffLabel),
 		)
 	}
+	itIcon, _ := itElement.(*icon.I)
 	switch {
-	case itElement.ClassOverride != nil:
+	case itIcon != nil && itIcon.ClassOverride != nil:
 		markup = append(markup,
-			vecty.Data("iconInnerSelector", "."+itElement.ClassOverride[0]),
+			vecty.Data("iconInnerSelector", "."+itIcon.ClassOverride[0]),
 		)
 	default:
 		markup = append(markup,
@@ -84,7 +89,7 @@ func (c *IB) Apply(h *vecty.HTML) {
 	// )
 
 	vecty.Markup(
-		vecty.Class("mdc-icon-button"),
+		vecty.Class("mdc-icon-button", "material-icons"),
 		vecty.Attribute("role", "button"),
 		vecty.Attribute("aria-pressed", c.On),
 		&vecty.EventListener{
@@ -99,6 +104,9 @@ func (c *IB) Apply(h *vecty.HTML) {
 				Name:     "MDCIconButtonToggle:change",
 				Listener: c.wrapChangeHandler(),
 			},
+		),
+		vecty.MarkupIf(c.OnClick != nil,
+			event.Click(c.OnClick),
 		),
 		vecty.Markup(markup...),
 		vecty.MarkupIf(c.On,

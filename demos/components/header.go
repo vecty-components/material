@@ -5,72 +5,55 @@ import (
 
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
+	"github.com/vecty-material/material/icon"
+	"github.com/vecty-material/material/iconbutton"
 )
-
-/*
-	TODO: move this into a separate component
-*/
-
-type HeaderIcon struct {
-	vecty.Core
-	isTopPage bool
-	sidebar   *ComponentSidebar
-}
-
-func (hi *HeaderIcon) onClick(e *vecty.Event) {
-	if !hi.isTopPage {
-		hi.sidebar.Toggle()
-	}
-}
-
-func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
-	return elem.Button(
-		vecty.Markup(
-			vecty.Class(
-				"mdc-icon-button", "material-icons", "mdc-top-app-bar__navigation-icon",
-			),
-			vecty.Attribute("title", "home"),
-			event.Click(hi.onClick),
-		),
-		func() vecty.ComponentOrHTML {
-			if hi.isTopPage {
-				return elem.Image(
-					vecty.Markup(
-						prop.Src("/assets/images/ic_component_24px_white.svg"),
-						prop.Alt("Material logo"),
-					),
-				)
-			}
-
-			return elem.Italic(
-				vecty.Markup(
-					prop.Alt("Menu button"),
-					vecty.Class("material-icons"),
-				),
-				vecty.Text("menu"),
-			)
-		}(),
-	)
-}
 
 type HeaderBar struct {
 	vecty.Core
-	hi *HeaderIcon
+	ticonb, miconb *iconbutton.IB
+	sidebar        *ComponentSidebar
+}
+
+func pathname() string {
+	return js.Global().Get("window").Get("location").
+		Get("pathname").String()
 }
 
 func NewHeaderBar(sidebar *ComponentSidebar) *HeaderBar {
-	return &HeaderBar{
-		hi: &HeaderIcon{sidebar: sidebar},
-	}
+	return &HeaderBar{sidebar: sidebar}
 }
 
 func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("/assets/styles/HeaderBar.css")
 
-	hb.hi.isTopPage = js.Global().Get("window").Get("location").
-		Get("pathname").String() == "/"
+	if hb.ticonb == nil || hb.miconb == nil {
+		hb.ticonb = &iconbutton.IB{
+			Root: vecty.Markup(
+				vecty.Class("mdc-top-app-bar__navigation-icon"),
+			),
+			OnIcon: elem.Image(
+				vecty.Markup(
+					prop.Src("/assets/images/ic_component_24px_white.svg"),
+					prop.Alt("Material logo"),
+				),
+			),
+		}
+
+		hb.miconb = &iconbutton.IB{
+			Root: vecty.Markup(
+				vecty.Class("mdc-top-app-bar__navigation-icon"),
+			),
+			OnIcon: &icon.I{
+				Name: "menu",
+			},
+			OnClick: func(e *vecty.Event) {
+				hb.sidebar.Toggle()
+			},
+		}
+
+	}
 
 	return elem.Header(
 		vecty.Markup(
@@ -86,14 +69,14 @@ func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 						"mdc-top-app-bar__section", "mdc-top-app-bar__section--align-start",
 					),
 				),
-				hb.hi,
+				vecty.If(pathname() == "/", hb.ticonb),
+				vecty.If(pathname() != "/", hb.miconb),
 				elem.Span(
 					vecty.Markup(
 						vecty.Class(
 							"mdc-top-app-bar__title", "catalog-top-app-bar__title",
 						),
 					),
-
 					elem.Span(
 						vecty.Markup(
 							vecty.Class(
