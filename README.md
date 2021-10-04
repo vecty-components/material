@@ -20,7 +20,7 @@ Monetary contributions are not accepted at this time; only pull requests.
 To simplify demos and development, this package makes use of gaepher. To
 install it, run:
 
-    go install bitbucket.org/xoviat/gaepher@009f197
+    go install bitbucket.org/xoviat/gaepher@6134584
 
 Once gaepher is installed, change to the demos folder
 
