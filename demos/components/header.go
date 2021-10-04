@@ -13,13 +13,12 @@ import (
 type HeaderIcon struct {
 	vecty.Core
 	sidebar *drawer.D
-	IsTop   bool
 }
 
 func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("/assets/styles/HeaderBar.css")
 
-	if hi.IsTop {
+	if false {
 		return &iconbutton.IB{
 			Root: vecty.Markup(
 				vecty.Class("mdc-top-app-bar__navigation-icon"),
@@ -52,17 +51,13 @@ type HeaderBar struct {
 	HeaderIcon *HeaderIcon
 }
 
-func NewHeaderBar(sidebar *drawer.D) (*appbar.A, *HeaderIcon) {
-	hicon := &HeaderIcon{
-		sidebar: sidebar,
-	}
-
+func NewHeaderBar(sidebar *drawer.D) *appbar.A {
 	return &appbar.A{
 		Root: vecty.Markup(
 			vecty.Class("catalog-top-app-bar"),
 		),
 		SectionStart: vecty.List{
-			hicon,
+			&HeaderIcon{sidebar: sidebar},
 			appbar.Title(
 				"Material Components for the Web",
 				[]vecty.Applyer{
@@ -72,5 +67,5 @@ func NewHeaderBar(sidebar *drawer.D) (*appbar.A, *HeaderIcon) {
 				},
 			),
 		},
-	}, hicon
+	}
 }
