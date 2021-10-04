@@ -5,6 +5,7 @@ import (
 	"github.com/hexops/vecty/elem"
 	router "marwan.io/vecty-router"
 
+	"github.com/vecty-material/material/app"
 	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/demos/components"
 	"github.com/vecty-material/material/demos/views"
@@ -149,16 +150,16 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 
 	sidebar := components.NewComponentSidebar(componentList)
 
-	return elem.Div(
-		/* put this inside a route so that it's re-rendered on location change */
-		router.NewRoute("/.*", components.NewHeaderBar(sidebar), router.NewRouteOpts{}),
-		elem.Div(
-			vecty.Markup(
-				vecty.Class("demo-panel"),
-			),
-			router.NewRoute(
-				"/[a-zA-Z].*", sidebar, router.NewRouteOpts{},
-			),
+	return &app.A{
+		RootMarkup: vecty.Markup(
+			vecty.Class("demo-panel"),
+		),
+		ChildMarkup: vecty.Markup(
+			vecty.Class("demo-content"),
+		),
+		Appbar:  components.NewHeaderBar(sidebar),
+		Sidebar: sidebar,
+		Routes: []vecty.ComponentOrHTML{
 			router.NewRoute(
 				"/", views.NewComponentImageList(componentList),
 				router.NewRouteOpts{ExactMatch: true},
@@ -169,7 +170,6 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 			router.NewRoute(
 				"/menu", views.NewMenuPage(), router.NewRouteOpts{ExactMatch: true},
 			),
-		),
-		// router.NotFoundHandler(views.NewComponentImageList()),
-	)
+		},
+	}
 }

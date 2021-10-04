@@ -16,15 +16,8 @@ func (cp *ComponentPage) Render() vecty.ComponentOrHTML {
 
 	return elem.Div(
 		vecty.Markup(
-			vecty.Class(
-				"demo-content", "mdc-drawer-app-content", "mdc-top-app-bar--fixed-adjust",
-			),
+			vecty.Class("demo-content-transition"),
 		),
-		elem.Div(
-			vecty.Markup(
-				vecty.Class("demo-content-transition"),
-			),
-			base.RenderStoredChild(cp.panel),
-		),
+		base.RenderStoredChild(cp.panel),
 	)
 }

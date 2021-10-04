@@ -8,6 +8,7 @@ import (
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/appbar"
 	"github.com/vecty-material/material/base"
+	"github.com/vecty-material/material/drawer"
 	"github.com/vecty-material/material/icon"
 	"github.com/vecty-material/material/iconbutton"
 )
@@ -15,7 +16,7 @@ import (
 type HeaderBar struct {
 	vecty.Core
 	ticonb, miconb *iconbutton.IB
-	sidebar        *ComponentSidebar
+	sidebar        *drawer.D
 }
 
 func pathname() string {
@@ -23,7 +24,7 @@ func pathname() string {
 		Get("pathname").String()
 }
 
-func NewHeaderBar(sidebar *ComponentSidebar) *HeaderBar {
+func NewHeaderBar(sidebar *drawer.D) *HeaderBar {
 	return &HeaderBar{sidebar: sidebar}
 }
 
@@ -51,7 +52,8 @@ func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 				Name: "menu",
 			},
 			OnClick: func(e *vecty.Event) {
-				hb.sidebar.Toggle()
+				hb.sidebar.Open = !hb.sidebar.Open
+				vecty.Rerender(hb.sidebar)
 			},
 		}
 
