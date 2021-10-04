@@ -16,8 +16,6 @@ type HeaderIcon struct {
 }
 
 func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
-	vecty.AddStylesheet("/assets/styles/HeaderBar.css")
-
 	if false {
 		return &iconbutton.IB{
 			Root: vecty.Markup(

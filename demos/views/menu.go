@@ -49,7 +49,6 @@ type MenuDemos struct {
 }
 
 func (bd *MenuDemos) Render() vecty.ComponentOrHTML {
-	vecty.AddStylesheet("/assets/styles/MenuCatalog.css")
 
 	menu := &menu.M{
 		AnchorElement: elem.Div(),

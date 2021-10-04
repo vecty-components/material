@@ -15,7 +15,6 @@ func NewHeroComponent(h vecty.ComponentOrHTML) *HeroComponent {
 }
 
 func (hc *HeroComponent) Render() vecty.ComponentOrHTML {
-	vecty.AddStylesheet("/assets/styles/HeroComponent.css")
 
 	return elem.Div(
 		vecty.Markup(

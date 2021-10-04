@@ -41,7 +41,6 @@ func NewComponentPage(
 }
 
 func (cp *ComponentCatalogPanel) Render() vecty.ComponentOrHTML {
-	vecty.AddStylesheet("/assets/styles/ComponentCatalogPanel.css")
 
 	return elem.Section(
 		vecty.Markup(

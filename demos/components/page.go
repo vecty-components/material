@@ -12,7 +12,6 @@ type ComponentPage struct {
 }
 
 func (cp *ComponentPage) Render() vecty.ComponentOrHTML {
-	vecty.AddStylesheet("/assets/styles/ComponentPage.css")
 
 	return elem.Div(
 		vecty.Markup(

@@ -27,7 +27,6 @@ func NewComponentImageList(list []components.DemoLink) *ComponentImageList {
 }
 
 func (cl *ComponentImageList) Render() vecty.ComponentOrHTML {
-	vecty.AddStylesheet("/assets/styles/ImageListCatalog.css")
 
 	children := []vecty.MarkupOrChild{
 		vecty.Markup(

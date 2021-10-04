@@ -13,7 +13,20 @@ import (
 
 func main() {
 	base.SetViewport()
-	base.AddResources()
+	base.AddStyles()
+
+	vecty.AddStylesheet("/assets/styles/App.css")
+	vecty.AddStylesheet("/assets/styles/HeaderBar.css")
+	vecty.AddStylesheet("/assets/styles/ComponentPage.css")
+	vecty.AddStylesheet("/assets/styles/ComponentCatalogPanel.css")
+	vecty.AddStylesheet("/assets/styles/CatalogPage.css")
+	vecty.AddStylesheet("/assets/styles/HeroComponent.css")
+
+	vecty.AddStylesheet("/assets/styles/ImageListCatalog.css")
+	vecty.AddStylesheet("/assets/styles/ButtonCatalog.css")
+	vecty.AddStylesheet("/assets/styles/MenuCatalog.css")
+
+	base.Boot()
 
 	body := &Body{}
 	vecty.RenderBody(body)
@@ -26,7 +39,6 @@ type Body struct {
 
 // Render renders the <body> tag with the App as its children
 func (b *Body) Render() vecty.ComponentOrHTML {
-	vecty.AddStylesheet("/assets/styles/App.css")
 
 	return elem.Body(
 		vecty.Markup(
@@ -42,7 +54,6 @@ type CatalogPage struct {
 
 func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 	vecty.SetTitle("Material Components Web | Catalog")
-	vecty.AddStylesheet("/assets/styles/CatalogPage.css")
 
 	componentList := []components.DemoLink{
 		{

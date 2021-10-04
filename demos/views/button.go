@@ -84,7 +84,6 @@ func (bd *ButtonDemos) renderButtonVariant(title string, variantClass []string) 
 }
 
 func (bd *ButtonDemos) Render() vecty.ComponentOrHTML {
-	vecty.AddStylesheet("/assets/styles/ButtonCatalog.css")
 
 	return elem.Div(
 		bd.renderButtonVariant("Text Button", []string{}),
