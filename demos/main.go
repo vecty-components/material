@@ -26,6 +26,7 @@ func main() {
 	vecty.AddStylesheet("/assets/styles/ButtonCatalog.css")
 	vecty.AddStylesheet("/assets/styles/MenuCatalog.css")
 	vecty.AddStylesheet("/assets/styles/ListCatalog.css")
+	vecty.AddStylesheet("/assets/styles/CheckboxCatalog.css")
 
 	base.Boot()
 
@@ -185,6 +186,9 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 			),
 			router.NewRoute(
 				"/list", views.NewListPage(), router.NewRouteOpts{ExactMatch: true},
+			),
+			router.NewRoute(
+				"/checkbox", views.NewCheckboxPage(), router.NewRouteOpts{ExactMatch: true},
 			),
 		},
 	}
