@@ -39,7 +39,7 @@ func (c *TB) Component() *base.Component {
 	case c.mdc == nil:
 		c.mdc = &base.Component{
 			Type: base.ComponentType{
-				MDCClassName:     "MDCTBabBar",
+				MDCClassName:     "MDCTabBar",
 				MDCCamelCaseName: "tabBar",
 			},
 		}

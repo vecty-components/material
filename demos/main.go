@@ -190,6 +190,9 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 			router.NewRoute(
 				"/checkbox", views.NewCheckboxPage(), router.NewRouteOpts{ExactMatch: true},
 			),
+			router.NewRoute(
+				"/tabs", views.NewTabbarPage(), router.NewRouteOpts{ExactMatch: true},
+			),
 		},
 	}
 
