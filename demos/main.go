@@ -25,6 +25,7 @@ func main() {
 	vecty.AddStylesheet("/assets/styles/ImageListCatalog.css")
 	vecty.AddStylesheet("/assets/styles/ButtonCatalog.css")
 	vecty.AddStylesheet("/assets/styles/MenuCatalog.css")
+	vecty.AddStylesheet("/assets/styles/ListCatalog.css")
 
 	base.Boot()
 
@@ -181,6 +182,9 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 			),
 			router.NewRoute(
 				"/menu", views.NewMenuPage(), router.NewRouteOpts{ExactMatch: true},
+			),
+			router.NewRoute(
+				"/list", views.NewListPage(), router.NewRouteOpts{ExactMatch: true},
 			),
 		},
 	}

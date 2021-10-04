@@ -8,6 +8,7 @@ import (
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/demos/components"
 	"github.com/vecty-material/material/menu"
+	"github.com/vecty-material/material/typography"
 	"github.com/vecty-material/material/ul"
 )
 
@@ -66,10 +67,7 @@ func (bd *MenuDemos) Render() vecty.ComponentOrHTML {
 	}
 
 	return elem.Div(
-		elem.Heading3(
-			vecty.Markup(
-				vecty.Class("mdc-typography--subtitle1"),
-			),
+		typography.Subtitle1(
 			vecty.Text("Anchored Menu"),
 		),
 		&button.B{

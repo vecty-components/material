@@ -6,6 +6,7 @@ import (
 	"github.com/vecty-material/material/button"
 	"github.com/vecty-material/material/demos/components"
 	"github.com/vecty-material/material/icon"
+	"github.com/vecty-material/material/typography"
 )
 
 func NewButtonPage() *components.ComponentPage {
@@ -49,10 +50,7 @@ type ButtonDemos struct {
 
 func (bd *ButtonDemos) renderButtonVariant(title string, variantClass []string) vecty.ComponentOrHTML {
 	return elem.Div(
-		elem.Heading3(
-			vecty.Markup(
-				vecty.Class("mdc-typography--subtitle1"),
-			),
+		typography.Subtitle1(
 			vecty.Text(title),
 		),
 		&button.B{
