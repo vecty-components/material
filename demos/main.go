@@ -1,6 +1,8 @@
 package main
 
 import (
+	"syscall/js"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	router "marwan.io/vecty-router"
@@ -34,6 +36,26 @@ func (b *Body) Render() vecty.ComponentOrHTML {
 		),
 		&CatalogPage{},
 	)
+}
+
+type NilComponent struct {
+	cf func(string)
+	vecty.Core
+}
+
+func NewNilComponent(cf func(string)) *router.Route {
+	return router.NewRoute(
+		"/.*", &NilComponent{cf: cf}, router.NewRouteOpts{},
+	)
+}
+
+func (nc *NilComponent) Render() vecty.ComponentOrHTML {
+	pathname := js.Global().Get("window").
+		Get("location").Get("pathname").String()
+
+	nc.cf(pathname)
+
+	return nil
 }
 
 type CatalogPage struct {
@@ -149,15 +171,28 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 	}
 
 	sidebar := components.NewComponentSidebar(componentList)
+	appbar, hicon := components.NewHeaderBar(sidebar)
 
-	return &app.A{
+	onNavigate := func(path string) {
+		if path == "/" && !hicon.IsTop {
+			hicon.IsTop = true
+			sidebar.Open = false
+			vecty.Rerender(hicon)
+			vecty.Rerender(sidebar)
+		} else if path != "/" && hicon.IsTop {
+			hicon.IsTop = false
+			vecty.Rerender(hicon)
+		}
+	}
+
+	a := &app.A{
 		RootMarkup: vecty.Markup(
 			vecty.Class("demo-panel"),
 		),
 		ChildMarkup: vecty.Markup(
 			vecty.Class("demo-content"),
 		),
-		Appbar:  components.NewHeaderBar(sidebar),
+		Appbar:  appbar,
 		Sidebar: sidebar,
 		Routes: []vecty.ComponentOrHTML{
 			router.NewRoute(
@@ -170,6 +205,9 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 			router.NewRoute(
 				"/menu", views.NewMenuPage(), router.NewRouteOpts{ExactMatch: true},
 			),
+			NewNilComponent(onNavigate),
 		},
 	}
+
+	return a
 }

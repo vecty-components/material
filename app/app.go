@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/vecty-material/material/appbar"
 	"github.com/vecty-material/material/drawer"
 )
 
@@ -11,7 +12,7 @@ type A struct {
 	vecty.Core
 	RootMarkup  vecty.MarkupList
 	ChildMarkup vecty.MarkupList
-	Appbar      vecty.ComponentOrHTML
+	Appbar      *appbar.A
 	Sidebar     *drawer.D
 	Routes      vecty.List
 }

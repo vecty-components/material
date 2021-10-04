@@ -1,38 +1,26 @@
 package components
 
 import (
-	"syscall/js"
-
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/appbar"
-	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/drawer"
 	"github.com/vecty-material/material/icon"
 	"github.com/vecty-material/material/iconbutton"
 )
 
-type HeaderBar struct {
+type HeaderIcon struct {
 	vecty.Core
-	ticonb, miconb *iconbutton.IB
-	sidebar        *drawer.D
+	sidebar *drawer.D
+	IsTop   bool
 }
 
-func pathname() string {
-	return js.Global().Get("window").Get("location").
-		Get("pathname").String()
-}
-
-func NewHeaderBar(sidebar *drawer.D) *HeaderBar {
-	return &HeaderBar{sidebar: sidebar}
-}
-
-func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
+func (hi *HeaderIcon) Render() vecty.ComponentOrHTML {
 	vecty.AddStylesheet("/assets/styles/HeaderBar.css")
 
-	if hb.ticonb == nil || hb.miconb == nil {
-		hb.ticonb = &iconbutton.IB{
+	if hi.IsTop {
+		return &iconbutton.IB{
 			Root: vecty.Markup(
 				vecty.Class("mdc-top-app-bar__navigation-icon"),
 			),
@@ -43,27 +31,30 @@ func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 				),
 			),
 		}
-
-		hb.miconb = &iconbutton.IB{
-			Root: vecty.Markup(
-				vecty.Class("mdc-top-app-bar__navigation-icon"),
-			),
-			OnIcon: &icon.I{
-				Name: "menu",
-			},
-			OnClick: func(e *vecty.Event) {
-				hb.sidebar.Open = !hb.sidebar.Open
-				vecty.Rerender(hb.sidebar)
-			},
-		}
-
 	}
 
-	var icon vecty.ComponentOrHTML
-	if pathname() == "/" {
-		icon = hb.ticonb
-	} else {
-		icon = hb.miconb
+	return &iconbutton.IB{
+		Root: vecty.Markup(
+			vecty.Class("mdc-top-app-bar__navigation-icon"),
+		),
+		OnIcon: &icon.I{
+			Name: "menu",
+		},
+		OnClick: func(e *vecty.Event) {
+			hi.sidebar.Open = !hi.sidebar.Open
+			vecty.Rerender(hi.sidebar)
+		},
+	}
+}
+
+type HeaderBar struct {
+	vecty.Core
+	HeaderIcon *HeaderIcon
+}
+
+func NewHeaderBar(sidebar *drawer.D) (*appbar.A, *HeaderIcon) {
+	hicon := &HeaderIcon{
+		sidebar: sidebar,
 	}
 
 	return &appbar.A{
@@ -71,7 +62,7 @@ func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 			vecty.Class("catalog-top-app-bar"),
 		),
 		SectionStart: vecty.List{
-			base.RenderStoredChild(icon),
+			hicon,
 			appbar.Title(
 				"Material Components for the Web",
 				[]vecty.Applyer{
@@ -81,5 +72,5 @@ func (hb *HeaderBar) Render() vecty.ComponentOrHTML {
 				},
 			),
 		},
-	}
+	}, hicon
 }
