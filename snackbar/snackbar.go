@@ -16,7 +16,6 @@ type S struct {
 	vecty.Core
 	Root    vecty.MarkupOrChild
 	Label   vecty.MarkupOrChild
-	Open    bool
 	Buttons []*button.B
 }
 
@@ -96,16 +95,10 @@ func (c *S) Apply(h *vecty.HTML) {
 		fallthrough
 	case c.MDC.Component == nil:
 		c.MDC.Component = snackbar.New()
-		if s, ok := c.MDC.Component.(*snackbar.S); ok {
-			_ = s
-		}
 	}
 
 	vecty.Markup(
 		vecty.Class("mdc-snackbar"),
-		vecty.MarkupIf(
-			c.Open, vecty.Class("mdc-snackbar--open"),
-		),
 	).Apply(h)
 	c.MDC.RootElement = h
 }
