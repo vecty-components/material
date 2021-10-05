@@ -8,24 +8,22 @@ import (
 )
 
 type T struct {
-	vecty.Core
-	Label  vecty.ComponentOrHTML
-	active bool
+	Label vecty.ComponentOrHTML
 }
 
-func (c *T) Render() vecty.ComponentOrHTML {
+func (c *T) renderTab(active bool) *vecty.HTML {
 	return elem.Button(
 		vecty.Markup(
 			vecty.Class("mdc-tab"),
 			vecty.Attribute("role", "tab"),
 			vecty.MarkupIf(
-				c.active,
+				active,
 				vecty.Attribute("aria-selected", "true"),
 				vecty.Attribute("tabIndex", "0"),
 				vecty.Class("mdc-tab--active"),
 			),
 			vecty.MarkupIf(
-				c.active,
+				active,
 				vecty.Attribute("aria-selected", "false"),
 				vecty.Attribute("tabIndex", "-1"),
 			),
@@ -45,7 +43,7 @@ func (c *T) Render() vecty.ComponentOrHTML {
 			vecty.Markup(
 				vecty.Class("mdc-tab-indicator"),
 				vecty.MarkupIf(
-					c.active,
+					active,
 					vecty.Class("mdc-tab-indicator--active"),
 				),
 			),
@@ -88,9 +86,8 @@ func (c *TB) Render() vecty.ComponentOrHTML {
 	}
 
 	tabs := make([]vecty.MarkupOrChild, len(c.Tabs))
-	for i, tab := range c.Tabs {
-		tab.active = int(c.Active) == i
-		tabs[i] = tab
+	for i, t := range c.Tabs {
+		tabs[i] = t.renderTab(int(c.Active) == i)
 	}
 
 	// Built in root element.

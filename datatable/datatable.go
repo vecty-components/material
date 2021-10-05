@@ -8,36 +8,66 @@ import (
 )
 
 type R struct {
-	vecty.Core
 	Cells []*C
-
-	head bool
 }
 
-func (c *R) Render() vecty.ComponentOrHTML {
+func (c *R) renderHead() *vecty.HTML {
+	cells := make([]vecty.MarkupOrChild, len(c.Cells))
+	for i, c := range c.Cells {
+		cells[i] = c.renderHead()
+	}
+
 	return elem.TableRow(
-		vecty.Markup(
-			vecty.MarkupIf(
-				c.head, vecty.Class("mdc-data-table__header-row"),
+		append([]vecty.MarkupOrChild{
+			vecty.Markup(
+				vecty.Class("mdc-data-table__header-row"),
 			),
-			vecty.MarkupIf(
-				!c.head, vecty.Class("mdc-data-table__row"),
+		}, cells...)...,
+	)
+}
+
+func (c *R) renderRow() *vecty.HTML {
+	cells := make([]vecty.MarkupOrChild, len(c.Cells))
+	for i, c := range c.Cells {
+		cells[i] = c.renderRow()
+	}
+
+	return elem.TableRow(
+		append([]vecty.MarkupOrChild{
+			vecty.Markup(
+				vecty.Class("mdc-data-table__row"),
 			),
-		),
-		// c.Cells...,
+		}, cells...)...,
 	)
 }
 
 type C struct {
-	vecty.Core
+	Label vecty.ComponentOrHTML
 }
 
-func (c *C) Render() vecty.ComponentOrHTML {
-	return nil
+func (c *C) renderHead() *vecty.HTML {
+	return elem.TableHeader(
+		vecty.Markup(
+			vecty.Class("mdc-data-table__header-cell"),
+			vecty.Attribute("role", "columnheader"),
+			vecty.Attribute("scope", "col"),
+		),
+		c.Label,
+	)
+}
+
+func (c *C) renderRow() *vecty.HTML {
+	return elem.TableData(
+		vecty.Markup(
+			vecty.Class("mdc-data-table__cell"),
+			vecty.Attribute("scope", "row"),
+		),
+		c.Label,
+	)
 }
 
 // TB is a vecty-material datatable component.
-type TB struct {
+type DT struct {
 	*base.MDC
 	vecty.Core
 	Root vecty.MarkupOrChild
@@ -46,18 +76,16 @@ type TB struct {
 }
 
 // Render implements the vecty.Component interface.
-func (c *TB) Render() vecty.ComponentOrHTML {
+func (c *DT) Render() vecty.ComponentOrHTML {
 	rootMarkup := base.MarkupOnly(c.Root)
 	if c.Root != nil && rootMarkup == nil {
 		// User supplied root element.
 		return elem.Div(c.Root)
 	}
-	c.Head.head = true
 
 	rows := make([]vecty.MarkupOrChild, len(c.Rows))
 	for i, row := range c.Rows {
-		row.head = false
-		rows[i] = row
+		rows[i] = row.renderRow()
 	}
 
 	// Built in root element.
@@ -71,7 +99,7 @@ func (c *TB) Render() vecty.ComponentOrHTML {
 				vecty.Class("mdc-data-table__table"),
 			),
 			elem.TableHead(
-				c.Head,
+				c.Head.renderHead(),
 			),
 			elem.TableBody(
 				append([]vecty.MarkupOrChild{
@@ -84,7 +112,7 @@ func (c *TB) Render() vecty.ComponentOrHTML {
 	)
 }
 
-func (c *TB) Apply(h *vecty.HTML) {
+func (c *DT) Apply(h *vecty.HTML) {
 	switch {
 	case c.MDC == nil:
 		c.MDC = &base.MDC{}

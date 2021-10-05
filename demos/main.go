@@ -193,6 +193,9 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 			router.NewRoute(
 				"/tabs", views.NewTabbarPage(), router.NewRouteOpts{ExactMatch: true},
 			),
+			router.NewRoute(
+				"/data-table", views.NewDatatablePage(), router.NewRouteOpts{ExactMatch: true},
+			),
 		},
 	}
 
