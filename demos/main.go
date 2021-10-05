@@ -199,6 +199,9 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 			router.NewRoute(
 				"/snackbar", views.NewSnackbarPage(), router.NewRouteOpts{ExactMatch: true},
 			),
+			router.NewRoute(
+				"/layout-grid", views.NewLayoutGridPage(), router.NewRouteOpts{ExactMatch: true},
+			),
 		},
 	}
 
