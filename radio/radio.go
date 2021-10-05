@@ -16,7 +16,7 @@ type R struct {
 	vecty.Core
 	Root     vecty.MarkupOrChild
 	Input    vecty.MarkupOrChild
-	OnChange func(this *R, e *vecty.Event)
+	OnChange func(e *vecty.Event)
 	Name     string
 	Checked  bool
 	Disabled bool
@@ -78,7 +78,7 @@ func (c *R) onChange(e *vecty.Event) {
 		c.Value = r.Value
 	}
 	if c.OnChange != nil {
-		c.OnChange(c, e)
+		c.OnChange(e)
 	}
 }
 

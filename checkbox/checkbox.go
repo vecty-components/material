@@ -17,7 +17,7 @@ type CB struct {
 	Root          vecty.MarkupOrChild
 	Input         vecty.MarkupOrChild
 	Background    vecty.MarkupOrChild
-	OnChange      func(this *CB, e *vecty.Event)
+	OnChange      func(e *vecty.Event)
 	Checked       bool
 	Indeterminate bool
 	Disabled      bool
@@ -104,7 +104,7 @@ func (c *CB) onChange(e *vecty.Event) {
 		c.Value = cb.Value
 	}
 	if c.OnChange != nil {
-		c.OnChange(c, e)
+		c.OnChange(e)
 	}
 }
 

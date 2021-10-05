@@ -88,25 +88,25 @@ func (c *S) Component() *base.Component {
 func (c *S) StateMap() base.StateMap {
 	print()
 	sm := base.StateMap{
-		"dismissOnAction": c.DismissOnAction,
-		"message":         c.Message,
-		"timeout":         c.Timeout,
-		"actionHandler":   c.ActionHandler,
-		"actionText":      c.ActionText,
-		"actionOnBottom":  c.ActionOnBottom,
+		// "dismissOnAction": c.DismissOnAction,
+		// "message":         c.Message,
+		// "timeout":         c.Timeout,
+		// "actionHandler":   c.ActionHandler,
+		// "actionText":      c.ActionText,
+		// "actionOnBottom":  c.ActionOnBottom,
 	}
-	if c.Component().Value.Get("message").String() == "undefined" {
-		sm["message"] = js.ValueOf(c).Get("Message")
+	if c.Component().Value.Get("message").IsUndefined() {
+		// sm["message"] = js.ValueOf(c).Get("Message")
 	}
-	if c.Component().Value.Get("timeout").String() == "undefined" {
-		sm["timeout"] = 2750
+	if c.Component().Value.Get("timeout").IsUndefined() {
+		// sm["timeout"] = 2750
 	}
-	if c.Component().Get("actionHandler").String() == "undefined" {
+	if c.Component().Get("actionHandler").IsUndefined() {
 		c.ActionHandler = nil
-		sm["actionHandler"] = nil
+		// sm["actionHandler"] = nil
 	}
-	if c.Component().Value.Get("actionText").String() == "undefined" {
-		sm["actionText"] = js.ValueOf(c).Get("ActionText")
+	if c.Component().Value.Get("actionText").IsUndefined() {
+		// sm["actionText"] = js.ValueOf(c).Get("ActionText")
 	}
 	return sm
 }

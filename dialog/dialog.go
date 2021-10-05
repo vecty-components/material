@@ -25,8 +25,8 @@ type D struct {
 	Scrollable bool
 	AcceptBtn  *button.B
 	CancelBtn  *button.B
-	OnAccept   func(this *D, e *vecty.Event)
-	OnCancel   func(this *D, e *vecty.Event)
+	OnAccept   func(e *vecty.Event)
+	OnCancel   func(e *vecty.Event)
 }
 
 // Render implements the vecty.Component interface.
@@ -184,7 +184,7 @@ func (c *D) onCancel(e *vecty.Event) {
 
 	vecty.Rerender(c)
 	if c.OnCancel != nil {
-		c.OnCancel(c, e)
+		c.OnCancel(e)
 	}
 }
 
@@ -196,6 +196,6 @@ func (c *D) onAccept(e *vecty.Event) {
 
 	vecty.Rerender(c)
 	if c.OnAccept != nil {
-		c.OnAccept(c, e)
+		c.OnAccept(e)
 	}
 }

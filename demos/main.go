@@ -196,6 +196,9 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 			router.NewRoute(
 				"/data-table", views.NewDatatablePage(), router.NewRouteOpts{ExactMatch: true},
 			),
+			router.NewRoute(
+				"/snackbar", views.NewSnackbarPage(), router.NewRouteOpts{ExactMatch: true},
+			),
 		},
 	}
 
