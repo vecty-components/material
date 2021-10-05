@@ -29,6 +29,19 @@ func (bh *TabbarHero) Render() vecty.ComponentOrHTML {
 		vecty.Markup(
 			vecty.Class("tab-content"),
 		),
+		&tabbar.TB{
+			Tabs: []*tabbar.T{
+				{
+					Label: vecty.Text("Home"),
+				},
+				{
+					Label: vecty.Text("Merchandise"),
+				},
+				{
+					Label: vecty.Text("About Us"),
+				},
+			},
+		},
 	)
 }
 
