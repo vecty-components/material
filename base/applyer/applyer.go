@@ -1,6 +1,7 @@
 package applyer
 
 import (
+	"reflect"
 	"syscall/js"
 
 	"github.com/hexops/vecty"
@@ -56,25 +57,20 @@ func StartRipple(h *vecty.HTML) {
 	p.Get("Start").Invoke()
 }
 
-func findProp(key string, h *vecty.HTML) js.Value {
-	defer func() {
-		msg := "vecty: cannot call (*HTML).Node() before DOM node creation / component mount"
-		if p := recover(); p != nil && p != msg {
-			panic(p)
-		}
-	}()
+func findProp(key string, html *vecty.HTML) js.Value {
+	h := reflect.ValueOf(*html)
+	if !h.FieldByName("properties").IsZero() {
+		for _, k := range h.FieldByName("properties").MapKeys() {
+			if reflect.ValueOf(key) != k {
+				continue
+			}
 
-	k := h.Node()
-	if k.IsUndefined() {
-		return js.Null()
+			href := h.FieldByName("properties").
+				MapIndex(reflect.ValueOf(key)).Elem().String()
+
+			return js.ValueOf(href)
+		}
 	}
-	k = k.Get("properties")
-	if k.IsUndefined() {
-		return js.Null()
-	}
-	k = k.Get("$" + key)
-	if k.IsUndefined() {
-		return js.Null()
-	}
-	return k.Get("v").Get("$val")
+
+	return js.Undefined()
 }
