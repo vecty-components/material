@@ -6,7 +6,7 @@ package snackbar // import "github.com/vecty-material/material/components/snackb
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/base"
+	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/gojs"
 )
 

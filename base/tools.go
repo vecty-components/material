@@ -8,7 +8,6 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/components/base"
 	router "marwan.io/vecty-router"
 )
 
@@ -84,14 +83,14 @@ func ClearCSS() {
 }
 
 func AddStyles() {
-	vecty.AddStylesheet("https://unpkg.com/material-components-web@" + base.MDC_VERSION + "/dist/material-components-web.min.css")
+	vecty.AddStylesheet("https://unpkg.com/material-components-web@" + MDC_VERSION + "/dist/material-components-web.min.css")
 	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto+Mono")
 	vecty.AddStylesheet("https://fonts.googleapis.com/css?family=Roboto:300,400,500")
 	vecty.AddStylesheet("https://fonts.googleapis.com/icon?family=Material+Icons")
 }
 
 func Boot() {
-	AddScript("https://unpkg.com/material-components-web@" + base.MDC_VERSION + "/dist/material-components-web.min.js")
+	AddScript("https://unpkg.com/material-components-web@" + MDC_VERSION + "/dist/material-components-web.min.js")
 
 	for {
 		time.Sleep(25 * time.Millisecond)

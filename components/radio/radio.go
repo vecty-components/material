@@ -6,7 +6,7 @@ package radio // import "github.com/vecty-material/material/components/radio"
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/base"
+	"github.com/vecty-material/material/base"
 )
 
 // R is a material radio component.

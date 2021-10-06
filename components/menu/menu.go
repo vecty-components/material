@@ -4,7 +4,7 @@
 package menu // import "github.com/vecty-material/material/components/menu"
 
 import (
-	"github.com/vecty-material/material/components/base"
+	"github.com/vecty-material/material/base"
 
 	"syscall/js"
 )

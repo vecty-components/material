@@ -6,7 +6,7 @@ package formfield // import "github.com/vecty-material/material/components/formf
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/base"
+	"github.com/vecty-material/material/base"
 )
 
 // FF is a material formfield component.

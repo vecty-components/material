@@ -3,7 +3,7 @@ package dialog
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/base"
+	"github.com/vecty-material/material/base"
 )
 
 func (c *D) afterStart() (err error) {

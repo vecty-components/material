@@ -6,7 +6,7 @@ package appbar
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/base"
+	"github.com/vecty-material/material/base"
 )
 
 // A is a material appbar component.

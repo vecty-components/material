@@ -2,7 +2,7 @@
 The base package contains code shared by implementations of material components
 for GopherJS.
 */
-package base // import "github.com/vecty-material/material/components/base"
+package base // import "github.com/vecty-material/material/base"
 
 import (
 	"errors"

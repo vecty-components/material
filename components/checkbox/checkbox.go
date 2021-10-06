@@ -6,7 +6,7 @@ package checkbox // import "github.com/vecty-material/material/components/checkb
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/base"
+	"github.com/vecty-material/material/base"
 )
 
 // CB is a material checkbox component.

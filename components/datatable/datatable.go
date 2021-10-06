@@ -6,7 +6,7 @@ package datatable
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/base"
+	"github.com/vecty-material/material/base"
 )
 
 // DT is a material datatable component.

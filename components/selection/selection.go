@@ -6,7 +6,7 @@ package selection // import "github.com/vecty-material/material/components/selec
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/base"
+	"github.com/vecty-material/material/base"
 )
 
 // S is a material selection component.
