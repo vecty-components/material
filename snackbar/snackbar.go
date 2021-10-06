@@ -7,7 +7,7 @@ import (
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-material/material/base"
 	"github.com/vecty-material/material/button"
-	"github.com/vecty-material/material/components/snackbar"
+	"github.com/vecty-material/material/gojs"
 )
 
 // S is a vecty-material snackbar component.
@@ -94,11 +94,32 @@ func (c *S) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = snackbar.New()
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCSnackbar",
+				MDCCamelCaseName: "snackbar",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{
+			// "timeoutMs":     c.Timeout,
+			// "closeOnEscape": c.CloseOnEscape,
+		})
 	}
 
 	vecty.Markup(
 		vecty.Class("mdc-snackbar"),
 	).Apply(h)
 	c.MDC.RootElement = h
+}
+
+// Open displays the snackbar. If the configuration is invalid an error message
+// will be returned and the snackbar will not be shown. For information on
+// config requirements look at documentation for S.
+func (c *S) Open() error {
+	var err error
+	gojs.CatchException(&err)
+
+	c.MDC.Component.Component().Value.Call("open")
+	return err
 }

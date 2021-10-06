@@ -52,11 +52,11 @@ func (c *Component) ComponentType() ComponentType {
 }
 
 func (c *Component) Start(rootElem js.Value) error {
-	return nil
+	return Start(c, rootElem)
 }
 
 func (c *Component) Stop() error {
-	return nil
+	return Stop(c)
 }
 
 func (c *Component) SetState(sm StateMap) *Component {

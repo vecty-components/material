@@ -6,7 +6,6 @@ import (
 	"github.com/hexops/vecty/event"
 
 	"github.com/vecty-material/material/button"
-	ssnackbar "github.com/vecty-material/material/components/snackbar"
 	"github.com/vecty-material/material/demos/components"
 	"github.com/vecty-material/material/snackbar"
 )
@@ -52,7 +51,7 @@ func (bd *SnackbarDemos) Render() vecty.ComponentOrHTML {
 			Label: elem.Anchor(
 				vecty.Markup(
 					event.Click(func(e *vecty.Event) {
-						s.MDC.Component.(*ssnackbar.S).Open()
+						s.Open()
 					}),
 				),
 				vecty.Text("Baseline"),
