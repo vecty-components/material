@@ -68,9 +68,10 @@ func (c *T) renderTab(active bool) *vecty.HTML {
 type TB struct {
 	*base.MDC
 	vecty.Core
-	Root   vecty.MarkupOrChild
-	Tabs   []*T
-	Active uint
+	Root     vecty.MarkupOrChild
+	Tabs     []*T
+	Active   uint
+	OnChange func(index int)
 }
 
 // Render implements the vecty.Component interface.
@@ -131,5 +132,17 @@ func (c *TB) Apply(h *vecty.HTML) {
 	vecty.Markup(
 		vecty.Class("mdc-tab-bar"),
 		vecty.Attribute("role", "tablist"),
+		&vecty.EventListener{
+			Name:     "MDCTabBar:activated",
+			Listener: c.onChange,
+		},
 	).Apply(h)
+}
+
+func (c *TB) onChange(e *vecty.Event) {
+	if c.OnChange != nil {
+		c.OnChange(
+			e.Get("detail").Get("index").Int(),
+		)
+	}
 }
