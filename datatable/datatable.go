@@ -4,6 +4,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-components/material/base"
+	"github.com/vecty-components/material/checkbox"
 )
 
 type R struct {
@@ -45,23 +46,47 @@ type C struct {
 }
 
 func (c *C) renderHead() *vecty.HTML {
+	label := c.Label
+	cb, ok := c.Label.(*checkbox.CB)
+	if ok {
+		label = cb.Render()
+		vecty.Markup(
+			vecty.Class("mdc-data-table__header-row-checkbox"),
+		).Apply(label.(*vecty.HTML))
+	}
+
 	return elem.TableHeader(
 		vecty.Markup(
 			vecty.Class("mdc-data-table__header-cell"),
+			vecty.MarkupIf(
+				ok, vecty.Class("mdc-data-table__header-cell--checkbox"),
+			),
 			vecty.Attribute("role", "columnheader"),
 			vecty.Attribute("scope", "col"),
 		),
-		c.Label,
+		label,
 	)
 }
 
 func (c *C) renderRow() *vecty.HTML {
+	label := c.Label
+	cb, ok := c.Label.(*checkbox.CB)
+	if ok {
+		label = cb.Render()
+		vecty.Markup(
+			vecty.Class("mdc-data-table__row-checkbox"),
+		).Apply(label.(*vecty.HTML))
+	}
+
 	return elem.TableData(
 		vecty.Markup(
+			vecty.MarkupIf(
+				ok, vecty.Class("mdc-data-table__cell--checkbox"),
+			),
 			vecty.Class("mdc-data-table__cell"),
 			vecty.Attribute("scope", "row"),
 		),
-		c.Label,
+		label,
 	)
 }
 

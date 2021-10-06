@@ -56,12 +56,7 @@ func (c *Component) Start(rootElem js.Value) error {
 }
 
 func (c *Component) Stop() error {
-	// FIXME: The MDC library errors on destroy if there is no checkbox
-	if c.Type.MDCClassName != "MDCDataTable" {
-		return Stop(c)
-	}
-
-	return nil
+	return Stop(c)
 }
 
 func (c *Component) SetState(sm StateMap) *Component {

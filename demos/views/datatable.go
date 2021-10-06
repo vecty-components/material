@@ -4,6 +4,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 
+	"github.com/vecty-components/material/checkbox"
 	"github.com/vecty-components/material/datatable"
 	"github.com/vecty-components/material/demos/components"
 	"github.com/vecty-components/material/typography"
@@ -46,6 +47,7 @@ func (bd *DatatableDemos) Render() vecty.ComponentOrHTML {
 		&datatable.DT{
 			Head: &datatable.R{
 				Cells: []*datatable.C{
+					{Label: &checkbox.CB{}},
 					{Label: vecty.Text("Col A")},
 					{Label: vecty.Text("Col B")},
 				},
@@ -53,8 +55,16 @@ func (bd *DatatableDemos) Render() vecty.ComponentOrHTML {
 			Rows: []*datatable.R{
 				{
 					Cells: []*datatable.C{
-						{Label: vecty.Text("Row A")},
-						{Label: vecty.Text("Row B")},
+						{Label: &checkbox.CB{}},
+						{Label: vecty.Text("Row 1 A")},
+						{Label: vecty.Text("Row 1 B")},
+					},
+				},
+				{
+					Cells: []*datatable.C{
+						{Label: &checkbox.CB{}},
+						{Label: vecty.Text("Row 2 A")},
+						{Label: vecty.Text("Row 2 B")},
 					},
 				},
 			},

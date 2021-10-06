@@ -4,7 +4,6 @@ go 1.17
 
 require (
 	github.com/hexops/vecty v0.6.0
-	github.com/lithammer/dedent v1.1.0
 	marwan.io/vecty-router v0.0.0-20200914150808-f30c81f0deb5
 )
 
