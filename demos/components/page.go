@@ -3,7 +3,7 @@ package components
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 type ComponentPage struct {

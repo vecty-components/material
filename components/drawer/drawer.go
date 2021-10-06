@@ -1,11 +1,11 @@
 // drawer implements a material drawer component.
 //
 // See: https://material.io/components/web/catalog/drawers/
-package drawer // import "github.com/vecty-material/material/components/drawer"
+package drawer // import "github.com/vecty-components/material/components/drawer"
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 // PD is a material drawer component.

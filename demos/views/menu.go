@@ -5,11 +5,11 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 
-	"github.com/vecty-material/material/button"
-	"github.com/vecty-material/material/demos/components"
-	"github.com/vecty-material/material/menu"
-	"github.com/vecty-material/material/typography"
-	"github.com/vecty-material/material/ul"
+	"github.com/vecty-components/material/button"
+	"github.com/vecty-components/material/demos/components"
+	"github.com/vecty-components/material/menu"
+	"github.com/vecty-components/material/typography"
+	"github.com/vecty-components/material/ul"
 )
 
 func NewMenuPage() *components.ComponentPage {

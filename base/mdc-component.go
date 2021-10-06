@@ -2,14 +2,14 @@
 The base package contains code shared by implementations of material components
 for GopherJS.
 */
-package base // import "github.com/vecty-material/material/base"
+package base // import "github.com/vecty-components/material/base"
 
 import (
 	"errors"
 
 	"syscall/js"
 
-	"github.com/vecty-material/material/gojs"
+	"github.com/vecty-components/material/gojs"
 )
 
 const MDC_VERSION = "4.0.0"
@@ -76,7 +76,7 @@ func (c *Component) SetState(sm StateMap) *Component {
 // init() method. An error will also be returned if Component() is non-nil.  Use
 // Stop to clean up the component before calling Start again.
 //
-// Important: If you are using a component from github.com/vecty-material/material/*, you
+// Important: If you are using a component from github.com/vecty-components/material/*, you
 // should use its Start method, not this function. Consult the component's
 // documentation for info/examples.
 //

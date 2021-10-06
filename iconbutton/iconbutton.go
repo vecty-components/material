@@ -4,9 +4,9 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
-	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/components/iconbutton"
-	"github.com/vecty-material/material/icon"
+	"github.com/vecty-components/material/base"
+	"github.com/vecty-components/material/components/iconbutton"
+	"github.com/vecty-components/material/icon"
 )
 
 // IB is a vecty-material iconbutton component.

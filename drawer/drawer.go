@@ -3,8 +3,8 @@ package drawer
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/components/drawer"
+	"github.com/vecty-components/material/base"
+	"github.com/vecty-components/material/components/drawer"
 )
 
 type Type int

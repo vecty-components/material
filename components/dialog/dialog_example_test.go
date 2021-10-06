@@ -6,8 +6,8 @@ import (
 
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/dialog"
-	"github.com/vecty-material/material/components/internal/mdctest"
+	"github.com/vecty-components/material/components/dialog"
+	"github.com/vecty-components/material/components/internal/mdctest"
 )
 
 func Example() {

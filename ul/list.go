@@ -7,7 +7,7 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 type nativeInputer interface {

@@ -3,7 +3,7 @@ package menu
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 // afterStart adds a missing getter to MDCMenu.quickOpen so we can work with

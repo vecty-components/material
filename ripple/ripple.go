@@ -2,7 +2,7 @@ package ripple
 
 import (
 	"github.com/hexops/vecty"
-	"github.com/vecty-material/material/components/ripple"
+	"github.com/vecty-components/material/components/ripple"
 )
 
 type R struct {

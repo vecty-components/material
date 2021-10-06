@@ -3,9 +3,9 @@ package menu
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/components/menu"
-	"github.com/vecty-material/material/ul"
+	"github.com/vecty-components/material/base"
+	"github.com/vecty-components/material/components/menu"
+	"github.com/vecty-components/material/ul"
 )
 
 // M is a vecty-material menu component.

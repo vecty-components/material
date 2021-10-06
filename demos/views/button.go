@@ -3,10 +3,10 @@ package views
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	"github.com/vecty-material/material/button"
-	"github.com/vecty-material/material/demos/components"
-	"github.com/vecty-material/material/icon"
-	"github.com/vecty-material/material/typography"
+	"github.com/vecty-components/material/button"
+	"github.com/vecty-components/material/demos/components"
+	"github.com/vecty-components/material/icon"
+	"github.com/vecty-components/material/typography"
 )
 
 func NewButtonPage() *components.ComponentPage {

@@ -4,9 +4,9 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 
-	"github.com/vecty-material/material/demos/components"
-	"github.com/vecty-material/material/grid"
-	"github.com/vecty-material/material/typography"
+	"github.com/vecty-components/material/demos/components"
+	"github.com/vecty-components/material/grid"
+	"github.com/vecty-components/material/typography"
 )
 
 func NewLayoutGridPage() *components.ComponentPage {

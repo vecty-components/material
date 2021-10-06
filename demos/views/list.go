@@ -4,9 +4,9 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 
-	"github.com/vecty-material/material/demos/components"
-	"github.com/vecty-material/material/typography"
-	"github.com/vecty-material/material/ul"
+	"github.com/vecty-components/material/demos/components"
+	"github.com/vecty-components/material/typography"
+	"github.com/vecty-components/material/ul"
 )
 
 func NewListPage() *components.ComponentPage {

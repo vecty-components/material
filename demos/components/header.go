@@ -4,10 +4,10 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/appbar"
-	"github.com/vecty-material/material/drawer"
-	"github.com/vecty-material/material/icon"
-	"github.com/vecty-material/material/iconbutton"
+	"github.com/vecty-components/material/appbar"
+	"github.com/vecty-components/material/drawer"
+	"github.com/vecty-components/material/icon"
+	"github.com/vecty-components/material/iconbutton"
 )
 
 type HeaderIcon struct {

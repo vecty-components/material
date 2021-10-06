@@ -3,8 +3,8 @@ package components
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/drawer"
-	"github.com/vecty-material/material/ul"
+	"github.com/vecty-components/material/drawer"
+	"github.com/vecty-components/material/ul"
 	router "marwan.io/vecty-router"
 )
 

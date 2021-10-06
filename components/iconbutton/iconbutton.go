@@ -1,12 +1,12 @@
 // iconbutton implements a material iconbutton component.
 //
 // See: https://material.io/components/web/catalog/buttons/icon-toggle-buttons/
-package iconbutton // import "github.com/vecty-material/material/components/iconbutton"
+package iconbutton // import "github.com/vecty-components/material/components/iconbutton"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 // IB is a material iconbutton component.

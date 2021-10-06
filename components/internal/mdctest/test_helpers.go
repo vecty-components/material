@@ -1,10 +1,10 @@
-package mdctest // import "github.com/vecty-material/material/components/internal/mdctest"
+package mdctest // import "github.com/vecty-components/material/components/internal/mdctest"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/gojs"
-	"github.com/vecty-material/material/gojs/jsdom"
+	"github.com/vecty-components/material/gojs"
+	"github.com/vecty-components/material/gojs/jsdom"
 )
 
 const (

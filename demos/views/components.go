@@ -8,8 +8,8 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/demos/components"
+	"github.com/vecty-components/material/base"
+	"github.com/vecty-components/material/demos/components"
 	router "marwan.io/vecty-router"
 )
 

@@ -1,12 +1,12 @@
 // https://material.io/components/web/catalog/buttons/
-package button // import "github.com/vecty-material/material/button"
+package button // import "github.com/vecty-components/material/button"
 
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 // B is a vecty-material button component.

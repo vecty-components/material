@@ -5,9 +5,9 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/button"
-	"github.com/vecty-material/material/gojs"
+	"github.com/vecty-components/material/base"
+	"github.com/vecty-components/material/button"
+	"github.com/vecty-components/material/gojs"
 )
 
 // S is a vecty-material snackbar component.

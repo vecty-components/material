@@ -5,9 +5,9 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/base/applyer"
-	"github.com/vecty-material/material/components/checkbox"
+	"github.com/vecty-components/material/base"
+	"github.com/vecty-components/material/base/applyer"
+	"github.com/vecty-components/material/components/checkbox"
 )
 
 // CB is a vecty-material checkbox component.

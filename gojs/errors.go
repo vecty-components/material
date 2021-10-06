@@ -1,4 +1,4 @@
-package gojs // import "github.com/vecty-material/material/gojs"
+package gojs // import "github.com/vecty-components/material/gojs"
 
 import (
 	"errors"

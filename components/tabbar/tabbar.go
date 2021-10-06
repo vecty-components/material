@@ -6,7 +6,7 @@ package tabbar
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 // TB is a material tabbar component.

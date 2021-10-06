@@ -1,7 +1,7 @@
 package linearprogress
 
 import (
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 // TODO: fix functions to be js.Func

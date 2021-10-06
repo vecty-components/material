@@ -1,12 +1,12 @@
 // selection implements a material selection component.
 //
 // See: https://material.io/components/web/catalog/input-controls/select-menus/
-package selection // import "github.com/vecty-material/material/components/selection"
+package selection // import "github.com/vecty-components/material/components/selection"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 // S is a material selection component.

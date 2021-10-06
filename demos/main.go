@@ -5,10 +5,10 @@ import (
 	"github.com/hexops/vecty/elem"
 	router "marwan.io/vecty-router"
 
-	"github.com/vecty-material/material/app"
-	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/demos/components"
-	"github.com/vecty-material/material/demos/views"
+	"github.com/vecty-components/material/app"
+	"github.com/vecty-components/material/base"
+	"github.com/vecty-components/material/demos/components"
+	"github.com/vecty-components/material/demos/views"
 )
 
 func main() {

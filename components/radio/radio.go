@@ -1,12 +1,12 @@
 // radio implements a material radio component.
 //
 // See: https://material.io/components/web/catalog/input-controls/radio-buttons/
-package radio // import "github.com/vecty-material/material/components/radio"
+package radio // import "github.com/vecty-components/material/components/radio"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 // R is a material radio component.

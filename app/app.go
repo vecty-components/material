@@ -3,8 +3,8 @@ package app
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	"github.com/vecty-material/material/appbar"
-	"github.com/vecty-material/material/drawer"
+	"github.com/vecty-components/material/appbar"
+	"github.com/vecty-components/material/drawer"
 )
 
 // A is a vecty-material appbar component.

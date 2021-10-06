@@ -4,7 +4,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/prop"
-	"github.com/vecty-material/material/ul"
+	"github.com/vecty-components/material/ul"
 )
 
 type ComponentCatalogPanel struct {

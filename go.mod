@@ -1,4 +1,4 @@
-module github.com/vecty-material/material
+module github.com/vecty-components/material
 
 go 1.17
 

@@ -6,9 +6,9 @@ import (
 
 	"syscall/js"
 
-	"github.com/vecty-material/material/components/checkbox"
-	"github.com/vecty-material/material/components/formfield"
-	"github.com/vecty-material/material/components/internal/mdctest"
+	"github.com/vecty-components/material/components/checkbox"
+	"github.com/vecty-components/material/components/formfield"
+	"github.com/vecty-components/material/components/internal/mdctest"
 )
 
 func Example() {

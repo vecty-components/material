@@ -1,13 +1,13 @@
 // dialog implements a material dialog component.
 //
 // See: https://material.io/components/web/catalog/dialogs/
-package dialog // import "github.com/vecty-material/material/components/dialog"
+package dialog // import "github.com/vecty-components/material/components/dialog"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/gojs"
+	"github.com/vecty-components/material/base"
+	"github.com/vecty-components/material/gojs"
 )
 
 // D is a material dialog component.

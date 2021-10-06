@@ -5,9 +5,9 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 
-	"github.com/vecty-material/material/button"
-	"github.com/vecty-material/material/demos/components"
-	"github.com/vecty-material/material/snackbar"
+	"github.com/vecty-components/material/button"
+	"github.com/vecty-components/material/demos/components"
+	"github.com/vecty-components/material/snackbar"
 )
 
 func NewSnackbarPage() *components.ComponentPage {

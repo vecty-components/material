@@ -1,12 +1,12 @@
 // checkbox implements a material checkbox component.
 //
 // See: https://material.io/components/web/catalog/input-controls/checkboxes/
-package checkbox // import "github.com/vecty-material/material/components/checkbox"
+package checkbox // import "github.com/vecty-components/material/components/checkbox"
 
 import (
 	"syscall/js"
 
-	"github.com/vecty-material/material/base"
+	"github.com/vecty-components/material/base"
 )
 
 // CB is a material checkbox component.

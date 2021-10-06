@@ -1,4 +1,4 @@
-package base // import "github.com/vecty-material/material/base"
+package base // import "github.com/vecty-components/material/base"
 
 import "syscall/js"
 
