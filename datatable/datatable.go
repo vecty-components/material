@@ -4,7 +4,6 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-material/material/base"
-	"github.com/vecty-material/material/components/datatable"
 )
 
 type R struct {
@@ -118,7 +117,14 @@ func (c *DT) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = datatable.New()
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCDataTable",
+				MDCCamelCaseName: "dataTable",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{})
 	}
 	c.MDC.RootElement = h
 	vecty.Markup(
