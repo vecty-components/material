@@ -1,6 +1,8 @@
 package datatable
 
 import (
+	"time"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-components/material/base"
@@ -110,6 +112,14 @@ func (c *DT) Render() vecty.ComponentOrHTML {
 	rows := make([]vecty.MarkupOrChild, len(c.Rows))
 	for i, row := range c.Rows {
 		rows[i] = row.renderRow()
+	}
+
+	if c.MDC != nil && c.MDC.Component != nil {
+		component := c.MDC.Component.(*base.Component)
+		go func() {
+			time.Sleep(50 * time.Millisecond)
+			component.Call("layout")
+		}()
 	}
 
 	// Built in root element.
