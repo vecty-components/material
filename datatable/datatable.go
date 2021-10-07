@@ -172,7 +172,9 @@ func (c *DT) Render() vecty.ComponentOrHTML {
 		),
 		newFakeComponent(func() {
 			fmt.Println("call layout")
-			c.Component.Component().Call("layout")
+			if !c.Component.Component().Get("layout").IsUndefined() {
+				c.Component.Component().Call("layout")
+			}
 		}),
 	)
 }
