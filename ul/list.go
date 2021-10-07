@@ -18,27 +18,27 @@ type nativeInputer interface {
 type L struct {
 	*base.MDC
 	vecty.Core
-	Root           vecty.MarkupOrChild
-	Items          []vecty.ComponentOrHTML
-	Dense          bool
-	Avatar         bool
-	NonInteractive bool
-	GroupSubheader string
-	twoLine        bool
+	Root           vecty.MarkupOrChild     `vecty:"prop"`
+	Items          []vecty.ComponentOrHTML `vecty:"prop"`
+	Dense          bool                    `vecty:"prop"`
+	Avatar         bool                    `vecty:"prop"`
+	NonInteractive bool                    `vecty:"prop"`
+	GroupSubheader string                  `vecty:"prop"`
+	twoLine        bool                    `vecty:"prop"`
 }
 
 // Item is a vecty-material list-item component.
 type Item struct {
 	*base.MDC
 	vecty.Core
-	Root      vecty.MarkupOrChild
-	Primary   vecty.ComponentOrHTML
-	Secondary vecty.ComponentOrHTML
-	Graphic   vecty.ComponentOrHTML
-	Meta      vecty.ComponentOrHTML
-	Selected  bool
-	Activated bool
-	Alt       string
+	Root      vecty.MarkupOrChild   `vecty:"prop"`
+	Primary   vecty.ComponentOrHTML `vecty:"prop"`
+	Secondary vecty.ComponentOrHTML `vecty:"prop"`
+	Graphic   vecty.ComponentOrHTML `vecty:"prop"`
+	Meta      vecty.ComponentOrHTML `vecty:"prop"`
+	Selected  bool                  `vecty:"prop"`
+	Activated bool                  `vecty:"prop"`
+	Alt       string                `vecty:"prop"`
 
 	markup *base.LinkMarkup
 }

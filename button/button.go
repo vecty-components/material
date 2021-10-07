@@ -13,14 +13,14 @@ import (
 type B struct {
 	*base.MDC
 	vecty.Core
-	Root       vecty.MarkupOrChild
-	Label      vecty.ComponentOrHTML
-	Icon       vecty.ComponentOrHTML
-	Disabled   bool
-	Raised     bool
-	Unelevated bool
-	Outlined   bool
-	Dense      bool
+	Root       vecty.MarkupOrChild   `vecty:"prop"`
+	Label      vecty.ComponentOrHTML `vecty:"prop"`
+	Icon       vecty.ComponentOrHTML `vecty:"prop"`
+	Disabled   bool                  `vecty:"prop"`
+	Raised     bool                  `vecty:"prop"`
+	Unelevated bool                  `vecty:"prop"`
+	Outlined   bool                  `vecty:"prop"`
+	Dense      bool                  `vecty:"prop"`
 
 	markup *base.LinkMarkup
 }

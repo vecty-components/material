@@ -13,10 +13,10 @@ import (
 type FF struct {
 	*base.MDC
 	vecty.Core
-	Root     vecty.MarkupOrChild
-	Input    vecty.ComponentOrHTML
-	Label    string
-	AlignEnd bool
+	Root     vecty.MarkupOrChild   `vecty:"prop"`
+	Input    vecty.ComponentOrHTML `vecty:"prop"`
+	Label    string                `vecty:"prop"`
+	AlignEnd bool                  `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.

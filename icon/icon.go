@@ -14,12 +14,12 @@ type Size string
 type I struct {
 	*base.MDC
 	vecty.Core
-	Root          vecty.MarkupOrChild
-	Name          string
-	SizePX        int
-	Inactive      bool
-	Dark          bool
-	ClassOverride []string
+	Root          vecty.MarkupOrChild `vecty:"prop"`
+	Name          string              `vecty:"prop"`
+	SizePX        int                 `vecty:"prop"`
+	Inactive      bool                `vecty:"prop"`
+	Dark          bool                `vecty:"prop"`
+	ClassOverride []string            `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.

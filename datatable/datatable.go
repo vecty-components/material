@@ -94,9 +94,9 @@ func (c *C) renderRow() *vecty.HTML {
 type DT struct {
 	*base.MDC
 	vecty.Core
-	Root vecty.MarkupOrChild
-	Head *R
-	Rows []*R
+	Root vecty.MarkupOrChild `vecty:"prop"`
+	Head *R                  `vecty:"prop"`
+	Rows []*R                `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.

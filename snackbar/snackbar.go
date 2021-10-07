@@ -14,9 +14,9 @@ import (
 type S struct {
 	*base.MDC
 	vecty.Core
-	Root    vecty.MarkupOrChild
-	Label   vecty.MarkupOrChild
-	Buttons []*button.B
+	Root    vecty.MarkupOrChild `vecty:"prop"`
+	Label   vecty.MarkupOrChild `vecty:"prop"`
+	Buttons []*button.B         `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.

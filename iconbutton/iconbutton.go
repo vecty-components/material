@@ -13,14 +13,14 @@ import (
 type IB struct {
 	*base.MDC
 	vecty.Core
-	Root          vecty.MarkupOrChild
-	ChangeHandler func(thisIB *IB, e *vecty.Event)
-	On            bool
-	OnIcon        vecty.ComponentOrHTML
-	OffIcon       vecty.ComponentOrHTML
-	OnLabel       string
-	OffLabel      string
-	OnClick       func(*vecty.Event)
+	Root          vecty.MarkupOrChild              `vecty:"prop"`
+	ChangeHandler func(thisIB *IB, e *vecty.Event) `vecty:"prop"`
+	On            bool                             `vecty:"prop"`
+	OnIcon        vecty.ComponentOrHTML            `vecty:"prop"`
+	OffIcon       vecty.ComponentOrHTML            `vecty:"prop"`
+	OnLabel       string                           `vecty:"prop"`
+	OffLabel      string                           `vecty:"prop"`
+	OnClick       func(*vecty.Event)               `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.

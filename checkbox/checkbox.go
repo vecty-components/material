@@ -14,14 +14,14 @@ import (
 type CB struct {
 	*base.MDC
 	vecty.Core
-	Root          vecty.MarkupOrChild
-	Input         vecty.MarkupOrChild
-	Background    vecty.MarkupOrChild
-	OnChange      func(e *vecty.Event)
-	Checked       bool
-	Indeterminate bool
-	Disabled      bool
-	Value         string
+	Root          vecty.MarkupOrChild  `vecty:"prop"`
+	Input         vecty.MarkupOrChild  `vecty:"prop"`
+	Background    vecty.MarkupOrChild  `vecty:"prop"`
+	OnChange      func(e *vecty.Event) `vecty:"prop"`
+	Checked       bool                 `vecty:"prop"`
+	Indeterminate bool                 `vecty:"prop"`
+	Disabled      bool                 `vecty:"prop"`
+	Value         string               `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.

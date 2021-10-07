@@ -18,14 +18,14 @@ const (
 type D struct {
 	*base.MDC
 	vecty.Core
-	Root vecty.MarkupOrChild
-	Type
-	Open          bool
-	BelowToolbar  bool
-	Toolbar       vecty.ComponentOrHTML
-	Header        vecty.ComponentOrHTML
-	ToolbarSpacer vecty.ComponentOrHTML
-	Content       vecty.ComponentOrHTML
+	Root          vecty.MarkupOrChild   `vecty:"prop"`
+	Type          Type                  `vecty:"prop"`
+	Open          bool                  `vecty:"prop"`
+	BelowToolbar  bool                  `vecty:"prop"`
+	Toolbar       vecty.ComponentOrHTML `vecty:"prop"`
+	Header        vecty.ComponentOrHTML `vecty:"prop"`
+	ToolbarSpacer vecty.ComponentOrHTML `vecty:"prop"`
+	Content       vecty.ComponentOrHTML `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.

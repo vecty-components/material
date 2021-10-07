@@ -14,13 +14,13 @@ import (
 type R struct {
 	*base.MDC
 	vecty.Core
-	Root     vecty.MarkupOrChild
-	Input    vecty.MarkupOrChild
-	OnChange func(e *vecty.Event)
-	Name     string
-	Checked  bool
-	Disabled bool
-	Value    string
+	Root     vecty.MarkupOrChild  `vecty:"prop"`
+	Input    vecty.MarkupOrChild  `vecty:"prop"`
+	OnChange func(e *vecty.Event) `vecty:"prop"`
+	Name     string               `vecty:"prop"`
+	Checked  bool                 `vecty:"prop"`
+	Disabled bool                 `vecty:"prop"`
+	Value    string               `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.

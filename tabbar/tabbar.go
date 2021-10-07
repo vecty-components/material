@@ -68,10 +68,10 @@ func (c *T) renderTab(active bool) *vecty.HTML {
 type TB struct {
 	*base.MDC
 	vecty.Core
-	Root     vecty.MarkupOrChild
-	Tabs     []*T
-	Active   uint
-	OnChange func(index int)
+	Root     vecty.MarkupOrChild `vecty:"prop"`
+	Tabs     []*T                `vecty:"prop"`
+	Active   uint                `vecty:"prop"`
+	OnChange func(index int)     `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.

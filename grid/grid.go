@@ -7,8 +7,8 @@ import (
 
 type C struct {
 	vecty.Core
-	Label vecty.ComponentOrHTML
-	Cells []*C
+	Label vecty.ComponentOrHTML `vecty:"prop"`
+	Cells []*C                  `vecty:"prop"`
 }
 
 func (c *C) Render() vecty.ComponentOrHTML {
@@ -53,7 +53,7 @@ func (c *C) Render() vecty.ComponentOrHTML {
 
 type G struct {
 	vecty.Core
-	Cells []*C
+	Cells []*C `vecty:"prop"`
 }
 
 func (g *G) Render() vecty.ComponentOrHTML {

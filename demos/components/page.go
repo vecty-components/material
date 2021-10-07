@@ -3,11 +3,10 @@ package components
 import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
-	"github.com/vecty-components/material/base"
 )
 
 type ComponentPage struct {
-	panel *ComponentCatalogPanel
+	panel *ComponentCatalogPanel `vecty:"prop"`
 	vecty.Core
 }
 
@@ -17,6 +16,6 @@ func (cp *ComponentPage) Render() vecty.ComponentOrHTML {
 		vecty.Markup(
 			vecty.Class("demo-content-transition"),
 		),
-		base.RenderStoredChild(cp.panel),
+		cp.panel,
 	)
 }

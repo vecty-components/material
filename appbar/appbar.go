@@ -11,11 +11,11 @@ import (
 type A struct {
 	*base.MDC
 	vecty.Core
-	Root          vecty.MarkupOrChild
-	SectionStart  vecty.List
-	SectionCenter vecty.List
-	SectionEnd    vecty.List
-	Fixed         bool
+	Root          vecty.MarkupOrChild `vecty:"prop"`
+	SectionStart  vecty.List          `vecty:"prop"`
+	SectionCenter vecty.List          `vecty:"prop"`
+	SectionEnd    vecty.List          `vecty:"prop"`
+	Fixed         bool                `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.

@@ -10,11 +10,11 @@ import (
 // A is a vecty-material appbar component.
 type A struct {
 	vecty.Core
-	RootMarkup  vecty.MarkupList
-	ChildMarkup vecty.MarkupList
-	Appbar      *appbar.A
-	Sidebar     *drawer.D
-	Routes      vecty.List
+	RootMarkup  vecty.MarkupList `vecty:"prop"`
+	ChildMarkup vecty.MarkupList `vecty:"prop"`
+	Appbar      *appbar.A        `vecty:"prop"`
+	Sidebar     *drawer.D        `vecty:"prop"`
+	Routes      vecty.List       `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.
