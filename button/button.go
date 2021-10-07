@@ -70,10 +70,7 @@ func (c *B) Apply(h *vecty.HTML) {
 	vecty.Markup(
 		vecty.Class("mdc-button"),
 		prop.Type(prop.TypeButton),
-		vecty.MarkupIf(c.markup.OnClick != nil && !c.markup.PreventDefault,
-			event.Click(c.markup.OnClick),
-		),
-		vecty.MarkupIf(c.markup.OnClick != nil && c.markup.PreventDefault,
+		vecty.MarkupIf(c.markup.OnClick != nil,
 			event.Click(c.markup.OnClick).PreventDefault(),
 		),
 		vecty.Property("disabled", c.Disabled),

@@ -11,10 +11,9 @@ import (
 	Represents a simplified version of an element
 */
 type LinkMarkup struct {
-	Child          vecty.ComponentOrHTML
-	Href           string
-	OnClick        func(*vecty.Event)
-	PreventDefault bool
+	Child   vecty.ComponentOrHTML
+	Href    string
+	OnClick func(*vecty.Event)
 }
 
 func ExtractMarkupFromLink(html *vecty.HTML) *LinkMarkup {
@@ -44,9 +43,6 @@ func ExtractMarkupFromLink(html *vecty.HTML) *LinkMarkup {
 					Elem().FieldByName("Listener").UnsafeAddr(),
 			),
 		)
-
-		sm.PreventDefault = h.FieldByName("eventListeners").Index(i).
-			Elem().FieldByName("callPreventDefault").Bool()
 
 		break
 	}

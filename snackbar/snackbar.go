@@ -35,12 +35,8 @@ func (c *S) Render() vecty.ComponentOrHTML {
 				prop.Type("button"),
 				vecty.Class("mdc-button", "mdc-snackbar__action"),
 				vecty.MarkupIf(
-					markup.OnClick != nil && markup.PreventDefault,
+					markup.OnClick != nil,
 					event.Click(markup.OnClick).PreventDefault(),
-				),
-				vecty.MarkupIf(
-					markup.OnClick != nil && !markup.PreventDefault,
-					event.Click(markup.OnClick),
 				),
 			),
 			elem.Div(
