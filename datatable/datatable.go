@@ -1,11 +1,48 @@
 package datatable
 
 import (
+	"fmt"
+	"math/rand"
+
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/prop"
 	"github.com/vecty-components/material/base"
 	"github.com/vecty-components/material/checkbox"
 )
+
+type fakeComponent struct {
+	vecty.Core
+	Id    string `vecty:"prop"`
+	mfunc func()
+}
+
+func newFakeComponent(mfunc func()) *fakeComponent {
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+
+	n := 10
+	s := make([]rune, n)
+	for i := range s {
+		s[i] = letters[rand.Intn(len(letters))]
+	}
+
+	return &fakeComponent{
+		Id:    string(s),
+		mfunc: mfunc,
+	}
+}
+
+func (fc *fakeComponent) Render() vecty.ComponentOrHTML {
+	return elem.Div(
+		vecty.Markup(
+			prop.ID(fc.Id),
+		),
+	)
+}
+
+func (fc *fakeComponent) Mount() {
+	fc.mfunc()
+}
 
 type R struct {
 	Cells []*C
@@ -133,6 +170,10 @@ func (c *DT) Render() vecty.ComponentOrHTML {
 				}, rows...)...,
 			),
 		),
+		newFakeComponent(func() {
+			fmt.Println("call layout")
+			c.Component.Component().Call("layout")
+		}),
 	)
 }
 
