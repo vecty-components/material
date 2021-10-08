@@ -24,7 +24,7 @@ type L struct {
 	Avatar         bool                    `vecty:"prop"`
 	NonInteractive bool                    `vecty:"prop"`
 	GroupSubheader string                  `vecty:"prop"`
-	twoLine        bool                    `vecty:"prop"`
+	twoLine        bool
 }
 
 // Item is a vecty-material list-item component.
