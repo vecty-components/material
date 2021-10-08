@@ -1,10 +1,14 @@
 package datatable
 
 import (
+	"math/rand"
+	"strconv"
+	"syscall/js"
 	"time"
 
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
+	"github.com/hexops/vecty/prop"
 	"github.com/vecty-components/material/base"
 	"github.com/vecty-components/material/checkbox"
 )
@@ -114,10 +118,17 @@ func (c *DT) Render() vecty.ComponentOrHTML {
 		rows[i] = row.renderRow()
 	}
 
+	id := "material-datatable-" + strconv.Itoa(rand.Intn(1000))
 	if c.MDC != nil && c.MDC.Component != nil {
 		component := c.MDC.Component.(*base.Component)
 		go func() {
-			time.Sleep(50 * time.Millisecond)
+			for {
+				time.Sleep(15 * time.Millisecond)
+				if !js.Global().Get("document").
+					Call("getElementById", id).IsUndefined() {
+					break
+				}
+			}
 			component.Call("layout")
 		}()
 	}
@@ -141,6 +152,11 @@ func (c *DT) Render() vecty.ComponentOrHTML {
 						vecty.Class("mdc-data-table__content"),
 					),
 				}, rows...)...,
+			),
+		),
+		elem.Div(
+			vecty.Markup(
+				prop.ID(id),
 			),
 		),
 	)

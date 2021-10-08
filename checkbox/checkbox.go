@@ -7,7 +7,6 @@ import (
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-components/material/base"
 	"github.com/vecty-components/material/base/applyer"
-	"github.com/vecty-components/material/components/checkbox"
 )
 
 // CB is a vecty-material checkbox component.
@@ -80,13 +79,20 @@ func (c *CB) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = checkbox.New()
-		if cb, ok := c.MDC.Component.(*checkbox.CB); ok {
-			cb.Checked = c.Checked
-			cb.Indeterminate = c.Indeterminate
-			cb.Disabled = c.Disabled
-			cb.Value = c.Value
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCCheckbox",
+				MDCCamelCaseName: "checkbox",
+			},
 		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{
+			"checked":       c.Checked,
+			"indeterminate": c.Indeterminate,
+			"disabled":      c.Disabled,
+			"value":         c.Value,
+		})
+
 	}
 
 	vecty.Markup(
@@ -97,12 +103,11 @@ func (c *CB) Apply(h *vecty.HTML) {
 }
 
 func (c *CB) onChange(e *vecty.Event) {
-	if cb, ok := c.MDC.Component.(*checkbox.CB); ok {
-		c.Checked = cb.Checked
-		c.Indeterminate = cb.Indeterminate
-		c.Disabled = cb.Disabled
-		c.Value = cb.Value
-	}
+	c.Checked = c.MDC.Component.Component().Get("checked").Bool()
+	c.Indeterminate = c.MDC.Component.Component().Get("indeterminate").Bool()
+	c.Disabled = c.MDC.Component.Component().Get("disabled").Bool()
+	c.Value = c.MDC.Component.Component().Get("value").String()
+
 	if c.OnChange != nil {
 		c.OnChange(e)
 	}
