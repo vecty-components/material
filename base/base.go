@@ -1,9 +1,18 @@
 package base
 
 import (
+	"strconv"
+
 	"github.com/hexops/vecty"
 	"github.com/vecty-components/material/base/applyer"
 )
+
+var key int = 0
+
+func Key() string {
+	key += 1
+	return "material-component-" + strconv.Itoa(key)
+}
 
 type MDC struct {
 	Component   ComponentStartStopper
