@@ -33,13 +33,13 @@ func (c *FF) Render() vecty.ComponentOrHTML {
 			c,
 			base.MarkupIfNotNil(rootMarkup),
 		),
-		c.Input,
 		elem.Label(
 			vecty.Markup(
 				vecty.MarkupIf(inputID != "", prop.For(inputID)),
 			),
 			vecty.Text(c.Label),
 		),
+		c.Input,
 	)
 }
 
