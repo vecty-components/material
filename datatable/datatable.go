@@ -1,8 +1,6 @@
 package datatable
 
 import (
-	"math/rand"
-	"strconv"
 	"syscall/js"
 	"time"
 
@@ -14,25 +12,12 @@ import (
 )
 
 type R struct {
-	Cells []*C
+	vecty.Core
+	Cells []*C   `vecty:"prop"`
+	K     string `vecty:"prop"`
 }
 
-func (c *R) renderHead() *vecty.HTML {
-	cells := make([]vecty.MarkupOrChild, len(c.Cells))
-	for i, c := range c.Cells {
-		cells[i] = c.renderHead()
-	}
-
-	return elem.TableRow(
-		append([]vecty.MarkupOrChild{
-			vecty.Markup(
-				vecty.Class("mdc-data-table__header-row"),
-			),
-		}, cells...)...,
-	)
-}
-
-func (c *R) renderRow() *vecty.HTML {
+func (c *R) Render() vecty.ComponentOrHTML {
 	cells := make([]vecty.MarkupOrChild, len(c.Cells))
 	for i, c := range c.Cells {
 		cells[i] = c.renderRow()
@@ -45,6 +30,14 @@ func (c *R) renderRow() *vecty.HTML {
 			),
 		}, cells...)...,
 	)
+}
+
+func (c *R) Key() interface{} {
+	if c.K == "" {
+		c.K = base.Key()
+	}
+
+	return c.K
 }
 
 type C struct {
@@ -101,8 +94,23 @@ type DT struct {
 	*base.MDC
 	vecty.Core
 	Root vecty.MarkupOrChild `vecty:"prop"`
-	Head *R                  `vecty:"prop"`
+	Head []*C                `vecty:"prop"`
 	Rows []*R                `vecty:"prop"`
+}
+
+func (c *DT) renderHead() *vecty.HTML {
+	cells := make([]vecty.MarkupOrChild, len(c.Head))
+	for i, c := range c.Head {
+		cells[i] = c.renderHead()
+	}
+
+	return elem.TableRow(
+		append([]vecty.MarkupOrChild{
+			vecty.Markup(
+				vecty.Class("mdc-data-table__header-row"),
+			),
+		}, cells...)...,
+	)
 }
 
 // Render implements the vecty.Component interface.
@@ -115,10 +123,10 @@ func (c *DT) Render() vecty.ComponentOrHTML {
 
 	rows := make([]vecty.MarkupOrChild, len(c.Rows))
 	for i, row := range c.Rows {
-		rows[i] = row.renderRow()
+		rows[i] = row
 	}
 
-	id := "material-datatable-" + strconv.Itoa(rand.Intn(1000))
+	id := base.Key()
 	if c.MDC != nil && c.MDC.Component != nil {
 		component := c.MDC.Component.(*base.Component)
 		go func() {
@@ -144,7 +152,7 @@ func (c *DT) Render() vecty.ComponentOrHTML {
 				vecty.Class("mdc-data-table__table"),
 			),
 			elem.TableHead(
-				c.Head.renderHead(),
+				c.renderHead(),
 			),
 			elem.TableBody(
 				append([]vecty.MarkupOrChild{

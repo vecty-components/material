@@ -45,12 +45,10 @@ func (bd *DatatableDemos) Render() vecty.ComponentOrHTML {
 		),
 
 		&datatable.DT{
-			Head: &datatable.R{
-				Cells: []*datatable.C{
-					{Label: &checkbox.CB{}},
-					{Label: vecty.Text("Col A")},
-					{Label: vecty.Text("Col B")},
-				},
+			Head: []*datatable.C{
+				{Label: &checkbox.CB{}},
+				{Label: vecty.Text("Col A")},
+				{Label: vecty.Text("Col B")},
 			},
 			Rows: []*datatable.R{
 				{

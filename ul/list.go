@@ -24,7 +24,7 @@ type L struct {
 	Avatar         bool                    `vecty:"prop"`
 	NonInteractive bool                    `vecty:"prop"`
 	GroupSubheader string                  `vecty:"prop"`
-	twoLine        bool                    `vecty:"prop"`
+	twoLine        bool
 }
 
 // Item is a vecty-material list-item component.
@@ -39,6 +39,7 @@ type Item struct {
 	Selected  bool                  `vecty:"prop"`
 	Activated bool                  `vecty:"prop"`
 	Alt       string                `vecty:"prop"`
+	K         string                `vecty:"prop"`
 
 	markup *base.LinkMarkup
 }
@@ -105,6 +106,14 @@ func (c *L) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-list--non-interactive")),
 	).Apply(h)
 	c.MDC.RootElement = h
+}
+
+func (c *Item) Key() interface{} {
+	if c.K == "" {
+		c.K = base.Key()
+	}
+
+	return c.K
 }
 
 // Render implements the vecty.Component interface.
