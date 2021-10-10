@@ -38,35 +38,30 @@ func (c *D) Render() vecty.ComponentOrHTML {
 	}
 
 	// TODO: Make action buttons a type
-	cancelButton := c.CancelBtn
-	if cancelButton == nil {
-		cancelButton = &button.B{}
-	}
-	if cancelButton.Label == nil {
-		cancelButton.Label = vecty.Text("Cancel")
-	}
-	if cancelButton.Root == nil {
-		cancelButton.Root = vecty.Markup(
-			vecty.Class("mdc-dialog__footer__button"),
-			vecty.Class("mdc-dialog__footer__button--cancel"),
-			event.Click(c.onCancel),
-		)
+	if c.CancelBtn != nil {
+		if c.CancelBtn.Label == nil {
+			c.CancelBtn.Label = vecty.Text("Cancel")
+		}
+		if c.CancelBtn.Root == nil {
+			c.CancelBtn.Root = vecty.Markup(
+				vecty.Class("mdc-dialog__button"),
+				vecty.Attribute("data-mdc-dialog-action", "cancel"),
+				event.Click(c.onCancel),
+			)
+		}
 	}
 
-	// TODO: Make action buttons a type
-	acceptButton := c.AcceptBtn
-	if acceptButton == nil {
-		acceptButton = &button.B{}
-	}
-	if acceptButton.Label == nil {
-		acceptButton.Label = vecty.Text("Accept")
-	}
-	if acceptButton.Root == nil {
-		acceptButton.Root = vecty.Markup(
-			vecty.Class("mdc-dialog__footer__button"),
-			vecty.Class("mdc-dialog__footer__button--accept"),
-			event.Click(c.onAccept),
-		)
+	if c.AcceptBtn != nil {
+		if c.AcceptBtn.Label == nil {
+			c.AcceptBtn.Label = vecty.Text("Accept")
+		}
+		if c.AcceptBtn.Root == nil {
+			c.AcceptBtn.Root = vecty.Markup(
+				vecty.Class("mdc-dialog__button"),
+				vecty.Attribute("data-mdc-dialog-action", "accept"),
+				event.Click(c.onCancel),
+			)
+		}
 	}
 
 	h := elem.Aside(
@@ -76,49 +71,66 @@ func (c *D) Render() vecty.ComponentOrHTML {
 	)
 
 	// Built-in root element.
-	return elem.Aside(
+	return elem.Div(
 		vecty.Markup(
 			c,
 			base.MarkupIfNotNil(rootMarkup),
 		),
 		elem.Div(
 			vecty.Markup(
-				vecty.Class("mdc-dialog__surface"),
+				vecty.Class("mdc-dialog__container"),
 			),
-			elem.Header(
+			elem.Div(
 				vecty.Markup(
-					vecty.Class("mdc-dialog__header"),
+					vecty.Class("mdc-dialog__surface"),
+					vecty.MarkupIf(c.Role == "", vecty.Attribute("role", "alertdialog")),
+					vecty.MarkupIf(c.Role != "", vecty.Attribute("role", c.Role)),
+					vecty.Attribute("aria-modal", "true"),
+					vecty.Attribute("aria-labelledby", c.ariaLabelledBy(h)),
+					vecty.Attribute("aria-describedby", c.ariaDescribedBy(h)),
 				),
+				//				elem.Header(
+				//					vecty.Markup(
+				//						vecty.Class("mdc-dialog__header"),
+				//					),
 				elem.Heading2(
 					vecty.Markup(
-						vecty.Class("mdc-dialog__header__title"),
+						vecty.Class("mdc-dialog__title"),
 						vecty.MarkupIf(c.labelID(h) != "",
 							prop.ID(c.labelID(h))),
 					),
 					vecty.Text(c.Header),
 				),
-			),
-			elem.Section(
-				vecty.Markup(
-					prop.ID(c.descriptionID(h)),
-					vecty.Class("mdc-dialog__body"),
-					vecty.MarkupIf(c.Scrollable,
-						vecty.Class("mdc-dialog__body--scrollable")),
+				//				),
+				elem.Div(
+					vecty.Markup(
+						prop.ID(c.descriptionID(h)),
+						vecty.Class("mdc-dialog__content"),
+					),
+					base.RenderStoredChild(c.Body),
 				),
-				base.RenderStoredChild(c.Body),
-			),
-			elem.Footer(
-				vecty.Markup(
-					vecty.Class("mdc-dialog__footer"),
+				vecty.If(
+					c.CancelBtn != nil || c.AcceptBtn != nil,
+					elem.Footer(
+						vecty.Markup(
+							vecty.Class("mdc-dialog__actions"),
+						),
+						vecty.If(
+							c.CancelBtn != nil,
+							base.RenderStoredChild(c.CancelBtn),
+						),
+						vecty.If(
+							c.AcceptBtn != nil,
+							base.RenderStoredChild(c.AcceptBtn),
+						),
+					),
 				),
-				cancelButton,
-				acceptButton,
 			),
-		),
-		vecty.If(!c.NoBackdrop,
-			elem.Div(
-				vecty.Markup(
-					vecty.Class("mdc-dialog__backdrop"),
+			vecty.If(!c.NoBackdrop,
+				elem.Div(
+					vecty.Markup(
+						vecty.Class("mdc-dialog__scrim"),
+					),
 				),
 			),
 		),
@@ -136,12 +148,8 @@ func (c *D) Apply(h *vecty.HTML) {
 	c.MDC.Component.(*dialog.D).Open = c.Open
 	vecty.Markup(
 		vecty.Class("mdc-dialog"),
-		vecty.MarkupIf(c.Role == "", vecty.Attribute("role", "dialog")),
-		vecty.MarkupIf(c.Role != "", vecty.Attribute("role", c.Role)),
 		vecty.MarkupIf(c.Open, vecty.Class("mdc-dialog--open")),
 		vecty.MarkupIf(!c.Open, vecty.Attribute("aria-hidden", "true")),
-		c.ariaLabelledBy(h),
-		c.ariaDescribedBy(h),
 	).Apply(h)
 	c.MDC.RootElement = h
 }
