@@ -90,7 +90,7 @@ func (c *LP) Apply(h *vecty.HTML) {
 	}
 
 	vecty.Markup(
-		vecty.Class("mdc-linear-progress"),
+		vecty.Class("mdc-linear-progress", "mdc-linear-progress--closed"),
 		vecty.MarkupIf(
 			c.Indeterminate,
 			vecty.Class("mdc-linear-progress--indeterminate"),
