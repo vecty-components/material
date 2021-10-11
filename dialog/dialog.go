@@ -9,7 +9,6 @@ import (
 	"github.com/vecty-components/material/base"
 	"github.com/vecty-components/material/base/applyer"
 	"github.com/vecty-components/material/button"
-	"github.com/vecty-components/material/components/dialog"
 )
 
 // D is a material dialog component.
@@ -20,9 +19,7 @@ type D struct {
 	Header     string
 	Body       vecty.ComponentOrHTML
 	Role       string
-	Open       bool
 	NoBackdrop bool
-	Scrollable bool
 	AcceptBtn  *button.B
 	CancelBtn  *button.B
 	OnAccept   func(e *vecty.Event)
@@ -46,7 +43,9 @@ func (c *D) Render() vecty.ComponentOrHTML {
 			c.CancelBtn.Root = vecty.Markup(
 				vecty.Class("mdc-dialog__button"),
 				vecty.Attribute("data-mdc-dialog-action", "cancel"),
-				event.Click(c.onCancel),
+				vecty.MarkupIf(
+					c.OnCancel != nil, event.Click(c.OnCancel),
+				),
 			)
 		}
 	}
@@ -59,7 +58,9 @@ func (c *D) Render() vecty.ComponentOrHTML {
 			c.AcceptBtn.Root = vecty.Markup(
 				vecty.Class("mdc-dialog__button"),
 				vecty.Attribute("data-mdc-dialog-action", "accept"),
-				event.Click(c.onCancel),
+				vecty.MarkupIf(
+					c.OnAccept != nil, event.Click(c.OnAccept),
+				),
 			)
 		}
 	}
@@ -143,15 +144,27 @@ func (c *D) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = dialog.New()
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCDialog",
+				MDCCamelCaseName: "dialog",
+			},
+		}
 	}
-	c.MDC.Component.(*dialog.D).Open = c.Open
+
+	c.Component.Component().SetState(base.StateMap{})
 	vecty.Markup(
 		vecty.Class("mdc-dialog"),
-		vecty.MarkupIf(c.Open, vecty.Class("mdc-dialog--open")),
-		vecty.MarkupIf(!c.Open, vecty.Attribute("aria-hidden", "true")),
 	).Apply(h)
 	c.MDC.RootElement = h
+}
+
+func (c *D) Open() {
+	c.Component.Component().Call("open")
+}
+
+func (c *D) Close() {
+	c.Component.Component().Call("close")
 }
 
 func (c *D) labelID(h *vecty.HTML) string {
@@ -182,28 +195,4 @@ func (c *D) ariaDescribedBy(h *vecty.HTML) vecty.Applyer {
 		return nil
 	}
 	return vecty.Attribute("aria-describedby", c.descriptionID(h))
-}
-
-func (c *D) onCancel(e *vecty.Event) {
-	c.Open = false
-	if d, ok := c.MDC.Component.(*dialog.D); ok {
-		d.Open = false
-	}
-
-	vecty.Rerender(c)
-	if c.OnCancel != nil {
-		c.OnCancel(e)
-	}
-}
-
-func (c *D) onAccept(e *vecty.Event) {
-	c.Open = false
-	if d, ok := c.MDC.Component.(*dialog.D); ok {
-		d.Open = false
-	}
-
-	vecty.Rerender(c)
-	if c.OnAccept != nil {
-		c.OnAccept(e)
-	}
 }
