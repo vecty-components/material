@@ -20,7 +20,12 @@ type StaticComponent struct {
 // provided ComponentOrHTML. It exists as a workaround to a vecty issue.
 //
 // See: https://github.com/hexops/vecty/issues/191
-func RenderStoredChild(child vecty.ComponentOrHTML) *StaticComponent {
+func RenderStoredChild(child vecty.ComponentOrHTML) vecty.Component {
+	switch c := child.(type) {
+	case vecty.Component:
+		return c
+	}
+
 	return &StaticComponent{Child: child}
 }
 
