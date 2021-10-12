@@ -14,9 +14,9 @@ import (
 type S struct {
 	*base.MDC
 	vecty.Core
-	Root    vecty.MarkupOrChild `vecty:"prop"`
-	Label   vecty.MarkupOrChild `vecty:"prop"`
-	Buttons []*button.B         `vecty:"prop"`
+	Root    vecty.MarkupOrChild   `vecty:"prop"`
+	Label   vecty.ComponentOrHTML `vecty:"prop"`
+	Buttons []*button.B           `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.
@@ -48,7 +48,7 @@ func (c *S) Render() vecty.ComponentOrHTML {
 				vecty.Markup(
 					vecty.Class("mdc-button__label"),
 				),
-				markup.Child,
+				base.RenderStoredChild(markup.Child),
 			),
 		)
 	}
@@ -70,7 +70,7 @@ func (c *S) Render() vecty.ComponentOrHTML {
 					vecty.Class("mdc-snackbar__label"),
 					vecty.Attribute("aria-atomic", "false"),
 				),
-				c.Label,
+				base.RenderStoredChild(c.Label),
 			),
 			elem.Div(
 				append([]vecty.MarkupOrChild{
