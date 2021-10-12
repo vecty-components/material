@@ -58,7 +58,7 @@ func (bd *MenuDemos) Render() vecty.ComponentOrHTML {
 			&ul.Item{Primary: vecty.Text("Orange")},
 			&ul.Item{Primary: vecty.Text("Guava")},
 			&ul.Item{Primary: vecty.Text("Pitaya")},
-			ul.ItemDivider(),
+			// ul.ItemDivider(),
 			&ul.Item{Primary: vecty.Text("Pineapple")},
 			&ul.Item{Primary: vecty.Text("Mango")},
 			&ul.Item{Primary: vecty.Text("Papaya")},
