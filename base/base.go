@@ -37,7 +37,7 @@ func (b *MDC) Unmount() {
 	if b.Component != nil {
 		err := b.Component.Stop()
 		if err != nil {
-			panic(err)
+			// panic(err)
 		}
 	}
 }
