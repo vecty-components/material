@@ -42,6 +42,7 @@ func (c *R) Key() interface{} {
 
 type C struct {
 	Label vecty.ComponentOrHTML
+	Root  vecty.MarkupList
 }
 
 func (c *C) renderHead() *vecty.HTML {
@@ -85,6 +86,7 @@ func (c *C) renderRow() *vecty.HTML {
 			vecty.Class("mdc-data-table__cell"),
 			vecty.Attribute("scope", "row"),
 		),
+		c.Root,
 		label,
 	)
 }
