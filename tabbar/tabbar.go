@@ -8,11 +8,13 @@ import (
 )
 
 type T struct {
-	Label vecty.ComponentOrHTML
+	Label  vecty.ComponentOrHTML
+	Markup vecty.MarkupList
 }
 
 func (c *T) renderTab(active bool) *vecty.HTML {
 	return elem.Button(
+		c.Markup,
 		vecty.Markup(
 			vecty.Class("mdc-tab"),
 			vecty.Attribute("role", "tab"),
