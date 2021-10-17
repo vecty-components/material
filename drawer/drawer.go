@@ -4,7 +4,6 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-components/material/base"
-	"github.com/vecty-components/material/components/drawer"
 )
 
 type Type int
@@ -61,8 +60,16 @@ func (c *D) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = drawer.New()
-		c.MDC.Component.(*drawer.PD).Open = c.Open
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCDrawer",
+				MDCCamelCaseName: "drawer",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{
+			"open": c.Open,
+		})
 	}
 
 	markup := []vecty.Applyer{

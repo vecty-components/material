@@ -4,7 +4,6 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-components/material/base"
-	"github.com/vecty-components/material/components/appbar"
 )
 
 // A is a vecty-material appbar component.
@@ -72,7 +71,14 @@ func (c *A) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = appbar.New()
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCTopAppBar",
+				MDCCamelCaseName: "topAppBar",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{})
 	}
 	c.MDC.RootElement = h
 	vecty.Markup(

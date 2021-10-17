@@ -5,7 +5,6 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/vecty-components/material/base"
-	"github.com/vecty-components/material/components/iconbutton"
 	"github.com/vecty-components/material/icon"
 )
 
@@ -54,7 +53,16 @@ func (c *IB) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = iconbutton.New()
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCIconButtonToggle",
+				MDCCamelCaseName: "iconButton",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{
+			"on": c.On,
+		})
 	}
 
 	var markup []vecty.Applyer
