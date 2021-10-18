@@ -113,8 +113,8 @@ func (c *Component) SetState(sm StateMap) *Component {
 						// we changed it
 						b.val = *b.ptr
 						c.Component().Set(k, b.val)
-					} else {
-						b.val = c.Component().Get(k).Bool()
+					} else if val := c.Component().Get(k); !val.IsUndefined() {
+						b.val = val.Bool()
 						*b.ptr = b.val
 					}
 				}
@@ -124,8 +124,8 @@ func (c *Component) SetState(sm StateMap) *Component {
 						// we changed it
 						b.val = *b.ptr
 						c.Component().Set(k, b.val)
-					} else {
-						b.val = c.Component().Get(k).String()
+					} else if val := c.Component().Get(k); !val.IsUndefined() {
+						b.val = val.String()
 						*b.ptr = b.val
 					}
 				}
