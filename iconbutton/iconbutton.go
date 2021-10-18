@@ -61,7 +61,7 @@ func (c *IB) Apply(h *vecty.HTML) {
 		}
 
 		c.MDC.Component.Component().SetState(base.StateMap{
-			"on": c.On,
+			"on": &c.On,
 		})
 	}
 

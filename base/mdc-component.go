@@ -81,7 +81,26 @@ func (c *Component) SetState(sm StateMap) *Component {
 		c.Bools = make(map[string]*boolPair)
 	}
 
-	if !c.Running {
+	for k, v := range sm {
+		if v != nil {
+			switch v := v.(type) {
+			case *string:
+				c.Strings[k] = &stringPair{
+					val: *v,
+					ptr: v,
+				}
+			case *bool:
+				c.Bools[k] = &boolPair{
+					val: *v,
+					ptr: v,
+				}
+			default:
+				c.Component().Set(k, v)
+			}
+		}
+	}
+
+	if !c.Running && (len(c.Bools) > 0 || len(c.Strings) > 0) {
 		c.Running = true
 		go func() {
 			for {
@@ -116,24 +135,6 @@ func (c *Component) SetState(sm StateMap) *Component {
 		}()
 	}
 
-	for k, v := range sm {
-		if v != nil {
-			switch v := v.(type) {
-			case *string:
-				c.Strings[k] = &stringPair{
-					val: *v,
-					ptr: v,
-				}
-			case *bool:
-				c.Bools[k] = &boolPair{
-					val: *v,
-					ptr: v,
-				}
-			default:
-				c.Component().Set(k, v)
-			}
-		}
-	}
 	return c
 }
 

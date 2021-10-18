@@ -97,8 +97,8 @@ func (c *M) Apply(h *vecty.HTML) {
 		}
 
 		c.MDC.Component.Component().SetState(base.StateMap{
-			"open":      c.Open,
-			"quickOpen": c.QuickOpen,
+			"open":      &c.Open,
+			"quickOpen": &c.QuickOpen,
 		})
 	}
 
