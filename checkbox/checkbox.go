@@ -101,12 +101,6 @@ func (c *CB) Apply(h *vecty.HTML) {
 	c.MDC.RootElement = h
 }
 
-func (c *CB) onChange(e *vecty.Event) {
-	if c.OnChange != nil {
-		c.OnChange(e)
-	}
-}
-
 func (c *CB) NativeInput() (element *vecty.HTML, id string) {
 	niMarkup := base.MarkupOnly(c.Input)
 	if c.Input != nil && niMarkup == nil {
@@ -120,7 +114,7 @@ func (c *CB) NativeInput() (element *vecty.HTML, id string) {
 	element = elem.Input(
 		vecty.Markup(
 			vecty.MarkupIf(niMarkup != nil, niMarkup),
-			event.Change(c.onChange),
+			vecty.MarkupIf(c.OnChange != nil, event.Change(c.OnChange)),
 			vecty.Class("mdc-checkbox__native-control"),
 			prop.Type(prop.TypeCheckbox),
 			vecty.MarkupIf(c.Value != "", prop.Value(c.Value)),
