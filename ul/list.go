@@ -178,6 +178,16 @@ func (c *Item) Apply(h *vecty.HTML) {
 	switch {
 	case c.MDC == nil:
 		c.MDC = &base.MDC{}
+		fallthrough
+	case c.MDC.Component == nil:
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCRipple",
+				MDCCamelCaseName: "ripple",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{})
 	}
 
 	vecty.Markup(

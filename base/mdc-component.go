@@ -29,10 +29,10 @@ type boolPair struct {
 type Component struct {
 	js.Value
 	*MDCState
-	Type    ComponentType
-	Strings map[string]*stringPair
-	Bools   map[string]*boolPair
-	Running bool
+	Type       ComponentType
+	strings    map[string]*stringPair
+	bools      map[string]*boolPair
+	monitoring bool
 }
 
 type MDCState struct {
@@ -74,23 +74,23 @@ func (c *Component) Stop() error {
 }
 
 func (c *Component) SetState(sm StateMap) *Component {
-	if c.Strings == nil {
-		c.Strings = make(map[string]*stringPair)
+	if c.strings == nil {
+		c.strings = make(map[string]*stringPair)
 	}
-	if c.Bools == nil {
-		c.Bools = make(map[string]*boolPair)
+	if c.bools == nil {
+		c.bools = make(map[string]*boolPair)
 	}
 
 	for k, v := range sm {
 		if v != nil {
 			switch v := v.(type) {
 			case *string:
-				c.Strings[k] = &stringPair{
+				c.strings[k] = &stringPair{
 					val: *v,
 					ptr: v,
 				}
 			case *bool:
-				c.Bools[k] = &boolPair{
+				c.bools[k] = &boolPair{
 					val: *v,
 					ptr: v,
 				}
@@ -100,15 +100,15 @@ func (c *Component) SetState(sm StateMap) *Component {
 		}
 	}
 
-	if !c.Running && (len(c.Bools) > 0 || len(c.Strings) > 0) {
-		c.Running = true
+	if !c.monitoring && (len(c.bools) > 0 || len(c.strings) > 0) {
+		c.monitoring = true
 		go func() {
 			for {
 				if c.MDCState == nil || !c.MDCState.Started {
 					return
 				}
 
-				for k, b := range c.Bools {
+				for k, b := range c.bools {
 					if b.val != *b.ptr {
 						// we changed it
 						b.val = *b.ptr
@@ -119,7 +119,7 @@ func (c *Component) SetState(sm StateMap) *Component {
 					}
 				}
 
-				for k, b := range c.Strings {
+				for k, b := range c.strings {
 					if b.val != *b.ptr {
 						// we changed it
 						b.val = *b.ptr
