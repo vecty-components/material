@@ -37,7 +37,7 @@ func Init() error {
 // For some reason the material-components-web node module does not come with
 // MDCMenu, it only comes with an undocumented MDCSimpleMenu.
 func InitMenu() (err error) {
-	gojs.CatchException(&err)
+	defer gojs.CatchException(&err)
 	mdc := js.Global().Get("Object").New()
 	mdc.Set("menu", js.Global().Call("require", "@material/menu/dist/mdc.menu"))
 	js.Global().Set("mdc", mdc)
@@ -51,13 +51,13 @@ func InitMenu() (err error) {
 }
 
 func LoadMDCModule() (err error) {
-	gojs.CatchException(&err)
+	defer gojs.CatchException(&err)
 	js.Global().Set("mdc", js.Global().Call("require", MCW_MODULE))
 	return err
 }
 
 func ShimHyperform() (err error) {
-	gojs.CatchException(&err)
+	defer gojs.CatchException(&err)
 	js.Global().Call("require", "hyperform").Invoke(js.Global().Get("window"))
 	return err
 }

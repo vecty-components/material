@@ -63,9 +63,8 @@ func (c *R) StateMap() base.StateMap {
 // Activate triggers an activation of the ripple (the first stage, which happens
 // when the ripple surface is engaged via interaction, such as a mousedown or a
 // pointerdown event). It expands from the center.
-func (r *R) Activate() error {
-	var err error
-	gojs.CatchException(&err)
+func (r *R) Activate() (err error) {
+	defer gojs.CatchException(&err)
 	r.mdc.Call("activate")
 	return err
 }
@@ -73,18 +72,16 @@ func (r *R) Activate() error {
 // Deactivate triggers a deactivation of the ripple (the second stage, which
 // happens when the ripple surface is engaged via interaction, such as a mouseup
 // or a pointerup event). It expands from the center.
-func (r *R) Deactivate() error {
-	var err error
-	gojs.CatchException(&err)
+func (r *R) Deactivate() (err error) {
+	defer gojs.CatchException(&err)
 	r.mdc.Call("deactivate")
 	return err
 }
 
 // Layout recomputes all dimensions and positions for the ripple element. Useful
 // if a ripple surface’s position or dimension is changed programmatically.
-func (r *R) Layout() error {
-	var err error
-	gojs.CatchException(&err)
+func (r *R) Layout() (err error) {
+	defer gojs.CatchException(&err)
 	r.mdc.Call("layout")
 	return err
 }

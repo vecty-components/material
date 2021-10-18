@@ -103,17 +103,15 @@ func (c *LP) Apply(h *vecty.HTML) {
 	c.MDC.RootElement = h
 }
 
-func (c *LP) Open() error {
-	var err error
-	gojs.CatchException(&err)
+func (c *LP) Open() (err error) {
+	defer gojs.CatchException(&err)
 
 	c.MDC.Component.Component().Value.Call("open")
 	return err
 }
 
-func (c *LP) Close() error {
-	var err error
-	gojs.CatchException(&err)
+func (c *LP) Close() (err error) {
+	defer gojs.CatchException(&err)
 
 	c.MDC.Component.Component().Value.Call("close")
 	return err

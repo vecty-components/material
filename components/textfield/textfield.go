@@ -86,9 +86,8 @@ func (c *TF) StateMap() base.StateMap {
 }
 
 // Layout adjusts the dimensions and positions for all sub-elements.
-func (tf *TF) Layout() error {
-	var err error
-	gojs.CatchException(&err)
+func (tf *TF) Layout() (err error) {
+	defer gojs.CatchException(&err)
 	tf.mdc.Call("layout")
 	return err
 }

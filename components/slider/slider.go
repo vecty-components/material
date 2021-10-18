@@ -100,9 +100,8 @@ func (c *S) StateMap() base.StateMap {
 // Layout recomputes the dimensions and re-lays out the component. This should
 // be called if the dimensions of the slider itself or any of its parent
 // elements change programmatically (it is called automatically on resize).
-func (s *S) Layout() error {
-	var err error
-	gojs.CatchException(&err)
+func (s *S) Layout() (err error) {
+	defer gojs.CatchException(&err)
 	s.mdc.Call("layout")
 	return err
 }
