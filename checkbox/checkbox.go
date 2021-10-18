@@ -87,12 +87,11 @@ func (c *CB) Apply(h *vecty.HTML) {
 		}
 
 		c.MDC.Component.Component().SetState(base.StateMap{
-			"checked":       c.Checked,
-			"indeterminate": c.Indeterminate,
-			"disabled":      c.Disabled,
-			"value":         c.Value,
+			"checked":       &c.Checked,
+			"indeterminate": &c.Indeterminate,
+			"disabled":      &c.Disabled,
+			"value":         &c.Value,
 		})
-
 	}
 
 	vecty.Markup(
@@ -103,11 +102,6 @@ func (c *CB) Apply(h *vecty.HTML) {
 }
 
 func (c *CB) onChange(e *vecty.Event) {
-	c.Checked = c.MDC.Component.Component().Get("checked").Bool()
-	c.Indeterminate = c.MDC.Component.Component().Get("indeterminate").Bool()
-	c.Disabled = c.MDC.Component.Component().Get("disabled").Bool()
-	c.Value = c.MDC.Component.Component().Get("value").String()
-
 	if c.OnChange != nil {
 		c.OnChange(e)
 	}

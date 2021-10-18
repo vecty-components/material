@@ -6,6 +6,7 @@ package base // import "github.com/vecty-components/material/base"
 
 import (
 	"errors"
+	"time"
 
 	"syscall/js"
 
@@ -14,11 +15,24 @@ import (
 
 const MDC_VERSION = "4.0.0"
 
+type stringPair struct {
+	val string
+	ptr *string
+}
+
+type boolPair struct {
+	val bool
+	ptr *bool
+}
+
 // Component is a base type for all Material components.
 type Component struct {
 	js.Value
 	*MDCState
-	Type ComponentType
+	Type    ComponentType
+	Strings map[string]*stringPair
+	Bools   map[string]*boolPair
+	Running bool
 }
 
 type MDCState struct {
@@ -60,9 +74,62 @@ func (c *Component) Stop() error {
 }
 
 func (c *Component) SetState(sm StateMap) *Component {
-	if sm != nil {
-		for k, v := range sm {
-			if v != nil {
+	if c.Strings == nil {
+		c.Strings = make(map[string]*stringPair)
+	}
+	if c.Bools == nil {
+		c.Bools = make(map[string]*boolPair)
+	}
+
+	if !c.Running {
+		c.Running = true
+		go func() {
+			for {
+				if c.MDCState == nil || !c.MDCState.Started {
+					return
+				}
+
+				for k, b := range c.Bools {
+					if b.val != *b.ptr {
+						// we changed it
+						b.val = *b.ptr
+						c.Component().Set(k, b.val)
+					} else {
+						b.val = c.Component().Get(k).Bool()
+						*b.ptr = b.val
+					}
+				}
+
+				for k, b := range c.Strings {
+					if b.val != *b.ptr {
+						// we changed it
+						b.val = *b.ptr
+						c.Component().Set(k, b.val)
+					} else {
+						b.val = c.Component().Get(k).String()
+						*b.ptr = b.val
+					}
+				}
+
+				time.Sleep(150 * time.Millisecond)
+			}
+		}()
+	}
+
+	for k, v := range sm {
+		if v != nil {
+			switch v := v.(type) {
+			case *string:
+				c.Strings[k] = &stringPair{
+					val: *v,
+					ptr: v,
+				}
+			case *bool:
+				c.Bools[k] = &boolPair{
+					val: *v,
+					ptr: v,
+				}
+			default:
 				c.Component().Set(k, v)
 			}
 		}
