@@ -7,7 +7,6 @@ import (
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-components/material/base"
 	"github.com/vecty-components/material/base/applyer"
-	"github.com/vecty-components/material/components/radio"
 )
 
 // R is a vecty-material radio component.
@@ -54,12 +53,17 @@ func (c *R) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = radio.New()
-		if r, ok := c.MDC.Component.(*radio.R); ok {
-			r.Checked = c.Checked
-			r.Disabled = c.Disabled
-			r.Value = c.Value
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCRadio",
+				MDCCamelCaseName: "radio",
+			},
 		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{
+			"checked":  &c.Checked,
+			"disabled": &c.Disabled,
+		})
 	}
 
 	vecty.Markup(
@@ -72,11 +76,6 @@ func (c *R) Apply(h *vecty.HTML) {
 }
 
 func (c *R) onChange(e *vecty.Event) {
-	if r, ok := c.MDC.Component.(*radio.R); ok {
-		c.Checked = r.Checked
-		c.Disabled = r.Disabled
-		c.Value = r.Value
-	}
 	if c.OnChange != nil {
 		c.OnChange(e)
 	}
