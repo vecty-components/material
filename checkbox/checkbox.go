@@ -114,6 +114,7 @@ func (c *CB) NativeInput() (element *vecty.HTML, id string) {
 	element = elem.Input(
 		vecty.Markup(
 			vecty.MarkupIf(niMarkup != nil, niMarkup),
+			event.Change(c.MDC.Component.Component().Update),
 			vecty.MarkupIf(c.OnChange != nil, event.Change(c.OnChange)),
 			vecty.Class("mdc-checkbox__native-control"),
 			prop.Type(prop.TypeCheckbox),

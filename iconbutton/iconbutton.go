@@ -106,6 +106,10 @@ func (c *IB) Apply(h *vecty.HTML) {
 				Listener: c.OnChange,
 			},
 		),
+		&vecty.EventListener{
+			Name:     "MDCIconButtonToggle:change",
+			Listener: c.MDC.Component.Component().Update,
+		},
 		vecty.MarkupIf(c.OnClick != nil,
 			event.Click(c.OnClick),
 		),
