@@ -4,6 +4,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-components/material/base"
+	"github.com/vecty-components/material/linearprogress"
 )
 
 // A is a vecty-material appbar component.
@@ -14,6 +15,7 @@ type A struct {
 	SectionStart  vecty.List          `vecty:"prop"`
 	SectionCenter vecty.List          `vecty:"prop"`
 	SectionEnd    vecty.List          `vecty:"prop"`
+	ProgressBar   *linearprogress.LP  `vecty:"prop"`
 	Fixed         bool                `vecty:"prop"`
 }
 
@@ -62,6 +64,7 @@ func (c *A) Render() vecty.ComponentOrHTML {
 				),
 			),
 		),
+		c.ProgressBar,
 	)
 }
 
