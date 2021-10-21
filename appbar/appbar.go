@@ -64,7 +64,7 @@ func (c *A) Render() vecty.ComponentOrHTML {
 				),
 			),
 		),
-		c.ProgressBar,
+		vecty.If(c.ProgressBar != nil, c.ProgressBar),
 	)
 }
 
