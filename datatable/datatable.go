@@ -13,8 +13,8 @@ import (
 
 type R struct {
 	vecty.Core
-	Cells []*C   `vecty:"prop"`
-	K     string `vecty:"prop"`
+	base.KeyedComponent
+	Cells []*C `vecty:"prop"`
 }
 
 func (c *R) Render() vecty.ComponentOrHTML {
@@ -30,14 +30,6 @@ func (c *R) Render() vecty.ComponentOrHTML {
 			),
 		}, cells...)...,
 	)
-}
-
-func (c *R) Key() interface{} {
-	if c.K == "" {
-		c.K = base.Key()
-	}
-
-	return c.K
 }
 
 type C struct {
