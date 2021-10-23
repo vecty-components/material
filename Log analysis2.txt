@@ -1,0 +1,19 @@
+panic: runtime error: invalid memory address or nil pointer dereference wasm_exec.js:51:14
+[signal 0xb code=0x0 addr=0x0 pc=0x0] wasm_exec.js:51:14
+<empty string> wasm_exec.js:51:14
+goroutine 6 [running]: wasm_exec.js:51:14
+github.com/vecty-material/material/components/menu.(*M).Component(0x0, 0x10970056) wasm_exec.js:51:14
+	/home/vince/github/vecty-material/material/components/menu/menu.go:88 +0x2 wasm_exec.js:51:14
+github.com/vecty-material/material/components/menu.(*M).SetAnchorCorner(0x0, 0x8) wasm_exec.js:51:14
+	/home/vince/github/vecty-material/material/components/menu/menu.go:135 +0x2 wasm_exec.js:51:14
+github.com/vecty-material/material/demos/menu.(*MenuDemoView).Render.func4(0x464c00, 0x4e8820) wasm_exec.js:51:14
+	/home/vince/github/vecty-material/material/demos/menu/menu_demo.go:250 +0xf wasm_exec.js:51:14
+github.com/vecty-material/material/radio.(*R).onChange(0x464c00, 0x4e8820) wasm_exec.js:51:14
+	/home/vince/github/vecty-material/material/radio/radio.go:81 +0xf wasm_exec.js:51:14
+github.com/hexops/vecty.(*HTML).reconcileProperties.func1(0x6b118, 0x4f0960, 0x4f0940, 0x1, 0x1, 0x168c0, 0x48310) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:246 +0x13 wasm_exec.js:51:14
+github.com/hexops/vecty.funcOf.func1(0x7ff80001000001cd, 0x4ece20, 0x4f0930, 0x1, 0x1, 0x4ece28, 0x25000) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom_js.go:60 +0x15 wasm_exec.js:51:14
+syscall/js.handleEvent() wasm_exec.js:51:14
+	/usr/local/go/src/syscall/js/func.go:96 +0x24 wasm_exec.js:51:14
+exit code: 2 wasm_exec.js:151:14

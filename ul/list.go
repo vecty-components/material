@@ -249,7 +249,8 @@ func ItemDivider() vecty.ComponentOrHTML {
 			vecty.Attribute("role", "separator"),
 		),
 	)
-	return base.RenderStoredChild(d)
+	//return base.RenderStoredChild(d)
+	return base.RenderStoredChildKeyer(d)
 }
 
 func ItemDividerInset() vecty.ComponentOrHTML {
