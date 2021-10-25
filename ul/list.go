@@ -251,6 +251,7 @@ func ItemDivider() vecty.ComponentOrHTML {
 	)
 	//return base.RenderStoredChild(d)
 	return base.RenderStoredChildKeyer(d)
+	//return d
 }
 
 func ItemDividerInset() vecty.ComponentOrHTML {

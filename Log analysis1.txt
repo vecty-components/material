@@ -1,15 +1,8 @@
-panic: runtime error: invalid memory address or nil pointer dereference wasm_exec.js:51:14
-[signal 0xb code=0x0 addr=0x0 pc=0x0] wasm_exec.js:51:14
-<empty string> wasm_exec.js:51:14
-goroutine 6 [running]: wasm_exec.js:51:14
-github.com/vecty-material/material/demos/menu.(*MenuDemoView).Render.func3(0x464880, 0x4e8820) wasm_exec.js:51:14
-	/home/vince/github/vecty-material/material/demos/menu/menu_demo.go:217 +0xa wasm_exec.js:51:14
-github.com/vecty-material/material/radio.(*R).onChange(0x464880, 0x4e8820) wasm_exec.js:51:14
-	/home/vince/github/vecty-material/material/radio/radio.go:81 +0xf wasm_exec.js:51:14
-github.com/hexops/vecty.(*HTML).reconcileProperties.func1(0x6b118, 0x4f0990, 0x4f0970, 0x1, 0x1, 0x168c0, 0x48310) wasm_exec.js:51:14
-	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:246 +0x13 wasm_exec.js:51:14
-github.com/hexops/vecty.funcOf.func1(0x7ff80001000000d9, 0x4ece08, 0x4f0960, 0x1, 0x1, 0x4ece10, 0x25000) wasm_exec.js:51:14
-	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom_js.go:60 +0x15 wasm_exec.js:51:14
-syscall/js.handleEvent() wasm_exec.js:51:14
-	/usr/local/go/src/syscall/js/func.go:96 +0x24 wasm_exec.js:51:14
-exit code: 2 wasm_exec.js:151:14
+2021/10/25 21:03:07 material/base/toolsDebug/base.RenderStoredChildKeyer()2 StaticComponentKeyer = 0x434870 *base.StaticComponentKeyer &{Core:{prevRenderComponent:<nil> prevRender:<nil> mounted:false unmounted:false} Child:0x4edea0 key:} wasm_exec.js:51:14
+2021/10/25 21:03:07 material/base/toolsDebug/base.StaticComponentKeyer.Key()1 c = 0x434870 &{Core:{prevRenderComponent:<nil> prevRender:<nil> mounted:false unmounted:false} Child:0x4edea0 key:material-component-36} wasm_exec.js:51:14
+2021/10/25 21:03:07 material/base/toolsDebug/base.StaticComponentKeyer.Render()1 c.Child = 0x4edea0 *vecty.HTML wasm_exec.js:51:14
+2021/10/25 21:03:08 material/base/toolsDebug/base.StaticComponentKeyer.Key()1 c = 0x434870 &{Core:{prevRenderComponent:0x434960 prevRender:0x4edea0 mounted:false unmounted:false} Child:0x4edea0 key:material-component-36} wasm_exec.js:51:14
+2021/10/25 21:03:08 material/base/toolsDebug/base.StaticComponentKeyer.SkipRender()2 SkipRender = false prev = *base.StaticComponentKeyer wasm_exec.js:51:14
+2021/10/25 21:03:08 material/base/toolsDebug/base.StaticComponentKeyer.Render()1 c.Child = 0x4edea0 *vecty.HTML wasm_exec.js:51:14
+2021/10/25 21:03:08 vecty/dom/vecty.HTML.reconcileChildren()1 vecty: next 'child render' must not equal previous 'child render' (did the 'child Render' illegally return a stored render variable?) wasm_exec.js:51:14
+2021/10/25 21:03:08 vecty/dom/vecty.HTML.reconcileChildren()1 nextChild = 0x434870 &{Core:{prevRenderComponent:0x434c30 prevRender:0x4edea0 mounted:false unmounted:false} Child:0x4edea0 key:material-component-36} prevChild = 0x434870 &{Core:{prevRenderComponent:0x434c30 prevRender:0x4edea0 mounted:false unmounted:false} Child:0x4edea0 key:material-component-36} nextChildRender = &{{{[] 9221120241336058470 0x4f46b8}}  li   map[mdc-list-divider:{}] map[] map[] map[] map[role:separator] [] [] <nil> map[] <nil> <nil>} prevChildRender = &{{{[] 9221120241336058470 0x4f46b8}}  li   map[mdc-list-divider:{}] map[] map[] map[] map[role:separator] [] [] <nil> map[] <nil> <nil>} wasm_exec.js:51:14

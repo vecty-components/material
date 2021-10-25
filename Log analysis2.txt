@@ -1,18 +1,47 @@
+2021/10/25 21:33:00 material/base/toolsDebug/base.RenderStoredChildKeyer()2 StaticComponentKeyer = 0x434870 *base.StaticComponentKeyer &{Core:{prevRenderComponent:<nil> prevRender:<nil> mounted:false unmounted:false} Child:0x4edea0 key:} wasm_exec.js:51:14
+2021/10/25 21:33:00 material/base/toolsDebug/base.StaticComponentKeyer.Key()1 c = 0x434870 &{Core:{prevRenderComponent:<nil> prevRender:<nil> mounted:false unmounted:false} Child:0x4edea0 key:material-component-36} wasm_exec.js:51:14
+2021/10/25 21:33:00 material/base/toolsDebug/base.StaticComponentKeyer.Render()1 c.Child = 0x4edea0 *vecty.HTML wasm_exec.js:51:14
+2021/10/25 21:33:09 material/base/toolsDebug/base.StaticComponentKeyer.Key()1 c = 0x434870 &{Core:{prevRenderComponent:0x434960 prevRender:0x4edea0 mounted:false unmounted:false} Child:0x4edea0 key:material-component-36} wasm_exec.js:51:14
+2021/10/25 21:33:09 material/base/toolsDebug/base.StaticComponentKeyer.SkipRender()1 SkipRender = true prev = *base.StaticComponentKeyer wasm_exec.js:51:14
+2021/10/25 21:33:09 vecty/dom/vecty.HTML.removeChild()1 child = 0x4edea0 &{node:{j:{_:[] ref:9221120241336058470 gcPtr:0x4f46b8}} namespace: tag:li text: innerHTML: classes:map[mdc-list-divider:{}] styles:map[] dataset:map[] properties:map[] attributes:map[role:separator] eventListeners:[] children:[] key:<nil> keyedChildren:map[] insertBeforeNode:<nil> lastRenderedChild:<nil>} child.node = <object> h = 0x507180 &{node:{j:{_:[] ref:9221120241336058432 gcPtr:0x4f4228}} namespace: tag:ul text: innerHTML: classes:map[mdc-list:{} mdc-menu__items:{}] styles:map[] dataset:map[] properties:map[] attributes:map[aria-hidden:true role:menu] eventListeners:[] children:[0x4d2f20 0x4d2fd0 0x4d3080 0x4d3130 0x434870 0x4d31e0 0x4d3290 0x4d3340 0x4d33f0] key:<nil> keyedChildren:map[material-component-32:0x4d2f20 material-component-33:0x4d2fd0 material-component-34:0x4d3080 material-component-35:0x4d3130 material-component-36:0x434870 material-component-37:0x4d31e0 material-component-38:0x4d3290 material-component-39:0x4d3340 material-component-40:0x4d33f0] insertBeforeNode:<nil> lastRenderedChild:0x50a000} wasm_exec.js:51:14
+2021/10/25 21:33:09 vecty/dom/vecty.HTML.removeChild()2 child.node.Get('parentNode') = <object> wasm_exec.js:51:14
+2021/10/25 21:33:21 material/base/toolsDebug/base.StaticComponentKeyer.Key()1 c = 0x434870 &{Core:{prevRenderComponent:0x434960 prevRender:0x4edea0 mounted:false unmounted:false} Child:0x4edea0 key:material-component-36} wasm_exec.js:51:14
+2021/10/25 21:33:21 material/base/toolsDebug/base.StaticComponentKeyer.SkipRender()1 SkipRender = true prev = *base.StaticComponentKeyer wasm_exec.js:51:14
+2021/10/25 21:33:21 vecty/dom/vecty.HTML.removeChild()1 child = 0x4edea0 &{node:{j:{_:[] ref:9221120241336058470 gcPtr:0x4f46b8}} namespace: tag:li text: innerHTML: classes:map[mdc-list-divider:{}] styles:map[] dataset:map[] properties:map[] attributes:map[role:separator] eventListeners:[] children:[] key:<nil> keyedChildren:map[] insertBeforeNode:<nil> lastRenderedChild:<nil>} child.node = <object> h = 0x50a620 &{node:{j:{_:[] ref:9221120241336058432 gcPtr:0x4f4228}} namespace: tag:ul text: innerHTML: classes:map[mdc-list:{} mdc-menu__items:{}] styles:map[] dataset:map[] properties:map[] attributes:map[aria-hidden:true role:menu] eventListeners:[] children:[0x4d2f20 0x4d2fd0 0x4d3080 0x4d3130 0x434870 0x4d31e0 0x4d3290 0x4d3340 0x4d33f0] key:<nil> keyedChildren:map[material-component-32:0x4d2f20 material-component-33:0x4d2fd0 material-component-34:0x4d3080 material-component-35:0x4d3130 material-component-36:0x434870 material-component-37:0x4d31e0 material-component-38:0x4d3290 material-component-39:0x4d3340 material-component-40:0x4d33f0] insertBeforeNode:<nil> lastRenderedChild:0x50b420} wasm_exec.js:51:14
+2021/10/25 21:33:21 vecty/dom/vecty.HTML.removeChild()2 child.node.Get('parentNode') = <nil> wasm_exec.js:51:14
 panic: runtime error: invalid memory address or nil pointer dereference wasm_exec.js:51:14
 [signal 0xb code=0x0 addr=0x0 pc=0x0] wasm_exec.js:51:14
 <empty string> wasm_exec.js:51:14
 goroutine 6 [running]: wasm_exec.js:51:14
-github.com/vecty-material/material/components/menu.(*M).Component(0x0, 0x10970056) wasm_exec.js:51:14
-	/home/vince/github/vecty-material/material/components/menu/menu.go:88 +0x2 wasm_exec.js:51:14
-github.com/vecty-material/material/components/menu.(*M).SetAnchorCorner(0x0, 0x8) wasm_exec.js:51:14
-	/home/vince/github/vecty-material/material/components/menu/menu.go:135 +0x2 wasm_exec.js:51:14
-github.com/vecty-material/material/demos/menu.(*MenuDemoView).Render.func4(0x464c00, 0x4e8820) wasm_exec.js:51:14
-	/home/vince/github/vecty-material/material/demos/menu/menu_demo.go:250 +0xf wasm_exec.js:51:14
-github.com/vecty-material/material/radio.(*R).onChange(0x464c00, 0x4e8820) wasm_exec.js:51:14
-	/home/vince/github/vecty-material/material/radio/radio.go:81 +0xf wasm_exec.js:51:14
-github.com/hexops/vecty.(*HTML).reconcileProperties.func1(0x6b118, 0x4f0960, 0x4f0940, 0x1, 0x1, 0x168c0, 0x48310) wasm_exec.js:51:14
-	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:246 +0x13 wasm_exec.js:51:14
-github.com/hexops/vecty.funcOf.func1(0x7ff80001000001cd, 0x4ece20, 0x4f0930, 0x1, 0x1, 0x4ece28, 0x25000) wasm_exec.js:51:14
+github.com/hexops/vecty.(*HTML).removeChild(0x50a620, 0x4edea0) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:661 +0x1a wasm_exec.js:51:14
+github.com/hexops/vecty.(*HTML).removeChildren(0x50a620, 0x51c450, 0x1, 0x1) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:624 +0xe wasm_exec.js:51:14
+github.com/hexops/vecty.(*HTML).reconcileChildren(0x50a620, 0x507180, 0x4ef780, 0x17750001, 0x4d9440) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:600 +0x51 wasm_exec.js:51:14
+github.com/hexops/vecty.(*HTML).reconcile(0x50a620, 0x507180, 0x507180, 0x0, 0x0) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:224 +0x39 wasm_exec.js:51:14
+github.com/hexops/vecty.renderComponent(0xcbc078, 0x4a0980, 0xe5870, 0x4a0980, 0x4a0980, 0x77c01, 0x10830006, 0x48200, 0x68340) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:1069 +0x17 wasm_exec.js:51:14
+github.com/hexops/vecty.render(0xe5870, 0x4a0980, 0xe5870, 0x4a0980, 0x0, 0x0, 0x2, 0x0, 0x0) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:1007 +0xa wasm_exec.js:51:14
+github.com/hexops/vecty.(*HTML).reconcileChildren(0x50a460, 0x506fc0, 0x4ef4e0, 0x5b501, 0xcbc1a8) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:510 +0x32 wasm_exec.js:51:14
+github.com/hexops/vecty.(*HTML).reconcile(0x50a460, 0x506fc0, 0x506fc0, 0x4d8d40, 0x0) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:224 +0x39 wasm_exec.js:51:14
+github.com/hexops/vecty.render(0xe54b0, 0x50a460, 0xe54b0, 0x506fc0, 0x50a460, 0x4b9601, 0x0, 0x0, 0x0) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:1003 +0x6 wasm_exec.js:51:14
+github.com/hexops/vecty.(*HTML).reconcileChildren(0x50a540, 0x5070a0, 0x4ef360, 0x21300001, 0x8e5e2) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:510 +0x32 wasm_exec.js:51:14
+github.com/hexops/vecty.(*HTML).reconcile(0x50a540, 0x5070a0, 0x5070a0, 0x0, 0x0) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:224 +0x39 wasm_exec.js:51:14
+github.com/hexops/vecty.renderComponent(0xe7df0, 0x4a0a00, 0xccfee8, 0x4a0a00, 0x4a0a00, 0x10d2000c, 0xcc33c3, 0x3b0101, 0x10ce0003) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:1069 +0x17 wasm_exec.js:51:14
+github.com/hexops/vecty.(*batchRenderer).render(0x383da0, 0x40d4d7d47ae147ae) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:898 +0x2e wasm_exec.js:51:14
+github.com/hexops/vecty.requestAnimationFrame.func1(0xe9e38, 0x5094b0, 0x509490, 0x1, 0x1, 0x509480, 0x4f5ae0) wasm_exec.js:51:14
+	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom.go:1173 +0xb wasm_exec.js:51:14
+github.com/hexops/vecty.funcOf.func1(0x0, 0x0, 0x509480, 0x1, 0x1, 0x4f5ae0, 0x59420) wasm_exec.js:51:14
 	/home/vince/go/pkg/mod/github.com/hexops/vecty@v0.6.0/dom_js.go:60 +0x15 wasm_exec.js:51:14
 syscall/js.handleEvent() wasm_exec.js:51:14
 	/usr/local/go/src/syscall/js/func.go:96 +0x24 wasm_exec.js:51:14
