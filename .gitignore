@@ -1,4 +1,3 @@
 node_modules/
 libs.inc.js
 *.wasm
-*.txt
