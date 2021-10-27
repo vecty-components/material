@@ -29,7 +29,7 @@ func (c *S) Render() vecty.ComponentOrHTML {
 
 	buttons := make([]vecty.MarkupOrChild, len(c.Buttons))
 	for i, b := range c.Buttons {
-		markup := base.ExtractMarkupFromLink(b.Label.(*vecty.HTML))
+		markup := base.ExtractMarkupFromLink(b.Label)
 		buttons[i] = elem.Button(
 			vecty.Markup(
 				prop.Type("button"),

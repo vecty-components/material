@@ -111,9 +111,7 @@ func (c *L) Apply(h *vecty.HTML) {
 
 // Render implements the vecty.Component interface.
 func (c *Item) Render() vecty.ComponentOrHTML {
-	c.markup = base.ExtractMarkupFromLink(
-		c.Primary.(*vecty.HTML),
-	)
+	c.markup = base.ExtractMarkupFromLink(c.Primary)
 
 	tag := "li"
 	if c.markup.Href != "" {

@@ -27,9 +27,7 @@ type B struct {
 
 // Render implements the vecty.Component interface.
 func (c *B) Render() vecty.ComponentOrHTML {
-	c.markup = base.ExtractMarkupFromLink(
-		c.Label.(*vecty.HTML),
-	)
+	c.markup = base.ExtractMarkupFromLink(c.Label)
 
 	rootMarkup := base.MarkupOnly(c.Root)
 	if c.Root != nil && rootMarkup == nil {
