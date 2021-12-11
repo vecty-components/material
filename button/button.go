@@ -27,9 +27,7 @@ type B struct {
 
 // Render implements the vecty.Component interface.
 func (c *B) Render() vecty.ComponentOrHTML {
-	c.markup = base.ExtractMarkupFromLink(
-		c.Label.(*vecty.HTML),
-	)
+	c.markup = base.ExtractMarkupFromLink(c.Label)
 
 	rootMarkup := base.MarkupOnly(c.Root)
 	if c.Root != nil && rootMarkup == nil {
@@ -55,6 +53,11 @@ func (c *B) Render() vecty.ComponentOrHTML {
 			c,
 			base.MarkupIfNotNil(rootMarkup),
 		),
+		elem.Span(
+			vecty.Markup(
+				vecty.Class("mdc-button__ripple"),
+			),
+		),
 		ico,
 		base.RenderStoredChild(c.markup.Child),
 	)
@@ -64,9 +67,18 @@ func (c *B) Apply(h *vecty.HTML) {
 	switch {
 	case c.MDC == nil:
 		c.MDC = &base.MDC{}
+		fallthrough
+	case c.MDC.Component == nil:
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCRipple",
+				MDCCamelCaseName: "ripple",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{})
 	}
-	c.MDC.Component = nil
-	c.MDC.RootElement = h
+
 	vecty.Markup(
 		vecty.Class("mdc-button"),
 		prop.Type(prop.TypeButton),
@@ -87,4 +99,5 @@ func (c *B) Apply(h *vecty.HTML) {
 			vecty.Class("mdc-button--dense"),
 		),
 	).Apply(h)
+	c.MDC.RootElement = h
 }

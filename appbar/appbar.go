@@ -4,7 +4,7 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-components/material/base"
-	"github.com/vecty-components/material/components/appbar"
+	"github.com/vecty-components/material/linearprogress"
 )
 
 // A is a vecty-material appbar component.
@@ -15,6 +15,7 @@ type A struct {
 	SectionStart  vecty.List          `vecty:"prop"`
 	SectionCenter vecty.List          `vecty:"prop"`
 	SectionEnd    vecty.List          `vecty:"prop"`
+	ProgressBar   *linearprogress.LP  `vecty:"prop"`
 	Fixed         bool                `vecty:"prop"`
 }
 
@@ -63,6 +64,7 @@ func (c *A) Render() vecty.ComponentOrHTML {
 				),
 			),
 		),
+		vecty.If(c.ProgressBar != nil, c.ProgressBar),
 	)
 }
 
@@ -72,7 +74,14 @@ func (c *A) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = appbar.New()
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCTopAppBar",
+				MDCCamelCaseName: "topAppBar",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{})
 	}
 	c.MDC.RootElement = h
 	vecty.Markup(

@@ -4,7 +4,6 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-components/material/base"
-	"github.com/vecty-components/material/components/tabbar"
 )
 
 type T struct {
@@ -128,7 +127,14 @@ func (c *TB) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = tabbar.New()
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCTabBar",
+				MDCCamelCaseName: "tabBar",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{})
 	}
 	c.MDC.RootElement = h
 	vecty.Markup(

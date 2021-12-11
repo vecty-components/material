@@ -16,7 +16,13 @@ type LinkMarkup struct {
 	OnClick func(*vecty.Event)
 }
 
-func ExtractMarkupFromLink(html *vecty.HTML) *LinkMarkup {
+func ExtractMarkupFromLink(ht vecty.ComponentOrHTML) *LinkMarkup {
+	switch ht.(type) {
+	case vecty.Component, vecty.List:
+		return &LinkMarkup{Child: ht}
+	}
+
+	html := ht.(*vecty.HTML)
 	sm := &LinkMarkup{}
 
 	h := reflect.ValueOf(*html)

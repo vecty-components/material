@@ -87,12 +87,11 @@ func (c *CB) Apply(h *vecty.HTML) {
 		}
 
 		c.MDC.Component.Component().SetState(base.StateMap{
-			"checked":       c.Checked,
-			"indeterminate": c.Indeterminate,
-			"disabled":      c.Disabled,
-			"value":         c.Value,
+			"checked":       &c.Checked,
+			"indeterminate": &c.Indeterminate,
+			"disabled":      &c.Disabled,
+			"value":         &c.Value,
 		})
-
 	}
 
 	vecty.Markup(
@@ -100,17 +99,6 @@ func (c *CB) Apply(h *vecty.HTML) {
 		vecty.MarkupIf(c.Disabled, vecty.Class("mdc-checkbox--disabled")),
 	).Apply(h)
 	c.MDC.RootElement = h
-}
-
-func (c *CB) onChange(e *vecty.Event) {
-	c.Checked = c.MDC.Component.Component().Get("checked").Bool()
-	c.Indeterminate = c.MDC.Component.Component().Get("indeterminate").Bool()
-	c.Disabled = c.MDC.Component.Component().Get("disabled").Bool()
-	c.Value = c.MDC.Component.Component().Get("value").String()
-
-	if c.OnChange != nil {
-		c.OnChange(e)
-	}
 }
 
 func (c *CB) NativeInput() (element *vecty.HTML, id string) {
@@ -126,7 +114,10 @@ func (c *CB) NativeInput() (element *vecty.HTML, id string) {
 	element = elem.Input(
 		vecty.Markup(
 			vecty.MarkupIf(niMarkup != nil, niMarkup),
-			event.Change(c.onChange),
+			event.Change(func(e *vecty.Event) {
+				c.MDC.Component.Component().Update(e)
+			}),
+			vecty.MarkupIf(c.OnChange != nil, event.Change(c.OnChange)),
 			vecty.Class("mdc-checkbox__native-control"),
 			prop.Type(prop.TypeCheckbox),
 			vecty.MarkupIf(c.Value != "", prop.Value(c.Value)),

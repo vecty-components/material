@@ -202,6 +202,9 @@ func (c *CatalogPage) Render() vecty.ComponentOrHTML {
 			router.NewRoute(
 				"/layout-grid", views.NewLayoutGridPage(), router.NewRouteOpts{ExactMatch: true},
 			),
+			router.NewRoute(
+				"/radio", views.NewRadioPage(), router.NewRouteOpts{ExactMatch: true},
+			),
 		},
 	}
 

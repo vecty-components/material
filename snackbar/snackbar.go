@@ -29,7 +29,7 @@ func (c *S) Render() vecty.ComponentOrHTML {
 
 	buttons := make([]vecty.MarkupOrChild, len(c.Buttons))
 	for i, b := range c.Buttons {
-		markup := base.ExtractMarkupFromLink(b.Label.(*vecty.HTML))
+		markup := base.ExtractMarkupFromLink(b.Label)
 		buttons[i] = elem.Button(
 			vecty.Markup(
 				prop.Type("button"),
@@ -112,9 +112,8 @@ func (c *S) Apply(h *vecty.HTML) {
 // Open displays the snackbar. If the configuration is invalid an error message
 // will be returned and the snackbar will not be shown. For information on
 // config requirements look at documentation for S.
-func (c *S) Open() error {
-	var err error
-	gojs.CatchException(&err)
+func (c *S) Open() (err error) {
+	defer gojs.CatchException(&err)
 
 	c.MDC.Component.Component().Value.Call("open")
 	return err

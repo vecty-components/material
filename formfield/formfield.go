@@ -6,7 +6,6 @@ import (
 	"github.com/hexops/vecty/prop"
 	"github.com/vecty-components/material/base"
 	"github.com/vecty-components/material/base/applyer"
-	"github.com/vecty-components/material/components/formfield"
 )
 
 // FF is a vecty-material formfield component.
@@ -49,7 +48,16 @@ func (c *FF) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = formfield.New()
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCFormField",
+				MDCCamelCaseName: "formField",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{
+			// "input": c.mdc.Get("Input"),
+		})
 	}
 	vecty.Markup(
 		vecty.Class("mdc-form-field"),

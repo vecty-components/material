@@ -9,16 +9,29 @@ import (
 
 	"syscall/js"
 
+	"github.com/hexops/vecty"
 	"github.com/vecty-components/material/gojs"
 )
 
 const MDC_VERSION = "4.0.0"
 
+type stringPair struct {
+	val string
+	ptr *string
+}
+
+type boolPair struct {
+	val bool
+	ptr *bool
+}
+
 // Component is a base type for all Material components.
 type Component struct {
 	js.Value
 	*MDCState
-	Type ComponentType
+	Type    ComponentType
+	strings map[string]*stringPair
+	bools   map[string]*boolPair
 }
 
 type MDCState struct {
@@ -59,14 +72,63 @@ func (c *Component) Stop() error {
 	return Stop(c)
 }
 
+func (c *Component) Update(e *vecty.Event) {
+	if c.MDCState == nil || !c.MDCState.Started {
+		return
+	}
+
+	for k, b := range c.bools {
+		if b.val != *b.ptr {
+			// we changed it
+			b.val = *b.ptr
+			c.Component().Set(k, b.val)
+		} else if val := c.Component().Get(k); !val.IsUndefined() {
+			b.val = val.Bool()
+			*b.ptr = b.val
+		}
+	}
+
+	for k, b := range c.strings {
+		if b.val != *b.ptr {
+			// we changed it
+			b.val = *b.ptr
+			c.Component().Set(k, b.val)
+		} else if val := c.Component().Get(k); !val.IsUndefined() {
+			b.val = val.String()
+			*b.ptr = b.val
+		}
+	}
+}
+
 func (c *Component) SetState(sm StateMap) *Component {
-	if sm != nil {
-		for k, v := range sm {
-			if v != nil {
+	if c.strings == nil {
+		c.strings = make(map[string]*stringPair)
+	}
+	if c.bools == nil {
+		c.bools = make(map[string]*boolPair)
+	}
+
+	for k, v := range sm {
+		if v != nil {
+			switch v := v.(type) {
+			case *string:
+				c.strings[k] = &stringPair{
+					val: *v,
+					ptr: v,
+				}
+			case *bool:
+				c.bools[k] = &boolPair{
+					val: *v,
+					ptr: v,
+				}
+			default:
 				c.Component().Set(k, v)
 			}
 		}
 	}
+
+	c.Update(nil)
+
 	return c
 }
 

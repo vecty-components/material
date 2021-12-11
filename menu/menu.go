@@ -4,7 +4,6 @@ import (
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/vecty-components/material/base"
-	"github.com/vecty-components/material/components/menu"
 	"github.com/vecty-components/material/ul"
 )
 
@@ -12,30 +11,14 @@ import (
 type M struct {
 	*base.MDC
 	vecty.Core
-	Root       vecty.MarkupOrChild `vecty:"prop"`
-	menuAnchor *vecty.HTML
-
-	// Open is the visible state of the menu component.
-	Open bool `vecty:"prop"`
-
-	// QuickOpen controls whether the menu should open and close without
-	// animation. False uses animation, true does not.
-	QuickOpen bool `vecty:"prop"`
-
-	// List is a HTMLUListElement containing the menu's items.
-	List vecty.ComponentOrHTML `vecty:"prop"`
-
-	// Set AnchorElement to embed the menu component inside an HTMLElement from
-	// which the element will be anchored.
-	AnchorElement vecty.ComponentOrHTML `vecty:"prop"`
-
-	// Define OnSelect to handle "MDCMenu:selected" events. item is the
-	// menu item that was selected.
-	OnSelect func(index int, item vecty.ComponentOrHTML, e *vecty.Event) `vecty:"prop"`
-
-	// Define OnCancel to handle "MDCMenu:selected" events. item is the
-	// menu item that was selected.
-	OnCancel func(e *vecty.Event) `vecty:"prop"`
+	menuAnchor    *vecty.HTML
+	Root          vecty.MarkupOrChild                                         `vecty:"prop"`
+	Open          bool                                                        `vecty:"prop"`
+	QuickOpen     bool                                                        `vecty:"prop"`
+	List          vecty.ComponentOrHTML                                       `vecty:"prop"`
+	AnchorElement vecty.ComponentOrHTML                                       `vecty:"prop"`
+	OnSelect      func(index int, item vecty.ComponentOrHTML, e *vecty.Event) `vecty:"prop"`
+	OnCancel      func(e *vecty.Event)                                        `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.
@@ -106,7 +89,17 @@ func (c *M) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = menu.New()
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCMenu",
+				MDCCamelCaseName: "menu",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{
+			"open":      &c.Open,
+			"quickOpen": &c.QuickOpen,
+		})
 	}
 
 	vecty.Markup(

@@ -5,7 +5,6 @@ import (
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"github.com/vecty-components/material/base"
-	"github.com/vecty-components/material/components/iconbutton"
 	"github.com/vecty-components/material/icon"
 )
 
@@ -13,14 +12,14 @@ import (
 type IB struct {
 	*base.MDC
 	vecty.Core
-	Root          vecty.MarkupOrChild              `vecty:"prop"`
-	ChangeHandler func(thisIB *IB, e *vecty.Event) `vecty:"prop"`
-	On            bool                             `vecty:"prop"`
-	OnIcon        vecty.ComponentOrHTML            `vecty:"prop"`
-	OffIcon       vecty.ComponentOrHTML            `vecty:"prop"`
-	OnLabel       string                           `vecty:"prop"`
-	OffLabel      string                           `vecty:"prop"`
-	OnClick       func(*vecty.Event)               `vecty:"prop"`
+	Root     vecty.MarkupOrChild   `vecty:"prop"`
+	OnChange func(e *vecty.Event)  `vecty:"prop"`
+	On       bool                  `vecty:"prop"`
+	OnIcon   vecty.ComponentOrHTML `vecty:"prop"`
+	OffIcon  vecty.ComponentOrHTML `vecty:"prop"`
+	OnLabel  string                `vecty:"prop"`
+	OffLabel string                `vecty:"prop"`
+	OnClick  func(*vecty.Event)    `vecty:"prop"`
 }
 
 // Render implements the vecty.Component interface.
@@ -54,7 +53,16 @@ func (c *IB) Apply(h *vecty.HTML) {
 		c.MDC = &base.MDC{}
 		fallthrough
 	case c.MDC.Component == nil:
-		c.MDC.Component = iconbutton.New()
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCIconButtonToggle",
+				MDCCamelCaseName: "iconButton",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{
+			"on": &c.On,
+		})
 	}
 
 	var markup []vecty.Applyer
@@ -92,19 +100,16 @@ func (c *IB) Apply(h *vecty.HTML) {
 		vecty.Class("mdc-icon-button", "material-icons"),
 		vecty.Attribute("role", "button"),
 		vecty.Attribute("aria-pressed", c.On),
-		&vecty.EventListener{
-			Name: "MDCIconButtonToggle:change",
-			Listener: func(e *vecty.Event) {
-				c.On = !c.On
-				vecty.Rerender(c)
-			},
-		},
-		vecty.MarkupIf(c.ChangeHandler != nil,
+		vecty.MarkupIf(c.OnChange != nil,
 			&vecty.EventListener{
 				Name:     "MDCIconButtonToggle:change",
-				Listener: c.wrapChangeHandler(),
+				Listener: c.OnChange,
 			},
 		),
+		&vecty.EventListener{
+			Name:     "MDCIconButtonToggle:change",
+			Listener: c.MDC.Component.Component().Update,
+		},
 		vecty.MarkupIf(c.OnClick != nil,
 			event.Click(c.OnClick),
 		),
@@ -114,10 +119,4 @@ func (c *IB) Apply(h *vecty.HTML) {
 		),
 	).Apply(h)
 	c.MDC.RootElement = h
-}
-
-func (c *IB) wrapChangeHandler() func(e *vecty.Event) {
-	return func(e *vecty.Event) {
-		c.ChangeHandler(c, e)
-	}
 }

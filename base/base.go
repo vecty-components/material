@@ -14,6 +14,18 @@ func Key() string {
 	return "material-component-" + strconv.Itoa(key)
 }
 
+type KeyedComponent struct {
+	K string
+}
+
+func (kc *KeyedComponent) Key() interface{} {
+	if kc.K == "" {
+		kc.K = Key()
+	}
+
+	return kc.K
+}
+
 type MDC struct {
 	Component   ComponentStartStopper
 	RootElement *vecty.HTML

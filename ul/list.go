@@ -30,6 +30,7 @@ type L struct {
 // Item is a vecty-material list-item component.
 type Item struct {
 	*base.MDC
+	base.KeyedComponent
 	vecty.Core
 	Root      vecty.MarkupOrChild   `vecty:"prop"`
 	Primary   vecty.ComponentOrHTML `vecty:"prop"`
@@ -108,19 +109,9 @@ func (c *L) Apply(h *vecty.HTML) {
 	c.MDC.RootElement = h
 }
 
-func (c *Item) Key() interface{} {
-	if c.K == "" {
-		c.K = base.Key()
-	}
-
-	return c.K
-}
-
 // Render implements the vecty.Component interface.
 func (c *Item) Render() vecty.ComponentOrHTML {
-	c.markup = base.ExtractMarkupFromLink(
-		c.Primary.(*vecty.HTML),
-	)
+	c.markup = base.ExtractMarkupFromLink(c.Primary)
 
 	tag := "li"
 	if c.markup.Href != "" {
@@ -178,6 +169,16 @@ func (c *Item) Apply(h *vecty.HTML) {
 	switch {
 	case c.MDC == nil:
 		c.MDC = &base.MDC{}
+		fallthrough
+	case c.MDC.Component == nil:
+		c.MDC.Component = &base.Component{
+			Type: base.ComponentType{
+				MDCClassName:     "MDCRipple",
+				MDCCamelCaseName: "ripple",
+			},
+		}
+
+		c.MDC.Component.Component().SetState(base.StateMap{})
 	}
 
 	vecty.Markup(
@@ -223,13 +224,27 @@ func (c *Group) Apply(h *vecty.HTML) {
 	c.MDC.RootElement = h
 }
 
+type DividerComponent struct {
+	vecty.Core
+	base.KeyedComponent
+	Root *vecty.HTML
+}
+
+func NewDividerComponent(h *vecty.HTML) vecty.ComponentOrHTML {
+	return &DividerComponent{Root: h}
+}
+
+func (dc *DividerComponent) Render() vecty.ComponentOrHTML {
+	return base.RenderStoredChild(dc.Root)
+}
+
 func ListDivider() vecty.ComponentOrHTML {
 	d := elem.HorizontalRule(
 		vecty.Markup(
 			vecty.Class("mdc-list-divider"),
 		),
 	)
-	return base.RenderStoredChild(d)
+	return NewDividerComponent(d)
 }
 
 func ListDividerInset() vecty.ComponentOrHTML {
@@ -239,7 +254,7 @@ func ListDividerInset() vecty.ComponentOrHTML {
 			vecty.Class("mdc-list-divider--inset"),
 		),
 	)
-	return base.RenderStoredChild(d)
+	return NewDividerComponent(d)
 }
 
 func ItemDivider() vecty.ComponentOrHTML {
@@ -249,9 +264,13 @@ func ItemDivider() vecty.ComponentOrHTML {
 			vecty.Attribute("role", "separator"),
 		),
 	)
+<<<<<<< HEAD
 	//return base.RenderStoredChild(d)
 	return base.RenderStoredChildKeyer(d)
 	//return d
+=======
+	return NewDividerComponent(d)
+>>>>>>> 346312860111e5a96bb592ac99a404de24b88ece
 }
 
 func ItemDividerInset() vecty.ComponentOrHTML {
@@ -262,7 +281,7 @@ func ItemDividerInset() vecty.ComponentOrHTML {
 			vecty.Attribute("role", "separator"),
 		),
 	)
-	return base.RenderStoredChild(d)
+	return NewDividerComponent(d)
 }
 
 func (c *Group) listList() vecty.List {
