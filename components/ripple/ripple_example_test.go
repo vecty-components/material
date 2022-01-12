@@ -20,8 +20,7 @@ func Example() {
 	printState(c)
 
 	// Set up a DOM HTMLElement suitable for a ripple.
-	js.Global().Get("document").Get("body").Set("innerHTML",
-		mdctest.HTML(c.Component().Type.MDCClassName))
+	js.Global().Get("document").Get("body").Set("innerHTML", mdctest.HTML(c.Component().Type.MDCClassName))
 	rootElem := js.Global().Get("document").Get("body").Get("firstElementChild")
 
 	// Start the component, which associates it with an HTMLElement.

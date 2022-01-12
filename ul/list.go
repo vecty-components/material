@@ -1,6 +1,7 @@
 package ul
 
 import (
+	"log"
 	"reflect"
 
 	"github.com/hexops/vecty"
@@ -226,16 +227,16 @@ func (c *Group) Apply(h *vecty.HTML) {
 
 type DividerComponent struct {
 	vecty.Core
-	base.KeyedComponent
-	Root *vecty.HTML
+	base.KeyedComponent             //`vecty:"prop"`
+	Root                *vecty.HTML `vecty:"prop"` //????????????
 }
 
 func NewDividerComponent(h *vecty.HTML) vecty.ComponentOrHTML {
 	return &DividerComponent{Root: h}
 }
 
-func (dc *DividerComponent) Render() vecty.ComponentOrHTML {
-	return base.RenderStoredChild(dc.Root)
+func (dc *DividerComponent) Render() vecty.ComponentOrHTML { //bug caused from here?????
+	return base.RenderStoredChild(dc.Root) //package base --> base/tools.go
 }
 
 func ListDivider() vecty.ComponentOrHTML {
@@ -257,20 +258,40 @@ func ListDividerInset() vecty.ComponentOrHTML {
 	return NewDividerComponent(d)
 }
 
-func ItemDivider() vecty.ComponentOrHTML {
+type D struct {
+	vecty.Core
+	key  string
+	Root *vecty.HTML
+}
+
+func (d *D) Key() interface{} {
+	return d.key
+}
+
+func NewD(h *vecty.HTML) vecty.ComponentOrHTML {
+	D := &D{Root: h}
+	D.key = base.Key()
+	return D
+}
+
+func (d *D) Render() vecty.ComponentOrHTML {
+	return d.Root
+}
+
+func ItemDivider() vecty.ComponentOrHTML { //bug caused from here?????
 	d := elem.ListItem(
 		vecty.Markup(
 			vecty.Class("mdc-list-divider"),
 			vecty.Attribute("role", "separator"),
+			vecty.Key(base.Key()), //panic: vecty: all siblings must have keys when using keyed elements
 		),
 	)
-<<<<<<< HEAD
-	//return base.RenderStoredChild(d)
-	return base.RenderStoredChildKeyer(d)
-	//return d
-=======
-	return NewDividerComponent(d)
->>>>>>> 346312860111e5a96bb592ac99a404de24b88ece
+	ndc := NewD(d)
+	//ndc := NewDividerComponent(d)
+	log.Printf("%v %v %p %+v %v %v %p %+v", "ul/list.ItemDivider()1", "d =", d, d, d.Key().(string), "NewDividerComponent =", ndc, ndc)
+	//return NewDividerComponent(d)
+	return ndc
+	//return d //panic: vecty: all siblings must have keys when using keyed elements
 }
 
 func ItemDividerInset() vecty.ComponentOrHTML {
