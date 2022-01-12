@@ -1,7 +1,6 @@
 package ul
 
 import (
-	"log"
 	"reflect"
 
 	"github.com/hexops/vecty"
@@ -227,81 +226,64 @@ func (c *Group) Apply(h *vecty.HTML) {
 
 type DividerComponent struct {
 	vecty.Core
-	base.KeyedComponent             //`vecty:"prop"`
-	Root                *vecty.HTML `vecty:"prop"` //????????????
+	base.KeyedComponent
+	Root func() *vecty.HTML
 }
 
-func NewDividerComponent(h *vecty.HTML) vecty.ComponentOrHTML {
+func NewDividerComponent(h func() *vecty.HTML) vecty.ComponentOrHTML {
 	return &DividerComponent{Root: h}
 }
 
 func (dc *DividerComponent) Render() vecty.ComponentOrHTML { //bug caused from here?????
-	return base.RenderStoredChild(dc.Root) //package base --> base/tools.go
+	//return base.RenderStoredChild(dc.Root()) //package base --> base/tools.go
+	return dc.Root()
 }
 
 func ListDivider() vecty.ComponentOrHTML {
-	d := elem.HorizontalRule(
-		vecty.Markup(
-			vecty.Class("mdc-list-divider"),
-		),
-	)
+	d := func() *vecty.HTML {
+		return elem.HorizontalRule(
+			vecty.Markup(
+				vecty.Class("mdc-list-divider"),
+			),
+		)
+	}
 	return NewDividerComponent(d)
 }
 
 func ListDividerInset() vecty.ComponentOrHTML {
-	d := elem.HorizontalRule(
-		vecty.Markup(
-			vecty.Class("mdc-list-divider"),
-			vecty.Class("mdc-list-divider--inset"),
-		),
-	)
+	d := func() *vecty.HTML {
+		return elem.HorizontalRule(
+			vecty.Markup(
+				vecty.Class("mdc-list-divider"),
+				vecty.Class("mdc-list-divider--inset"),
+			),
+		)
+	}
 	return NewDividerComponent(d)
 }
 
-type D struct {
-	vecty.Core
-	key  string
-	Root *vecty.HTML
-}
-
-func (d *D) Key() interface{} {
-	return d.key
-}
-
-func NewD(h *vecty.HTML) vecty.ComponentOrHTML {
-	D := &D{Root: h}
-	D.key = base.Key()
-	return D
-}
-
-func (d *D) Render() vecty.ComponentOrHTML {
-	return d.Root
-}
-
 func ItemDivider() vecty.ComponentOrHTML { //bug caused from here?????
-	d := elem.ListItem(
-		vecty.Markup(
-			vecty.Class("mdc-list-divider"),
-			vecty.Attribute("role", "separator"),
-			vecty.Key(base.Key()), //panic: vecty: all siblings must have keys when using keyed elements
-		),
-	)
-	ndc := NewD(d)
-	//ndc := NewDividerComponent(d)
-	log.Printf("%v %v %p %+v %v %v %p %+v", "ul/list.ItemDivider()1", "d =", d, d, d.Key().(string), "NewDividerComponent =", ndc, ndc)
-	//return NewDividerComponent(d)
-	return ndc
-	//return d //panic: vecty: all siblings must have keys when using keyed elements
+	d := func() *vecty.HTML {
+		return elem.ListItem(
+			vecty.Markup(
+				vecty.Class("mdc-list-divider"),
+				vecty.Attribute("role", "separator"),
+			),
+		)
+	}
+	return NewDividerComponent(d)
 }
 
 func ItemDividerInset() vecty.ComponentOrHTML {
-	d := elem.ListItem(
-		vecty.Markup(
-			vecty.Class("mdc-list-divider"),
-			vecty.Class("mdc-list-divider--inset"),
-			vecty.Attribute("role", "separator"),
-		),
-	)
+	d := func() *vecty.HTML {
+		return elem.ListItem(
+			vecty.Markup(
+				vecty.Class("mdc-list-divider"),
+				vecty.Class("mdc-list-divider--inset"),
+				vecty.Attribute("role", "separator"),
+			),
+		)
+	}
 	return NewDividerComponent(d)
 }
 
