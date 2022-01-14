@@ -227,54 +227,63 @@ func (c *Group) Apply(h *vecty.HTML) {
 type DividerComponent struct {
 	vecty.Core
 	base.KeyedComponent
-	Root *vecty.HTML
+	Root func() *vecty.HTML
 }
 
-func NewDividerComponent(h *vecty.HTML) vecty.ComponentOrHTML {
+func NewDividerComponent(h func() *vecty.HTML) vecty.ComponentOrHTML {
 	return &DividerComponent{Root: h}
 }
 
-func (dc *DividerComponent) Render() vecty.ComponentOrHTML {
-	return base.RenderStoredChild(dc.Root)
+func (dc *DividerComponent) Render() vecty.ComponentOrHTML { //bug caused from here?????
+	//return base.RenderStoredChild(dc.Root()) //package base --> base/tools.go
+	return dc.Root()
 }
 
 func ListDivider() vecty.ComponentOrHTML {
-	d := elem.HorizontalRule(
-		vecty.Markup(
-			vecty.Class("mdc-list-divider"),
-		),
-	)
+	d := func() *vecty.HTML {
+		return elem.HorizontalRule(
+			vecty.Markup(
+				vecty.Class("mdc-list-divider"),
+			),
+		)
+	}
 	return NewDividerComponent(d)
 }
 
 func ListDividerInset() vecty.ComponentOrHTML {
-	d := elem.HorizontalRule(
-		vecty.Markup(
-			vecty.Class("mdc-list-divider"),
-			vecty.Class("mdc-list-divider--inset"),
-		),
-	)
+	d := func() *vecty.HTML {
+		return elem.HorizontalRule(
+			vecty.Markup(
+				vecty.Class("mdc-list-divider"),
+				vecty.Class("mdc-list-divider--inset"),
+			),
+		)
+	}
 	return NewDividerComponent(d)
 }
 
-func ItemDivider() vecty.ComponentOrHTML {
-	d := elem.ListItem(
-		vecty.Markup(
-			vecty.Class("mdc-list-divider"),
-			vecty.Attribute("role", "separator"),
-		),
-	)
+func ItemDivider() vecty.ComponentOrHTML { //bug caused from here?????
+	d := func() *vecty.HTML {
+		return elem.ListItem(
+			vecty.Markup(
+				vecty.Class("mdc-list-divider"),
+				vecty.Attribute("role", "separator"),
+			),
+		)
+	}
 	return NewDividerComponent(d)
 }
 
 func ItemDividerInset() vecty.ComponentOrHTML {
-	d := elem.ListItem(
-		vecty.Markup(
-			vecty.Class("mdc-list-divider"),
-			vecty.Class("mdc-list-divider--inset"),
-			vecty.Attribute("role", "separator"),
-		),
-	)
+	d := func() *vecty.HTML {
+		return elem.ListItem(
+			vecty.Markup(
+				vecty.Class("mdc-list-divider"),
+				vecty.Class("mdc-list-divider--inset"),
+				vecty.Attribute("role", "separator"),
+			),
+		)
+	}
 	return NewDividerComponent(d)
 }
 
